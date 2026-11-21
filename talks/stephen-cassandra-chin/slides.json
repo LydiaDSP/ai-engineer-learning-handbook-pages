@@ -1,0 +1,35 @@
+[
+  {
+    "id": "evidence",
+    "after": "p32",
+    "title": "从当前改动出发，取回相连事实",
+    "time": "13:46",
+    "url": "https://www.youtube.com/watch?v=gbeuC0ud1p4&t=826s",
+    "en": "assets/evidence-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从当前改动出发，取回相连事实</h3><dl><div><dt>关系输入</dt><dd>Why（原因）、Code（代码）、Checks（检查）</dd></div><div><dt>当前改动</dt><dd>command attribution：命令归属</dd></div><div><dt>行为规则</dt><dd>cd 的目标或仓库根目录提及</dd></div><div><dt>原因记录</dt><dd>CWD 在命令执行前记录</dd></div><div><dt>来源句柄</dt><dd>leadingCd、belongs、request、diff、checks</dd></div></dl></div>",
+    "note": "原图强调事实与来源一起返回，形成精简简报；不是把更多无关日志塞进上下文。",
+    "sourceSeconds": 826
+  },
+  {
+    "id": "quality",
+    "after": "p39",
+    "title": "最终质量对照：图路径与原流程",
+    "time": "16:57",
+    "url": "https://www.youtube.com/watch?v=gbeuC0ud1p4&t=1017s",
+    "en": "assets/quality-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>最终质量对照：图路径与原流程</h3><dl><div><dt>Claude</dt><dd>74.2 → 76.2，增加 2.0 分</dd></div><div><dt>Codex</dt><dd>82.4 → 86.8，增加 4.4 分</dd></div><div><dt>评分口径</dt><dd>最终完成的开发基准，质量综合分 / 100</dd></div><div><dt>图例</dt><dd>Original：原流程；Graph path：加入图的路径</dd></div></dl></div>",
+    "note": "数字据原图核对，口头转写给的是近似值。结果来自讲者的实验，不是独立复测。",
+    "sourceSeconds": 1017
+  },
+  {
+    "id": "tokens",
+    "after": "p42",
+    "title": "每份 PR 的平均起草成本",
+    "time": "18:23",
+    "url": "https://www.youtube.com/watch?v=gbeuC0ud1p4&t=1103s",
+    "en": "assets/tokens-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>每份 PR 的平均起草成本</h3><dl><div><dt>Claude</dt><dd>约 $0.690 → $0.430，下降 38%</dd></div><div><dt>Codex</dt><dd>约 $0.320 → $0.190，下降 41%</dd></div><div><dt>单位</dt><dd>USD / PR</dd></div><div><dt>原图排除项</dt><dd>不包含评估裁判与人工时间</dd></div></dl></div>",
+    "note": "这张图展示费用，不是 token 数；不能与口头提到的“token 约减半”混为同一指标。",
+    "sourceSeconds": 1103
+  }
+]

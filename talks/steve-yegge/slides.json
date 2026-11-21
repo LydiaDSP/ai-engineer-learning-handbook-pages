@@ -1,0 +1,35 @@
+[
+  {
+    "id": "factory-flow",
+    "after": "p18",
+    "title": "Yegge 展示游戏软件工厂的控制台",
+    "time": "08:12:29",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29549s",
+    "en": "assets/factory-flow-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Yegge 展示游戏软件工厂的控制台</h3><dl><div><dt>执行层</dt><dd>让工作流拿到上下文、CI 结果和运行资源。</dd></div><div><dt>协调层</dt><dd>不同角色负责推进工作和协调交付。</dd></div></dl></div>",
+    "note": "画面是讲者自己使用的控制台早期版本。",
+    "sourceSeconds": 29549
+  },
+  {
+    "id": "backlog",
+    "after": "p28",
+    "title": "跟踪任务卡在哪里",
+    "time": "08:15:14",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29714s",
+    "en": "assets/backlog-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>跟踪任务卡在哪里</h3><dl><div><dt>排队与顺序</dt><dd>观察待领任务、各阶段积压和优先级变化。</dd></div><div><dt>验收</dt><dd>把审查、签字和批准显示为可追踪的阶段。</dd></div></dl></div>",
+    "note": "讲者列出了自己每天检查工作进度时面对的问题。",
+    "sourceSeconds": 29714
+  },
+  {
+    "id": "context",
+    "after": "p35",
+    "title": "上下文会随着工作记录累积",
+    "time": "08:17:58",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29878s",
+    "en": "assets/context-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>上下文会随着工作记录累积</h3><dl><div><dt>积累</dt><dd>临时指示和旧决定继续出现在后续会话里。</dd></div><div><dt>整理</dt><dd>给上下文整理分配固定比例的 token 预算，先删除或压缩旧内容，再加新内容。</dd></div></dl></div>",
+    "note": "右侧漫画是讲者对团队管理经历的拟人化表达。",
+    "sourceSeconds": 29878
+  }
+]

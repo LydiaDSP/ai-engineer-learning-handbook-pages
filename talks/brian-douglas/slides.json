@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p02",
+    "title": "Tapes 项目的演示入口",
+    "time": "02:00:58",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=7258s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者从自己的会话记录工具出发展开，说明如何保存带有上下文的工程轨迹。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 7258
+  },
+  {
+    "id": "frame-02",
+    "after": "p08",
+    "title": "区分值得提醒的改动与无需评论的段落",
+    "time": "02:06:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=7560s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>终端案例显示一次评审会对不同 patch hunk 给出不同处置；重要的是保留改动和判断之间的依据。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 7560
+  },
+  {
+    "id": "frame-03",
+    "after": "p12",
+    "title": "先标注结果，再抽成评审技能",
+    "time": "02:07:34",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=7654s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>README 列出哪些会话片段应进入样本，例如明确纠正、接受和复发。保存结果能让后来者判断反馈究竟是否奏效。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 7654
+  }
+]

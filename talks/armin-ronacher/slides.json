@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p01",
+    "title": "先学会在工作室使用工具",
+    "time": "00:41:13",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=2473s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>演讲从个人实践入手。讲者希望先把工具用熟，做出有想法且值得维护的软件。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 2473
+  },
+  {
+    "id": "frame-02",
+    "after": "p06",
+    "title": "启动项目的速度跑在持续维护前面",
+    "time": "00:46:45",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=2805s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>折线是累积启动的项目，柱形是各月持续投入至少五天的项目。两条序列记录的是演讲者自己的工作。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 2805
+  },
+  {
+    "id": "frame-03",
+    "after": "p10",
+    "title": "自建工具仍要尊重互操作性",
+    "time": "00:51:28",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=3088s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者提出开放协议、规范和文件格式的价值；重复造工具时要留意团队还能否共同使用同一产物。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 3088
+  }
+]

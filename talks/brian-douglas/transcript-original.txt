@@ -1,0 +1,185 @@
+把资深同事的 PR 评审意见留给下一次
+Brian Douglas
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[01:59:06.200 --> 01:59:11.340] hey folks thanks for coming to my talk i'm b dougie uh brian douglas and i'm going to talk about
+[01:59:11.340 --> 01:59:16.860] if you are going to verbally abuse your agents at least label the outcome now this is a talk i'm
+[01:59:16.860 --> 01:59:22.380] going to quickly just run through one example and this will be a short talk um mainly because
+[01:59:22.380 --> 01:59:26.640] there's actually not too much too much to this but um outside of that i i want to talk about some of
+[01:59:26.640 --> 01:59:31.920] the work i've been doing for the past uh six to eight months uh and it actually came out with this
+[01:59:32.500 --> 01:59:38.360] this year everyone definitely got ai pilled when it comes to agents um so obviously cloud codes
+[01:59:38.360 --> 01:59:41.940] got to be one of the most popular ones out there we've got quite a few other ones that you can
+[01:59:41.940 --> 01:59:49.200] leverage like the codex or chat gpt um and there was a book i read years ago well quite a handful
+[01:59:49.200 --> 01:59:54.920] years ago uh from rick rubin about the creative act a way of being and this was actually around
+[01:59:54.920 --> 01:59:59.500] the idea that rick rubin produced the bc boys and a number of other acts but he's actually never
+[01:59:59.500 --> 01:59:59.880] played music.
+[02:00:00.000 --> 02:00:05.440] and a lot of folks have made this correlation with vibe coding where rick rubin can produce
+[02:00:05.440 --> 02:00:10.960] the best music without actually playing the piano uh we're now having a we're in a world where
+[02:00:10.960 --> 02:00:16.260] folks can vibe code a bunch of rust code without never writing rust uh and that's exactly where
+[02:00:16.260 --> 02:00:22.340] i'm at uh there was another article um months ago uh from adi osmani who's now currently at a
+[02:00:23.160 --> 02:00:28.500] um the anthropic team on the quad code team specifically uh and was talking about the
+[02:00:30.320 --> 02:00:33.040] for juniors are basically, it's gone.
+[02:00:33.420 --> 02:00:35.460] When it comes to junior engineering,
+[02:00:36.220 --> 02:00:38.000] it was all about growing from junior to senior
+[02:00:38.000 --> 02:00:38.820] was about reps.
+[02:00:39.000 --> 02:00:41.920] So the more reps you got, the more engagement
+[02:00:41.920 --> 02:00:44.000] you got opportunity to basically just level up
+[02:00:44.000 --> 02:00:44.740] as an engineer.
+[02:00:45.080 --> 02:00:47.280] And without those reps, we're handing those reps
+[02:00:47.280 --> 02:00:50.060] specifically to agents, we're losing the opportunity
+[02:00:50.060 --> 02:00:50.660] to level up.
+[02:00:51.880 --> 02:00:54.880] So this comes out of something I was doing early this year,
+[02:00:54.940 --> 02:00:57.780] which built this open source project called Tapes.
+[02:00:57.780 --> 02:00:59.660] tapes.dev is open source Apache 2.
+[02:01:00.600 --> 02:01:02.340] There's a lot of other similar stuff out there,
+[02:01:02.380 --> 02:01:04.600] but what I'm getting at is it's not about tapes.
+[02:01:04.740 --> 02:01:07.360] It's about the idea of collecting your agent's session data,
+[02:01:07.440 --> 02:01:08.140] and that's what this does.
+[02:01:08.320 --> 02:01:11.840] So a lot of hotel collectors, a lot of session capture services.
+[02:01:12.460 --> 02:01:14.700] A lot of the harnesses are ready to do this for you out of the box.
+[02:01:14.940 --> 02:01:16.900] Just wanted to mention that this is what I use.
+[02:01:17.060 --> 02:01:18.260] You can use anything else you would like.
+[02:01:19.100 --> 02:01:22.220] I've also, in addition to tapes, me and my team,
+[02:01:22.320 --> 02:01:23.920] we've developed this thing called stereos,
+[02:01:23.960 --> 02:01:25.460] and this is the runtime for your agent.
+[02:01:25.460 --> 02:01:38.340] And again, sandboxes, not a concept that everyone needs to hear about today, but just knowing that in all the work I've been doing, I've been capturing these sessions and recording them by having a reproducible environment.
+[02:01:39.340 --> 02:01:42.620] And the environment themselves, they have these signals.
+[02:01:42.680 --> 02:01:48.960] And the one thing I've been doing it with this little setup of tapes and stereos is I've been building self-healing infrastructure.
+[02:01:48.960 --> 02:01:54.880] So this is a little project called Sweeper Agent, and Sweeper Agent itself is a way for me to build parallel agents.
+[02:01:55.580 --> 02:01:58.480] I can scale up to 10 of these at this point.
+[02:01:58.620 --> 02:02:01.880] I've done quite a few Daytona sandboxes as well.
+[02:02:02.040 --> 02:02:08.940] I've done about 200 at the same time that will just solve a specific problem, so documentation, test writing, code cleanup,
+[02:02:09.480 --> 02:02:15.200] stuff that you want to scale that's very, very defined work that you want to spin off to multiple agents in tandem.
+[02:02:15.820 --> 02:02:23.540] Now, a lot of this has been cleaning up most of my VibeCoding software that I built in the last 18 months at this point.
+[02:02:24.680 --> 02:02:29.080] But just pointing out that there's a lot of work we can do to basically solve these problems.
+[02:02:29.480 --> 02:02:33.960] But it doesn't change the fact that I still don't know how to write Rust code.
+[02:02:34.140 --> 02:02:38.540] I've never written Rust code specifically myself, professionally rather.
+[02:02:39.080 --> 02:02:42.980] Ten years ago, I did write Rust code, but it was mostly for little side projects to learn Rust.
+[02:02:43.660 --> 02:02:47.340] But we use Rust day-to-day at the company I work for, which is Paper Compute.
+[02:02:47.740 --> 02:02:52.740] And what we've been doing is because of this technology underneath this called Tapes,
+[02:02:52.740 --> 02:02:54.400] we've been capturing traces.
+[02:02:54.700 --> 02:02:56.760] And Tapes is our trace capture service.
+[02:02:57.140 --> 02:02:59.640] Telemetry capture and paper, we have a console.
+[02:02:59.900 --> 02:03:03.940] So for the moment, I'll move away from the slides and show you the paper console.
+[02:03:04.180 --> 02:03:07.720] Now, paper console itself, this showing that I can capture sessions.
+[02:03:07.720 --> 02:03:14.980] And the difference of doing this local and my own sessions is that I can have a centralized data store of, like, not just me, but also my teammate.
+[02:03:15.360 --> 02:03:18.060] And what's cool about this is I can also label sessions.
+[02:03:18.100 --> 02:03:23.120] So this is a session that, oh, interesting.
+[02:03:23.660 --> 02:03:24.600] Yeah, sorry.
+[02:03:24.860 --> 02:03:26.180] Got to zoom out to see the labels.
+[02:03:26.320 --> 02:03:32.280] But, yeah, so here I can see I've got a session here, which, working with some paper cloud export memory limits.
+[02:03:32.400 --> 02:03:34.420] And we've got this word, this label called pushback.
+[02:03:34.420 --> 02:03:43.220] Now, I actually went to specifically a session that had pushback in it, and it's specifically every time an engineer pushes back on the agent.
+[02:03:43.460 --> 02:03:58.760] Now, there's a thing that I think recently Anthropik, or I guess rumors, I don't know if this is actually grounded by any facts, but Anthropik was pushing back on if you were being rude to the agent, you could potentially lose your account or get blocked.
+[02:03:58.760 --> 02:04:07.180] But what I find specifically when pushed back, when I'm specifically looking for any Rust code or Go code that Matt has written,
+[02:04:07.640 --> 02:04:12.780] and whenever he pushes back, it's a good signal that he has knowledge that the agent does not.
+[02:04:13.120 --> 02:04:18.140] And this usually comes in the form of we have decided our API structure a certain way.
+[02:04:18.260 --> 02:04:24.840] Despite the fact that the Rust code compiles, we have made decisions on how that code should be set up
+[02:04:24.840 --> 02:04:27.220] and how that code should interact with different parts of the code base.
+[02:04:28.860 --> 02:04:33.820] like duplicating services that maybe the agent didn't have context around there's a lot of other
+[02:04:33.820 --> 02:04:39.060] like a bunch of reasons but what i'm getting at me as like quote unquote a junior rust engineer
+[02:04:39.640 --> 02:04:43.700] i don't have enough context to be able to push back to the agent to say hey you're doing this
+[02:04:43.700 --> 02:04:47.780] wrong or you're making like weird choices i usually take everything that the agent writes
+[02:04:47.780 --> 02:04:52.960] in rust for face value and what that ends up turning into is when i open up pr i get a lot
+[02:04:52.960 --> 02:04:58.500] of pushback from the engineers the human engineers at review time this is mainly because we know i
+[02:04:58.760 --> 02:05:03.880] rest code there's not a lot of pushback i can provide the decode base um or even at the time
+[02:05:03.880 --> 02:05:09.420] of review so by the time it gets to greptile it's a five out of five review i just let it slide um so
+[02:05:09.420 --> 02:05:14.220] how do i prevent that pushback what i've done is actually started collecting every single one of
+[02:05:14.220 --> 02:05:20.960] these labels and the traces uh and then one thing i'll point out is that the the console itself i
+[02:05:20.960 --> 02:05:24.720] capture every single session i got all the uh specific details this is actually just a command
+[02:05:24.720 --> 02:05:29.800] line version of that. What I've been doing is I've been capturing all these sessions and then
+[02:05:29.800 --> 02:05:34.560] dropping into a data set that's been labeled. So now I can just like run a little command line tool
+[02:05:34.560 --> 02:05:41.960] called twin review and I'll grab a PR number 381 and I'll run that and I'll actually run through
+[02:05:41.960 --> 02:05:47.920] and essentially review the code as if it was Matt. Now the way I'm doing this is I'm capturing
+[02:05:47.920 --> 02:05:53.020] traces, I created the data set, I've also done some post training and this is like where you
+[02:05:55.720 --> 02:06:00.260] training specifically on every time Matt pushes back within Go or Rust code.
+[02:06:00.580 --> 02:06:05.700] And I asked for it to provide me comments as a viewer, Matt, on my GitHub PR.
+[02:06:05.940 --> 02:06:07.440] So this is all data.
+[02:06:07.580 --> 02:06:09.320] It's only specifically within the traces.
+[02:06:09.320 --> 02:06:13.460] So this is not taking any GitHub PR review data, which I think you potentially could
+[02:06:13.460 --> 02:06:14.520] also follow that pattern.
+[02:06:14.860 --> 02:06:19.740] But what I find is like the majority of our team have started reviewing code on the command
+[02:06:19.740 --> 02:06:19.960] line.
+[02:06:20.080 --> 02:06:23.140] So you'll have Claude review to code or the PyHarness review code.
+[02:06:24.720 --> 02:06:29.180] PR, but you don't do a lot of pushback or a lot of commentary on GitHub itself.
+[02:06:29.480 --> 02:06:35.200] So what we're seeing right now, we're shifting from code being reviewed specifically on GitHub
+[02:06:35.200 --> 02:06:40.360] by agents, well, previously humans and now agents, to now codes is specifically just
+[02:06:40.360 --> 02:06:45.720] getting reviewed in your harness without any sort of oversight or commentary or anything
+[02:06:45.720 --> 02:06:50.460] that sort of navigates directly to your shared code base.
+[02:06:50.940 --> 02:06:55.580] So with that being said, like what I've navigated is I've created this thing called a Twin Reviewer.
+[02:06:55.760 --> 02:06:58.080] And this as well is open sourced.
+[02:06:59.180 --> 02:07:06.620] So it is, I did not have this open, but, oh, actually, Twin Reviewer is not open source.
+[02:07:06.860 --> 02:07:09.700] I realize I never open source it because it's got sensitive data.
+[02:07:10.560 --> 02:07:16.300] But what I've done is actually set up that same pattern using Fireworks and using Fireworks to Post Train specifically.
+[02:07:16.300 --> 02:07:31.580] And what's cool about this is I've looked for any sort of pushbacks, apologies, any sort of golden sessions, sessions that actually have been marked as you should probably pay attention to this, and also regressions for any things that usually agents will just fall over.
+[02:07:31.820 --> 02:07:37.720] A lot of times it turns into like an agent will start reinventing Go libraries that already exist.
+[02:07:38.260 --> 02:07:40.660] That usually is granted to be pushed back.
+[02:07:40.660 --> 02:07:45.100] like ideally you should push back on that but again if you don't know these libraries exist
+[02:07:45.100 --> 02:07:49.560] you probably take it for face value and then you're reinventing things like kubernetes which
+[02:07:49.560 --> 02:07:54.300] sounds like an overstatement but like we've seen it reinvent things like mock libraries for for
+[02:07:54.300 --> 02:08:00.980] testing and etc uh and very popular code base are very popular open source projects so that's
+[02:08:00.980 --> 02:08:06.260] essentially it this is uh basically if you're gonna push back and you're gonna have some really really
+[02:08:06.260 --> 02:08:12.260] valuable insight uh under reviews in your code base my recommendation is take a look at opportunities
+[02:08:12.260 --> 02:08:19.220] within the traces uh to maybe train or post train a model or create your own harness for reviews
+[02:08:19.220 --> 02:08:22.800] locally choose your adventure i think you could actually do a lot of this by just building your
+[02:08:22.800 --> 02:08:30.760] own harness um but if you did wanted to use a um a quin 3 8b which i've done specifically uh in this
+[02:08:30.760 --> 02:08:35.880] situation, you'd also approach that. A lot of the stuff is available to you, a lot of tools.
+[02:08:36.200 --> 02:08:40.080] What I did actually to start is I started taking the paper traces and creating skills,
+[02:08:40.860 --> 02:08:45.760] skills that I can then specifically do things like check the tapes. So if you have a database,
+[02:08:45.920 --> 02:08:50.820] which tapes specifically is a Postgres database local on my machine, so you don't have to use a
+[02:08:50.820 --> 02:08:55.900] paper console. Actually, paper console is currently waitlisted, so probably best use case is going to
+[02:08:55.900 --> 02:09:00.180] used something like tapes or a brain trust or something similar to capture your traces.
+[02:09:01.220 --> 02:09:04.200] And then what's cool about this is once you have skills, you can create evals.
+[02:09:04.460 --> 02:09:09.920] Once you have evals, you can start post training on a Quinn model and for specific reasons,
+[02:09:10.100 --> 02:09:16.240] for identifying if REST code is up to speed to how you're writing code across your organization.
+[02:09:17.420 --> 02:09:20.600] So I did write a blog post around training a model instead of writing a skill.
+[02:09:20.800 --> 02:09:22.720] My recommendation is probably write a skill first.
+[02:09:22.720 --> 02:09:26.220] you can probably get most mileage out of a skill today.
+[02:09:28.040 --> 02:09:30.240] And I specifically, across my team,
+[02:09:30.360 --> 02:09:32.080] we had about almost 80,000 sessions
+[02:09:32.560 --> 02:09:35.660] that we could create skills from, which is pretty cool.
+[02:09:36.160 --> 02:09:38.320] Cool thing about this is also you do specialized fine tuning
+[02:09:38.320 --> 02:09:40.200] or direct preference optimization.
+[02:09:40.560 --> 02:09:42.600] The latter is going to take a lot more compute
+[02:09:42.600 --> 02:09:44.900] or some large hardware to do that,
+[02:09:44.920 --> 02:09:46.560] so probably specialized fine tuning.
+[02:09:46.880 --> 02:09:49.340] If you know about QQA, that's how I'm doing this.
+[02:09:49.340 --> 02:09:52.640] some quantizing on smaller GPUs, like a 5090.
+[02:09:53.580 --> 02:09:55.400] And if you don't know about specialized fine-tuning,
+[02:09:55.640 --> 02:09:57.660] this is like writing notes in the margin of a book.
+[02:09:57.740 --> 02:09:58.960] If your book is your model,
+[02:09:59.180 --> 02:10:01.520] the notes in the margin are your weights,
+[02:10:01.780 --> 02:10:03.480] or your adapters, rather.
+[02:10:03.740 --> 02:10:07.020] So the weights you generate on top of the model
+[02:10:07.020 --> 02:10:07.980] that's already been pre-trained.
+[02:10:08.520 --> 02:10:08.960] Cool.
+[02:10:09.100 --> 02:10:12.100] And I did this, as you saw, on a Quintin 4B model.
+[02:10:12.220 --> 02:10:13.360] It works pretty good.
+[02:10:13.940 --> 02:10:17.120] I did try to do this on some larger models.
+[02:10:17.120 --> 02:10:23.040] so specifically for direct preference optimization it took a lot of compute the only time i could
+[02:10:23.040 --> 02:10:30.040] make this work is by using nvidia gpus on the brev uh service or actually i never got access to
+[02:10:30.040 --> 02:10:36.480] some of the stuff on firework so i only did smaller six thousands um but if you if you care
+[02:10:36.480 --> 02:10:43.580] to know direct preference optimization if if the margin notes are your specialized fine-tuning dpo
+[02:10:43.580 --> 02:10:49.100] is going to be like your cliff notes uh not not possible doing a small language model or a small
+[02:10:49.100 --> 02:10:55.200] 4b model uh you would need like 70b plus uh which is going to take some hardware uh me specifically
+[02:10:55.200 --> 02:11:00.120] i didn't have any as hardware local so i had to use um the services that i mentioned fireworks
+[02:11:00.120 --> 02:11:05.360] and well not even fireworks brev was the only one i can get access to at the time good luck if you
+[02:11:05.360 --> 02:11:10.660] can get access to larger well you got to prepay a lot for this stuff so best of luck on that one
+[02:11:11.320 --> 02:11:13.560] but my suggestion is create skills.
+[02:11:13.860 --> 02:11:15.540] Try out tapes.dev if you're interested
+[02:11:15.540 --> 02:11:17.980] or leverage the tool that you have at your ready.
+[02:11:18.860 --> 02:11:22.000] And reminder, you should probably read this book.
+[02:11:22.100 --> 02:11:23.300] This is a great book if you think about
+[02:11:23.760 --> 02:11:25.400] how we're looking forward into,
+[02:11:26.200 --> 02:11:27.440] how we're approaching this world
+[02:11:27.440 --> 02:11:29.420] when it comes to AI and vibe coding
+[02:11:29.420 --> 02:11:32.740] and leveraging agents to basically build your software factory.
+[02:11:33.160 --> 02:11:37.020] And I do recommend, please check out Adios Mari's blog post.
+[02:11:37.220 --> 02:11:38.860] He has a series of these on X.
+[02:11:39.180 --> 02:11:40.300] I think they're all great.
+[02:11:40.660 --> 02:11:46.220] definitely take a look at him. He's got some clear-minded thoughts to check out. I'm BDougie,
+[02:11:46.400 --> 02:11:50.200] and I do appreciate you watching this video. I try to keep it brief because it was pretty
+[02:11:50.200 --> 02:11:52.260] straightforward. Hopefully it was. Cheers.

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p02",
+    "title": "运行时编译与线程的性能瓶颈",
+    "time": "05:21:50",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=19310s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者结合在特定机器上给 TypeScript 项目做类型检查的示例，说明即时编译时间与单线程执行的压力。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 19310
+  },
+  {
+    "id": "frame-02",
+    "after": "p09",
+    "title": "用旧测试覆盖执行结果差异",
+    "time": "05:27:10",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=19630s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>表格比较 test262、WebKit、Node.js 与 Bun 的同结果、未执行及不同结果。既有测试为比较提供了独立于新代码的标准。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 19630
+  },
+  {
+    "id": "frame-03",
+    "after": "p19",
+    "title": "大型开放任务先考虑可验证性",
+    "time": "05:40:20",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=20420s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>总结页把测试设计、测试本身的可信度、观测回归和架构判断列在一起。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 20420
+  }
+]

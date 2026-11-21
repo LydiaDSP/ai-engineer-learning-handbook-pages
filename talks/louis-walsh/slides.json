@@ -1,0 +1,57 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "整页方案里模型读搜索结果的成本",
+    "time": "00:03:10",
+    "url": "https://www.youtube.com/watch?v=4n01awR4PLc&t=190s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>示例账单将读取搜索结果、搜索请求、输出和其他输入逐项列出。模型读入检索结果约为 0.020 美元，独立于搜索服务收费。</p></div>",
+    "note": "2026 年 10 月 1 日 The AI Conference 原视频画面",
+    "sourceSeconds": 190
+  },
+  {
+    "id": "frame-02",
+    "after": "p08",
+    "title": "按句段摘录减少送入模型的内容",
+    "time": "00:07:25",
+    "url": "https://www.youtube.com/watch?v=4n01awR4PLc&t=445s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>提取相关句段后，比分保留在原文中。示意仍返回了与问题关系不大的球员表现。</p></div>",
+    "note": "2026 年 10 月 1 日 The AI Conference 原视频画面",
+    "sourceSeconds": 445
+  },
+  {
+    "id": "frame-03",
+    "after": "p11",
+    "title": "跨文档选择只送回一次比分",
+    "time": "00:11:25",
+    "url": "https://www.youtube.com/watch?v=4n01awR4PLc&t=685s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>多个结果重复同一比分。演示经跨文档比较后留下一个来源和短摘录，约 20 token。</p></div>",
+    "note": "2026 年 10 月 1 日 The AI Conference 原视频画面",
+    "sourceSeconds": 685
+  },
+  {
+    "id": "frame-04",
+    "after": "p13",
+    "title": "三种比较各有自己的基线",
+    "time": "00:12:50",
+    "url": "https://www.youtube.com/watch?v=4n01awR4PLc&t=770s",
+    "en": "assets/frame-04.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>第一项与返回整页比，第二项与逐页摘录比，第三项看整条 Agent 运行的 token，用途和测试范围不同。</p></div>",
+    "note": "2026 年 10 月 1 日 The AI Conference 原视频画面",
+    "sourceSeconds": 770
+  },
+  {
+    "id": "frame-05",
+    "after": "p18",
+    "title": "短摘录版本的任务成本表",
+    "time": "00:16:10",
+    "url": "https://www.youtube.com/watch?v=4n01awR4PLc&t=970s",
+    "en": "assets/frame-05.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>表内美元合计为 0.0212，读检索结果占约 1%。上方部分比例仍沿用旧标注，按表内美元分项解读。</p></div>",
+    "note": "2026 年 10 月 1 日 The AI Conference 原视频画面",
+    "sourceSeconds": 970
+  }
+]

@@ -1,0 +1,318 @@
+Databricks 怎样给 Agent 一份可分叉的工作环境？
+Ankit Mathur
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[02:46:34.840 --> 02:46:35.480] All right.
+[02:46:36.840 --> 02:46:38.600] Well, super excited to be here.
+[02:46:38.800 --> 02:46:39.500] My name's Ankit.
+[02:46:39.700 --> 02:46:40.640] I'm from Databricks.
+[02:46:40.820 --> 02:46:42.540] I work on AI infrastructure there.
+[02:46:42.900 --> 02:46:46.160] And today I'm going to talk about the rise of the agent workforce
+[02:46:46.160 --> 02:46:48.760] and how we're building our agent infrastructure
+[02:46:48.760 --> 02:46:51.380] to support what we think is the next generation of agents.
+[02:46:52.500 --> 02:46:54.660] I wanted to start by taking a step back
+[02:46:54.660 --> 02:46:58.400] and thinking about how we helped computers become good
+[02:46:58.400 --> 02:47:00.920] at other things, better even than humans.
+[02:47:01.160 --> 02:47:03.840] And one of the games I grew up playing a lot was chess.
+[02:47:04.440 --> 02:47:06.320] It's one of the great examples of something
+[02:47:06.320 --> 02:47:09.360] where computers became way better than humans a long time ago.
+[02:47:09.360 --> 02:47:14.900] But I think it's important to think about why that happened and how we can apply those lessons today.
+[02:47:15.700 --> 02:47:19.480] One of the biggest, you know, to summarize at a high level, a lot of work went into it.
+[02:47:20.000 --> 02:47:23.120] The biggest thing that agents were able to do, that computers were able to do,
+[02:47:23.220 --> 02:47:27.500] was explore the space of decisions much more effectively than humans.
+[02:47:28.160 --> 02:47:32.560] For most complex problems, there's actually a bunch of different ways you can solve the problem.
+[02:47:32.860 --> 02:47:37.620] And at each turn, you can kind of think of three more decisions that you can make.
+[02:47:39.360 --> 02:47:41.220] of that space that all of us are engaged in.
+[02:47:41.220 --> 02:47:42.600] All of us who solve hard problems
+[02:47:42.600 --> 02:47:44.820] are engaged in the search space for what's
+[02:47:44.820 --> 02:47:47.420] an amazing product, what's the right solution to this math
+[02:47:47.420 --> 02:47:48.540] problem, and et cetera.
+[02:47:49.520 --> 02:47:52.440] And I think we've seen some really exciting progress
+[02:47:52.440 --> 02:47:55.120] from the labs like Anthropic, OpenAI, and Google
+[02:47:55.720 --> 02:47:57.860] on solving problems that are well-formed.
+[02:47:58.180 --> 02:48:01.120] So if you think about chess, it can be modeled effectively.
+[02:48:01.440 --> 02:48:03.020] You can evaluate your position.
+[02:48:03.700 --> 02:48:05.800] You can actually simulate it.
+[02:48:05.840 --> 02:48:08.080] You can try different moves and safely
+[02:48:09.800 --> 02:48:13.500] alternatives. Similarly with math problems, often the ones that agents are really good
+[02:48:13.500 --> 02:48:20.000] at solving, you can actually verify if you got the result right. And how do we then take
+[02:48:20.000 --> 02:48:25.560] that mindset and apply it to the problems that we actually face day to day? I think
+[02:48:26.380 --> 02:48:32.160] everyone here is an engineer, so let's take it to engineering for a bit. I think if you
+[02:48:32.160 --> 02:48:37.640] take it to the pre-AI days, most people think about solving a single problem, and they're
+[02:48:39.360 --> 02:48:40.740] for the time that they're writing code on it.
+[02:48:41.500 --> 02:48:43.880] And as a company or a product, if you
+[02:48:43.880 --> 02:48:46.080] wanted to solve more problems, you brought in more people.
+[02:48:46.540 --> 02:48:48.620] And the very basic version of agents
+[02:48:49.240 --> 02:48:51.600] just helps create leverage for that engineer.
+[02:48:51.800 --> 02:48:53.940] Now you can be single-threaded on three things
+[02:48:53.940 --> 02:48:54.640] at the same time.
+[02:48:54.780 --> 02:48:57.480] And ultimately, that helps you explore new product ideas,
+[02:48:57.720 --> 02:48:59.860] ship faster, iterate faster.
+[02:48:59.900 --> 02:49:01.260] And that's obviously very exciting.
+[02:49:01.640 --> 02:49:03.920] But it's not actually close to what
+[02:49:03.920 --> 02:49:07.580] we needed to do to win a chess or any of these other problems.
+[02:49:09.400 --> 02:49:14.060] frontier are these teams of agents that are able to make significant progress by exploring
+[02:49:14.060 --> 02:49:15.420] the decision space more effectively.
+[02:49:15.760 --> 02:49:20.420] So how do we move towards that world where we actually have these teams of agents that
+[02:49:20.420 --> 02:49:22.340] are coherently attempting to solve problems?
+[02:49:22.560 --> 02:49:26.920] It's actually quite complex, and we think it requires a little bit different type of infrastructure.
+[02:49:28.320 --> 02:49:33.480] Specifically, I think an important question to ask is how do we give agents a realistic
+[02:49:33.480 --> 02:49:34.500] world to explore?
+[02:49:35.040 --> 02:49:39.220] because in other problems we're able to help define that world very effectively.
+[02:49:39.560 --> 02:49:42.520] But even in software engineering, we actually really struggle to do that.
+[02:49:43.000 --> 02:49:46.460] Like just consider this movement towards software factories, right,
+[02:49:46.540 --> 02:49:50.380] where you're away from the agents and you're actually operating a bunch of agents
+[02:49:50.380 --> 02:49:51.480] that are working on a problem.
+[02:49:52.440 --> 02:49:54.820] How do you validate that those agents are effective?
+[02:49:55.600 --> 02:50:00.680] Like before you had a branch, you had main, you branched your PR off of that,
+[02:50:00.680 --> 02:50:06.760] maybe you have an agent working on that PR and you have some reasonable assertion that this is kind
+[02:50:06.760 --> 02:50:11.280] of a simul... you know, you have some tests or something like that that help you guide your
+[02:50:11.280 --> 02:50:17.900] development. But if you're actually merging tens of PRs a minute or even more, right? Like if you
+[02:50:17.900 --> 02:50:24.200] play out the future of factories of agents building code and software, your PR is just out of date
+[02:50:24.200 --> 02:50:29.560] the moment you branched. The moment you started, you're already out of date. And so it demands a
+[02:50:30.680 --> 02:50:32.360] thinking of how do we verify these things.
+[02:50:32.420 --> 02:50:34.560] You actually might want to move most of your verification
+[02:50:34.560 --> 02:50:35.420] to post-merge.
+[02:50:36.000 --> 02:50:39.740] And so that kind of brings me to this a little bit radical idea.
+[02:50:39.940 --> 02:50:43.600] I don't think we should try to write hundreds or thousands
+[02:50:43.600 --> 02:50:44.460] of unit tests.
+[02:50:45.140 --> 02:50:48.440] Instead, I want to explore this idea of simulating reality.
+[02:50:48.840 --> 02:50:51.900] Can I give my agent a faithful reproduction
+[02:50:51.900 --> 02:50:54.160] of what's actually there in the real world,
+[02:50:54.160 --> 02:50:56.380] in my production code, in my production agent,
+[02:50:57.080 --> 02:50:58.320] and let it work on that?
+[02:50:58.900 --> 02:51:02.480] And when you can do that, you can actually do that at scale.
+[02:51:02.660 --> 02:51:08.040] If you find a way to simulate reality, then you can actually do that across lots of different explorations.
+[02:51:09.040 --> 02:51:13.040] At Databricks, one of the big things that people do on our platform is build data pipelines.
+[02:51:13.360 --> 02:51:16.240] We've got tens of thousands of data pipelines on Databricks.
+[02:51:17.340 --> 02:51:20.680] And the biggest problem that happens with pipelines is that they break.
+[02:51:21.560 --> 02:51:27.300] And in this era of agents, what people want is they want to fix those broken pipelines with agents.
+[02:51:28.320 --> 02:51:34.320] these are serious business problems that are caused by a broken pipeline. If a pipeline breaks,
+[02:51:34.520 --> 02:51:40.920] that business can't operate that day. And so this becomes a major emergency. But like, how do you
+[02:51:40.920 --> 02:51:45.660] actually validate this with an agent? Do you trust it on your production data pipeline? It's pretty
+[02:51:45.660 --> 02:51:51.480] risky because writes might not be idempotent, even reads might be extremely expensive and affect
+[02:51:51.480 --> 02:51:55.200] other use cases in production, right? Sometimes it's not fully broken, it's just partially broken.
+[02:51:56.120 --> 02:52:00.200] One of the things we started doing was building on top of branchable infrastructure.
+[02:52:00.780 --> 02:52:04.020] And so what we did was we branched the entire data platform.
+[02:52:05.000 --> 02:52:11.100] We branched the tables, the compute, the governance, and we gave the agents a place where they
+[02:52:11.100 --> 02:52:14.880] can actually play with the data platform and explore different hypotheses.
+[02:52:15.320 --> 02:52:17.340] And these hypotheses can be ambitious.
+[02:52:17.780 --> 02:52:20.660] Can I investigate the upstream pipeline is healthy?
+[02:52:20.820 --> 02:52:23.760] Maybe I can do that by changing the pipeline code and running it again.
+[02:52:25.480 --> 02:52:28.960] reasonable data platform, you wouldn't do that with an upstream pipeline unless you
+[02:52:28.960 --> 02:52:31.620] had a bunch of engineers take a look at it and make sure it was super safe.
+[02:52:32.100 --> 02:52:34.640] With our branch to data platform, you can actually do that now.
+[02:52:34.760 --> 02:52:36.600] So it can investigate a bunch of different things.
+[02:52:36.860 --> 02:52:42.260] So we can investigate 10 ideas in parallel with our agents, actually get to a faithful
+[02:52:42.260 --> 02:52:47.080] conclusion about whether it fixed the real data pipeline, and then make that assumption,
+[02:52:47.260 --> 02:52:50.020] make that assertion back either to a main agent or to a human.
+[02:52:50.520 --> 02:52:54.680] And what we saw before was happening was that people would just like, LLMs would give us
+[02:52:55.420 --> 02:52:57.220] Some human would take a look at it and be like,
+[02:52:57.320 --> 02:52:58.720] OK, this might be an interesting theory.
+[02:52:59.060 --> 02:53:01.520] Then they would go apply that theory in some way.
+[02:53:01.780 --> 02:53:05.480] And ultimately, that became more of this AI-assisted version
+[02:53:05.480 --> 02:53:06.780] of fixing the data pipeline.
+[02:53:07.240 --> 02:53:11.480] But really, where we want to go is hands off, full auto
+[02:53:12.080 --> 02:53:13.300] for this kind of problem.
+[02:53:14.020 --> 02:53:16.460] And we were struggling to do it without this branchable
+[02:53:16.460 --> 02:53:16.880] infrastructure.
+[02:53:17.860 --> 02:53:18.800] So how do we do it?
+[02:53:18.800 --> 02:53:20.420] I'm going to talk a little bit about that in this talk.
+[02:53:21.540 --> 02:53:26.660] We built this on top of our Postgres native agent platform, which started with the NEON
+[02:53:26.660 --> 02:53:31.180] database, which is a branchable database that gives us a single place that we can actually
+[02:53:31.180 --> 02:53:33.100] use for our services and for our agents.
+[02:53:33.440 --> 02:53:38.640] And then we added in a bunch of really core agent primitives that allow us to build sophisticated
+[02:53:38.640 --> 02:53:39.740] different types of agents.
+[02:53:40.160 --> 02:53:43.660] And those are ones that are probably familiar to all of you, things like memory, things
+[02:53:43.660 --> 02:53:47.220] like sandboxes, file systems, and ways to host those agents.
+[02:53:47.620 --> 02:53:52.200] And these low-level primitives, we can build with them, but the key is that we made just
+[02:53:52.200 --> 02:53:53.300] all of them branchable.
+[02:53:53.380 --> 02:53:57.800] So you can branch the entire reality of stuff that's built on this platform for ourselves.
+[02:53:59.000 --> 02:54:00.420] So how do we actually do that?
+[02:54:00.500 --> 02:54:03.760] Well, let me walk it through, like, kind of case by case.
+[02:54:04.440 --> 02:54:06.100] The first thing is just the database, right?
+[02:54:06.160 --> 02:54:09.900] And we can take an example of application services, but here I'm going to talk about
+[02:54:09.900 --> 02:54:12.720] just even storing the conversation state for an agent.
+[02:54:13.580 --> 02:54:17.800] When you fork or branch an agent, you actually might want to inherit the history.
+[02:54:18.000 --> 02:54:21.760] And you might even, if you have a team of agents, give access to a given member of that
+[02:54:21.760 --> 02:54:23.860] team to what the other members of the team are doing.
+[02:54:24.580 --> 02:54:27.220] And we found the database to be a convenient abstraction for this.
+[02:54:28.220 --> 02:54:33.500] The key was that, hey, when a new reply comes in on the branched agent, it shouldn't necessarily
+[02:54:33.500 --> 02:54:34.980] change anything about the other one.
+[02:54:35.700 --> 02:54:39.160] And this is possible because Neon has a branched database.
+[02:54:39.160 --> 02:54:43.380] But then we actually found that agents need more than just structured databases.
+[02:54:43.500 --> 02:54:47.700] Of course they need structured databases, but they also like to do this, you know, write
+[02:54:47.700 --> 02:54:48.620] these things called memories.
+[02:54:49.240 --> 02:54:53.440] And memories are, you know, at a very high level, they compile down to an unstructured
+[02:54:53.440 --> 02:54:54.340] database for agents.
+[02:54:55.120 --> 02:54:56.940] There are two ways that memories get generated.
+[02:54:57.080 --> 02:55:01.640] The first is just by synthesizing the context and the conversations that someone's already
+[02:55:01.640 --> 02:55:02.240] had with them.
+[02:55:02.240 --> 02:55:08.500] And the second, by agents actually explicitly saving content to an unstructured place.
+[02:55:09.300 --> 02:55:13.060] The key thing here is that you actually want to consolidate and distill that information.
+[02:55:13.220 --> 02:55:15.120] There's a ton of information coming in through there.
+[02:55:15.440 --> 02:55:19.680] And if you just give that, you know, if you just let it kind of go on its own, you have
+[02:55:19.680 --> 02:55:24.560] problems of staleness, you have conflicts in the information, and all of those can be
+[02:55:24.560 --> 02:55:25.760] extremely damaging to teams.
+[02:55:26.420 --> 02:55:29.700] So we have this thing that basically dreams overnight.
+[02:55:29.700 --> 02:55:33.560] We use offline compute, and it takes the conversations.
+[02:55:33.560 --> 02:55:36.240] A different agent essentially highlights things that are
+[02:55:36.240 --> 02:55:40.600] conflicts and consolidates the ad hoc notes that were written
+[02:55:40.600 --> 02:55:41.740] by various members of the team.
+[02:55:42.160 --> 02:55:44.640] And then all members of the team can actually recall
+[02:55:44.640 --> 02:55:45.880] from that memory database.
+[02:55:46.400 --> 02:55:48.480] And you can use this in a bunch of different ways.
+[02:55:48.480 --> 02:55:50.380] We use this within our Slack agents,
+[02:55:50.420 --> 02:55:53.780] but we also use this when we're launching a parallel set
+[02:55:53.780 --> 02:55:56.340] of agents to investigate a deep issue, for example,
+[02:55:56.380 --> 02:55:57.100] in the data platform.
+[02:55:57.840 --> 02:55:59.560] Now, how does branching come into this?
+[02:56:00.240 --> 02:56:03.340] Well, some of the agents, like in many of the use cases,
+[02:56:03.600 --> 02:56:04.500] they propose memories.
+[02:56:04.860 --> 02:56:06.640] And it's not clear whether those memories
+[02:56:06.640 --> 02:56:09.880] generalize to the actual broader set of agents
+[02:56:09.880 --> 02:56:11.940] or if that's a specific thing for just that agent.
+[02:56:12.560 --> 02:56:14.780] And so with the branchable database for memory,
+[02:56:14.820 --> 02:56:16.380] which is built on top of this NEON database,
+[02:56:16.900 --> 02:56:19.400] we can actually just propose that memory somewhere in there.
+[02:56:19.660 --> 02:56:21.940] And that branch can continue to iterate.
+[02:56:22.080 --> 02:56:24.460] And at some point, we can find a way to merge it back in
+[02:56:24.460 --> 02:56:25.220] if it's necessary.
+[02:56:27.100 --> 02:56:29.120] be an important layer of flexibility,
+[02:56:29.440 --> 02:56:32.500] because without the ability to completely branch the memory,
+[02:56:32.600 --> 02:56:35.400] we found it was very hard to maintain the memory
+[02:56:35.400 --> 02:56:36.260] for a team of agents.
+[02:56:37.080 --> 02:56:38.700] Especially as we increase parallelism,
+[02:56:38.780 --> 02:56:41.480] you can actually experience significantly reduced quality
+[02:56:42.020 --> 02:56:44.000] if all the agents are pursuing different goals.
+[02:56:45.280 --> 02:56:46.860] I like to think a little bit of it
+[02:56:46.860 --> 02:56:49.220] as kind of similar to dynamic programming.
+[02:56:49.380 --> 02:56:51.100] If you've explored a branch of exploration,
+[02:56:51.820 --> 02:56:53.800] and then you have a different agent that happens
+[02:56:53.800 --> 02:56:56.180] upon that same pathway, it's very damaging
+[02:56:57.100 --> 02:56:59.260] always revisit that, but sometimes you want to.
+[02:56:59.380 --> 02:57:01.500] And so the ability to propose a memory
+[02:57:01.500 --> 02:57:02.760] is extremely important to us.
+[02:57:04.260 --> 02:57:06.940] How is all of this kind of branchable database possible?
+[02:57:07.160 --> 02:57:10.160] Well, the way that Neon does is it separates compute
+[02:57:10.160 --> 02:57:10.720] from storage.
+[02:57:12.120 --> 02:57:15.160] Compute for Postgres is running in some separate place,
+[02:57:15.180 --> 02:57:17.480] and then we actually have the shared history
+[02:57:17.480 --> 02:57:19.240] and the storage in a different layer.
+[02:57:19.400 --> 02:57:22.520] And what that lets us do is copy and write for branching.
+[02:57:22.720 --> 02:57:24.820] So when we have a branched version of the database,
+[02:57:24.820 --> 02:57:28.900] You can actually have Compute A's rights separated from Compute B.
+[02:57:29.100 --> 02:57:33.800] And that's the core layer of infrastructure that allows us to build these applications
+[02:57:33.800 --> 02:57:34.860] on top of that database.
+[02:57:36.800 --> 02:57:40.560] But then we found, obviously, agents are far more than storage.
+[02:57:40.840 --> 02:57:42.540] And branching storage wasn't enough.
+[02:57:43.340 --> 02:57:47.960] We also found that as they were running in sandboxes, agents like to take notes on stuff
+[02:57:47.960 --> 02:57:53.260] and write down scripts and use those to actually iterate on various kinds of problems.
+[02:57:54.820 --> 02:57:57.120] exciting things about agents that I've found,
+[02:57:57.480 --> 02:57:59.800] that they are able to generalize this capability that's
+[02:57:59.800 --> 02:58:02.580] needed maybe for testing code and things like that
+[02:58:02.580 --> 02:58:05.220] and solve other more broader general problems
+[02:58:05.220 --> 02:58:06.820] using that same construct.
+[02:58:08.100 --> 02:58:10.260] But then when you branch it, you actually
+[02:58:10.260 --> 02:58:12.640] need to give the future agent a similar context.
+[02:58:12.800 --> 02:58:14.980] We found that when we started the branched agents
+[02:58:14.980 --> 02:58:18.020] without the same files that that agent had to begin with,
+[02:58:18.160 --> 02:58:19.660] it just wasn't as effective.
+[02:58:19.940 --> 02:58:22.060] So when you're investigating an outage, for example,
+[02:58:22.060 --> 02:58:26.700] with an agent. You might have notes and plans, and a future branch of that agent
+[02:58:26.700 --> 02:58:31.200] might update those notes. It might find new things. But we don't want that to go
+[02:58:31.200 --> 02:58:34.820] back because we're actually exploring ten different pathways at the same time.
+[02:58:35.520 --> 02:58:39.180] So building a branchable file system was extremely important and allowed us to
+[02:58:39.180 --> 02:58:43.920] build what we call a branchable sandbox. Because then what we can do is we can
+[02:58:43.920 --> 02:58:47.540] launch that sandbox compute, and that's a hard problem in and of itself. It's not
+[02:58:47.540 --> 02:58:51.640] one we're going to talk about today, but that compute can be attached to storage
+[02:58:52.060 --> 02:58:55.700] And critically, the agents actually really aggressively
+[02:58:55.700 --> 02:58:57.280] leverage files very often.
+[02:58:57.500 --> 02:59:00.580] And so it can be very painful to make all your storage fully
+[02:59:00.580 --> 02:59:00.900] remote.
+[02:59:01.500 --> 02:59:04.320] And so the really core piece of what we've been building here
+[02:59:04.840 --> 02:59:07.980] is a syncing process between what we call a local cache
+[02:59:07.980 --> 02:59:09.060] and the remote cache.
+[02:59:09.960 --> 02:59:11.680] And then what that allows us to do
+[02:59:11.680 --> 02:59:14.500] is as we're able to make progress on that, when we
+[02:59:14.500 --> 02:59:17.220] want to branch, we can actually branch a second sandbox,
+[02:59:17.600 --> 02:59:20.880] use that similar file system, and it reduces our latency
+[02:59:22.060 --> 02:59:25.300] while also keeping performance of the regular agent reasonable.
+[02:59:27.480 --> 02:59:29.900] So what this allows us to do at a high level
+[02:59:29.900 --> 02:59:32.100] is branch the entire working state.
+[02:59:33.240 --> 02:59:36.560] And this gives us the platform layer to actually go do that.
+[02:59:36.760 --> 02:59:38.860] Now, this isn't obviously sufficient.
+[02:59:38.900 --> 02:59:40.280] You're going to want to branch even more.
+[02:59:40.460 --> 02:59:42.080] If you're building on top of software,
+[02:59:42.160 --> 02:59:43.660] you want to find a way to branch that too.
+[02:59:44.020 --> 02:59:46.680] And so this is along the lines of how we're thinking.
+[02:59:46.880 --> 02:59:50.100] The data platform was built on top of some of these things,
+[02:59:50.140 --> 02:59:51.280] but there's a lot more that we've
+[02:59:52.060 --> 02:59:52.480] there as well.
+[02:59:53.260 --> 02:59:55.940] But we're really excited about this layer for just even
+[02:59:55.940 --> 02:59:56.680] building agents.
+[02:59:57.540 --> 02:59:59.880] And just to kind of separate a little bit even from
+[03:00:00.000 --> 03:00:04.140] software development, another thing a lot of us are spending a lot of time thinking about
+[03:00:04.820 --> 03:00:05.340] is security.
+[03:00:07.560 --> 03:00:11.560] I mean, just taking a step back, I think this is probably the single most important thing
+[03:00:11.560 --> 03:00:16.420] for any product that anyone sells at this point, because trust is kind of the most important
+[03:00:16.420 --> 03:00:18.300] thing that we're selling when we work with other people.
+[03:00:19.380 --> 03:00:26.420] And with agents being the ones who generate the vulnerabilities, it's kind of impossible
+[03:00:26.420 --> 03:00:30.600] to find a different solution than having agents be the ones who are monitoring for those exact
+[03:00:31.040 --> 03:00:35.280] vulnerabilities in your code. So you should be thinking about how you can build an agent factory
+[03:00:35.280 --> 03:00:40.180] that's detecting security issues in your code base. And so this is something we're spending a
+[03:00:40.180 --> 03:00:47.000] lot of time on. So typically what happens in a security incident? Well, let's say you suspect
+[03:00:47.000 --> 03:00:51.640] something, an agent might be always looking for it. Why is there this network traffic that's
+[03:00:51.640 --> 03:00:53.480] degressing all of a sudden from my control plane.
+[03:00:54.560 --> 03:00:56.480] Well, I can assemble an incident timeline,
+[03:00:56.560 --> 03:00:58.540] and that's obviously the first step in an investigation.
+[03:00:58.880 --> 03:01:01.880] But anyone who's been a part of a serious security investigation
+[03:01:02.500 --> 03:01:03.880] knows that time is of the essence.
+[03:01:04.240 --> 03:01:06.220] It's a perfect problem for parallelism,
+[03:01:06.280 --> 03:01:07.660] and that's exactly what you do when
+[03:01:07.660 --> 03:01:08.620] a security incident happens.
+[03:01:08.700 --> 03:01:12.540] You bring everyone online so you can explore 10, 15, 20
+[03:01:12.540 --> 03:01:13.640] different theories at once.
+[03:01:13.980 --> 03:01:17.380] Because an hour earlier that you can detect the real issue
+[03:01:17.940 --> 03:01:19.660] is an hour that you're actually more safe.
+[03:01:21.640 --> 03:01:23.220] But what if we did that with a branchable agent?
+[03:01:24.140 --> 03:01:25.980] Let's say there's two paths to investigate.
+[03:01:26.940 --> 03:01:29.320] So the agent's assembled the incident timeline.
+[03:01:29.880 --> 03:01:31.680] And now you can ask two questions.
+[03:01:31.840 --> 03:01:33.700] Hey, did a recent deployment introduce
+[03:01:33.700 --> 03:01:35.040] some kind of new integration?
+[03:01:35.400 --> 03:01:36.940] Maybe I can go look at the code.
+[03:01:37.420 --> 03:01:39.780] Or I can explore a totally different theory.
+[03:01:39.920 --> 03:01:41.840] Is a compromised identity accessing this data?
+[03:01:42.420 --> 03:01:44.380] And the core thing that we are able to do here
+[03:01:44.380 --> 03:01:47.080] is we branch that whole original agent that
+[03:01:47.080 --> 03:01:48.200] was starting the investigation.
+[03:01:49.840 --> 03:01:53.500] And then the new one is able to work in a completely isolated copy of the world.
+[03:01:53.960 --> 03:01:57.740] And in some cases, when we're able to, we can even branch the actual service that we're
+[03:01:57.740 --> 03:01:58.200] investigating.
+[03:01:59.140 --> 03:02:03.740] And so when you have this isolated copy of conversation, memory, and storage, you can
+[03:02:03.740 --> 03:02:07.380] fully explore that security risk and let the agent loop on its own.
+[03:02:07.460 --> 03:02:09.080] And that's kind of the key thing here.
+[03:02:09.380 --> 03:02:15.080] The way that these agents are good is that they're able to loop, verify, try new theories.
+[03:02:15.580 --> 03:02:17.560] I think Andre Karpathy said it really well.
+[03:02:18.200 --> 03:02:22.000] far more tenacious than any human probably
+[03:02:22.000 --> 03:02:23.340] in the history of software.
+[03:02:23.880 --> 03:02:26.700] And so they're able to just, but we keep getting in the way
+[03:02:26.700 --> 03:02:29.220] by inserting ourselves as an approval layer.
+[03:02:29.780 --> 03:02:32.660] And so this is a solution that we think helps with that.
+[03:02:32.760 --> 03:02:35.840] Just take away the consequences of making a mistake a little bit.
+[03:02:36.100 --> 03:02:39.520] Branch the entire state so that you're not actually
+[03:02:40.860 --> 03:02:42.340] worrying about that same risk.
+[03:02:43.160 --> 03:02:47.060] And then we've been able to find this to actually come
+[03:02:48.200 --> 03:02:48.440] as well.
+[03:02:49.140 --> 03:02:50.840] So what does this all add up to?
+[03:02:51.880 --> 03:02:53.920] For us, we think that your infrastructure
+[03:02:53.920 --> 03:02:54.780] needs to be branchable.
+[03:02:55.080 --> 03:02:58.400] And that's what we're building with Neon, with Databricks.
+[03:02:58.760 --> 03:03:00.940] And we're super excited about that branchable future,
+[03:03:00.980 --> 03:03:02.560] because we think that teams are going
+[03:03:02.560 --> 03:03:05.840] to be the next generation of agents, both for software
+[03:03:05.840 --> 03:03:07.920] and the way that we actually build products.

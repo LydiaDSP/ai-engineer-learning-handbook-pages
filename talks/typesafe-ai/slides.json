@@ -1,0 +1,35 @@
+[
+  {
+    "id": "assistant-automation",
+    "after": "p15",
+    "title": "把人工辅助和流程自动化分别验收",
+    "time": "05:10:48",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=18648s",
+    "en": "assets/assistant-automation-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把人工辅助和流程自动化分别验收</h3><dl><div><dt>辅助人工作</dt><dd>讲者把深度研究、编程助手等归入需要人参与核查的应用。</dd></div><div><dt>流程自动化</dt><dd>模型给出程序可读的决策，后续流程再根据该决策运行。</dd></div></dl></div>",
+    "note": "图中归类是讲者阐述观点时使用的例子。",
+    "sourceSeconds": 18648
+  },
+  {
+    "id": "choose-task",
+    "after": "p40",
+    "title": "把稳定判断设为优化目标",
+    "time": "05:16:37",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=18997s",
+    "en": "assets/choose-task-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把稳定判断设为优化目标</h3><dl><div><dt>讲者的主张</dt><dd>优化目标决定模型擅长什么。讲者以基准和产品反馈为例，认为 Jev 特别针对可靠判断做了优化。</dd></div><div><dt>编辑练习 · 缩小任务范围</dt><dd>先定义一项决策的输入、可接受的输出和错误代价。</dd></div><div><dt>编辑练习 · 核对真实任务</dt><dd>用重复运行和边界案例检查判断是否稳定。</dd></div></dl></div>",
+    "note": "原图呈现讲者对 Jev 优化方向的解释。",
+    "sourceSeconds": 18997
+  },
+  {
+    "id": "semantic-gate",
+    "after": "p56",
+    "title": "把语义判断当成可组合的软件操作",
+    "time": "05:20:38",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=19238s",
+    "en": "assets/semantic-gate-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把语义判断当成可组合的软件操作</h3><dl><div><dt>图中的接口</dt><dd>讲者并列传统逻辑门和按语义作判断、评分或从选项中选择的操作。</dd></div><div><dt>怎样接入流程</dt><dd>程序接收固定范围的结果，再按业务规则选择后续动作。</dd></div></dl></div>",
+    "note": "逻辑门是讲者用来说明软件组合方式的类比。",
+    "sourceSeconds": 19238
+  }
+]

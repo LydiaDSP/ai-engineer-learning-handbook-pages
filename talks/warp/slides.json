@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "软件工厂的定义",
+    "time": "01:04:55",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=3895s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者把工厂定义为通过代码声明、持续测量并改进云端编程 Agent 的闭环。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 3895
+  },
+  {
+    "id": "frame-02",
+    "after": "p07",
+    "title": "从工厂即代码到访问入口",
+    "time": "01:09:40",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=4180s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>栈图从底层的代码定义、数据上下文、计算与推理，延伸到改进、编排和访问。各层分别承担不同职责。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 4180
+  },
+  {
+    "id": "frame-03",
+    "after": "p14",
+    "title": "用运行记录发现改进机会",
+    "time": "01:16:20",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=4580s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>演示页面把经过记录的事件汇在一起，让团队从重复问题中挑出可以验证的改进项。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 4580
+  }
+]

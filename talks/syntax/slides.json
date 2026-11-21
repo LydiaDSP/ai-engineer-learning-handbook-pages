@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p01",
+    "title": "线上对谈开场",
+    "time": "04:11:50",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=15110s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>现场镜头介绍两位主持人如何讨论 Agent 带给应用开发的变化。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 15110
+  },
+  {
+    "id": "frame-02",
+    "after": "p03",
+    "title": "先问应用有哪些隐式状态机",
+    "time": "04:14:30",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=15270s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>画面展示讨论所引用的提示词。主持人用它延伸到事件、等待和错误等状态为何应该显式建模。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 15270
+  },
+  {
+    "id": "frame-03",
+    "after": "p19",
+    "title": "个人应用还能靠什么获得用户？",
+    "time": "04:51:50",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=17510s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>问答画面提出同类应用大量涌现后的声誉与收入问题，引出独立开发者需要清楚了解的用户和使用场景。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 17510
+  }
+]

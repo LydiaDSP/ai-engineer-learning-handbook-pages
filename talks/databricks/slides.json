@@ -1,0 +1,35 @@
+[
+  {
+    "id": "pipeline",
+    "after": "p21",
+    "title": "从同一个状态出发，并行调查数据管道",
+    "time": "02:52:19",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=10339s",
+    "en": "assets/pipeline-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从同一个状态出发，并行调查数据管道</h3><dl><div><dt>共同起点</dt><dd>从生产管道的同一状态分出副本，包含所需的表和计算资源。</dd></div><div><dt>不同假设</dt><dd>一个分支检查上游管道是否正常，另一个检查近期的代码改动。生产管道继续运行。</dd></div></dl></div>",
+    "note": "讲者用两个分支说明怎样隔离不同调查。",
+    "sourceSeconds": 10339
+  },
+  {
+    "id": "memory",
+    "after": "p37",
+    "title": "让候选记忆先留在自己的分支",
+    "time": "02:56:14",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=10574s",
+    "en": "assets/memory-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>让候选记忆先留在自己的分支</h3><dl><div><dt>共享记忆库</dt><dd>团队的 Agent 可以读取已有工作记录。</dd></div><div><dt>记忆分支</dt><dd>新发现先写成一条候选记忆，核实后再决定是否纳入共享记忆。</dd></div></dl></div>",
+    "note": "画面里的红色条目是候选记忆。",
+    "sourceSeconds": 10574
+  },
+  {
+    "id": "sandbox",
+    "after": "p47",
+    "title": "从工作中的文件系统分出一个沙箱副本",
+    "time": "02:59:15",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=10755s",
+    "en": "assets/sandbox-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从工作中的文件系统分出一个沙箱副本</h3><dl><div><dt>本地缓存</dt><dd>代码运行时先从本地缓存访问文件。缓存与远端文件系统同步。</dd></div><div><dt>在同一点分支</dt><dd>从文件系统 A 派生出文件系统 B，让另一支计算环境从已有文件状态继续工作。</dd></div></dl></div>",
+    "note": "原图展示缓存与远端文件系统的关系。",
+    "sourceSeconds": 10755
+  }
+]

@@ -1,0 +1,279 @@
+怎样搭一个让人及时介入的 Agent 工作台
+Armin Ronacher
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[00:40:04.740 --> 00:40:09.480] Hello, my name is Armin Ronohar and I want to share with you a little bit the lessons
+[00:40:09.480 --> 00:40:14.140] that we have learned from building software with agents and in particular I want to make
+[00:40:14.140 --> 00:40:19.780] a strong case for not so much building the factory as building the artelier or workshop.
+[00:40:21.480 --> 00:40:25.440] And I want to show some data with this from our own usage but in particular I want to
+[00:40:25.440 --> 00:40:30.880] explain what I mean by building the atelier or the workshop prior to
+[00:40:30.880 --> 00:40:36.020] building the software factory. And I think everybody here has been
+[00:40:36.660 --> 00:40:40.740] using agents for quite a while and you have probably noticed that it is where
+[00:40:40.740 --> 00:40:46.940] sort of an exponential curve in what we can do with them. But the comparison that
+[00:40:46.940 --> 00:40:50.700] I want to give here is that you can be an amazing artist and use the greatest
+[00:40:50.700 --> 00:40:54.820] and latest technology from CNC machines to 3D printers, which is very good
+[00:40:55.680 --> 00:40:58.600] and it can increase the ambition of what it can do with your art.
+[00:40:58.960 --> 00:41:02.040] And I think we can also look at software a little bit in that sense.
+[00:41:02.540 --> 00:41:05.240] So less about building much more software
+[00:41:05.240 --> 00:41:09.000] and just building way more ambitious and high-quality software.
+[00:41:10.240 --> 00:41:12.980] So I'm going to show you a little bit of what I mean by that.
+[00:41:15.360 --> 00:41:18.860] And you might know that Arendelle is working on the PyCoding Agent,
+[00:41:19.060 --> 00:41:21.520] so we have obviously a little bit of a horse in the race here
+[00:41:21.520 --> 00:41:22.380] of how we're looking at this.
+[00:41:22.980 --> 00:41:29.880] But I think what is probably quite interesting is that the Pi coding agent has not really changed in a year on the core harness.
+[00:41:30.100 --> 00:41:33.800] It still has the same tools today as it did in December last year.
+[00:41:34.540 --> 00:41:40.460] And I think this is interesting because it has become much more powerful purely as an effect of the models getting better.
+[00:41:41.180 --> 00:41:48.400] So I am much more capable today of what I can do with Pi without any changes landing in the core functionality of what the harness is doing.
+[00:41:48.400 --> 00:41:58.220] And I think this is an interesting thing to reflect on because it means that we are all simultaneously getting better even without landing any significant changes in how we're doing this.
+[00:41:58.720 --> 00:42:09.680] And you might have remembered throughout the last year and a half maybe that there were a lot of ideas of how you can prompt the machines better or how you can do some interesting tricks with the harness.
+[00:42:09.960 --> 00:42:11.540] Very few of them are still necessary.
+[00:42:11.540 --> 00:42:15.560] For me, a good example here is that I was in love with Pi Auto Research, which was a
+[00:42:15.560 --> 00:42:19.640] plugin that basically allowed an agent to drive towards a goal, like improving performance.
+[00:42:19.900 --> 00:42:23.900] But if you use a present-day state-of-the-art model, you actually discover that the entire
+[00:42:23.900 --> 00:42:24.980] plugin is no longer necessary.
+[00:42:25.300 --> 00:42:29.580] So there's a lot that is just happening in the models that is dramatically improving
+[00:42:29.580 --> 00:42:30.020] how we're doing.
+[00:42:30.200 --> 00:42:31.720] So these machines are getting better.
+[00:42:33.360 --> 00:42:38.500] And I just want to show this from a couple of graphs from basically my Pi sessions where
+[00:42:38.500 --> 00:42:41.100] I filtered them out to have nothing but the default set.
+[00:42:41.500 --> 00:42:43.300] And the total amount of corrections,
+[00:42:43.380 --> 00:42:44.820] and I used Jeff to analyze this,
+[00:42:44.900 --> 00:42:46.540] the total amount of corrections that I had to do
+[00:42:47.300 --> 00:42:49.880] got down and down and down with every single model
+[00:42:49.880 --> 00:42:50.820] that got better and better.
+[00:42:51.080 --> 00:42:56.240] So I'm pushing back a lot less against the agent
+[00:42:57.120 --> 00:42:59.800] with the latest model than I did in December last year.
+[00:43:00.460 --> 00:43:02.540] And the same thing with how often I'm aborting it.
+[00:43:04.060 --> 00:43:07.020] And I think this to me was the most interesting way
+[00:43:08.500 --> 00:43:13.900] which is the average, so this is the P 90th percentile, but the 90th percentile of how
+[00:43:13.900 --> 00:43:19.240] long an agent was running in response to a task that I gave it with Opus 4.6 in December
+[00:43:19.240 --> 00:43:21.080] last year was about two and a half minutes.
+[00:43:21.480 --> 00:43:25.600] And now with the latest models, they are on the 90th percentile running for 14 minutes
+[00:43:25.600 --> 00:43:25.960] or more.
+[00:43:26.120 --> 00:43:30.960] And that does actually change something about how you want to work with a harness, but really,
+[00:43:31.060 --> 00:43:35.920] again, nothing in Pi has changed and still I'm seeing this sort of different behavior
+[00:43:35.920 --> 00:43:37.680] of how I'm using this.
+[00:43:39.860 --> 00:43:43.240] And this probably you have noticed in one form or another,
+[00:43:43.320 --> 00:43:44.680] if you're still using an agent
+[00:43:44.680 --> 00:43:45.760] where you're gonna see what it's doing,
+[00:43:46.120 --> 00:43:48.400] you'll probably notice that the present day agents
+[00:43:48.400 --> 00:43:49.900] are much more likely to use bash
+[00:43:49.900 --> 00:43:51.620] than any of the other tools that are being provided.
+[00:43:51.980 --> 00:43:53.720] But again, nothing has changed
+[00:43:53.720 --> 00:43:54.740] in how we configured harness,
+[00:43:54.940 --> 00:43:57.260] it's just that there's a lot more emergent behavior
+[00:43:57.260 --> 00:43:58.180] coming from the models.
+[00:43:58.480 --> 00:44:00.400] What's missing here is Astra and Sol,
+[00:44:00.520 --> 00:44:02.500] they actually look very similar to Opus from my testing,
+[00:44:02.720 --> 00:44:05.120] I just didn't have enough data in my test set
+[00:44:05.960 --> 00:44:12.660] showed us nicely. You will notice that there's a little purple thing here. I want to talk
+[00:44:12.660 --> 00:44:17.740] about this in the end, which is sort of code mode is sort of slowly creeping up. But the
+[00:44:17.740 --> 00:44:24.640] core of this is even if you have a piece of infrastructure nowadays that is sort of there
+[00:44:24.640 --> 00:44:30.020] and is doing a good job, it's still changing as a result of the models. What has not changed
+[00:44:30.020 --> 00:44:33.620] in the last year, at least this is the case for me, and I think this is the case for a
+[00:44:33.620 --> 00:44:37.520] lot of people is that we're still humans, we're still limited by our fundamental
+[00:44:37.520 --> 00:44:41.600] capabilities and as we are being more ambitious and we're doing more of these
+[00:44:41.600 --> 00:44:46.340] machines, we're, I don't want to say like we're the bottleneck, but we are the
+[00:44:46.340 --> 00:44:52.000] thing that paces what they can do. And in particular human attention is for me at
+[00:44:52.000 --> 00:44:57.000] least the limiting factor and I'm noticing this with largely in how coding
+[00:44:57.000 --> 00:45:04.780] agents deployed in teams, that this is sort of a stable amount of attention that we have
+[00:45:04.780 --> 00:45:05.580] that we have to work with.
+[00:45:07.400 --> 00:45:10.440] And starting new projects is getting incredibly easy with these agents.
+[00:45:10.580 --> 00:45:13.440] And I think, like, particularly when a new model comes out, we are all super excited
+[00:45:13.440 --> 00:45:17.820] of trying the latest and greatest thing you can do, from 3D games to new ways in which
+[00:45:17.820 --> 00:45:18.620] we automate things.
+[00:45:18.780 --> 00:45:21.740] But maintaining them has not really gotten easier.
+[00:45:21.740 --> 00:45:27.020] here. But we are also increasingly taxing a lot of external systems that actually in
+[00:45:27.020 --> 00:45:31.780] many ways are not supposed to be part of this revolution. I think we all know that GitHub
+[00:45:31.780 --> 00:45:37.620] has a lot more commits being pushed up there, a lot more repositories. But I know quite
+[00:45:37.620 --> 00:45:41.360] a few people who have well established old websites on the Internet that found a new
+[00:45:41.360 --> 00:45:46.240] life for agents and they are totally not ready for the new volume that's coming from us kind
+[00:45:46.240 --> 00:45:51.320] of directly hitting them. So I just want to caution a little bit here in saying that when
+[00:45:51.740 --> 00:45:57.600] pushing things, we also accidentally simultaneously, all of us pushing things, which we're not
+[00:45:57.600 --> 00:45:59.900] really ready for what agents are doing.
+[00:46:01.340 --> 00:46:07.480] And this to me, I think is an interesting graph because the number of prompts that I'm
+[00:46:07.480 --> 00:46:10.460] actively pushing over the year is sort of flat.
+[00:46:10.800 --> 00:46:14.140] I know that like in some months it's a little bit higher, in some months it's a little bit
+[00:46:14.140 --> 00:46:20.840] lower, but they're alternating between 120, 190 something like this prompts that I'm
+[00:46:22.840 --> 00:46:28.840] But you can see that the time that the agent was active for my use went from like less
+[00:46:28.840 --> 00:46:32.020] than my working day to many times my working day.
+[00:46:32.960 --> 00:46:35.100] And this November is not even over, right?
+[00:46:35.380 --> 00:46:37.500] So you can see that this is taking an exponential curve up.
+[00:46:38.880 --> 00:46:43.040] And this here is the number of projects, this is Git repositories that I've created over
+[00:46:43.040 --> 00:46:47.300] the last year, and this is like obviously cumulatively going up, so I have 141 different projects
+[00:46:47.300 --> 00:46:47.940] that I started.
+[00:46:47.940 --> 00:46:52.900] it, but the number of projects I'm committing on a regular cadence to, which means like
+[00:46:52.900 --> 00:46:57.780] I'm committing for more than five days to and I'm returning to them also, is pretty much
+[00:46:57.780 --> 00:47:01.320] flat with between 10, 15, something like this.
+[00:47:02.560 --> 00:47:06.960] And I have done this sort of informal survey with a bunch of my friends as well, and this
+[00:47:06.960 --> 00:47:10.500] seems to be a common trend that actually maintaining something regularly is tricky.
+[00:47:11.920 --> 00:47:16.240] And I had this discussion with a friend of mine in sort of relation to this graph and
+[00:47:18.120 --> 00:47:19.340] that is now fully automated.
+[00:47:19.800 --> 00:47:22.500] So there's an issue tracker coming in,
+[00:47:22.680 --> 00:47:25.140] there's an agent that's set up to auto review,
+[00:47:25.300 --> 00:47:26.100] commit and send it back.
+[00:47:26.340 --> 00:47:28.460] And that is maybe a way to scale up,
+[00:47:28.540 --> 00:47:30.020] so you take the human out of the whole thing,
+[00:47:30.160 --> 00:47:31.640] but actually he also turned it off
+[00:47:31.640 --> 00:47:33.740] because eventually he didn't care
+[00:47:33.740 --> 00:47:35.000] about the project as much anymore,
+[00:47:35.160 --> 00:47:36.380] and he wanted his token specs
+[00:47:36.380 --> 00:47:37.680] to use them for other things.
+[00:47:38.920 --> 00:47:41.540] So our attention to an open source project matters
+[00:47:41.540 --> 00:47:43.480] even if maybe we have automated it entirely.
+[00:47:43.700 --> 00:47:45.360] So if we stop using something
+[00:47:45.360 --> 00:47:47.680] where we have a tendency to no longer actually
+[00:47:47.940 --> 00:47:55.340] actively take care of it. So if we're pushing towards, and I would make this argument, first
+[00:47:55.340 --> 00:48:00.180] figuring out how to make a really good workshop to build really high quality software, there's
+[00:48:00.180 --> 00:48:04.160] a question of what matters. And I think for me the three most important things to matter
+[00:48:04.160 --> 00:48:10.260] is on the one hand to really know when to push back against what an agent is doing,
+[00:48:10.500 --> 00:48:15.440] telling it that this is the wrong way of doing it. And I think that this is a crucial skill
+[00:48:15.440 --> 00:48:22.620] because an agent is really rewarded in just completing a goal and it is very
+[00:48:22.620 --> 00:48:27.520] easy to look at if it has succeeded in this goal or not and this we can sort of
+[00:48:27.520 --> 00:48:31.360] see it in the same way as the the RL environment maybe is rewarding the the
+[00:48:31.360 --> 00:48:34.740] model during training but that doesn't mean that what is being actually
+[00:48:34.740 --> 00:48:37.740] delivered is something that we are intrinsically happy with over a longer
+[00:48:37.740 --> 00:48:43.500] period of time and this becomes tricky the more and more commits we're doing
+[00:48:45.440 --> 00:48:49.660] very easy to basically create the Simpson car of all the features in a software, but
+[00:48:49.660 --> 00:48:53.240] actually having something that intrinsically fits together where the internal complexity
+[00:48:53.240 --> 00:49:02.980] of the system does not explode still requires us to work with it as it's working.
+[00:49:03.720 --> 00:49:07.020] And I like to call this like true skill versus agent skill.
+[00:49:08.560 --> 00:49:13.020] There is clearly a difference between someone who is an experienced software engineer working
+[00:49:13.020 --> 00:49:19.180] with an agent and someone who is not an experienced software engineer. And I think for me, the
+[00:49:19.180 --> 00:49:23.700] truest form of this is that my son is now sending me pull requests on a project that we're doing
+[00:49:23.700 --> 00:49:27.940] together. And there's a very clear quality difference in what his contributions are,
+[00:49:28.120 --> 00:49:33.940] because he is not as software engineer. We're using the same system to prompt it, right?
+[00:49:35.840 --> 00:49:41.100] And I've noticed this myself in situations, but I've heard this also particularly from a lot of
+[00:49:43.580 --> 00:49:47.420] frustrating experience if you're in a situation that really matters and other
+[00:49:47.420 --> 00:49:50.960] people in the room are basically just going to the agent to answer a question
+[00:49:50.960 --> 00:49:54.760] and no longer have a really good understanding of either what the
+[00:49:54.760 --> 00:49:58.820] system is doing or that the fundamental problem that they're working on they
+[00:49:58.820 --> 00:50:04.540] actually comprehend. So there is a lot of value in still understanding what
+[00:50:04.540 --> 00:50:09.400] you're doing. That also means that you kind of have to moderate the speed in
+[00:50:09.400 --> 00:50:12.680] which you're doing things to still work within your understanding.
+[00:50:12.980 --> 00:50:17.180] And one of the ways in which I started doing this as my commits started going through the
+[00:50:17.180 --> 00:50:23.680] roof basically was I looked into how are my trajectories of sessions going and can I hook
+[00:50:23.680 --> 00:50:29.860] myself into a part before the end of it to find a consistent way for me to evaluate what's
+[00:50:29.860 --> 00:50:30.260] going on.
+[00:50:30.420 --> 00:50:35.480] And so for instance I started basically prompting the agent that before it's going towards the
+[00:50:35.480 --> 00:50:41.080] verification, which is typically around 70% of it, to start producing a really nice short
+[00:50:41.080 --> 00:50:45.460] executive summaries and a nice typeset HTML page that can really understand what it's
+[00:50:45.460 --> 00:50:47.000] doing as it's finishing.
+[00:50:48.140 --> 00:50:53.400] Particularly with newer models, it's no longer quite as horrible to read the text that comes
+[00:50:53.400 --> 00:50:53.840] out of it.
+[00:50:54.260 --> 00:50:58.980] But this is one way in which I found to balance out that I'm basically no longer reading the
+[00:50:58.980 --> 00:50:59.940] code in a lot of cases.
+[00:51:01.740 --> 00:51:15.820] And this, I think, is something that increasingly is more important to me, is to also show up with a little bit of a guidance towards not writing all the software over and over.
+[00:51:16.960 --> 00:51:26.460] I'm a huge believer in using fewer dependencies and writing more code yourself, so I really like the Archantic Revolution for that element of it.
+[00:51:27.520 --> 00:51:31.940] But in German we have this word called Wildwuchs, which basically means uncontrolled growth.
+[00:51:32.860 --> 00:51:38.420] And uncontrolled growth in software that is supposed to work together can have a lot of really negative consequences.
+[00:51:39.680 --> 00:51:49.740] You might have seen a blog post that was going around recently about a TAR archive that has been crafted in a way that different TAR implementations read it in different ways.
+[00:51:51.280 --> 00:51:53.720] And I think this is a bit of a problem now.
+[00:51:55.360 --> 00:51:58.600] For us to work together, we really want to have standards.
+[00:51:58.620 --> 00:52:00.900] We want to have common specifications.
+[00:52:00.900 --> 00:52:02.400] We want to have common file formats.
+[00:52:02.940 --> 00:52:06.940] And we now can basically make an agent implement any format we want.
+[00:52:07.140 --> 00:52:08.700] But there are going to be these differences.
+[00:52:09.440 --> 00:52:13.280] And what really makes it hard for us to agree on standards and
+[00:52:13.280 --> 00:52:17.900] what makes us work together on something, often it's not a technical challenge as
+[00:52:17.900 --> 00:52:22.140] much as it is a problem of how do people agree on what is supposed to be in this
+[00:52:23.880 --> 00:52:25.440] And how is it supposed to be interpreted?
+[00:52:25.700 --> 00:52:27.640] Because there can be multiple interpretations of it.
+[00:52:28.280 --> 00:52:32.280] And I really think that these open protocols and file formats are really important aspect.
+[00:52:32.940 --> 00:52:36.620] You can imagine there is a future where we all have our own little Photoshop clones,
+[00:52:36.740 --> 00:52:41.920] but we'll no longer be able to send file formats to each other because we have diverged too much.
+[00:52:42.920 --> 00:52:48.300] And this really comes down to this part that collaboration between humans is as hard as it has ever been.
+[00:52:49.000 --> 00:52:52.220] And this is slowing us in a way down, right?
+[00:52:53.720 --> 00:52:59.720] it's important to sometimes resist this temptation of just having the agent solve the problem and
+[00:52:59.720 --> 00:53:03.380] just taking a step back and figuring out if this is maybe one of those problems where we should be
+[00:53:03.380 --> 00:53:08.840] working together with other people. It is for me coming from an open source background fascinating
+[00:53:08.840 --> 00:53:14.080] to see how little actual human collaboration is happening in open source projects now and how
+[00:53:14.080 --> 00:53:20.600] many more projects end up with gazillions of forks because it's just easier to have a fork happen
+[00:53:20.600 --> 00:53:22.460] than to try to upstream changes.
+[00:53:24.180 --> 00:53:26.180] So I wanna make a very strong argument
+[00:53:26.180 --> 00:53:29.500] for building software that strives towards excellence.
+[00:53:29.860 --> 00:53:31.420] And I understand that this is hard.
+[00:53:32.120 --> 00:53:35.480] We have, I think, seen a pretty big explosion recently
+[00:53:35.480 --> 00:53:36.660] of verified software.
+[00:53:37.180 --> 00:53:39.700] It's also very clear that this is in itself hard.
+[00:53:39.980 --> 00:53:42.200] The technology stack is not right there yet
+[00:53:42.200 --> 00:53:42.880] where this works.
+[00:53:43.120 --> 00:53:44.840] But I think it is one of those areas
+[00:53:44.840 --> 00:53:46.460] where it's really worth pushing towards
+[00:53:46.460 --> 00:53:47.960] and seeing if this is maybe something
+[00:53:47.960 --> 00:53:56.660] that can help us over time creating more stable software. I really am very happy with seeing so
+[00:53:56.660 --> 00:54:00.140] many people wanting to build fundamentally faster and more memory efficient software.
+[00:54:00.360 --> 00:54:07.700] I think it's a great development. For years I was very frustrated with how little my RAM usage
+[00:54:07.700 --> 00:54:13.100] actually goes to things that I think are worthwhile and now there's a significant trend of people
+[00:54:13.100 --> 00:54:16.940] trying to rebuild things in a native language rather than for instance just building another
+[00:54:18.240 --> 00:54:23.940] So all of those things are really cool developments, but they are in many ways still building up
+[00:54:23.940 --> 00:54:25.900] on technology that we have created before times.
+[00:54:26.420 --> 00:54:31.300] I really like Rust, I like that there is now a trend towards building memory safe software.
+[00:54:31.540 --> 00:54:38.660] I think you've probably all been exposed to what happens with, yeah, good models finding
+[00:54:38.660 --> 00:54:41.320] security issues, so there's a strong argument towards that.
+[00:54:42.180 --> 00:54:46.380] And it now has also led to people that would never have picked that language before to
+[00:54:47.960 --> 00:54:51.080] deliver some value that now can, in quote, come for free.
+[00:54:53.920 --> 00:54:57.860] On the last part, I want to talk a little bit about maybe there is something where Harness
+[00:54:57.860 --> 00:54:58.520] can do something.
+[00:54:58.620 --> 00:55:03.180] This is less so much for me to say, hey, here's a path that we are on.
+[00:55:03.360 --> 00:55:07.160] It's to give you some idea of maybe where some of the challenges are as we're pushing
+[00:55:07.160 --> 00:55:08.800] this task to be much more long running.
+[00:55:10.000 --> 00:55:15.640] The first one is if you have a task that only takes two minutes to run, you're kind of willing
+[00:55:15.640 --> 00:55:21.940] to babysit it and if it breaks and it ends early or it doesn't run to completion or you
+[00:55:21.940 --> 00:55:25.320] have to restart the agent to just restart it manually and tell it to continue.
+[00:55:25.740 --> 00:55:30.700] Right, so it's like we have largely been working in environment for quite a while where that
+[00:55:30.700 --> 00:55:31.240] was acceptable.
+[00:55:32.300 --> 00:55:38.020] If you now have automated agents running on thousands of issues overnight, you want to
+[00:55:38.020 --> 00:55:40.740] have an agent actually be able to restart itself.
+[00:55:41.240 --> 00:55:45.600] And so we're pretty big believers on this concept of durable agents, also durable agents
+[00:55:45.600 --> 00:55:50.220] that create durable workflows where they orchestrate themselves in a way where you can start it,
+[00:55:50.280 --> 00:55:52.020] stop it, you can suspend it, you can bring it back.
+[00:55:52.400 --> 00:55:56.540] And this is not just because we have this longer running tasks, but also because there's
+[00:55:56.540 --> 00:55:58.160] a lot of inefficiency in what we're doing.
+[00:55:59.480 --> 00:56:06.140] And we are all compute constrained, we are all constrained in terms of the cost of inference,
+[00:56:06.400 --> 00:56:10.640] and being able to be a little bit more intelligent about how we're doing this, I think is really
+[00:56:10.740 --> 00:56:13.860] interesting and I wish more people would be pushing towards that. For instance, if
+[00:56:13.860 --> 00:56:17.220] you pay raw token costs, you get a pretty significant discount on flex scheduling.
+[00:56:17.620 --> 00:56:21.740] But that means that maybe for minutes no token is coming, right? And so then you
+[00:56:21.740 --> 00:56:25.280] want to suspend your agent, you want to suspend also your sandbox and actually
+[00:56:25.940 --> 00:56:30.380] not waste the other resources that are also expensive. So this is one part where
+[00:56:30.380 --> 00:56:34.860] I do think beyond the quality of the models, because the models are getting so
+[00:56:34.860 --> 00:56:38.900] good now, we might want to rethink a little bit of how we are using these
+[00:56:41.580 --> 00:56:49.960] And the second thing is you probably know that when Pi came out, there was a pretty
+[00:56:49.960 --> 00:56:54.060] big motivation to say like bash is everything that you have to run.
+[00:56:54.240 --> 00:56:56.060] And this is still largely what we believe.
+[00:56:57.420 --> 00:57:05.320] But now we also see that there is an emergence of desire to orchestrate sub-agents, a desire
+[00:57:05.320 --> 00:57:11.080] to use models which are not LLMs, like decision models or classifier models like Jeff.
+[00:57:11.500 --> 00:57:14.680] And in those cases, you need to start composing workflows.
+[00:57:16.100 --> 00:57:19.800] And this, I think, originally came from the folks from Cloudflare,
+[00:57:19.940 --> 00:57:25.840] say, like, instead of having thousands of tools being put into the code,
+[00:57:26.500 --> 00:57:30.900] into the context, what if we just give the agent, in addition to JavaScript,
+[00:57:30.900 --> 00:57:35.500] JavaScript in addition to bash JavaScript to run and have all the tool calls that the
+[00:57:35.500 --> 00:57:37.980] agent would natively do happen via JavaScript.
+[00:57:38.140 --> 00:57:39.460] Then he can orchestrate them better.
+[00:57:39.780 --> 00:57:44.340] And this has gone from a curiosity I think in many ways to something that is fundamentally
+[00:57:44.340 --> 00:57:45.500] shockingly useful.
+[00:57:46.300 --> 00:57:50.400] And this means that now the harness in many cases, and this is definitely the case already
+[00:57:50.400 --> 00:57:54.480] in Codex, you can do it in Py and many other harnesses at this point, you can have the
+[00:57:54.480 --> 00:57:59.700] harness orchestrate very large invocations of tool calls without having to go through
+[00:58:00.980 --> 00:58:04.800] And this does require a little bit of a rethinking of how you're doing things.
+[00:58:05.400 --> 00:58:08.420] And it also allows you to use classifier models.
+[00:58:08.540 --> 00:58:14.900] And I think this is the other big part that really changed how I was looking at how far I can push certain technology.
+[00:58:15.480 --> 00:58:19.660] Because you're not being penalized for not having an active KVCache.
+[00:58:20.420 --> 00:58:23.100] But they are also very cheap and very fast.
+[00:58:23.340 --> 00:58:29.180] And they allow you now to take certain problems that previously were just too expensive or too slow to do,
+[00:58:30.900 --> 00:58:35.120] do this. And the way I think you should be thinking on this is that when you have
+[00:58:35.120 --> 00:58:39.420] code mode, what the harness can do is it can create a little workflow that can
+[00:58:39.420 --> 00:58:44.120] have decision points along the way where if you, for instance, have to crunch through
+[00:58:44.120 --> 00:58:48.520] 3,000 incoming customer support requests and you have to make decisions along the
+[00:58:48.520 --> 00:58:53.140] way if this is being sent towards having an agent work on it, towards requiring
+[00:58:53.140 --> 00:58:57.760] more feedback from a customer, you can have the agent create basically an on-demand
+[00:58:57.760 --> 00:59:01.720] workflow and then for every single if condition that it's doing it's just going through Jeff.
+[00:59:01.980 --> 00:59:06.180] And then you can crunch through thousands of issues for very little time in no time in your
+[00:59:06.180 --> 00:59:14.040] coding agent that previously that would have taken you hours. So with this I just want to leave this
+[00:59:14.040 --> 00:59:21.100] idea. Now that we can build everything maybe we should not but we should really I think push
+[00:59:21.100 --> 00:59:27.420] towards much more enjoyable and in many ways much more ambitious software than we have been doing
+[00:59:27.760 --> 00:59:28.880] Thank you.

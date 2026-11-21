@@ -1,0 +1,261 @@
+Lovable 怎样为十小时以上的 Agent 任务做设计？
+Fabian Hedin
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[07:26:04.480 --> 07:26:11.960] All right. Thank you so much. See, we're good to go here. All right. Welcome, everyone.
+[07:26:12.180 --> 07:26:19.180] Glad to be here. I'm Fabian, co-founder and CTO of Lovable. And we spent the last three
+[07:26:19.180 --> 07:26:24.440] years or so building a platform to let anyone create software and then operate that and
+[07:26:24.440 --> 07:26:33.500] deploy that software. And the topic of today is what it takes to set intelligence free.
+[07:26:34.220 --> 07:26:42.620] And really, for us, this takes us back to when we started three years ago. And I have
+[07:26:42.620 --> 07:26:50.940] to say, I have a bit of a complicated relationship with agents, and I'll tell you why. We almost
+[07:26:50.940 --> 07:26:58.360] failed as a company, because we thought back in 2023 that, hey, these agents are the future,
+[07:26:58.620 --> 07:27:03.360] so let's build for them now. I think we kind of turned out to be true that they were the
+[07:27:03.360 --> 07:27:07.360] future, but we were definitely wrong on the now piece in 23.
+[07:27:07.660 --> 07:27:09.500] So this was back in GPT-4 days.
+[07:27:12.040 --> 07:27:15.180] And at that time, the intelligence was simply not
+[07:27:15.180 --> 07:27:18.380] there to have more of these complex agentic systems.
+[07:27:19.220 --> 07:27:20.540] But now it is.
+[07:27:20.800 --> 07:27:20.860] Right?
+[07:27:21.060 --> 07:27:25.380] Now the intelligence is actually at a place where you can really
+[07:27:25.380 --> 07:27:27.820] build out more complicated systems around them.
+[07:27:27.820 --> 07:27:34.420] done. And so I'll give you kind of a quick background story here of our
+[07:27:34.420 --> 07:27:44.060] journey in working with intelligence or these LLMs. And so back in 2023, we
+[07:27:44.060 --> 07:27:47.620] built the first version of our product. We called it GPT engineer back then.
+[07:27:48.540 --> 07:27:52.320] And really, the UI was very similar to what it is today, where you can have a
+[07:27:52.320 --> 07:27:59.080] chat and this preview. But the AI at that point was quite simple. We just had a prompt
+[07:27:59.080 --> 07:28:05.480] and a response, one LLM call per user message. Very simple. It worked fine. But you could
+[07:28:05.480 --> 07:28:13.600] kind of build one-page apps and simpler applications with this. And then we thought, okay, this
+[07:28:13.600 --> 07:28:18.860] intelligence is going to keep on evolving, so we have to be ready for it as it evolves.
+[07:28:18.860 --> 07:28:22.360] And so we thought, let's go out and build this agentic framework.
+[07:28:22.940 --> 07:28:28.900] And so we went and we built this very sophisticated, dare I say, beautiful framework for agents
+[07:28:28.900 --> 07:28:29.320] to work.
+[07:28:29.480 --> 07:28:35.260] And we had this one main agent that would talk to the user, and that agent would spawn
+[07:28:35.260 --> 07:28:38.820] other agents, like an implementation agent here in the example.
+[07:28:39.460 --> 07:28:41.140] And each agent could have a speciality.
+[07:28:41.660 --> 07:28:45.460] This agent would kind of specialize in the first generation of an app, and then you would
+[07:28:45.460 --> 07:28:49.360] have a frontend agent and a backend agent. And they would all talk to each other, send
+[07:28:49.360 --> 07:28:53.980] messages back and forth. And we thought, oh, this is beautiful. And there were papers around
+[07:28:53.980 --> 07:28:59.200] this and how well this could work. And in the end, it didn't work at all. We just made
+[07:28:59.200 --> 07:29:08.340] the product worse. We definitely failed on this one. But luckily, before we ran out of
+[07:29:08.340 --> 07:29:13.080] money, we figured out, hey, let's go back to a simpler system again. So in late 24,
+[07:29:13.080 --> 07:29:18.200] before, we went back to a much simpler system where it was a bit of a chain where we had
+[07:29:18.200 --> 07:29:24.160] some smaller LMs doing some knowledge retrieval and then really just one main LM writing to
+[07:29:24.160 --> 07:29:28.800] the user and writing the code in the same message. And this worked great. It was very
+[07:29:28.800 --> 07:29:34.020] responsive for users in the UI. And it was reliable and users were kind of in it and
+[07:29:34.020 --> 07:29:44.360] iterating with the model. And so let's close that down. But now it's time again. We're
+[07:29:44.360 --> 07:29:50.500] back. We're so back. Agents this time, they work. And we're running them in production
+[07:29:50.500 --> 07:29:55.980] over a billion tokens per minute on these systems that I'm going to talk about. But
+[07:29:56.560 --> 07:30:03.640] first, just looking at, okay, what is actually lovable? So if you simplify the UI, and this
+[07:30:04.020 --> 07:30:09.920] back in 2023 as it is today. To the left, we have a chat where humans come in and they
+[07:30:09.920 --> 07:30:14.380] kind of describe their intent to build or whatever they want to do. And to the right,
+[07:30:14.580 --> 07:30:21.100] you have a preview, which is the output or the outcomes of what you're building. And
+[07:30:22.000 --> 07:30:28.340] this back in 2023, you could do simpler things with, right? But now we've really seen working
+[07:30:28.340 --> 07:30:32.940] at this layer of abstraction, we're able to build very complex things, right? And I think
+[07:30:34.020 --> 07:30:39.060] a lot of tooling meant for developers, for example, moving to this type of interface
+[07:30:39.060 --> 07:30:43.200] where you're not really looking at the code every day and so on, and you're getting kind
+[07:30:43.200 --> 07:30:49.260] of abstracted and working on the architecture or looking at some kind of output of what you're
+[07:30:49.260 --> 07:30:54.980] doing. And this is something that we've always believed in, and it's been kind of a core
+[07:30:54.980 --> 07:31:00.640] thesis behind Lovable that you won't have to care about the code in the same way that
+[07:31:00.640 --> 07:31:05.340] you had to do before. And I think today we're kind of in this almost a bit in between, I
+[07:31:05.340 --> 07:31:08.160] think, in the industry where, you know, some people might say, oh, you don't have to care
+[07:31:08.160 --> 07:31:14.480] about code at all. And some people might have different opinions. I, of course, like, growing
+[07:31:14.480 --> 07:31:20.340] up coding and these things, you get a bit attached. But in the end, what matters is actually
+[07:31:20.340 --> 07:31:27.680] not the code. Sorry if I remove that last part. But what matters is the outcomes, right?
+[07:31:27.680 --> 07:31:36.740] right? And so the outcomes, what is that? Well, for our users, the outcomes is creating
+[07:31:36.740 --> 07:31:43.780] a business and monetizing and creating value for others in some type of way. And I'll kind
+[07:31:43.780 --> 07:31:49.500] of quickly go over what we build as a platform to enable this before I go in kind of on the
+[07:31:50.440 --> 07:31:57.060] technical side of this talk. So if you look at Lovable, the first thing that you can say
+[07:31:57.680 --> 07:32:00.680] is that we have this agent, and like any other agent,
+[07:32:00.840 --> 07:32:02.700] it can do quite arbitrary things,
+[07:32:02.880 --> 07:32:05.320] and it's quite specialized at building software,
+[07:32:06.400 --> 07:32:09.480] and it has access to a browser, so it can verify
+[07:32:09.480 --> 07:32:13.020] what it's building, and it connects to GitHub,
+[07:32:13.380 --> 07:32:16.080] and it writes code, and you can do whatever you want
+[07:32:16.080 --> 07:32:17.280] for that code, so on.
+[07:32:17.440 --> 07:32:20.820] So that's kind of your basic coding agent.
+[07:32:21.340 --> 07:32:23.400] And the other pieces of the platform
+[07:32:23.400 --> 07:32:26.120] is this kind of cloud and business piece of the platform.
+[07:32:27.760 --> 07:32:33.840] the cloud part of the platform is about just giving these hosting primitives just seamlessly
+[07:32:33.840 --> 07:32:39.720] to this agent. And so we built out databases, authentication, storage, all the types of
+[07:32:39.720 --> 07:32:45.020] back-end compute and security scanners and backups and logs for all of these things, and all of it
+[07:32:45.020 --> 07:32:51.160] can be introspected by the agent. And this just makes it seamless to build things. You don't have
+[07:32:51.160 --> 07:32:57.660] to go to different services to set this together. We just provide you these primitives. So that's
+[07:32:57.680 --> 07:33:02.400] still around building software and hosting this, right? But then the last piece is around
+[07:33:03.120 --> 07:33:07.920] these business capabilities, where, again, the output of what our users are doing on
+[07:33:07.920 --> 07:33:14.520] Lovable, we don't see that output as code. The output is a product or a business. And
+[07:33:15.060 --> 07:33:19.660] if you want to succeed as a business, you need to do more things than just write code,
+[07:33:19.760 --> 07:33:25.420] right? And so we help our users with receiving payments, sending emails, optimizing SEO,
+[07:33:25.420 --> 07:33:31.240] and Google, doing ads on Google and Meta, and kind of analyzing what is happening with
+[07:33:31.240 --> 07:33:36.900] the product through analytics, and you can look at conversions and optimize these sort
+[07:33:36.900 --> 07:33:42.560] of things, and the agent is in the loop in all of this, right? So that's kind of our
+[07:33:43.440 --> 07:33:48.700] capability offering, you could say. And again, the core part of this is an agent that all
+[07:33:48.700 --> 07:33:54.880] of these capabilities are built for. And at some point in Lovo's history, we used to
+[07:33:55.420 --> 07:34:00.160] our agents to work for only 30 minutes, because we thought they weren't reliable to work for
+[07:34:00.160 --> 07:34:07.560] a longer amount of time. But now we've changed this to really be without any sort of bound
+[07:34:07.560 --> 07:34:11.600] in terms of the length an agent can work, and so you can imagine agents working for
+[07:34:11.600 --> 07:34:18.360] 10 hours plus. And so I'll go into some of the things that we've done in our architecture
+[07:34:18.360 --> 07:34:24.260] to enable this. And so the first piece is really around the agent runtime itself and
+[07:34:25.420 --> 07:34:29.380] that to run for a long amount of time. And the second piece is the
+[07:34:29.380 --> 07:34:32.500] computer, where each of these agents are actually doing their
+[07:34:32.500 --> 07:34:37.440] work, running a dev server, and actually verifying what it's
+[07:34:37.440 --> 07:34:41.060] doing. And so the last piece, then, is the verification itself,
+[07:34:41.160 --> 07:34:44.080] where if you want an agent to work for a long amount of time,
+[07:34:44.240 --> 07:34:46.620] you need to make sure that you have these feedback loops in
+[07:34:46.620 --> 07:34:50.620] place so that it's not kind of going off in the wrong direction.
+[07:34:50.620 --> 07:35:00.680] And so if we start by looking at the agent runtime itself, you can imagine that you have
+[07:35:01.380 --> 07:35:07.200] really three different sources that can interact with an agent. So it can be yourself kind
+[07:35:07.200 --> 07:35:11.580] of prompting this or a human, it could be other agents, and it could also be just a
+[07:35:11.580 --> 07:35:17.420] system on a schedule waking up. And the way we chose to architect this is that for each
+[07:35:17.420 --> 07:35:23.840] agent we have a separate inbox where any of these sources would send in messages. So
+[07:35:23.840 --> 07:35:28.660] you might have a message here like, what's the status? And you can imagine you have this
+[07:35:28.660 --> 07:35:33.100] agent, and this agent is kind of an always-on agent that might be working, right? And so
+[07:35:33.600 --> 07:35:38.120] you can imagine it has done, like, three actions here, a request, a tool call, and it got some
+[07:35:38.120 --> 07:35:45.400] result. And then at this point, the agent is ready to actually receive messages. So since
+[07:35:45.400 --> 07:35:50.140] anyone can drop a message into this inbox, the agent then can copy that itself into its
+[07:35:50.140 --> 07:35:56.180] own trajectory, basically, it's task history. And this is the type of interaction that I
+[07:35:56.180 --> 07:35:58.720] think you're familiar with if you're using agents overall.
+[07:36:00.720 --> 07:36:05.760] So that's kind of the first design principle behind this agent runtime. I'll go through
+[07:36:05.760 --> 07:36:13.080] a few more here. And so the trajectory in which the agent is working in, which is kind
+[07:36:13.080 --> 07:36:19.100] of the history of what has happened so far, and really the basis for any sort of memory
+[07:36:19.100 --> 07:36:26.360] for the agent, right? And we designed this trajectory with really Git as inspiration.
+[07:36:26.720 --> 07:36:34.080] And so the trajectory, what is it? It's an append-only log where each event points towards
+[07:36:34.080 --> 07:36:42.840] a parent, the previous event. And because of this, you get a nice capability, just like in Git,
+[07:36:43.080 --> 07:36:46.980] you can fork things, right? So you can have two events pointing to the same parent, which
+[07:36:46.980 --> 07:36:52.420] essentially creates a fork. And because of that, you can kind of spin up parallel agents
+[07:36:52.420 --> 07:36:59.480] at any point of time in the history without having to duplicate all of the shared history.
+[07:37:01.160 --> 07:37:04.720] And semantically, it's a bit unclear what would happen if you merge this. So unlike
+[07:37:04.720 --> 07:37:10.020] if we cannot merge agent trajectories, but we can spawn them outright, and these agents
+[07:37:10.020 --> 07:37:17.660] can talk to each other. The other thing that we made sure to design for is that this agent
+[07:37:17.660 --> 07:37:22.680] trajectory, it includes kind of the full history and everything that happens with the agent.
+[07:37:22.840 --> 07:37:27.640] So every tool call, a bunch of other things happening on the platform, if a tool call
+[07:37:27.640 --> 07:37:33.160] failed or succeeded, and what we've done is to make sure that we have this append-only
+[07:37:33.160 --> 07:37:38.300] log, and from that we can actually build a prompt that we would feed into the actual
+[07:37:40.020 --> 07:37:41.940] You might ask, why would you want to do this?
+[07:37:42.060 --> 07:37:46.320] Well, one reason is that when you build a prompt,
+[07:37:46.620 --> 07:37:47.780] if you have a long history,
+[07:37:47.880 --> 07:37:49.520] you probably want to do some sort of compaction,
+[07:37:49.700 --> 07:37:51.540] you want to summarize part of that history
+[07:37:52.140 --> 07:37:53.880] in the earlier steps, for example.
+[07:37:54.700 --> 07:37:57.740] But this summarization would differ, for example,
+[07:37:57.880 --> 07:38:00.340] if you use different models with different context lengths,
+[07:38:00.460 --> 07:38:01.840] you would probably think differently
+[07:38:01.840 --> 07:38:04.460] about when you should summarize or not.
+[07:38:04.820 --> 07:38:08.440] And so by separating the prompt from the actual task history,
+[07:38:10.020 --> 07:38:16.360] prompts for any type of model or any type of task that we can find the best and optimal
+[07:38:16.360 --> 07:38:24.060] prompt for. So to show this event history in progress, we have this debug tool here.
+[07:38:24.240 --> 07:38:28.940] So here it's just a recording of me dragging this slider in our UI. And you can see on
+[07:38:28.940 --> 07:38:35.140] the right that the UI is kind of updating as I'm dragging this along. And you have 156
+[07:38:35.140 --> 07:38:41.260] events here, and each of those is an event in this event history, and you can see how the UI can
+[07:38:41.260 --> 07:38:47.420] render any point in history, and this is just showcasing that at any point in time, we have
+[07:38:47.420 --> 07:38:54.340] full control of, say, the UI or anything else happening on this platform, thanks to this history
+[07:38:54.340 --> 07:39:02.080] kind of detailing everything that has happened. The last piece I'll go over here on the runtime
+[07:39:02.080 --> 07:39:08.100] time itself is that the process that is running these agents, they're separate from the actual
+[07:39:08.100 --> 07:39:14.640] task history. And so the process is almost entirely stateless in that between each call,
+[07:39:14.760 --> 07:39:20.200] each tool call, each turn, it will actually just persist into the task history. And so
+[07:39:20.200 --> 07:39:25.760] you can have a process come and go. And then the question is, why do we care about this?
+[07:39:25.760 --> 07:39:32.300] this? Well, at Lovable, this system, we deploy to it 700
+[07:39:32.300 --> 07:39:36.620] times per day. So that's about once every two minutes. And you
+[07:39:36.620 --> 07:39:42.240] can imagine if you have an agent working for 10 hours, you want
+[07:39:42.240 --> 07:39:45.660] to not disrupt that agent when it's working, right? This agent
+[07:39:45.660 --> 07:39:48.980] is doing something for a customer. But at the same time,
+[07:39:49.100 --> 07:39:51.140] we want to make sure that this agent is running on the latest
+[07:39:51.680 --> 07:39:54.340] deploy. And it might be a new feature or something like that,
+[07:39:55.960 --> 07:39:58.540] security vulnerability in the Linux kernel.
+[07:40:00.000 --> 07:40:06.440] it is ASAP. And so to do that, thanks to this separation between the actual history and the
+[07:40:06.440 --> 07:40:12.840] processes, we can actually make sure that we have one agent that is working on one task,
+[07:40:12.960 --> 07:40:17.760] but we can have different processes taking up and actually doing the compute behind that work.
+[07:40:18.500 --> 07:40:24.860] So this task can keep on working while we have different deploys working on it,
+[07:40:24.860 --> 07:40:27.400] be it for 10 hours or even longer, right?
+[07:40:29.420 --> 07:40:30.900] So that's the agent runtime.
+[07:40:31.260 --> 07:40:35.780] The second piece of this platform is the computer.
+[07:40:35.940 --> 07:40:38.080] So this is where the work is actually happening.
+[07:40:38.500 --> 07:40:40.980] And we've been through a lot of iterations
+[07:40:40.980 --> 07:40:43.060] and a lot of vendors kind of working
+[07:40:43.060 --> 07:40:48.560] with providing these sandboxes for the agent to work in.
+[07:40:48.680 --> 07:40:52.180] And we've landed in the system that we've worked really hard
+[07:40:52.180 --> 07:41:00.120] now to develop, which is checkpointing a computer. So you can imagine you come to Lovable, you
+[07:41:00.120 --> 07:41:06.520] start a new project. We have this common, what we call a golden checkpoint, which contains the OS
+[07:41:06.520 --> 07:41:11.440] and the system services, it has common tools installed, and a dev server that is ready to
+[07:41:11.440 --> 07:41:16.700] start. And this checkpoint, it includes everything on disk, memory, and also running processes.
+[07:41:16.700 --> 07:41:22.320] processes. And so when you start a new project, you get all of that for free, and all of that
+[07:41:22.320 --> 07:41:28.820] is copied over in about 230 milliseconds. And so once you start a project, you might have
+[07:41:28.820 --> 07:41:35.720] some specific code and some dependencies within that project. And that is also check pointed
+[07:41:35.720 --> 07:41:43.300] as you go. And so each time the agent is running and it finishes a turn, we will actually
+[07:41:44.400 --> 07:41:48.780] the computer, and from that we are able to, again, very quickly,
+[07:41:48.880 --> 07:41:52.880] sub-second, spin that computer up whenever you need it. That means we
+[07:41:52.880 --> 07:41:57.080] can save on resources by spinning this down if you leave for, say,
+[07:41:57.560 --> 07:42:01.120] 10 minutes or so and come back, we can spin it up extremely quickly
+[07:42:01.120 --> 07:42:06.020] so you don't even notice this. And even requests in transit will
+[07:42:06.020 --> 07:42:11.400] not even be dropped in this setup. The other thing we can do,
+[07:42:13.300 --> 07:42:17.160] thing is that just like the trajectory itself in the agent
+[07:42:17.160 --> 07:42:22.080] runtime, we can also fork the computer. And when we do this,
+[07:42:23.040 --> 07:42:27.400] for example, we have a feature in level that is called drafts
+[07:42:27.400 --> 07:42:29.820] where you work in different environments of what you're doing,
+[07:42:29.960 --> 07:42:32.420] and to support that, we need to fork the computer that you're
+[07:42:32.420 --> 07:42:40.300] working in. And here we have the example of doing two at the
+[07:42:40.300 --> 07:42:48.500] same time. And you can imagine doing hundreds of these, right? And so we've had to do some
+[07:42:48.500 --> 07:42:53.740] optimizations to make this feasible to actually run. So one of these optimizations is copy
+[07:42:53.740 --> 07:42:59.300] and write on the RAM itself. And so creating one of these forks of a computer is basically
+[07:42:59.300 --> 07:43:06.540] free in terms of the RAM that it's using. But as soon as you start writing in a process
+[07:43:06.540 --> 07:43:12.420] to RAM, we will copy that page over, and only then will you start having to allocate new
+[07:43:12.420 --> 07:43:19.440] memory. And there's another optimization here also, which is that each of these sandboxes
+[07:43:19.440 --> 07:43:25.640] require a few hundreds of megabytes of memory, and that would take a few seconds to stream
+[07:43:25.640 --> 07:43:29.760] in if you have it in cold object storage, and then it has to go to disk, and then into
+[07:43:29.760 --> 07:43:38.860] memory of this VM, but thanks to being able to stream the memory, we can actually boot
+[07:43:38.860 --> 07:43:45.320] up the machine before all of the memory is actually ready on it.
+[07:43:45.460 --> 07:43:50.420] So the memory that always uses comes first, and then some processes and so on will start
+[07:43:50.420 --> 07:43:52.060] to work as soon as the memory gets there.
+[07:43:52.180 --> 07:43:55.540] This also shaves off some extra startup time.
+[07:43:55.540 --> 07:43:59.660] And then we started asking ourselves, how can we make this even more efficient and even
+[07:43:59.660 --> 07:44:00.760] more faster for our users?
+[07:44:01.340 --> 07:44:05.920] And so you might be familiar with Vite, this great dev server that most of the meta frameworks
+[07:44:05.920 --> 07:44:08.240] out there in the JavaScript ecosystem is using.
+[07:44:08.720 --> 07:44:12.820] And so we took that and we forked it and we rewrote it in Rust.
+[07:44:13.440 --> 07:44:18.020] And that made our code starts two times faster when we went from getting this preview from
+[07:44:18.020 --> 07:44:19.520] 14 seconds to three seconds.
+[07:44:19.520 --> 07:44:25.160] And the main thing that we made faster is that Vite uses Node.js, and we were able to
+[07:44:25.760 --> 07:44:29.000] drop that dependency off Vite itself and just have this Rust binary.
+[07:44:29.300 --> 07:44:34.800] So that made the memory footprint be 6.5 times less in these machines.
+[07:44:35.460 --> 07:44:39.560] And by taking control of the applications that we're running in these computers, we're
+[07:44:39.560 --> 07:44:42.640] also able to control how we write to memory.
+[07:44:43.060 --> 07:44:47.720] And so when we control how we write to memory, we're even more optimizing, if you remember
+[07:44:49.520 --> 07:44:56.340] when we're drafting different computers. And so we're able to run this extremely efficiently
+[07:44:56.340 --> 07:45:02.500] so that we can run lots and lots of agents in parallel and have agents explore different
+[07:45:02.500 --> 07:45:08.100] solutions to solving a bug or improving the performance of your applications and so on.
+[07:45:09.480 --> 07:45:16.060] And so this has been fun. But the last piece now is about verification. And of course,
+[07:45:16.060 --> 07:45:20.680] this computer and this dev service is a big piece of being able to verify what an agent
+[07:45:20.680 --> 07:45:27.340] is doing. And if you look at verification, you can think of these feedback loops, right,
+[07:45:27.460 --> 07:45:31.440] that the agent needs to get information, it took an action, was this a good action or
+[07:45:31.440 --> 07:45:35.800] was it a bad action? And you can think of it as this inner loop and this outer loop.
+[07:45:35.940 --> 07:45:40.160] So this inner loop is during the turn of the agent. And you have kind of obvious things
+[07:45:40.160 --> 07:45:44.640] such as, like, is the build working, do we have lint errors or type errors in the code
+[07:45:46.060 --> 07:45:50.720] you can check for runtime errors in the preview that you're running. You can also have within
+[07:45:50.720 --> 07:45:56.420] this computer a headless browser where the agent can go in and kind of explore the web
+[07:45:56.420 --> 07:46:01.300] app it's building or whatever it's building, right? And a bunch of other things that we're
+[07:46:01.300 --> 07:46:06.080] using to help verify within the turn of an agent. But then you also have this outer loop,
+[07:46:06.280 --> 07:46:10.700] which is kind of between each turn and the turn you can think of when the agent is yielding
+[07:46:10.700 --> 07:46:17.280] to you as a user. And between each turn, you might get some info on the product itself
+[07:46:17.860 --> 07:46:22.920] from production from your users, right? And so you can look at how your visitors are behaving,
+[07:46:23.780 --> 07:46:30.300] what users are telling you online, you can do automatic A-B tests and actually change
+[07:46:30.300 --> 07:46:34.020] some copy and see it's improving conversion and so on. And then you can also take this
+[07:46:34.020 --> 07:46:38.220] business metrics. And remember, this goes back to the capabilities I showed you. By
+[07:46:38.220 --> 07:46:42.500] having control over these things, we can make sure that we can optimize how the agent is
+[07:46:42.500 --> 07:46:46.840] getting this out of the feedback loop. So we can make sure that if you're running payments,
+[07:46:47.040 --> 07:46:53.040] we can actually track those transactions and conversions and make sure that the agent can
+[07:46:53.040 --> 07:47:00.080] actually help you optimize not only the code, right, but the business strategy around your
+[07:47:00.080 --> 07:47:08.520] product. And so those are really the three things that we've been working for. And we'll
+[07:47:08.520 --> 07:47:16.780] continue to kind of build out these capabilities and this architecture around really orchestrating
+[07:47:16.780 --> 07:47:22.580] these LMs into agents. And so this agentic system that we're building is running billions
+[07:47:22.580 --> 07:47:28.860] of tokens per minute. And these computers, right, we can spawn up with each agent and
+[07:47:30.080 --> 07:47:33.600] one computer, and now we're kind of back to this quite
+[07:47:33.600 --> 07:47:36.060] beautiful setup where you have agents talking to agents and
+[07:47:36.060 --> 07:47:40.720] they're orchestrating, and this time it's actually working, and
+[07:47:40.720 --> 07:47:43.580] it's working at scale thanks to some of these optimizations.
+[07:47:44.420 --> 07:47:47.280] And so if you're curious to try this out, you can head to
+[07:47:47.280 --> 07:47:51.060] level.dev and you'll see our previews spinning up and so on,
+[07:47:51.120 --> 07:47:54.680] but you'll get a very simple and nice interface, and you won't
+[07:47:54.680 --> 07:47:59.820] have to care about all of this stuff. Thank you so much. It's
+[07:48:00.080 --> 07:48:02.280] hope you learned something. Thanks so much.

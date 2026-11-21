@@ -1,0 +1,335 @@
+Claude 怎样组织千名 Agent，又怎样修正自己的记忆？
+Lance Martin
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[03:48:31.460 --> 03:48:32.120] All right.
+[03:48:32.780 --> 03:48:34.060] It's very nice to be here.
+[03:48:35.600 --> 03:48:37.520] The clicker works, the computer works.
+[03:48:37.800 --> 03:48:39.420] I'm Lance from Anthropic.
+[03:48:39.580 --> 03:48:42.360] I know we've had some issues with one of the prior keynotes,
+[03:48:42.420 --> 03:48:44.200] so we're set to go.
+[03:48:44.480 --> 03:48:47.080] I'm going to tell two stories about getting the most out of Claude
+[03:48:47.080 --> 03:48:48.940] and exploring Claude's frontier capabilities.
+[03:48:49.540 --> 03:48:51.200] So the first is multi-agent.
+[03:48:51.260 --> 03:48:53.880] This is a blog I wrote with the Fable 5.2 launch,
+[03:48:54.760 --> 03:48:56.100] and tell the story of what happened here.
+[03:48:57.220 --> 03:49:01.400] So for Matz-Last Theorem is one of the more kind of famous claims in mathematics.
+[03:49:01.620 --> 03:49:03.460] It's stood and proven for around 350 years.
+[03:49:04.080 --> 03:49:05.720] And it's actually a very simple statement.
+[03:49:05.960 --> 03:49:07.780] Just A to the N equals B to the N,
+[03:49:07.840 --> 03:49:11.660] equals C to the N has no solution for any positive whole numbers greater than two.
+[03:49:12.420 --> 03:49:16.320] Now, this deceptively simple kind of statement has proven to be quite
+[03:49:16.320 --> 03:49:17.480] difficult to actually prove.
+[03:49:18.060 --> 03:49:22.300] In the mid-90s, Sir Andrew Wiles did prove it.
+[03:49:23.080 --> 03:49:25.620] He put out a proof and it took him seven years of work.
+[03:49:25.720 --> 03:49:26.780] It was extremely painstaking.
+[03:49:27.540 --> 03:49:31.520] And since that time, a major effort and interest in mathematics has been
+[03:49:31.520 --> 03:49:34.520] formalizing that proof for basically computationally checking every step.
+[03:49:34.680 --> 03:49:37.100] So proofs are kind of long chains of logic and
+[03:49:37.100 --> 03:49:40.800] you actually can computationally check proofs using different systems.
+[03:49:40.800 --> 03:49:42.700] So I'll talk about, for example, using lean.
+[03:49:44.180 --> 03:49:46.620] So this is just kind of a visual kind of explaining the,
+[03:49:46.740 --> 03:49:49.400] there's a very interesting video showing the effort that he went through.
+[03:49:49.400 --> 03:49:52.500] It was an extremely painstaking process to establish this proof.
+[03:49:54.100 --> 03:49:59.180] And in September, we published that we use Claude to formalize it.
+[03:49:59.420 --> 03:50:04.520] This was the first very important result that we shared along these lines.
+[03:50:05.000 --> 03:50:07.780] And we used Lean to do it.
+[03:50:07.880 --> 03:50:10.920] So Lean allows you to computationally verify every step in a proof.
+[03:50:11.400 --> 03:50:14.060] Now doing this, though, is extremely painstaking.
+[03:50:14.560 --> 03:50:16.980] We started with a team of down a dozen agents.
+[03:50:17.520 --> 03:50:20.360] And this is kind of just showing a schematic of that team.
+[03:50:20.760 --> 03:50:23.720] Very early on, that team didn't work very effectively.
+[03:50:24.640 --> 03:50:26.800] We had to give it something called ProofToMe.
+[03:50:26.860 --> 03:50:30.260] Now, this is kind of a platform for orchestrating mathematics proofs.
+[03:50:30.860 --> 03:50:34.720] And it helped the agents significantly manage the state of the project.
+[03:50:35.940 --> 03:50:37.740] Lean you can think about as a harness.
+[03:50:38.200 --> 03:50:41.140] So basically, it provides the agents with a graph that they can query.
+[03:50:41.340 --> 03:50:44.240] So it's basically lots of scaffolding around this problem statement.
+[03:50:44.380 --> 03:50:46.600] You can think of it as like a very domain-specific harness.
+[03:50:47.260 --> 03:50:50.280] Okay, now this is all setting up what we actually did.
+[03:50:50.580 --> 03:50:54.460] We reported, this was back in September, the formalization.
+[03:50:54.960 --> 03:50:57.840] Now what I wanted to do for 5.2 is show,
+[03:50:57.920 --> 03:51:01.720] can we have a much larger team of agents, so going from around a dozen to a thousand,
+[03:51:02.580 --> 03:51:06.200] do this formalization with no domain-specific harness, so without,
+[03:51:06.420 --> 03:51:11.540] prove to me, and with no human steering with respect to the solution.
+[03:51:11.880 --> 03:51:14.700] So the report we talked about in September had both this domain-specific
+[03:51:14.700 --> 03:51:19.600] Harness proved to me and a lot of support from a researcher. This is testing
+[03:51:19.600 --> 03:51:24.200] whether or not a large team of Fable 2 agents can autonomously develop this
+[03:51:24.200 --> 03:51:28.700] this formalization themselves. So this is just giving you a sense for the harness.
+[03:51:29.000 --> 03:51:33.060] It looks kind of complicated but it's actually pretty simple. Each of the
+[03:51:33.060 --> 03:51:37.620] thousand agents has its own sandbox with restricted network access. Most of this
+[03:51:37.620 --> 03:51:42.520] is directed on safety and security. So we have a thousand agents each have their
+[03:51:42.520 --> 03:51:44.860] own sandbox, they can connect to two different things,
+[03:51:45.120 --> 03:51:46.360] a Git and a SQL database.
+[03:51:46.600 --> 03:51:47.020] That's it.
+[03:51:47.180 --> 03:51:49.260] Those are the core primitives that we give this team.
+[03:51:50.380 --> 03:51:53.040] And we have real-time monitoring looking at every tool
+[03:51:53.040 --> 03:51:54.540] call for things like escapes.
+[03:51:55.320 --> 03:51:57.000] We also have offline monitoring looking
+[03:51:57.000 --> 03:51:59.540] at runs of all the agents every 10 minutes.
+[03:52:00.000 --> 03:52:00.980] This is kind of the setup.
+[03:52:01.580 --> 03:52:03.920] 1,000 agent team, very simple primitives,
+[03:52:04.080 --> 03:52:05.080] just Git and a database.
+[03:52:06.220 --> 03:52:08.360] The prompting is pretty simple.
+[03:52:08.360 --> 03:52:15.420] it establishes one lead agent 999 helper agents it gives them awareness of get
+[03:52:15.420 --> 03:52:19.920] and the database and the problem statement that's really it we want to
+[03:52:19.920 --> 03:52:24.900] see if this team could then do this formalization what's interesting is this
+[03:52:24.900 --> 03:52:29.260] kind of story of what the team did the lead very early on five minutes into the
+[03:52:29.260 --> 03:52:35.320] run basically created these database tables so agents now are sufficiently
+[03:52:35.320 --> 03:52:38.540] advanced that they can actually build primitives that they need to solve hard problems.
+[03:52:38.800 --> 03:52:41.800] We didn't tell them to these tables. These are the tables that the agent actually just kind of built.
+[03:52:42.940 --> 03:52:46.820] A table where the lead can announce things, assign roles to workers,
+[03:52:47.960 --> 03:52:52.180] everyone, you know, agents can post notes, a subtask table, a table that indicates whether
+[03:52:52.180 --> 03:52:55.980] or not things are landed. So the lead just creates these tables to orchestrate this team.
+[03:52:56.900 --> 03:53:02.680] And this is a visualization showing how the agents wrote to and read from these tables
+[03:53:02.680 --> 03:53:03.660] over the course of this run.
+[03:53:04.220 --> 03:53:06.560] Now, red on the top is showing writes to the tables.
+[03:53:06.760 --> 03:53:07.680] Green is showing reads.
+[03:53:07.940 --> 03:53:09.760] What's really interesting is you can see occasionally
+[03:53:09.760 --> 03:53:11.300] the lead right into the announce table.
+[03:53:11.680 --> 03:53:13.700] This kind of announces major global,
+[03:53:13.700 --> 03:53:16.160] like kind of announcements about the problem.
+[03:53:17.600 --> 03:53:19.720] It also assigns workers,
+[03:53:19.980 --> 03:53:22.180] these helpers to different statements in this theorem
+[03:53:22.180 --> 03:53:23.120] as they proceed.
+[03:53:23.620 --> 03:53:26.320] Notes are where they communicate and share kind of progress.
+[03:53:26.980 --> 03:53:29.420] Land is where they kind of actually write the lean code
+[03:53:29.420 --> 03:53:30.800] as part of the proof.
+[03:53:32.940 --> 03:53:36.960] autonomously without specific prompting use the database in this way to
+[03:53:36.960 --> 03:53:41.080] coordinate their work on this extremely hard long-horizon task this ran for
+[03:53:41.080 --> 03:53:46.800] around 30 hours and for particularly challenging parts of this proof they
+[03:53:46.800 --> 03:53:50.080] actually develop their own abstractions this is actually a task tree for this
+[03:53:50.080 --> 03:53:53.560] Lagrange tunnel this is one of the harder statements in the proof and this
+[03:53:53.560 --> 03:53:56.500] is actually showing the different dependencies of the tasks within this
+[03:53:56.500 --> 03:54:01.280] tree and this is actually showing over time how you know the progress from like
+[03:54:03.760 --> 03:54:07.100] So the point of all this is really just to kind of highlight,
+[03:54:07.260 --> 03:54:11.100] agents can solve very long horizon problems without much scaffolding.
+[03:54:11.400 --> 03:54:16.860] This is showing kind of the overall kind of allocation of the agents across
+[03:54:16.860 --> 03:54:19.000] these different tasks over the course of this run.
+[03:54:20.340 --> 03:54:25.160] And this kind of shows how the lead and the agents themselves kind of reallocate
+[03:54:25.160 --> 03:54:29.920] themselves and kind of reassign themselves to different parts of the problem as it
+[03:54:29.920 --> 03:54:34.560] progresses and as these statements, there's 60 statements in this proof, are all solved.
+[03:54:34.760 --> 03:54:39.500] So the agents using simple primitives, git and the database, can coordinate themselves
+[03:54:40.080 --> 03:54:43.760] across this very hard problem to solve it progressively over time.
+[03:54:44.400 --> 03:54:45.640] That's really the key point.
+[03:54:45.760 --> 03:54:47.120] And you can see time progressing here.
+[03:54:47.920 --> 03:54:51.400] This from one of our runs, this is one of the notes that the agents left, basically
+[03:54:51.400 --> 03:54:56.040] saying total freeze of the origin, effective now, magnificent work all 999 of you.
+[03:54:57.600 --> 03:55:04.620] So basically, what is really interesting about this is we were able to show this formalization,
+[03:55:04.640 --> 03:55:06.500] which was expected to take many, many years.
+[03:55:07.080 --> 03:55:12.220] Back in September, we showed initially we could do it with like a dozen agents with a lot of scaffolding.
+[03:55:12.420 --> 03:55:16.640] This proved to be a harness and a lot of poking and support from a researcher.
+[03:55:17.120 --> 03:55:23.000] This new result is showing we provide a lot of structure in terms of safety and monitoring,
+[03:55:23.000 --> 03:55:28.780] but the agent team was able to accomplish this task with very simple primitives without a domain
+[03:55:28.780 --> 03:55:33.880] civic harness in this particular case and agents are getting increasingly good at orchestrating
+[03:55:33.880 --> 03:55:38.360] themselves and knowing how to coordinate using these simple primitives for very challenging
+[03:55:38.360 --> 03:55:42.240] long-horizon tasks that's really the key kind of observation which is very interesting from this
+[03:55:42.240 --> 03:55:48.900] work now I want to shift gears and talk about memory which is entirely different when I talk
+[03:55:48.900 --> 03:55:50.780] about in terms of multi-agent, but it's highlighting
+[03:55:50.780 --> 03:55:52.780] in another area where we're seeing Claude
+[03:55:52.780 --> 03:55:54.000] gain significant capabilities.
+[03:55:54.200 --> 03:55:56.560] So previously, we talked about Claude's ability
+[03:55:56.560 --> 03:55:58.760] to orchestrate large teams to solve very long horizon
+[03:55:58.760 --> 03:55:59.100] problems.
+[03:55:59.520 --> 03:56:01.140] Memory is a different capability.
+[03:56:01.340 --> 03:56:02.880] It's showing that Claude is increasingly
+[03:56:02.880 --> 03:56:05.600] capable to organize this context to help solve
+[03:56:05.600 --> 03:56:06.540] long horizon problems.
+[03:56:08.160 --> 03:56:10.800] So I published an NG blog on this fairly recently.
+[03:56:10.800 --> 03:56:13.000] And this is actually the lead line of the blog.
+[03:56:13.080 --> 03:56:15.660] I think this actually encapsulates the idea of the blog.
+[03:56:15.780 --> 03:56:17.640] And one of the central ideas around memory,
+[03:56:19.140 --> 03:56:21.100] And this is from the philosopher Kierkegaard,
+[03:56:21.220 --> 03:56:23.040] so life can only be understood backwards,
+[03:56:23.300 --> 03:56:24.580] but it must be lived forwards.
+[03:56:24.960 --> 03:56:27.340] This is a fundamental paradox of agent memory
+[03:56:27.340 --> 03:56:30.640] because agents write to memory typically as they go about a task.
+[03:56:30.800 --> 03:56:33.260] They encounter something weird or interesting, they write to memory.
+[03:56:34.140 --> 03:56:38.460] But memory needs to be a coherent map of an agent's knowledge
+[03:56:38.460 --> 03:56:40.400] that agents can look back on and reflect on.
+[03:56:40.740 --> 03:56:43.700] So when they're writing to memory, they're writing kind of myopically.
+[03:56:43.880 --> 03:56:45.720] They're looking greedily within a session saying,
+[03:56:45.800 --> 03:56:47.440] ah, this seems important for this task at hand.
+[03:56:48.900 --> 03:56:51.020] that's globally coherent and not redundant.
+[03:56:51.440 --> 03:56:54.260] So this is like a very tricky paradox of memory.
+[03:56:54.400 --> 03:56:57.880] And frankly, we as humans have the same kind of challenge.
+[03:56:58.500 --> 03:57:01.060] We go about our day, we write to short term memories,
+[03:57:01.200 --> 03:57:04.020] believe that the hippocampus kind of is the place that that's orchestrated.
+[03:57:04.540 --> 03:57:08.940] At night, it's believed that the hippocampus replays to the neocortex,
+[03:57:09.100 --> 03:57:10.480] is where long term knowledge is stored.
+[03:57:11.180 --> 03:57:13.680] So it's believed that actually this dreaming process for
+[03:57:13.680 --> 03:57:16.340] humans helped consolidate the fragments or
+[03:57:16.340 --> 03:57:19.460] the most important aspects of our daily experience into long-term knowledge.
+[03:57:19.620 --> 03:57:24.520] There's this decomposition between daily memory and kind of long-term knowledge.
+[03:57:24.920 --> 03:57:27.420] And we found agents can benefit from the same decomposition.
+[03:57:27.940 --> 03:57:29.360] That's really the key point of the post.
+[03:57:30.400 --> 03:57:32.660] Now, here's some results kind of telling the story.
+[03:57:32.860 --> 03:57:37.260] So this is actually an open-source continued learning benchmark called CLBench.
+[03:57:38.340 --> 03:57:42.100] And this is showing that different models,
+[03:57:42.320 --> 03:57:44.840] as you go from like Sonnet up to like Opus 5.5,
+[03:57:46.340 --> 03:57:51.620] using memory now this task is a very simple setup it asks claude to ask to solve 40 questions about
+[03:57:51.620 --> 03:57:56.960] a database in between each question it's a fresh session and claude can write to notes like a memory
+[03:57:56.960 --> 03:58:01.560] directory between each session so it's kind of like a set of sequential questions and claude can
+[03:58:01.560 --> 03:58:09.620] write memories to help with future questions right so what happens is the dark bars are showing when
+[03:58:09.620 --> 03:58:14.140] you give claude the memory store and then the the hash is like without memory okay now what's
+[03:58:14.140 --> 03:58:21.200] interesting is with sonnet 4.6 giving sonnet memory you can see in the dark blue has very little
+[03:58:21.200 --> 03:58:26.380] benefit can't really use memory and we looked in the results and we found sonnet doesn't um
+[03:58:26.380 --> 03:58:32.940] doesn't reliably know when to write to memory it also doesn't really uh naturally read from memory
+[03:58:32.940 --> 03:58:39.080] okay it's also worth noting that these experiments are done with no specific memory prompting it just
+[03:58:39.080 --> 03:58:43.980] tells the agent the directory is available use memory if you want that's really it so sonnet
+[03:58:44.140 --> 03:58:50.020] doesn't natively use memory effectively sonnet 5 does indeed better for Opus and so on and so
+[03:58:50.020 --> 03:58:55.360] basically the models get better and better with the same simple instruction at using memory and
+[03:58:55.360 --> 03:59:01.460] really that the key idea here is that what happens is with stronger models they know intrinsically
+[03:59:01.460 --> 03:59:06.540] when to write to memory and they kind of know intrinsically when to read from memory to retrieve
+[03:59:06.540 --> 03:59:11.040] information their memories are also better they're like they're highly verified statements or
+[03:59:11.040 --> 03:59:13.400] predictions about kind of the state of the database
+[03:59:13.400 --> 03:59:15.960] or what may happen next, versus earlier models
+[03:59:15.960 --> 03:59:18.680] tend to write lower quality memories.
+[03:59:18.820 --> 03:59:20.500] And I'll show you a very fun example of this
+[03:59:20.500 --> 03:59:21.360] from a different game.
+[03:59:22.120 --> 03:59:23.340] This is from Pokemon.
+[03:59:23.780 --> 03:59:27.360] So this is showing you Cloud 3.7's memory directory
+[03:59:27.360 --> 03:59:29.700] from Pokemon versus Fable 5.
+[03:59:31.740 --> 03:59:33.060] Here is the key point.
+[03:59:33.220 --> 03:59:38.360] The size of each box indicates the number of memory files
+[03:59:38.360 --> 03:59:39.800] in each of these directories.
+[03:59:41.040 --> 03:59:43.620] When we have Claude pay Pokemon, we give Claude a memory directory,
+[03:59:43.760 --> 03:59:45.520] just like I did in that prior benchmark, right?
+[03:59:46.040 --> 03:59:48.800] Claude can write whatever it wants that directory while it plays the game.
+[03:59:49.420 --> 03:59:53.920] What's really interesting is, Sonnet 3.7, we see it writes a huge amount to memory.
+[03:59:54.300 --> 03:59:56.560] And when you look at the memories, it's indiscriminate.
+[03:59:56.760 --> 03:59:59.140] It's basically writing down all sort of experience.
+[03:59:59.280 --> 03:59:59.980] It creates this huge...
+[04:00:00.000 --> 04:00:04.920] unwieldy, just disgusting memory directory of things that are not really relevant or strategic for gameplay.
+[04:00:05.400 --> 04:00:09.480] And it proceeds much worse in the game than table five.
+[04:00:09.840 --> 04:00:11.980] Table five memory directory is much tighter.
+[04:00:12.300 --> 04:00:16.780] It's really strategic insights, tactical knowledge, things you can't just get from game state very easily.
+[04:00:17.060 --> 04:00:23.480] So what we see is better models have much better instincts for salience and what to write to memory.
+[04:00:23.640 --> 04:00:26.060] And you can see this reflected in the size of the memory directories.
+[04:00:26.060 --> 04:00:28.520] it's much tighter, it's much more strategic,
+[04:00:28.780 --> 04:00:30.460] and gameplay, indeed, with Fable 5,
+[04:00:30.520 --> 04:00:32.460] gets much further than Sonata 3.7.
+[04:00:32.640 --> 04:00:35.380] So it gives another intuition around the fact that Claude
+[04:00:35.380 --> 04:00:37.240] is much better at writing to memory,
+[04:00:37.460 --> 04:00:39.480] knowing kind of what to write in salience,
+[04:00:39.640 --> 04:00:40.480] in what's salient,
+[04:00:41.800 --> 04:00:44.380] and also kind of using and reading from memory.
+[04:00:44.440 --> 04:00:47.040] So models are getting more and more kind of effective
+[04:00:47.040 --> 04:00:48.980] at knowing salience, knowing what to write,
+[04:00:49.060 --> 04:00:49.960] and also reading.
+[04:00:51.380 --> 04:00:54.220] Now, both of these represent what I would consider
+[04:00:54.220 --> 04:00:55.620] in my initial framing,
+[04:00:56.060 --> 04:00:58.820] of writing to memory during experience.
+[04:00:59.020 --> 04:01:00.140] So basically, in both of these tasks,
+[04:01:00.240 --> 04:01:02.320] we let Claude write to memory while it plays this game.
+[04:01:02.500 --> 04:01:05.860] We let Claude write to memory while it does the CLBench benchmark.
+[04:01:06.500 --> 04:01:09.880] But as I mentioned, there's also the dreaming side of memory.
+[04:01:09.960 --> 04:01:13.500] So this is allowing Claude to reflect over memories to fix things.
+[04:01:13.580 --> 04:01:15.160] And I'll show some interesting examples of that.
+[04:01:16.620 --> 04:01:19.480] This is kind of a framing of dreaming.
+[04:01:19.660 --> 04:01:25.400] And so you can think about memory in terms of there are transcripts.
+[04:01:26.060 --> 04:01:27.680] think about as kind of the foundation of memory.
+[04:01:28.180 --> 04:01:31.720] So imagine a memory system could very simply be just transcript search.
+[04:01:32.580 --> 04:01:34.860] Claude writes her transcript as it goes about a task.
+[04:01:35.180 --> 04:01:36.720] Future sessions can read from the transcript.
+[04:01:37.480 --> 04:01:38.900] Of course, transcripts are large.
+[04:01:39.100 --> 04:01:40.080] It's very unwieldy.
+[04:01:40.560 --> 04:01:43.840] We talk a lot about in the blog post the fact that transcripts often contain
+[04:01:43.840 --> 04:01:46.660] information that, you know, a very, very small amount of information in
+[04:01:46.660 --> 04:01:48.220] transcripts is actually salient and matters.
+[04:01:48.720 --> 04:01:51.400] So we also allow Claude to do things like writing memory notes.
+[04:01:51.420 --> 04:01:54.200] Also, I just talked about, as it goes, it can write notes to memory.
+[04:01:56.060 --> 04:01:59.940] Dreaming lets you reflect over transcripts and these written notes and
+[04:01:59.940 --> 04:02:01.300] re-represent them.
+[04:02:01.620 --> 04:02:04.200] Build member representations like wikis as an example.
+[04:02:04.880 --> 04:02:07.380] Actually promote certain memories to injected context and
+[04:02:07.380 --> 04:02:09.220] load it preemptively into every future session.
+[04:02:09.740 --> 04:02:12.920] So memory is this, dreaming is this mechanism where you can kind of
+[04:02:12.920 --> 04:02:16.220] process existing transcripts or existing memory notes and
+[04:02:16.220 --> 04:02:18.340] build new things from them including representations,
+[04:02:18.640 --> 04:02:20.080] injected contexts, and more.
+[04:02:21.440 --> 04:02:24.900] So some fun examples of this, this is from Pokemon Gameplay.
+[04:02:26.100 --> 04:02:28.260] Dreaming is an effective way to correct mistakes in memory.
+[04:02:28.380 --> 04:02:30.800] So as I talked about, when Claude's going about a task,
+[04:02:30.900 --> 04:02:32.980] it can write incorrect notes to memory.
+[04:02:33.080 --> 04:02:34.100] Just it makes a mistake.
+[04:02:34.500 --> 04:02:36.720] This happened in this particular game.
+[04:02:39.160 --> 04:02:41.160] Claude incorrectly wrote the location
+[04:02:41.820 --> 04:02:44.140] of a particular landmark in the game.
+[04:02:44.360 --> 04:02:47.780] Now what happened is, with this incorrectly written memory,
+[04:02:47.980 --> 04:02:51.220] Claude got trapped in a loop where basically it would
+[04:02:51.220 --> 04:02:53.220] mislocalize itself at this particular point in the game,
+[04:02:53.340 --> 04:02:55.300] fall down this trap door, and it would basically
+[04:02:56.060 --> 04:03:00.080] prior level that's like the high level intuition the details aren't that interesting or important
+[04:03:00.700 --> 04:03:06.760] the key idea is a poison memory was injected and it's stuck there dreaming can rescue that that's
+[04:03:06.760 --> 04:03:11.000] really the intuition on why dreaming is extremely powerful for reflecting over memories and correcting
+[04:03:11.000 --> 04:03:16.960] them so this is showing some trajectories of the game where orange is memory and dreaming
+[04:03:17.700 --> 04:03:22.880] up is good so basically up represents game progress and down represents kind of game
+[04:03:22.880 --> 04:03:23.500] regression.
+[04:03:23.740 --> 04:03:27.880] And what's interesting is raw memory, basically,
+[04:03:28.100 --> 04:03:30.520] without dreaming, we can see crashes out.
+[04:03:31.380 --> 04:03:33.060] A incorrect memory is planted.
+[04:03:33.300 --> 04:03:35.720] And Claude continues to basically regress or fall
+[04:03:35.720 --> 04:03:37.260] in the game when it hits that particular point.
+[04:03:37.380 --> 04:03:38.940] When dreaming, it rescues that mistake.
+[04:03:39.140 --> 04:03:40.600] Claude proceeds to the next level.
+[04:03:41.180 --> 04:03:42.380] That's really the key observation.
+[04:03:42.400 --> 04:03:43.880] And this is a very general principle,
+[04:03:43.920 --> 04:03:46.600] that Claude can use dreaming to correct mistakes in memory
+[04:03:46.600 --> 04:03:47.920] that are otherwise stuck there.
+[04:03:48.000 --> 04:03:51.460] It's a very important way you can kind of correct from errors.
+[04:03:52.880 --> 04:03:55.660] This is another fun example of building representations in memory.
+[04:03:56.320 --> 04:04:00.660] So there's been a lot of interest in wikis as kind of general kind of
+[04:04:00.660 --> 04:04:02.280] ways that Cloud can organize knowledge.
+[04:04:02.960 --> 04:04:05.820] This is a really fun example from,
+[04:04:06.140 --> 04:04:08.940] we acquired a company Stainless back in May.
+[04:04:09.900 --> 04:04:13.620] And we had access to the company Corpus, all its documents and
+[04:04:13.620 --> 04:04:16.420] Slack messages and so forth, and we anonymized things.
+[04:04:16.680 --> 04:04:22.040] And we built kind of a data set from it, which allowed us to test dreaming.
+[04:04:22.880 --> 04:04:27.000] So what we did was we created kind of an email set of 25 questions about the company
+[04:04:27.000 --> 04:04:28.720] that can only be answered from this corpus.
+[04:04:29.080 --> 04:04:35.100] We allow Claude to build a wiki from this information to help it answer questions.
+[04:04:35.780 --> 04:04:38.620] What you see is we compare a raw search tool,
+[04:04:38.800 --> 04:04:41.860] that's just like some kind of semantic search over this documentation.
+[04:04:42.720 --> 04:04:45.500] We compare that as a baseline, which does reasonably well.
+[04:04:45.880 --> 04:04:48.400] You can see it's like 53% just for search.
+[04:04:48.920 --> 04:04:52.880] We also test letting Claude build a wiki over this knowledge.
+[04:04:53.180 --> 04:04:56.160] You can see as you push, you add more and more dreaming tokens,
+[04:04:56.520 --> 04:04:59.380] the wiki gets better and better and better allowing Claude to answer questions.
+[04:05:00.120 --> 04:05:08.000] So Claude natively can kind of build up over time a representation of this kind of corpus of knowledge through a wiki.
+[04:05:08.220 --> 04:05:11.300] And as you add more dreaming, the wiki gets more and more useful.
+[04:05:11.460 --> 04:05:16.140] We think there's a really nice mental model to think about how agents can kind of build knowledge over time.
+[04:05:16.140 --> 04:05:20.080] They can be given access to kind of raw corpuses of text, of transcripts,
+[04:05:20.120 --> 04:05:24.740] and they can kind of build these representations that allow them to search those contexts much more easily,
+[04:05:24.920 --> 04:05:27.740] to answer questions and to connect their knowledge in effective ways.
+[04:05:28.020 --> 04:05:33.320] We also find that adding the wiki and the search tool together actually bumps further beyond just raw search.
+[04:05:33.540 --> 04:05:39.320] So it's kind of another intuition that basically Claude can also build representations like wikis
+[04:05:39.320 --> 04:05:43.640] in its kind of memory in order to help it kind of solve problems.
+[04:05:44.440 --> 04:05:51.020] And a final example, this is from a different benchmark, but this is showing two different
+[04:05:51.020 --> 04:05:52.020] wikis that Claude built.
+[04:05:52.120 --> 04:05:54.420] So this is prior to dreaming and after dreaming.
+[04:05:55.080 --> 04:05:59.780] What we saw is when Claude was building wikis, in this particular case, there were some gaps.
+[04:06:00.420 --> 04:06:05.020] And for example, this initial wiki had a bunch of placeholders for pages that didn't exist.
+[04:06:05.180 --> 04:06:07.780] This can happen when Claude's kind of building different memory representations.
+[04:06:08.180 --> 04:06:12.520] And without dreaming compute, there may not be opportunities to rescue or fix those errors.
+[04:06:13.640 --> 04:06:15.220] that we saw is when we ran Dreaming,
+[04:06:15.640 --> 04:06:18.380] Dreaming can look over Claude's existing representation,
+[04:06:18.600 --> 04:06:21.100] like for example, a wiki, and can fill in mistakes.
+[04:06:21.220 --> 04:06:23.100] So in this case, it fills in all the missing gaps,
+[04:06:23.260 --> 04:06:25.160] it creates an index, and so again,
+[04:06:25.240 --> 04:06:27.340] Dreaming is a way that Claude can reflect
+[04:06:27.340 --> 04:06:30.580] and kind of apply compute across its memory to improve it
+[04:06:30.580 --> 04:06:32.620] by correcting mistakes like I talked about,
+[04:06:32.940 --> 04:06:36.100] by filling in gaps in its knowledge like we see here,
+[04:06:36.860 --> 04:06:39.520] or for example, by creating new representations like wikis.
+[04:06:41.020 --> 04:06:42.000] so with that
+[04:06:42.000 --> 04:06:44.200] I thank you all for listening
+[04:06:44.200 --> 04:06:45.060] and
+[04:06:46.340 --> 04:06:47.400] I'll be at the
+[04:06:47.400 --> 04:06:49.600] Anthropic booth so please come see me
+[04:06:49.600 --> 04:06:51.020] and happy to talk about any of this
+[04:06:51.680 --> 04:06:52.200] applause
+[04:06:52.880 --> 04:06:53.400] applause

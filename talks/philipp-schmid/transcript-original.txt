@@ -1,0 +1,212 @@
+精简 Agent 运行框架之后，应该测什么？（节选版）
+Philipp Schmid
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+现存转写从半句开始，开场存在缺漏。
+
+[02:21:16.420 --> 02:21:18.300] And harnessing the less code we need.
+[02:21:18.560 --> 02:21:21.960] And if we look at what we have been doing at Google DeepMind
+[02:21:21.960 --> 02:21:23.000] for the last six months.
+[02:21:23.040 --> 02:21:24.820] So at May, we had Google I.O.
+[02:21:25.680 --> 02:21:28.140] And today, it's November 11.
+[02:21:28.320 --> 02:21:30.920] And we have been shipping relentlessly, basically.
+[02:21:31.300 --> 02:21:34.800] Just earlier today, we announced our first decision model
+[02:21:34.800 --> 02:21:36.080] with Gemini Decision 1.
+[02:21:36.480 --> 02:21:39.580] Yesterday, we made Gemini 4 Carbon available.
+[02:21:39.680 --> 02:21:41.460] And then if we just look at the last six months,
+[02:21:43.080 --> 02:21:49.140] few weeks. As already said, Gemini Carbon is now available for you. So if you are a Google AI
+[02:21:49.140 --> 02:21:53.280] Ultra subscriber, you can use it in Antigravity, you can use it in the Gemini app, you can use it
+[02:21:53.280 --> 02:22:00.000] in AI Studio. Carbon is number one on the Curso Bench eval and also number one on the Perplexity
+[02:22:00.000 --> 02:22:06.320] benchmark. And internally at Google, we have been using it already a lot. And much more exciting is
+[02:22:06.320 --> 02:22:12.440] that I'm happy to share that we launched the Gemini Decisions API roughly one hour ago with our new
+[02:22:13.080 --> 02:22:18.960] decision one model. So it's a similar model to Jeff. You can provide all of the existing Gemini
+[02:22:18.960 --> 02:22:25.300] inputs, meaning it's multimodal. So you can provide text, audio, images, video, and also PDFs
+[02:22:25.300 --> 02:22:31.020] natively, and then provide up to 1,000 questions in a single request. The average end-to-end latency,
+[02:22:31.300 --> 02:22:37.400] including all of the network overhead, is between 150 to 250 milliseconds, and it costs 10 cents
+[02:22:37.400 --> 02:22:44.840] per 1 million tokens. So how do models get good at agentic work? And that's a rough overview
+[02:22:44.840 --> 02:22:50.140] on how post training works. So we have a task, we have our model, the model has a certain
+[02:22:50.140 --> 02:22:54.260] set of tools, and then we have some kind of compute environment, and at the end we have
+[02:22:54.260 --> 02:22:58.760] some verifier. And the model tries to basically solve that task, use different tools, and
+[02:22:58.760 --> 02:23:02.980] then based on the score from the verifier, we update the model. But no one is telling
+[02:23:02.980 --> 02:23:08.300] the model which tools to use, and basically it only receives that reward feedback.
+[02:23:09.280 --> 02:23:15.160] So if we look at two examples on how a model can do a certain task with tools, we have the path A,
+[02:23:15.520 --> 02:23:21.400] where we have dedicated tools for file system control. So you all have probably used coding
+[02:23:21.400 --> 02:23:26.960] agents and you have seen a read file call or an edit file call, so that's one way of doing it.
+[02:23:27.060 --> 02:23:31.900] And the other way of doing it would be just using a single inline bash script for all of the changes.
+[02:23:32.980 --> 02:23:39.940] side, we roughly need around 10 turns to make the same changes to a coding repository compared
+[02:23:39.940 --> 02:23:45.440] to the two turns on the right side just using bash. And it also reflects in the amount of
+[02:23:45.440 --> 02:23:52.000] tokens we need. So the left path takes around 10x more tokens than the right path, and it's
+[02:23:52.000 --> 02:23:58.920] doing the exact same thing at the end for the model to achieve that task. So in my experiment,
+[02:23:58.920 --> 02:24:02.500] meant every roughly six months I try to build a new coding
+[02:24:02.500 --> 02:24:03.940] agent harness from scratch.
+[02:24:04.160 --> 02:24:06.880] And I always ask myself, OK, how much of the harness
+[02:24:06.880 --> 02:24:09.240] do I really need to achieve the same task?
+[02:24:09.400 --> 02:24:12.520] And what is overhead to the model and we no longer need?
+[02:24:12.780 --> 02:24:18.040] So if we look at the coding agent harness, which from 2025,
+[02:24:18.380 --> 02:24:21.580] we had roughly around 10 to 15 to 20 tools.
+[02:24:21.780 --> 02:24:25.440] We had dedicated tools for file editing.
+[02:24:25.440 --> 02:24:30.800] We had dedicated tools for planning, for to-do lists, and also we had a lot of dedicated
+[02:24:30.800 --> 02:24:35.460] rules in our system prompt which told the model what to do and what not to do.
+[02:24:35.960 --> 02:24:39.200] And that worked, of course, but since then we made a lot of changes.
+[02:24:39.380 --> 02:24:46.640] So in my experiments, first one was done roughly now two years ago in February, where we did
+[02:24:46.640 --> 02:24:47.440] not really had engines.
+[02:24:47.640 --> 02:24:47.740] Right?
+[02:24:47.800 --> 02:24:48.380] We had workflows.
+[02:24:48.560 --> 02:24:50.160] We basically had predefined steps.
+[02:24:50.340 --> 02:24:52.560] RUG applications back then were very popular.
+[02:24:52.560 --> 02:24:53.420] We had the planner.
+[02:24:53.580 --> 02:24:54.160] We had search.
+[02:24:55.440 --> 02:24:57.220] was found, and then we generated an answer.
+[02:24:57.420 --> 02:24:59.520] Then we started to see our first agents.
+[02:24:59.820 --> 02:25:02.540] We had many, many different tools for all sorts of fine
+[02:25:02.540 --> 02:25:03.380] kernel actions.
+[02:25:04.380 --> 02:25:07.660] And then came the coding agents, where we had those roughly 10
+[02:25:07.660 --> 02:25:08.540] to 20 tools.
+[02:25:08.820 --> 02:25:11.960] And now in my last experiment, I tried to see, OK,
+[02:25:12.000 --> 02:25:14.820] what's going to happen if I provide only one tool
+[02:25:14.820 --> 02:25:15.540] to my agent?
+[02:25:16.160 --> 02:25:19.240] And the outcome was pretty exciting to me.
+[02:25:19.420 --> 02:25:22.220] So this one tool agent works the same way
+[02:25:22.220 --> 02:25:24.880] as every other agent, except that it only has one tool,
+[02:25:25.980 --> 02:25:29.800] and the model can use that tool for any sorts of tasks.
+[02:25:30.020 --> 02:25:33.460] And the bash tool is very simple, so it runs in a separate clean
+[02:25:33.460 --> 02:25:36.980] subshell, and it supports the command argument.
+[02:25:37.180 --> 02:25:41.500] I also added a description so that it's nice and easier to display to the user what the
+[02:25:41.500 --> 02:25:45.220] model is actually doing, and then some async parameters. So basically when the model runs
+[02:25:45.220 --> 02:25:49.540] a bash command, the parameter tells the model, okay, if it is
+[02:25:49.540 --> 02:25:53.620] the command longer running than this milliseconds, it's being
+[02:25:55.740 --> 02:26:00.920] resolves, and the model receives a local file handle where it can look up later, okay, if the
+[02:26:00.920 --> 02:26:06.120] process is still running. That's very interesting if you do, like, all sorts of, like, web development,
+[02:26:06.140 --> 02:26:10.380] for example. And the single bash tool actually works for all of the things we are using,
+[02:26:10.540 --> 02:26:15.180] so we can have long-running work where we can start on the foreground and then automatically
+[02:26:15.660 --> 02:26:20.740] move it to the background. The model receives some file handle, and since it has bash available,
+[02:26:20.740 --> 02:26:25.180] If we store it to a file system, it can read the logs which are being streamed.
+[02:26:25.340 --> 02:26:32.060] If the agent itself is a CLI, it can call itself using bash, so there's practically no need
+[02:26:32.060 --> 02:26:35.420] to create subagent tools for it because it can invoke itself.
+[02:26:35.660 --> 02:26:40.260] And then, of course, we don't need dedicated planning or memory tools because we have our
+[02:26:40.260 --> 02:26:41.160] file system available.
+[02:26:41.380 --> 02:26:46.100] We can provide some context to the model so the model can keep track of its own work with
+[02:26:46.100 --> 02:26:48.180] the file system and using the bash tools.
+[02:26:48.180 --> 02:26:53.800] tools. In addition, of course, to our tools, we have system prompts. And similar to tools,
+[02:26:54.100 --> 02:26:59.920] system prompts evolved over time. Every dot here is roughly around 100 tokens. And you
+[02:26:59.920 --> 02:27:07.360] can see that coding agents mid-2025 had a lot of context we needed to send in every
+[02:27:07.360 --> 02:27:12.080] request. Of course, this also improved. And similar story here is like, okay, what do
+[02:27:12.080 --> 02:27:17.620] I really need to provide to my agent to make it successful and work? And what of all of
+[02:27:18.240 --> 02:27:22.920] information and details we had in the past are now basically part of the model.
+[02:27:23.600 --> 02:27:29.420] So how much of the harness helps and how much is in the way? And to find that out
+[02:27:29.420 --> 02:27:33.000] I was running a lot of different evaluations of a lot of different
+[02:27:33.000 --> 02:27:36.660] agent harnesses with a lot of different tools. And one example I like to show
+[02:27:36.660 --> 02:27:41.740] here which was done with Gemini for Carbon from an eval task from deep SVE
+[02:27:41.740 --> 02:27:47.380] is like okay what happens if I provide my existing coding agent tools with read,
+[02:27:48.180 --> 02:27:50.780] search, grab, and my bash only tool.
+[02:27:51.000 --> 02:27:55.860] And I think you can pretty clearly see that the top line is taking a lot of more
+[02:27:55.860 --> 02:28:01.020] tokens, a lot of more turns, and a lot of more times to achieve the same task.
+[02:28:01.240 --> 02:28:06.660] And what stood out really well is that, okay, reading is done in parallel in the
+[02:28:06.660 --> 02:28:09.880] beginning, but as soon as we start going into making code changes,
+[02:28:10.140 --> 02:28:15.960] we see that same behavior that the model is making turn by turn a single edit,
+[02:28:15.960 --> 02:28:19.420] which of course consumes a lot of time and a lot of tokens.
+[02:28:20.160 --> 02:28:23.780] So how does this look at Protoscope?
+[02:28:24.140 --> 02:28:28.100] So I have my own eval set of around 350 tasks
+[02:28:28.100 --> 02:28:32.040] for coding, knowledge work, and terminal commands
+[02:28:32.040 --> 02:28:35.820] all run with Gemini 4 Argon here and
+[02:28:35.820 --> 02:28:39.780] four different agent harnesses. One is the bash only harness and then okay
+[02:28:39.780 --> 02:28:43.880] with bash we still have that issue on how can I read
+[02:28:43.880 --> 02:28:50.340] images, right? If I'm, I cannot cut screenshot.pingey, it would return a binary, and it will fill my
+[02:28:50.340 --> 02:28:55.600] context, and the model cannot see the image. So I added a view media tool, which basically returns
+[02:28:55.600 --> 02:29:01.980] the image in a way the model can see. Then we have two different agent harnesses with structure tools
+[02:29:02.520 --> 02:29:09.600] for file system operations. And if we just look at the score column, all of them look roughly
+[02:29:09.600 --> 02:29:15.920] identical, right? So if we would just evaluate our model in an ancient harness looking at the score,
+[02:29:16.360 --> 02:29:22.020] it would basically not really matter which one of those we would pick. Of course, there's a slight
+[02:29:22.020 --> 02:29:28.960] variance in the scores, but I only ran each task one time, so it might be just some noise or maybe
+[02:29:28.960 --> 02:29:34.840] something else, so you would probably need to run a few more samples per harness, but the score looks
+[02:29:34.840 --> 02:29:42.260] roughly the same. So how would we now know which harness should I choose? If we just look at all
+[02:29:42.260 --> 02:29:48.400] of the evals being shown, it's always mostly about score. But if we look at the token column, or even
+[02:29:48.400 --> 02:29:54.860] more at the dollar per task, there's a picture which is changing. So the token per task is getting
+[02:29:54.860 --> 02:30:01.020] lower, interestingly, if we just use bash, and then also the cash hit rate increases. So if we just
+[02:30:01.020 --> 02:30:06.720] compare like the best media as the baseline, the tasks are almost 2x cheaper
+[02:30:06.720 --> 02:30:13.900] compared to more complex, more tools, agent harnesses, and we would not see it
+[02:30:13.900 --> 02:30:19.960] if we just look at the score. And to show you a few examples, I prepared some
+[02:30:19.960 --> 02:30:25.460] demos. So here I'm using the PI harness, which makes it super simple to basically
+[02:30:25.460 --> 02:30:32.360] define what tools you want to use. I have the same prompt for 3.5 flash, which we released
+[02:30:32.360 --> 02:30:38.280] roughly six months ago for all tools, so like whatever PI ships out of the box. Then we
+[02:30:38.280 --> 02:30:45.340] have it for bash only, and then we have it for carbon, and sorry, for carbon with the
+[02:30:45.340 --> 02:30:51.580] default tools and then with bash only. This runs now since we only have roughly around
+[02:30:51.580 --> 02:30:57.520] 20 minutes, I recorded all of that and clicked that very nice accelerate button here. And
+[02:30:57.520 --> 02:31:04.520] what we can see on the right side is that the same paradigm basically applies when models
+[02:31:04.520 --> 02:31:10.560] get better, they roughly need less tools. So with 3.5 flash, we see with the default
+[02:31:10.560 --> 02:31:15.340] tools compared to bash only, we had the same amount of model calls, we had the same amount
+[02:31:15.340 --> 02:31:20.080] of tool calls, and we had roughly the same amount of tokens. And if we look at the traces,
+[02:31:21.580 --> 02:31:26.180] For bash only, we have some cut commands to read different files, we have some inline
+[02:31:26.180 --> 02:31:29.280] scripts to make changes and then like some git changes.
+[02:31:29.780 --> 02:31:33.140] If we look at the default tools, we can see roughly the same.
+[02:31:33.360 --> 02:31:38.480] We had read file commands, we used the edit tool and then had some git commands to make
+[02:31:38.480 --> 02:31:39.040] those changes.
+[02:31:39.380 --> 02:31:46.300] If we now look at carbon with the default tools, it already used way less tool calls
+[02:31:46.300 --> 02:31:50.960] and model calls, so it's basically doing work in parallel,
+[02:31:51.100 --> 02:31:52.320] but also trying to reduce it.
+[02:31:52.440 --> 02:31:56.480] So we had, for example, the still same for read calls
+[02:31:56.480 --> 02:31:57.960] and also the edit calls.
+[02:31:58.020 --> 02:31:59.580] But what starts to get interesting
+[02:31:59.580 --> 02:32:01.780] if we are going to look into Bash?
+[02:32:01.940 --> 02:32:06.020] And in Bash, we had even less tool calls and model calls.
+[02:32:06.120 --> 02:32:09.500] And the interesting part here is that the model writes
+[02:32:09.500 --> 02:32:13.180] a single Python script to make all of that changes in one go
+[02:32:13.180 --> 02:32:15.800] and no longer needs to call multiple tools.
+[02:32:16.300 --> 02:32:28.400] So if we go further, what does it mean in terms for Carbon here and how Bash pays off is that the better the model gets or the more reasoning and capability it gets,
+[02:32:28.660 --> 02:32:33.100] Bash helps the model to be able to chain more commands in the single call.
+[02:32:33.360 --> 02:32:39.360] For Carbon, it was roughly 2.2 to 3.7 commands per Bash call.
+[02:32:39.520 --> 02:32:42.260] And for Flash, it was only 1.3 to 1.8.
+[02:32:42.260 --> 02:32:54.400] So we are seeing up to 3x less tokens by Carbon to achieve the same tasks compared to having the same tools we need to use.
+[02:32:55.220 --> 02:32:58.500] So two more examples to look at it as well.
+[02:32:58.720 --> 02:33:02.120] It's like we have on the left side Carbon with the default tools.
+[02:33:02.380 --> 02:33:09.760] So we see our coding agent tools with write, with edit, and we see, okay, it does some parallel work in turn two,
+[02:33:09.760 --> 02:33:14.080] some parallel work in turn 3 and 4, and then we have all of the changes.
+[02:33:14.360 --> 02:33:16.500] And on the right side, where it just has the Bash tool,
+[02:33:16.640 --> 02:33:21.780] it uses Python to write an inline script to make all of the changes at the same time
+[02:33:22.340 --> 02:33:24.000] with much less token.
+[02:33:24.180 --> 02:33:30.000] And the same counts for if we compare Gemini 3.5 Flash to Gemini 4 Carbon.
+[02:33:30.360 --> 02:33:33.980] Flash, with Bash only, is not chaining those commands.
+[02:33:34.240 --> 02:33:38.040] So here it's not really, it doesn't matter if I'm having a retool,
+[02:33:39.760 --> 02:33:45.120] and a bash tool, or if I have just a bash tool, because 3.5 flash used to use bash for
+[02:33:45.620 --> 02:33:50.580] single turn commands. So it had a single turn for reading, it had a single turn for writing,
+[02:33:51.000 --> 02:33:55.360] but if we look at carbon, which here in this example is the exact same task,
+[02:33:55.680 --> 02:34:00.860] it needs less way turns, so the reading is not needed to read all of the different files and
+[02:34:01.520 --> 02:34:05.780] completely, it just uses rip grab and like some intelligent searching to find where we need to
+[02:34:05.780 --> 02:34:10.800] make changes, and then it writes a single Python inline bash command to make all of
+[02:34:10.800 --> 02:34:17.680] those edits in one go, saving us a lot of tokens. So what does it bring us? Models will keep
+[02:34:17.680 --> 02:34:23.480] eating the harness, and I'm pretty sure that 2027 will also be a lot more about how many
+[02:34:23.480 --> 02:34:29.240] tokens do we need to solve a task. Even for the few improvements we made between Argon
+[02:34:29.240 --> 02:34:34.720] and Carbon, the better model needs less tokens per task, which of course is very exciting for all
+[02:34:35.780 --> 02:34:41.140] use it more and also it matters a lot what the harness provides and we will
+[02:34:41.140 --> 02:34:45.780] might not see it if we just look at the accuracy it's also very important that
+[02:34:45.780 --> 02:34:50.560] we start measuring the token efficiency because harnesses can look the same on
+[02:34:50.560 --> 02:34:55.300] accuracy because our models are now very good so if your harness is more complex
+[02:34:55.300 --> 02:34:59.200] to use the model will work around it will find solutions around it but needs
+[02:34:59.200 --> 02:35:04.000] more terms and more tokens to achieve the same results and then also what
+[02:35:05.780 --> 02:35:08.900] will try to do the same experiment six months from now.
+[02:35:09.520 --> 02:35:14.040] And currently, the trend we see slowly rising,
+[02:35:14.360 --> 02:35:16.680] at least on social media and the industry,
+[02:35:16.880 --> 02:35:21.360] is that we might go back to some code mode tool that we,
+[02:35:21.540 --> 02:35:23.440] instead of writing a bash commands,
+[02:35:23.640 --> 02:35:26.020] that we write TypeScript or Python directly,
+[02:35:26.520 --> 02:35:28.720] that MCP will come back.
+[02:35:28.840 --> 02:35:30.160] I'm a big fan of MCP.
+[02:35:30.300 --> 02:35:31.740] And they are making great changes
+[02:35:31.740 --> 02:35:43.040] to make it more easily usable, especially interesting for all of that code mode work is MCP servers now allow you to return structured outputs,
+[02:35:43.160 --> 02:35:50.940] so the model can write better scripts to take more actions in the single term, and it also allows us to do some better proxy around the security,
+[02:35:51.140 --> 02:35:56.780] because bash calls are very hard to understand, but if I have some obstructive layer in TypeScript,
+[02:35:56.780 --> 02:36:00.920] I can watch all of the commands being executed
+[02:36:00.920 --> 02:36:02.280] and make sure those are secure.
+[02:36:03.400 --> 02:36:08.220] And for you, build to delete your code before the model does.
+[02:36:08.600 --> 02:36:11.660] Give your model to a computer, not a toolbox.
+[02:36:12.620 --> 02:36:15.140] And when a new model ships, I definitely recommend you
+[02:36:15.140 --> 02:36:18.620] trying to think a little bit outside of the box,
+[02:36:18.780 --> 02:36:20.480] be more ambitious, try to really see,
+[02:36:20.580 --> 02:36:22.940] okay, what if I remove my complete harness
+[02:36:22.940 --> 02:36:24.020] and just give it one tool?
+[02:36:24.020 --> 02:36:29.700] tool. And then also, please scan the QR code. You will get free credits. We will send them
+[02:36:29.700 --> 02:36:35.180] out after the AI engineering event to try out Carbon and also to try out the new Gemini
+[02:36:35.180 --> 02:36:40.140] Decisions API. So if you have some time today, I really can recommend checking out the new
+[02:36:40.140 --> 02:36:43.560] decisions model, Carbon, and thank you for your time.

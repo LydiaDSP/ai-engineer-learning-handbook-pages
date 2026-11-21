@@ -1,0 +1,110 @@
+[
+  {
+    "id": "p01",
+    "start": 10748.0,
+    "time": "02:59:08 至 03:00:24",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10748s",
+    "zh": "Agent 已经是代替用户检索的一类调用者。Pinner 用 Exa 内部请求量的增长引出讲题。这里的用量是厂商自报，主要说明为什么团队开始专门为 Agent 设计搜索接口。",
+    "en": "Agents have become another class of search client acting on users' behalf. Pinner introduces the topic with Exa's internal growth figures. Those are company-reported figures, useful here as an explanation for why the team built agent-facing search.",
+    "end": "03:00:24"
+  },
+  {
+    "id": "p02",
+    "start": 10824.0,
+    "time": "03:00:24 至 03:01:16",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10824s",
+    "zh": "训练截止与模型上线之间有时间差。软件版本、价格、法规和公开事件在此期间仍会变化。即使一个事实已经出现很久，也不保证训练数据收录了它，更不保证模型能稳定回忆出来。",
+    "en": "Time passes between training cutoff and model release. API versions, prices, laws, and events keep changing. Older information can still be missing from training or difficult for the model to recall reliably.",
+    "end": "03:01:16"
+  },
+  {
+    "id": "p03",
+    "start": 10876.0,
+    "time": "03:01:16 至 03:02:31",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10876s",
+    "zh": "演讲把模型训练内容、搜索引擎已索引范围和更广的互联网放在一起看。登录、数据库和有权限要求的来源会改变搜索可触及的范围。给 Agent 增加搜索工具，只会让它访问工具实际覆盖的部分。",
+    "en": "The talk distinguishes material seen in training from material indexed by a search engine and the much larger web. Logins, specialized databases, and permitted sources determine what a search tool can actually reach.",
+    "end": "03:02:31"
+  },
+  {
+    "id": "p04",
+    "start": 10951.0,
+    "time": "03:02:31 至 03:03:03",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10951s",
+    "zh": "Exa 用 Atlas 对比检索方案。Agent 先查满足条件的实体，再尽可能补齐与这些实体有关的字段，最后把答案与人工整理的标准表对照。",
+    "en": "Atlas asks an agent to find matching entities, enrich them with requested attributes, and compare the assembled answers with a reference table.",
+    "end": "03:03:03"
+  },
+  {
+    "id": "p05",
+    "start": 10983.0,
+    "time": "03:03:03 至 03:03:33",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10983s",
+    "zh": "一行只有在要求的字段都正确时才计为正确。单次检索的命中率可能很高，但如果每条记录有一项来自错版本或错对象，整项研究任务仍会有明显损失。",
+    "en": "The benchmark gives credit to a row only when its required attributes are correct. A healthy query-level hit rate can still produce a poor final table if values come from the wrong version or entity.",
+    "end": "03:03:33"
+  },
+  {
+    "id": "p06",
+    "start": 11013.0,
+    "time": "03:03:33 至 03:04:22",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11013s",
+    "zh": "Pinner 报告，Atlas 题目一旦涉及训练集未覆盖的数据，成绩就明显下降。无网页搜索、仅靠模型已有知识的闭卷运行约有 9% 的行完全正确，可用作对照。",
+    "en": "Pinner reports that Atlas scores fell sharply when tasks encountered data outside the training set. With no web search and only parametric knowledge, about 9 percent of rows were fully correct, providing a closed-book baseline.",
+    "end": "03:04:22"
+  },
+  {
+    "id": "p07",
+    "start": 11062.0,
+    "time": "03:04:22 至 03:05:39",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11062s",
+    "zh": "Pinner 看到 Agent 更常发出带条件的完整句子。查询里可能同时写行业、时间窗口、地点和版本。排序系统需要留住这些约束，否则第一批看似相关的结果会把 Agent 引向错误的对象。",
+    "en": "Pinner observes that agents tend to issue longer queries with constraints such as industry, date range, location, and version. Ranking has to preserve those constraints, or superficially related results steer the task toward the wrong entities.",
+    "end": "03:05:39"
+  },
+  {
+    "id": "p08",
+    "start": 11139.0,
+    "time": "03:05:39 至 03:05:57",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11139s",
+    "zh": "开放网络检索覆盖不到一部分受付费或访问权限限制的材料。扩充可访问的数据源需要有合作或相应许可。评估工具时，可以先怀疑来源覆盖，再去看模型有没有误解结果。",
+    "en": "Open-web retrieval misses some licensed or access-restricted material. Extending coverage depends on partner data and appropriate access. Apparent reasoning failures should be checked for missing sources as well as misinterpretation.",
+    "end": "03:05:57"
+  },
+  {
+    "id": "p09",
+    "start": 11157.0,
+    "time": "03:05:57 至 03:07:01",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11157s",
+    "zh": "多轮搜索如果每次把多页 HTML 原样交给模型，会消耗大量 token。Pinner 还报告，加入关键词检索后，Atlas 整行正确率升到约 28%，但多数行仍有缺项或错值。",
+    "en": "Repeated searches that return full HTML use a large number of tokens. Pinner also reports that keyword retrieval raised the share of fully correct Atlas rows to about 28 percent, with most rows still incomplete or wrong.",
+    "end": "03:07:01"
+  },
+  {
+    "id": "p10",
+    "start": 11221.0,
+    "time": "03:07:01 至 03:08:01",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11221s",
+    "zh": "抓取后，系统按语义从网页提取并建立索引。查询与索引进入同一表示空间做匹配。讲者强调的是把检索从文字重合推进到条件和含义层面的比较。",
+    "en": "Exa describes extracting semantic representations from crawled pages and indexing them. The query is represented in the same space, aiming to match its meaning and constraints.",
+    "end": "03:08:01"
+  },
+  {
+    "id": "p11",
+    "start": 11281.0,
+    "time": "03:08:01 至 03:09:30",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11281s",
+    "zh": "团队补充合作数据和可组织成关系的知识，并从单个页面中选择与当前查询有关的部分。一个页面对于不同查询可能需要不同摘录，因此不能用固定长度的首页摘要代替。",
+    "en": "The team extends public search with partner data and structured relationships. Passage extraction is conditioned on the question, since different queries can require different parts of the same page.",
+    "end": "03:09:30"
+  },
+  {
+    "id": "p12",
+    "start": 11370.0,
+    "time": "03:09:30 至 03:10:31",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11370s",
+    "zh": "Pinner 汇报，演示配置在 Atlas 上从闭卷约 9% 到有语义摘录和扩充数据时约 56%，并称相关成本下降约 28%。这些是 Exa 在该配置和基准上的结果，迁移到别的研究任务要重新测。",
+    "en": "Pinner reports roughly 9 percent closed-book accuracy and roughly 56 percent using the demonstrated retrieval setup, along with a reported cost reduction of about 28 percent. These are Exa's results on its benchmark and configuration.",
+    "end": "03:10:31"
+  }
+]

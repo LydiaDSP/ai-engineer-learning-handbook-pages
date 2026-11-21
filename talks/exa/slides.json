@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "ATLAS 用具体问题检验信息获取",
+    "time": "03:02:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=10955s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>示例要求查清一场比赛中多名车手的情况，答案需要合并多个可核对事实。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 10955
+  },
+  {
+    "id": "frame-02",
+    "after": "p09",
+    "title": "关键词检索的内部对照结果",
+    "time": "03:06:48",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11208s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图上比较闭卷回答与关键词搜索。数字来自讲者展示的评测，反映该任务集中的差异。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 11208
+  },
+  {
+    "id": "frame-03",
+    "after": "p11",
+    "title": "返回可溯源的证据片段",
+    "time": "03:09:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=11365s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>整页中真正支持答案的内容只有一段。示例用直接呈现这段文字来减少送给 Agent 的上下文。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 11365
+  }
+]

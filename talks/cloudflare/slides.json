@@ -1,0 +1,35 @@
+[
+  {
+    "id": "agent-cloud",
+    "after": "p25",
+    "title": "Cloudflare 搭建 Agent Cloud 时已有的基础设施",
+    "time": "00:47:06",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2826s",
+    "en": "assets/agent-cloud-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Cloudflare 搭建 Agent Cloud 时已有的基础设施</h3><dl><div><dt>已有能力</dt><dd>全球网络与 GPU、Workers 等计算资源、存储服务和模型推理。</dd></div><div><dt>还有一块</dt><dd>讲者用问号引出后来新增的快速判断与结构化提取模型。</dd></div></dl></div>",
+    "note": "这是讲者回顾当时的平台架构。",
+    "sourceSeconds": 2826
+  },
+  {
+    "id": "model-roles",
+    "after": "p44",
+    "title": "Clairic 把材料整理成程序能读取的值",
+    "time": "00:52:38",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3158s",
+    "en": "assets/model-roles-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Clairic 把材料整理成程序能读取的值</h3><dl><div><dt>从材料得出字段</dt><dd>幻灯片列出提取、计算、估计和预测四种用法。</dd></div><div><dt>处理结果</dt><dd>每项结果带置信度。讲者随后用 CI 日志演示怎样提取失败信息。</dd></div></dl></div>",
+    "note": "模型名按幻灯片写作 Clairic，既有转写和校译里有其他拼写。",
+    "sourceSeconds": 3158
+  },
+  {
+    "id": "ci-comparison",
+    "after": "p60",
+    "title": "同一次现场演示中两套 CI 排查流程的对照",
+    "time": "00:56:59",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3419s",
+    "en": "assets/ci-comparison-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>同一次现场演示中两套 CI 排查流程的对照</h3><dl><div><dt>全程用大模型</dt><dd>25.4 秒、0.0230 美元、6 次大模型调用、39,374 个大模型 token。</dd></div><div><dt>先选工具并提取，再用大模型综合</dt><dd>8.1 秒、0.0064 美元、1 次大模型调用、1,883 个大模型 token。</dd></div></dl></div>",
+    "note": "这组数字只对应截图中的现场运行，讲者还提到一轮不同的演练结果。",
+    "sourceSeconds": 3419
+  }
+]

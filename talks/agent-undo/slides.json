@@ -1,0 +1,35 @@
+[
+  {
+    "id": "timeout-duplicate",
+    "after": "p07",
+    "title": "请求超时后，工单可能已创建",
+    "time": "04:29:36",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=16176s",
+    "en": "assets/timeout-duplicate-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>请求超时后，工单可能已创建</h3><dl><div><dt>已经发生的事</dt><dd>远端服务已创建工单 781，但 Agent 没有收到回执。</dd></div><div><dt>盲目重试</dt><dd>第二次发送同一创建请求，可能多创建一张工单。应先查询第一次操作的结果。</dd></div></dl></div>",
+    "note": "原图标为 53.33%，工作区英文转写记为 54%。",
+    "sourceSeconds": 16176
+  },
+  {
+    "id": "recoverability-benchmark",
+    "after": "p14",
+    "title": "能力提高后，还要验证能否恢复",
+    "time": "04:33:14",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=16394s",
+    "en": "assets/recoverability-benchmark-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>能力提高后，还要验证能否恢复</h3><dl><div><dt>评估范围</dt><dd>600 项此前未见过的自我改进任务，分为 6 类。</dd></div><div><dt>表现与恢复</dt><dd>478 项改动提高能力，其中 197 项未通过恢复验证，占这 478 项的 41.2%。</dd></div></dl></div>",
+    "note": "数据来自讲者的 EvoUndo 实验。",
+    "sourceSeconds": 16394
+  },
+  {
+    "id": "verified-restore",
+    "after": "p20",
+    "title": "用恢复验证决定是否接受改动",
+    "time": "04:37:35",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=16655s",
+    "en": "assets/verified-restore-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用恢复验证决定是否接受改动</h3><dl><div><dt>应用前</dt><dd>记录旧值及其位置，保留能证明原始状态的资料。</dd></div><div><dt>测试中</dt><dd>在测试环境应用改动并执行恢复，交由独立验证器检查恢复后的状态。状态等价只覆盖评估的效果与抽样状态。</dd></div><div><dt>准入</dt><dd>能力和恢复检查通过后才接纳改动。失败则补足恢复方案或拒绝。</dd></div></dl></div>",
+    "note": "原图把恢复验证放在改动准入之前。",
+    "sourceSeconds": 16655
+  }
+]

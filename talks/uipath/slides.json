@@ -1,0 +1,35 @@
+[
+  {
+    "id": "decision-layers",
+    "after": "p05",
+    "title": "在确定性流程中放入语义判断",
+    "time": "05:54:03",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21243s",
+    "en": "assets/decision-layers-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在确定性流程中放入语义判断</h3><dl><div><dt>固定规则</dt><dd>流程按已知条件分支，执行明确定义的操作。</dd></div><div><dt>需要理解语义时</dt><dd>把判断或调查接入特定节点，让结果返回流程再决定后续动作。</dd></div></dl></div>",
+    "note": "讲者用这张引用图说明 UiPath 为何尝试把模型放在明确的流程节点上。",
+    "sourceSeconds": 21243
+  },
+  {
+    "id": "fraud-workflow",
+    "after": "p19",
+    "title": "把调查结果送回流程做分流",
+    "time": "05:58:40",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21520s",
+    "en": "assets/fraud-workflow-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把调查结果送回流程做分流</h3><dl><div><dt>调查证据</dt><dd>快速判断发出信号。需要更多信息时，由深入调查 Agent 查询并补足证据。</dd></div><div><dt>固定分流</dt><dd>现场演示输出 System 1 综合评分 4.97/5。固定规则将 ≥2.5 的案例送入 review 分支。</dd></div></dl></div>",
+    "note": "评分来自现场演示。",
+    "sourceSeconds": 21520
+  },
+  {
+    "id": "email-taxonomy",
+    "after": "p41",
+    "title": "用分类结果检验并修订邮件类别",
+    "time": "06:05:17",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21917s",
+    "en": "assets/email-taxonomy-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用分类结果检验并修订邮件类别</h3><dl><div><dt>拟定类别</dt><dd>通用大模型先根据样本草拟一组类别。</dd></div><div><dt>批量分类与检查</dt><dd>用 Jev 按类别判断，再用代码统计分布，标出太窄、太宽或空置的类别。</dd></div></dl></div>",
+    "note": "图中用合成邮箱的 480 封邮件探索类别。类别占比用于示意，分配计数来自样本邮箱的一次运行，只计 Jev 阶段，未作基准评测。",
+    "sourceSeconds": 21917
+  }
+]

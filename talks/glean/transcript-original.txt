@@ -1,0 +1,204 @@
+Glean 怎样让企业助手更快做出结构化决策？
+Chinmay Goyal
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[05:34:33.100 --> 05:34:40.200] Hi, everyone. My name is Chinmay, and I'm a software engineer at Glean. I work on the
+[05:34:40.200 --> 05:34:47.160] product engineering side of Glean Assistant. Today I'm going to give a talk on how Glean
+[05:34:48.420 --> 05:34:54.080] The title of the talk is Beyond Generation, Fast and Structured AI Decisions with Jev at Glee.
+[05:34:55.680 --> 05:35:02.420] If you look at it, most AI product steps are bounded decisions and not generation problems.
+[05:35:03.580 --> 05:35:09.580] So to give a couple of examples, user query intent classification, a ranker picking a suggestion
+[05:35:09.580 --> 05:35:15.300] out of N options, checking whether a citation is valid or not, routing to the correct model
+[05:35:15.300 --> 05:35:22.720] or expert, so on and so forth. Till now, we have been paying the full LLM cost and latency
+[05:35:23.380 --> 05:35:25.960] to get an answer to all these bounded problems.
+[05:35:28.400 --> 05:35:35.580] Jeff at Glean fills the gap between general LLMs and fine-tuned classifiers. Classification
+[05:35:35.580 --> 05:35:40.940] itself isn't a new problem. People have been trying to solve it since forever. We can have
+[05:35:40.940 --> 05:35:42.060] We have multiple ways to solve it.
+[05:35:42.340 --> 05:35:48.140] Some of the things that we have tried out include using a general purpose LLM, using
+[05:35:48.140 --> 05:35:53.380] an open model, something like Laya, fine-tuning that open model, or using Jev.
+[05:35:55.060 --> 05:35:59.480] All these approaches and all these different ways have their pros and cons.
+[05:35:59.800 --> 05:36:05.460] With a general purpose LLM, we incur a lot of cost and latency, while with something
+[05:36:05.460 --> 05:36:07.620] like Jev, we get no generated text output.
+[05:36:09.220 --> 05:36:14.660] Another advantage that we have been seeing with Jav is that as the taxonomy of the decision
+[05:36:14.660 --> 05:36:17.560] space changes, we don't have to fine tune these models again and again.
+[05:36:18.020 --> 05:36:21.900] We can just change our prompt a bit and boom, it works out of the box.
+[05:36:26.460 --> 05:36:33.240] Now I'll walk you through how we have integrated Javid Glean or these classification, how we
+[05:36:33.240 --> 05:36:38.640] have used Javit Glean to solve these classification problem statements. I'll go into some of these
+[05:36:38.640 --> 05:36:46.480] problems in great detail. Before we go into these individual problems, I wanted to touch
+[05:36:46.480 --> 05:36:51.720] upon how we evaluate these changes. We have a huge customer base having millions of users,
+[05:36:51.960 --> 05:36:57.220] so we don't want any of the changes that we make to regress our product. We have a multi-phase
+[05:36:57.220 --> 05:37:03.700] approach, a rollout approach to any change that we are making. This includes having a
+[05:37:03.700 --> 05:37:08.860] golden eval set for almost every possible thing. Any place where we have generative AI, any
+[05:37:08.860 --> 05:37:13.920] place where we have any form of intelligence involved, we have a golden eval set for that
+[05:37:13.920 --> 05:37:19.140] space. We soak all of these changes for a significant amount of time for our internal
+[05:37:19.140 --> 05:37:24.420] use case. We have around 1,500 people at Glean right now. We soak all of these changes within
+[05:37:24.420 --> 05:37:28.700] In our Glean instance, for a couple of weeks, we get active feedback.
+[05:37:28.960 --> 05:37:31.620] We have a very active feedback loop from our internal users.
+[05:37:31.860 --> 05:37:32.580] We work upon that.
+[05:37:32.820 --> 05:37:37.020] And then we go for an A-B testing with our customers.
+[05:37:39.480 --> 05:37:45.000] The first problem that we tried out with our decision model was query classification.
+[05:37:46.200 --> 05:37:49.360] Query classification is when we want to know the nature of user queries.
+[05:37:49.360 --> 05:37:58.000] queries. This helps us realize what kind of jobs are people using Glean for. Say, for
+[05:37:58.000 --> 05:38:02.060] example, if people are using more for sales-like queries, we focus more on that. If people are
+[05:38:02.060 --> 05:38:06.660] using more for engineering type use cases, we focus more on that. We tried out three
+[05:38:06.660 --> 05:38:13.140] different approaches over here, and this is data from our test bed. We used an open source
+[05:38:13.140 --> 05:38:19.080] Laya model, then we tried out Jev, and then we fine-tuned the Laya model on our own compute
+[05:38:19.080 --> 05:38:26.960] resources. Jev is the best no training option in our opinion. It nearly doubles the output
+[05:38:26.960 --> 05:38:33.240] quality of a base Laya model and is able to perform at 90% quality in comparison to a
+[05:38:33.240 --> 05:38:41.300] fine-tuned Laya. With Jev, we don't have to go through the very tedious process of data
+[05:38:43.360 --> 05:38:48.060] incurring the cost for compute, like training the model, fine-tuning the model again and
+[05:38:48.060 --> 05:38:52.780] again as the taxonomy changes. And at the same time, we don't have to worry about hosting
+[05:38:52.780 --> 05:38:55.800] the model or incurring the inference cost.
+[05:38:58.840 --> 05:39:03.520] The next problem we went to is expert routing. This is a pretty common problem statement in
+[05:39:03.520 --> 05:39:07.800] the industry right now. Like, hey, when the user query comes in, what expert do we route
+[05:39:07.800 --> 05:39:15.660] it too. How do we ensure that the user is of the best possible quality? Glean receives the
+[05:39:15.660 --> 05:39:20.340] way we have been solving this is Glean receives the user query and then decides what's the best
+[05:39:20.340 --> 05:39:24.760] expert to answer the query. We have been using a general purpose LLM to route to the correct
+[05:39:24.760 --> 05:39:31.920] expert. We set up a testbed for JEV. We set up a testbed with N experts. And our experiments found
+[05:39:31.920 --> 05:39:36.500] want a significantly high precision when using Jav and that too at an almost 8X reduction
+[05:39:36.500 --> 05:39:44.280] in latency. We had to change our implementation or our infrastructure significantly to integrate
+[05:39:44.280 --> 05:39:51.480] Jav into this specific stage of our product. But the reduction in latency justifies that
+[05:39:51.480 --> 05:39:57.220] inherent complexity in the system. We at Glean have been trying to build systems in the simplest
+[05:39:57.220 --> 05:39:59.980] possible manners. This is one of the rare pieces where we
+[05:40:00.000 --> 05:40:01.640] We believe complexity is worth it.
+[05:40:04.240 --> 05:40:08.180] Next I'll walk you through the rancor problem statement that I talked about.
+[05:40:10.400 --> 05:40:14.880] When we receive a user query, we also want to generate the best follow-up suggestions
+[05:40:14.880 --> 05:40:15.720] for the user.
+[05:40:15.900 --> 05:40:18.540] This helps us in getting discoverability for our product.
+[05:40:18.640 --> 05:40:21.160] This helps us in ensuring the user has the best possible experience.
+[05:40:21.440 --> 05:40:26.500] We also want to recommend or say preempt what the next user query might be.
+[05:40:26.500 --> 05:40:30.860] Again, a pretty common problem statement that the entire industry has been trying to solve for.
+[05:40:31.720 --> 05:40:40.940] Internally, we call this system Q, like Q as in the literal Q. The way this works, we have like
+[05:40:40.940 --> 05:40:47.120] 10 or 15 different sources or 10 or 15 different ways, 10 or 15 different sources that are generating
+[05:40:47.120 --> 05:40:53.240] suggestions independently of each other. These suggestions are generated by natural language
+[05:40:53.240 --> 05:40:59.860] LLMs, and it's like a proper natural language query. Once these suggestions are in, we have
+[05:40:59.860 --> 05:41:04.540] a ranking step. So the ranker takes on all these suggestions, takes on the first user
+[05:41:04.540 --> 05:41:09.880] query, takes on the output that Glean gave, and then all these suggestions in that context.
+[05:41:10.620 --> 05:41:13.880] The ranker is then asked to decide, like, hey, you have these suggestions, what do you
+[05:41:13.880 --> 05:41:18.960] think is the best one? A pretty interesting bottleneck that we had over here is we want
+[05:41:18.960 --> 05:41:24.760] the response to be snappy. We cannot have a state where we give the textual response
+[05:41:24.760 --> 05:41:29.840] to the user and then wait five seconds for generating the follow-up suggestion. We have
+[05:41:29.840 --> 05:41:34.800] to be snappy. That's why we have time limits on these sessions. So right now, this step
+[05:41:34.800 --> 05:41:41.540] had a time limit of 1.5 to 2 seconds. Jeff no doubt gave us a better quality and far
+[05:41:41.540 --> 05:41:46.260] more than what we had with the general purpose LLM. But two
+[05:41:46.260 --> 05:41:50.720] things stood out over there. First, we were able to give a
+[05:41:50.720 --> 05:41:56.660] suggestion within our time bounds in 99.2% cases. With the
+[05:41:56.660 --> 05:42:01.680] general purpose LLM, this was almost 90%. So, this ensures that
+[05:42:01.680 --> 05:42:07.420] we have user engagement and far more user queries now. The
+[05:42:07.420 --> 05:42:12.260] The second thing is, at Glean, whenever we use these LLMs, we have guardrails.
+[05:42:12.380 --> 05:42:17.220] Guardrails in the sense that LLM might not be good at generating a response, or LLM might
+[05:42:17.220 --> 05:42:19.100] be making some specific kind of mistakes.
+[05:42:19.300 --> 05:42:23.280] So we have checks and balances for all those possible mistakes that we see.
+[05:42:23.500 --> 05:42:29.500] We keep a log off all these checks that are incurred at any point of time.
+[05:42:30.300 --> 05:42:36.720] With a general purpose LLM, we were able to generate a valid suggestion in almost 90%
+[05:42:36.720 --> 05:42:38.380] of the cases.
+[05:42:38.580 --> 05:42:43.420] We still had some places where LLM was either generating a response in a different language,
+[05:42:44.840 --> 05:42:51.760] the output did not meet certain other criteria that we had written programmatically.
+[05:42:52.080 --> 05:42:57.460] With Jev, we found zero cases to be there when the output was invalid.
+[05:42:57.460 --> 05:43:01.280] Now, a natural question is, hey, but you would have used a different prompt.
+[05:43:01.380 --> 05:43:05.360] Yes, the prompt was somewhat different, but we tried to mimic the prompt in the two cases
+[05:43:05.360 --> 05:43:07.820] to the largest extent possible so that we don't have a divergence.
+[05:43:08.080 --> 05:43:11.160] Again, we at Glean want to keep the system as simple as possible.
+[05:43:14.740 --> 05:43:20.380] Another benefit we see with using a decision model is how we can control the thresholds.
+[05:43:20.880 --> 05:43:25.560] Because in this rancor problem statement, we are getting specific probabilities of each
+[05:43:25.560 --> 05:43:26.100] output.
+[05:43:27.460 --> 05:43:29.320] restricted to a binary yes or no response,
+[05:43:29.620 --> 05:43:31.320] we get like, hey, these were the five options,
+[05:43:31.540 --> 05:43:33.660] and these are the probabilities of these five options.
+[05:43:34.220 --> 05:43:37.040] With this, we are able to fine tune the thresholds
+[05:43:37.040 --> 05:43:38.240] based on the deployment.
+[05:43:38.560 --> 05:43:40.780] We have put in self-learning systems,
+[05:43:41.080 --> 05:43:44.380] which based on the customer deployment
+[05:43:45.180 --> 05:43:49.020] and the nature of usage that the specific customer has,
+[05:43:49.520 --> 05:43:51.240] fine tune the thresholds by itself.
+[05:43:51.440 --> 05:43:54.580] This ensures that the experience
+[05:43:54.580 --> 05:43:56.220] in each and every customer out there
+[05:43:57.460 --> 05:44:01.200] possible based on how they use Glean, not a general purpose
+[05:44:01.200 --> 05:44:02.880] solution that fits all.
+[05:44:08.080 --> 05:44:09.580] This is an interesting one.
+[05:44:10.220 --> 05:44:14.540] Now, moving on from how we have been making the lives or the
+[05:44:14.540 --> 05:44:16.060] experience of our end users better,
+[05:44:16.900 --> 05:44:21.380] we also tried using Jav and some other parts of our
+[05:44:21.900 --> 05:44:22.620] development pipeline.
+[05:44:22.880 --> 05:44:26.580] One of them was how we use LLMS judges.
+[05:44:28.140 --> 05:44:30.340] Like all of us have been using LLM as judges
+[05:44:30.340 --> 05:44:31.260] for quite some time now.
+[05:44:31.520 --> 05:44:33.200] There's an input, there's an output,
+[05:44:33.980 --> 05:44:36.400] and we use an LLM to judge how the quality of the output is.
+[05:44:36.860 --> 05:44:39.320] Now naturally whenever we use LLM as a judge,
+[05:44:39.540 --> 05:44:41.540] we repeat the experiment multiple times
+[05:44:41.540 --> 05:44:43.900] because to account for the variability in the response.
+[05:44:45.180 --> 05:44:47.940] At Glean we used Jeff for a very specific part
+[05:44:47.940 --> 05:44:49.140] of our evaluation pipeline.
+[05:44:50.460 --> 05:44:53.360] Glean responses are like any other AI product out there
+[05:44:53.360 --> 05:44:54.400] has like citations.
+[05:44:54.400 --> 05:45:00.060] This is how people trust that Glean's answer was correct and it is grounded in the correct
+[05:45:00.060 --> 05:45:00.520] document.
+[05:45:01.580 --> 05:45:08.260] Now, we hold these citations to a very high bar and we have a specific part in our evaluation
+[05:45:08.260 --> 05:45:13.900] pipeline where we check whether the cited document really supports the claim made in
+[05:45:13.900 --> 05:45:14.980] the answer or not.
+[05:45:15.880 --> 05:45:20.280] This again seems to be a pretty simple yes or no question, like, hey, whether the claim
+[05:45:20.280 --> 05:45:22.020] is supported or not.
+[05:45:22.660 --> 05:45:26.540] with Jav, no doubt we had a far better latency and cause, like
+[05:45:26.540 --> 05:45:31.680] visible in the slide over here. The interesting thing we
+[05:45:31.680 --> 05:45:35.380] noticed over here is how consistent and reproducible
+[05:45:35.380 --> 05:45:39.280] Jav results were in comparison to something like say Luna. In
+[05:45:39.820 --> 05:45:44.180] the 28 or 30 use cases that we had, only one run had a
+[05:45:44.180 --> 05:45:48.020] difference in response. Apart from that, everything was
+[05:45:48.020 --> 05:45:55.260] consistent. This ensures two things for us as engineers or developers at Glean. We are
+[05:45:55.260 --> 05:46:00.020] not only improving the quality of our product, we are not only improving Glean in a linear
+[05:46:00.020 --> 05:46:06.760] fashion anymore. Any improvement of this extent in the development pipeline leads to an exponential
+[05:46:06.760 --> 05:46:12.820] increase in how we can improve the product. So if I, as a developer, am able to ship things
+[05:46:12.820 --> 05:46:13.860] is like 5x faster.
+[05:46:14.040 --> 05:46:17.120] Like this is a significant reduction in latency.
+[05:46:17.360 --> 05:46:18.940] Like if I run this experiment
+[05:46:18.940 --> 05:46:20.420] across thousands and thousands of entries,
+[05:46:20.540 --> 05:46:21.560] this is a lot of time.
+[05:46:21.920 --> 05:46:25.600] And again, I don't have to run the same input output pair
+[05:46:25.600 --> 05:46:27.160] multiple times because the result from Java
+[05:46:27.160 --> 05:46:28.200] quite consistent.
+[05:46:28.640 --> 05:46:31.820] So if I'm able to increase my own productivity
+[05:46:31.820 --> 05:46:36.220] by like 5x or 6x, I can ship 6x times the features
+[05:46:36.220 --> 05:46:37.020] to our customers.
+[05:46:37.180 --> 05:46:39.220] And this happens across like 500 engineers
+[05:46:39.220 --> 05:46:40.600] or 300 engineers at Glee.
+[05:46:40.600 --> 05:46:49.080] So, the impact of a good decision model is no longer linear. It is exponential on how
+[05:46:49.080 --> 05:46:57.300] we can improve the product. Okay. Now, moving on from product and LLMS
+[05:46:57.300 --> 05:47:07.160] judges, this is a pretty important part of how we use our customer data. Security is something
+[05:47:07.160 --> 05:47:14.040] that all our customers expect from us. So, for example, we have checks and balances on all the
+[05:47:14.040 --> 05:47:21.240] inputs and outputs coming from a tool, all the inputs and outputs from an LLM. Till now we have
+[05:47:21.240 --> 05:47:27.900] like a multi-phase approach. There are two phases to this. The first one is like recall heavy phase,
+[05:47:28.000 --> 05:47:32.820] and the second one is the final heavy loaded LLM. All these calls are made in parallel to
+[05:47:32.820 --> 05:47:35.200] the actual tool input-output calls.
+[05:47:36.980 --> 05:47:42.280] Till now, we used to host a virtual classifier using T4 GPUs across all our customers.
+[05:47:42.900 --> 05:47:44.340] So Glean is a single-tenant solution.
+[05:47:44.600 --> 05:47:47.320] We don't use or share resources across customers.
+[05:47:47.520 --> 05:47:52.860] Every customer gets its own deployment, gets its own instance, and gets all the resources.
+[05:47:53.320 --> 05:47:59.740] So assuming we have 1,000 customers out there, we had to maintain virtual classifiers across
+[05:47:59.740 --> 05:48:04.060] all these thousand customers, which becomes a pretty difficult problem statement in itself,
+[05:48:04.080 --> 05:48:10.460] which takes up a lot of time from the engineers. So looking at the results over here, the overall
+[05:48:10.460 --> 05:48:14.880] recall of the first phase where we used to have a virtual classifier, we replaced that with
+[05:48:14.880 --> 05:48:22.140] Jeff, went from 31.5% to 90.2%. At the same time, we are seeing a significant reduction in cost.
+[05:48:22.380 --> 05:48:28.600] Now, this cost is only the resource cost mentioned over here, but we are also saving cost on the
+[05:48:30.060 --> 05:48:34.440] We don't have to invest two or three engineers who are full-time maintaining those virtual
+[05:48:34.440 --> 05:48:36.660] classifiers or T4 GPUs of those customers.
+[05:48:38.600 --> 05:48:43.120] The improvement or the savings that we have are far more than 50%.
+[05:48:46.040 --> 05:48:49.760] This slide concludes all the results I have talked about till now.
+[05:48:50.840 --> 05:48:55.060] Jev at Glean has been able to influence the product experience of the users, has been
+[05:48:55.060 --> 05:49:01.720] able to impact how we as developers have been working at Glean and most importantly, it also
+[05:49:01.720 --> 05:49:07.520] has a very good positive impact on the security that we provide to our customers. A simple rule
+[05:49:07.520 --> 05:49:13.060] that we have been using is, in conclusion, a simple rule that we have been using at Glean is,
+[05:49:13.120 --> 05:49:17.720] can the output be listed in advance? If no, then it's a freeform generative text problem statement.
+[05:49:18.280 --> 05:49:24.400] Go back to something that can generate freeform text. If yes, then use Jev. Are labels stable and
+[05:49:25.420 --> 05:49:32.000] If this is the case where the labels are stable, which is rarely the case anymore, you can also
+[05:49:32.000 --> 05:49:36.240] fine tune a model. But if the labels change, which in my opinion is quite frequent these days,
+[05:49:36.620 --> 05:49:44.940] then again, use something like JEV. Obviously, if you need dynamic text, we can feel free to try out
+[05:49:44.940 --> 05:49:49.780] more hybrid approaches like JEV along with free form text, LLMs.
+[05:49:51.960 --> 05:49:53.320] This ends my presentation.
+[05:49:53.840 --> 05:49:55.140] So thank you, everyone, for listening.
+[05:49:55.960 --> 05:50:00.380] I have added a blog link to the blog post where we have posted
+[05:50:00.380 --> 05:50:02.520] the exact same results in great detail.
+[05:50:03.660 --> 05:50:05.880] Feel free to catch me on the outside if you have more
+[05:50:05.880 --> 05:50:06.780] questions. Thank you.

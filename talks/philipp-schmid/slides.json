@@ -1,0 +1,35 @@
+[
+  {
+    "id": "two-paths",
+    "after": "p06",
+    "title": "两条工具路径，按同一标准验收",
+    "time": "02:23:43",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=8623s",
+    "en": "assets/two-paths-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>两条工具路径，按同一标准验收</h3><dl><div><dt>专用文件工具</dt><dd>逐步搜索、读取和编辑。演示轨迹约十轮，估算约 60k 输入 token。</dd></div><div><dt>通过 Bash 组合操作</dt><dd>把多处修改集中执行。演示轨迹约两轮，估算约 7k 输入 token。</dd></div></dl></div>",
+    "note": "图中两组处理的是同一个函数参数改名任务。",
+    "sourceSeconds": 8623
+  },
+  {
+    "id": "eval-table",
+    "after": "p21",
+    "title": "得分相近，token 和成本仍有差异",
+    "time": "02:29:13",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=8953s",
+    "en": "assets/eval-table-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>得分相近，token 和成本仍有差异</h3><dl><div><dt>四套配置</dt><dd>比较 Bash 加媒体查看、纯 Bash 和两套结构化工具配置。</dd></div><div><dt>衡量代价</dt><dd>图中同时列出任务得分、每任务 token、缓存命中率和每任务成本。</dd></div></dl></div>",
+    "note": "结果来自讲者约 350 道任务的实验，每题只运行一次。",
+    "sourceSeconds": 8953
+  },
+  {
+    "id": "model-trace",
+    "after": "p27",
+    "title": "把执行轨迹和调用指标并排看",
+    "time": "02:32:02",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=9122s",
+    "en": "assets/model-trace-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把执行轨迹和调用指标并排看</h3><dl><div><dt>对照条件</dt><dd>比较两个模型分别使用默认工具和只使用 Bash 时的表现。</dd></div><div><dt>观察指标</dt><dd>看模型调用、工具调用和 token 用量，再回查每一步实际执行的操作。</dd></div></dl></div>",
+    "note": "原片此时正在播放讲者预先录制的对照演示。",
+    "sourceSeconds": 9122
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "id": "p01",
+    "start": 23670.0,
+    "time": "06:34:30 至 06:35:24",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23670s",
+    "zh": "Diffusion 创始人 Justin McCarthy 想讨论软件工厂应该用在哪些工作上。他更关心可以把什么交给稳定循环，以及哪些决定需要人和客户一起试出来。",
+    "en": "Diffusion founder Justin McCarthy asks which work belongs in a software factory. He is interested in what can move into a stable loop and what still has to be worked out with customers.",
+    "end": "06:35:24"
+  },
+  {
+    "id": "p02",
+    "start": 23724.0,
+    "time": "06:35:24 至 06:36:47",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23724s",
+    "zh": "他回忆在 Claude 4 时代把模型接成循环的经历。早期结果偶尔能稳定下来，代价是大量 token 和特意拼装的各类组件。后来模型和运行框架变强，维持这类循环所需的定制有所减少。",
+    "en": "He recalls building model loops in the Claude 4 era. Early systems occasionally stabilized, at substantial token expense and with a collection of hand-built components. Better models and harnesses later reduced the amount of custom machinery needed to keep those loops useful.",
+    "end": "06:36:47"
+  },
+  {
+    "id": "p03",
+    "start": 23807.0,
+    "time": "06:36:47 至 06:37:43",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23807s",
+    "zh": "他建议在目标还没有说明白的时候少用工业化流程。探索产品市场契合度需要先问客户是否在意某个结果，过早提高交付速度会把试探性的想法变成昂贵的工程项目。",
+    "en": "He urges teams to hold back from industrializing work whose goal is unclear. Searching for product–market fit begins by learning whether customers care about an outcome. Scaling delivery too early can turn a provisional idea into an expensive engineering project.",
+    "end": "06:37:43"
+  },
+  {
+    "id": "p04",
+    "start": 23863.0,
+    "time": "06:37:43 至 06:38:32",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23863s",
+    "zh": "已有系统带着可以观察的需求。客户付费、反复使用同样的流程，也会在出问题时联系支持。这些信号让团队知道改造时应该保住哪些行为。",
+    "en": "An existing system comes with observable demand. Customers pay for it, repeat workflows and contact support when something goes wrong. These signals tell the team which behaviors an internal change has to preserve.",
+    "end": "06:38:32"
+  },
+  {
+    "id": "p05",
+    "start": 23912.0,
+    "time": "06:38:32 至 06:39:10",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23912s",
+    "zh": "这给偿还技术债提供了比较清楚的起点。用户期望的功能已经跑在系统里，团队可以尝试重写内部实现，并对照原来提供的结果。",
+    "en": "That makes technical debt a clearer starting point. Expected functionality is already running, so the team can change the internal implementation and compare the results with what the service was already delivering.",
+    "end": "06:39:10"
+  },
+  {
+    "id": "p06",
+    "start": 23950.0,
+    "time": "06:39:10 至 06:40:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23950s",
+    "zh": "Diffusion 把需要持续兑现的预期称作承诺。功能是承诺，成本、价格和安全也是。只规定一个按钮还在，可能漏掉用户真正依赖的响应时间、权限或账单。",
+    "en": "Diffusion calls an expectation that should continue to hold a promise. Features count, as do cost, price and security. Checking that a button still exists can overlook the response time, permissions or bill a customer relies on.",
+    "end": "06:40:25"
+  },
+  {
+    "id": "p07",
+    "start": 24025.0,
+    "time": "06:40:25 至 06:41:04",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24025s",
+    "zh": "他用放大电路上的反馈支路解释软件工厂。输出产生之后要把质量信号送回输入端，避免循环只会不断放大噪声。代码生成之外，还得安排能影响下一轮判断的反馈。",
+    "en": "His analogy is the feedback leg in an amplifier. The output should send a quality signal back toward the input, so the loop does not simply amplify noise. In addition to generating code, the system needs feedback that can change the next decision.",
+    "end": "06:41:04"
+  },
+  {
+    "id": "p08",
+    "start": 24064.0,
+    "time": "06:41:04 至 06:42:09",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24064s",
+    "zh": "以前的提交会随上班时间和工作周起伏。已有产品的性能退化和维护问题可以在任意时段出现，所以 McCarthy 希望后台持续检查承诺，把有用的信号留给下一轮处理。",
+    "en": "Commits once followed daily and weekly work schedules, but maintenance issues and performance regressions can occur at any hour. McCarthy wants a background system that continues to check promises and preserves useful signals for the next decision.",
+    "end": "06:42:09"
+  },
+  {
+    "id": "p09",
+    "start": 24129.0,
+    "time": "06:42:09 至 06:42:42",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24129s",
+    "zh": "McCarthy 希望维护循环持续在后台运行，替团队守住存量系统的承诺。这样团队能把更多精力投到新领域，探索应该做什么、有没有产品市场契合的机会。",
+    "en": "McCarthy wants the maintenance loop to keep the existing system's promises in the background. This frees the team to explore new ground and look for product–market fit.",
+    "end": "06:42:42"
+  },
+  {
+    "id": "p10",
+    "start": 24162.0,
+    "time": "06:42:42 至 06:44:58",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24162s",
+    "zh": "他看到自己的工厂随着模型和运行框架改进而变简单，技能说明更短，专门的零件更少。他用发动机迭代说明减少组件也需要工程上的理解。",
+    "en": "He has seen his own factory simplify as models and harnesses improve, with shorter skills and fewer specialized parts. He compares that process to engine redesign, where reducing the part count also requires engineering understanding.",
+    "end": "06:44:58"
+  },
+  {
+    "id": "p11",
+    "start": 24298.0,
+    "time": "06:44:58 至 06:45:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24298s",
+    "zh": "他推荐给存量系统提一个具体目标，例如保住现有行为，同时减少延迟。如果性能提高要靠增加成本或牺牲安全，团队得先判断还能不能兑现原先的承诺。",
+    "en": "He recommends giving a running system a concrete goal, such as keeping its behavior while reducing latency. If the faster path costs more or trades away safety, the team has to check whether it can still keep the original promises.",
+    "end": "06:45:25"
+  },
+  {
+    "id": "p12",
+    "start": 24325.0,
+    "time": "06:45:25 至 06:46:53",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24325s",
+    "zh": "要求系统变得“更好”时，团队可能需要补上人的意图和判断，再回到产品探索。对于已有明确承诺的存量系统，McCarthy 说，按他的经验，搭起工厂约需一周。",
+    "en": "Making a product broadly “better” can require more human intent and judgment, and a return to discovery. For a system with existing commitments, McCarthy says that in his experience it takes about a week to set up a brownfield factory.",
+    "end": "06:46:53"
+  },
+  {
+    "id": "p13",
+    "start": 24413.0,
+    "time": "06:46:53 至 06:47:44",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24413s",
+    "zh": "软件产能变大以后，客户未必能消化同等数量的功能。他用毛利、新客户和品牌差异举例，说明用户有时要的是业务变化，几个新开关本身做不到这些事。",
+    "en": "Greater software production does not mean customers can absorb the same number of features. He uses margins, customer growth and differentiation as examples of business outcomes that a few new controls may fail to deliver.",
+    "end": "06:47:44"
+  },
+  {
+    "id": "p14",
+    "start": 24464.0,
+    "time": "06:47:44 至 06:49:58",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24464s",
+    "zh": "他把让市场学习跟上生产速度的设想称为需求工厂。Agent 可以帮忙决定下一步问市场什么，把新回应与既有反馈比较后重排问题，再分配有限的实验资源。他明确说这个想法仍在探索。",
+    "en": "He calls the idea of bringing market learning up to speed with production a demand factory. Agents could prioritize questions for the market, compare new answers with past feedback, and help allocate limited experimental capacity. He presents it as an open idea.",
+    "end": "06:49:58"
+  },
+  {
+    "id": "p15",
+    "start": 24598.0,
+    "time": "06:49:58 至 06:50:41",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24598s",
+    "zh": "气泡水品牌推出含咖啡因的新品，消费者还能理解。改卖机油，就越过了品牌现有关系的边界。他用这个例子提醒团队把市场实验放在客户愿意接受的承诺范围内。",
+    "en": "Consumers can make sense of a sparkling-water brand launching a caffeinated drink. Selling motor oil would stretch its existing relationship with customers much further. The example sets a boundary for experiments around promises the market might accept from that company.",
+    "end": "06:50:41"
+  },
+  {
+    "id": "p16",
+    "start": 24641.0,
+    "time": "06:50:41 至 06:52:04",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24641s",
+    "zh": "他最后强调让市场需求与生产速度相匹配，避免交付节奏超过客户能承受的变化。他接着提出，可以寻找更多客户，争取现有客户更多支出份额，并把新增产品组织成有条理的产品线。",
+    "en": "He closes by matching market demand with production speed so that delivery does not overwhelm customers' capacity for change. He suggests finding more customers, earning a higher share of existing customers' spending, and organizing additional offerings into coherent product lines.",
+    "end": "06:52:04"
+  }
+]

@@ -1,0 +1,346 @@
+两条绿灯 PR，为什么会让主干变红？
+Preetam Dwivedi、Manjari Akella
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜官方单场录像 · https://www.youtube.com/watch?v=hX140a5klW0
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[00:00:00.000 --> 00:00:08.000] Hello, everyone. We are here to present our talk,
+[00:00:08.000 --> 00:00:17.440] Merging at AI Scale. This is essentially Uber's journey from going to a fully green trunk to
+[00:00:17.440 --> 00:00:24.960] somewhat broken trunk. I'm Preetam Dabhevi. I'm a staff engineer at Uber working in developer
+[00:00:24.960 --> 00:00:30.880] platform. Hi, I'm Manjiri. I'm a senior engineer working alongside Pritam in the developer platform
+[00:00:30.880 --> 00:00:38.640] at Uber. Great. So here's the outline for the talk. We're going to go over how the merging
+[00:00:39.280 --> 00:00:46.480] works at Uber at the moment, and then how AI changed the landscape, and then I'll respond
+[00:00:47.200 --> 00:00:52.800] to that how we adapted, and then discuss the results and talk about what are we planning next.
+[00:00:52.800 --> 00:01:05.600] So at Uber, we have six language-based monorepos, where more than 5,000 developers are contributing
+[00:01:05.600 --> 00:01:15.280] over 36,000 commits, 27,000 PRs every week, and pretty much every changes to the services
+[00:01:15.280 --> 00:01:21.520] libraries are being done in one of these monorepos. For the purpose of this talk, we're going to
+[00:01:21.520 --> 00:01:26.720] focus mostly on Go code when we talk about anything because that is the biggest one and
+[00:01:26.720 --> 00:01:32.720] that's where the most of the scaling challenges we face. So let's understand the problem a little bit
+[00:01:35.280 --> 00:01:42.640] and understand why we need a merge queue here. So given here basically we have two users,
+[00:01:42.640 --> 00:01:51.040] user A and B, creating PR A and B on a base edge from the trunk. And when the PRs are created and
+[00:01:51.040 --> 00:01:54.360] and CI is run, the CI is green, builds are passing,
+[00:01:54.360 --> 00:01:56.260] everything is good.
+[00:01:56.260 --> 00:02:00.700] Now, when A is merged into the trunk,
+[00:02:00.700 --> 00:02:04.780] we can see the builds for the merge commit are still green,
+[00:02:04.780 --> 00:02:06.880] builds are still passing.
+[00:02:06.880 --> 00:02:10.760] But when the PRB is merged into the trunk,
+[00:02:10.760 --> 00:02:12.560] builds are no longer green.
+[00:02:12.560 --> 00:02:14.160] And the reason is that B was never
+[00:02:14.160 --> 00:02:18.440] tested with the changes that were merged by A.
+[00:02:18.440 --> 00:02:23.360] So we never tested the combination of those two things
+[00:02:23.360 --> 00:02:29.360] before merging, and hence, when B is merged, it's broken.
+[00:02:31.160 --> 00:02:34.040] Now imagine when we have thousands of engineers
+[00:02:34.040 --> 00:02:37.120] working in a monorepo and everyone is making changes,
+[00:02:38.280 --> 00:02:41.260] like hundreds and thousands of those every day.
+[00:02:42.240 --> 00:02:45.560] This is a constant problem where trunk is broken
+[00:02:45.560 --> 00:02:49.860] very frequently, and there is a burden on fixing,
+[00:02:49.860 --> 00:02:51.880] and there is a toll across the company
+[00:02:51.880 --> 00:02:56.880] to sort of figure it out and fix it.
+[00:02:57.440 --> 00:03:01.620] So here we're gonna present a solution to that problem,
+[00:03:01.620 --> 00:03:04.020] and that solution is Summit Queue.
+[00:03:04.020 --> 00:03:06.600] That is our Uber's merge queue
+[00:03:06.600 --> 00:03:09.940] that we deploy to solve this problem.
+[00:03:09.940 --> 00:03:12.660] And in this case, we can see our two examples here,
+[00:03:12.660 --> 00:03:14.780] PRA and PRAB.
+[00:03:14.780 --> 00:03:16.520] And here, essentially, what we are doing
+[00:03:16.520 --> 00:03:21.320] is we are predicting the futures that could be true on main.
+[00:03:21.320 --> 00:03:24.080] So there are three things here.
+[00:03:24.080 --> 00:03:26.880] A could land on its own to the main.
+[00:03:26.880 --> 00:03:29.600] B could land on its own to the main.
+[00:03:29.600 --> 00:03:32.540] And then the combination of A and B. In general,
+[00:03:32.540 --> 00:03:34.660] I think what we're going to do is that we
+[00:03:34.660 --> 00:03:37.400] want to land the change that is going to keep the trunk green
+[00:03:37.400 --> 00:03:38.520] as a whole.
+[00:03:38.520 --> 00:03:40.880] So in this case, when we land A and B together,
+[00:03:40.880 --> 00:03:42.260] the trunk is green.
+[00:03:42.260 --> 00:03:46.440] And that's how basically SummitQ works
+[00:03:46.440 --> 00:03:50.840] and keeps the front green for our monorepos.
+[00:03:50.840 --> 00:03:54.260] Now, how does it scale in this version of it?
+[00:03:54.260 --> 00:03:57.360] There are three things that SummitQ employs.
+[00:03:57.360 --> 00:03:59.820] The very first thing is target analysis.
+[00:03:59.820 --> 00:04:01.700] What it means is when two users are
+[00:04:01.700 --> 00:04:04.280] working across two different services,
+[00:04:04.280 --> 00:04:07.640] they don't really have any overlapping changes.
+[00:04:07.640 --> 00:04:10.540] So those two things can be built and tested
+[00:04:10.540 --> 00:04:11.840] independently of each other.
+[00:04:11.840 --> 00:04:13.460] and then can be merged.
+[00:04:13.460 --> 00:04:16.140] So this allows us to basically get higher throughput
+[00:04:16.140 --> 00:04:20.620] and not serialize every change that is entering into the queue.
+[00:04:20.620 --> 00:04:23.460] Second is probabilistic speculation.
+[00:04:23.460 --> 00:04:29.240] What it means is we are using historical build information
+[00:04:29.240 --> 00:04:32.060] and also the change characteristics
+[00:04:32.060 --> 00:04:37.040] to predict what is the success score for a given change.
+[00:04:37.040 --> 00:04:40.160] And then we are using that to basically decide what
+[00:04:40.160 --> 00:04:44.500] builds are likely needed in order to land that change.
+[00:04:44.500 --> 00:04:46.500] And so in that case, we prioritize the builds
+[00:04:46.500 --> 00:04:50.160] that are most likely needed and are important for that change
+[00:04:50.160 --> 00:04:53.160] to be much to the trunk rather than like every other build
+[00:04:53.160 --> 00:04:55.780] that comes from the speculation.
+[00:04:55.780 --> 00:04:58.740] The third part is bypassing the large changes.
+[00:04:58.740 --> 00:05:01.040] What it means is that if we have a large change sitting
+[00:05:01.040 --> 00:05:03.560] in the queue, which is taking longer to build,
+[00:05:03.560 --> 00:05:06.400] and at the same time if we have a smaller changes entering
+[00:05:06.400 --> 00:05:09.640] into the queue, those can be built faster.
+[00:05:09.640 --> 00:05:12.460] And so those changes don't need to wait for large changes
+[00:05:12.460 --> 00:05:14.500] to land before they can land.
+[00:05:14.500 --> 00:05:16.960] So in this case, we can land the smaller changes
+[00:05:16.960 --> 00:05:19.360] without landing the larger changes first.
+[00:05:19.360 --> 00:05:22.480] And this optimization allows us to basically move fast
+[00:05:22.480 --> 00:05:24.700] and get a higher throughput opportunity.
+[00:05:24.700 --> 00:05:29.700] So this is what has worked when it was just humans
+[00:05:30.400 --> 00:05:32.400] landing changes, creating PRs.
+[00:05:33.500 --> 00:05:38.000] But then we had AI and the changes
+[00:05:38.000 --> 00:05:43.000] at which the PRs were created and landed, it all changed.
+[00:05:43.680 --> 00:05:45.040] So to understand it better,
+[00:05:45.040 --> 00:05:47.100] let's look at some of the numbers.
+[00:05:47.100 --> 00:05:49.840] So in January, 2026,
+[00:05:49.840 --> 00:05:54.840] we were doing roughly 90 requests every hour.
+[00:05:55.840 --> 00:06:00.280] And by March, we were doing 130 requests every hour.
+[00:06:00.280 --> 00:06:03.760] So that's roughly a 44% increase in two months.
+[00:06:03.760 --> 00:06:06.120] And the reason for this increase
+[00:06:06.120 --> 00:06:09.380] is primarily because of the AI-generated changes.
+[00:06:09.380 --> 00:06:13.920] Now, given the way the system was built,
+[00:06:13.920 --> 00:06:18.760] it had the rate of these changes had effect on it.
+[00:06:18.760 --> 00:06:24.760] So looking into those, we had 30 minutes of P95 land times
+[00:06:24.760 --> 00:06:27.900] when we were doing 90 requests every hour.
+[00:06:27.900 --> 00:06:30.800] And that went to roughly three to four hours
+[00:06:30.800 --> 00:06:35.280] when we were doing 1.30 requests every hour.
+[00:06:35.280 --> 00:06:39.240] So in this case, we were still keeping the trunk green
+[00:06:39.240 --> 00:06:43.020] at all times, but at the cost of developers essentially
+[00:06:43.020 --> 00:06:45.460] waiting for three to four hours to land their changes
+[00:06:45.460 --> 00:06:47.280] to the trunk.
+[00:06:47.280 --> 00:06:49.560] Now I'm going to hand over to Manjuri,
+[00:06:49.560 --> 00:06:52.400] and she's going to talk about our response to it
+[00:06:52.400 --> 00:06:55.800] and how we adapted to the situation.
+[00:06:55.800 --> 00:06:56.380] MANJURU RASMUSSENBARANI- Great.
+[00:06:56.380 --> 00:06:57.500] Thanks, Pritam.
+[00:06:57.500 --> 00:07:01.160] So Pritam just walked us through a few optimizations
+[00:07:01.160 --> 00:07:04.440] that SubmitQ had that worked so far in keeping up
+[00:07:04.440 --> 00:07:07.380] with the demand that humans generated.
+[00:07:07.380 --> 00:07:09.780] But once AI came into the picture,
+[00:07:09.780 --> 00:07:12.740] the optimizations we had were no longer sufficient.
+[00:07:12.740 --> 00:07:17.620] So our response essentially was another set
+[00:07:17.620 --> 00:07:21.040] of optimizations to our existing submit queue.
+[00:07:21.040 --> 00:07:23.660] And we approached the response in three different ways.
+[00:07:23.660 --> 00:07:27.280] The first was we introduced this concept of admission gating,
+[00:07:27.280 --> 00:07:29.640] which helped us to shape the traffic
+[00:07:29.640 --> 00:07:32.120] that we accept into the queue.
+[00:07:32.120 --> 00:07:34.800] Next, we introduced the concept of deferrals,
+[00:07:34.800 --> 00:07:38.500] which is a secondary queue that we introduced
+[00:07:38.500 --> 00:07:41.360] that helps with developer experience
+[00:07:41.360 --> 00:07:44.140] from the pain that comes with admission gating.
+[00:07:44.140 --> 00:07:46.740] And lastly, we implemented what we call
+[00:07:46.740 --> 00:07:50.420] conflict relaxation, which helps us buy back
+[00:07:50.420 --> 00:07:54.180] more parallelism within the queue itself.
+[00:07:55.100 --> 00:07:59.320] Next, we will look at each of these interventions
+[00:07:59.320 --> 00:08:01.240] in a little bit of depth
+[00:08:01.240 --> 00:08:04.080] and understand exactly what each of them are doing.
+[00:08:04.080 --> 00:08:06.480] So the first one, admission gating,
+[00:08:06.480 --> 00:08:08.260] is basically what it sounds like.
+[00:08:08.260 --> 00:08:11.320] There is a gate at the admission of every request
+[00:08:11.320 --> 00:08:13.200] into the main submit queue.
+[00:08:13.200 --> 00:08:15.920] We look at the request that comes in
+[00:08:15.920 --> 00:08:19.060] and we categorize it as one of two things.
+[00:08:19.060 --> 00:08:22.200] Either it's a small change or it's an expensive change.
+[00:08:22.200 --> 00:08:25.280] And the definition of this could be anything.
+[00:08:25.280 --> 00:08:29.440] One of the definitions that we use is the target analysis
+[00:08:29.440 --> 00:08:33.060] that Pritham talked about earlier in the slides.
+[00:08:33.060 --> 00:08:35.680] A small change touches fewer targets,
+[00:08:35.680 --> 00:08:38.160] an expensive change might be something
+[00:08:38.160 --> 00:08:41.900] that spans across multiple targets,
+[00:08:41.900 --> 00:08:43.960] the entire build graph, something like that.
+[00:08:43.960 --> 00:08:47.000] So a smaller change is more likely
+[00:08:47.000 --> 00:08:49.520] to give you higher parallelism.
+[00:08:49.520 --> 00:08:53.160] And we basically say admit it during peak hours
+[00:08:53.160 --> 00:08:56.100] and add it to the active submit queue,
+[00:08:56.100 --> 00:08:59.320] build and test as usual and move along.
+[00:08:59.320 --> 00:09:06.540] But an expensive change has the capability to basically be a bottleneck by holding resources,
+[00:09:07.480 --> 00:09:10.980] needing to validate against everything else that's in the queue.
+[00:09:10.980 --> 00:09:21.540] So to protect the rest of the queue, what we do in this phase is just to reject any expensive change during peak hours.
+[00:09:21.800 --> 00:09:28.540] What this means is that the developer has to come back and retry their expensive change outside peak hours.
+[00:09:29.320 --> 00:09:39.620] So this gives us control into what enters the queue by moving the burden onto a very small subset of changes and developers.
+[00:09:41.040 --> 00:09:43.580] Let's look at the trade-off of admission gating.
+[00:09:44.080 --> 00:09:48.820] After we implemented this, we definitely observed an increase in our throughput.
+[00:09:48.820 --> 00:09:51.700] We were able to achieve over 20% increase.
+[00:09:52.240 --> 00:09:57.460] Our land rate went from 130 to about 160 during business hours.
+[00:09:57.460 --> 00:09:59.520] but it came at a cost.
+[00:10:00.000 --> 00:10:04.120] And the cost is that developers become the schedulers.
+[00:10:04.720 --> 00:10:08.340] Not all developers, since we do protect the smaller changes,
+[00:10:08.540 --> 00:10:11.240] but you can imagine if you are a developer
+[00:10:11.240 --> 00:10:16.960] who owns any types of libraries that span the entire code,
+[00:10:17.400 --> 00:10:20.360] you will be particularly targeted in this
+[00:10:20.360 --> 00:10:23.620] because the work that you do naturally falls
+[00:10:23.620 --> 00:10:25.400] into the expensive change bucket.
+[00:10:25.400 --> 00:10:32.400] So we managed to protect the capacity during peak hours, but had to make developers wait.
+[00:10:32.400 --> 00:10:34.400] Next slide.
+[00:10:34.400 --> 00:10:40.400] So the next thing that we do is targeted more towards bettering the developer experience
+[00:10:40.400 --> 00:10:44.400] of the cons that come from admission gating.
+[00:10:44.400 --> 00:10:52.400] What if instead of outright rejecting expensive changes, we are able to record them and replay
+[00:10:52.400 --> 00:10:59.400] them back into the main queue based on the status of the queue when we have let's say a better
+[00:10:59.400 --> 00:11:05.600] handle on the capacity and that's exactly what deferrals implement during peak hours if an
+[00:11:05.600 --> 00:11:11.620] expensive request comes in we no longer reject it but put it into a deferred queue where it is
+[00:11:11.620 --> 00:11:20.500] persisted. And once the gates permit, usually upon, for example, we can say after peak hours,
+[00:11:21.080 --> 00:11:29.460] we put this persisted request back onto the active submit queue. So essentially, we shape the traffic
+[00:11:29.460 --> 00:11:36.340] in a way where we release more expensive changes when the queue is able to handle it. So what this
+[00:11:36.340 --> 00:11:43.220] solves is a developer submits once and then we automatically release it for them when the capacity
+[00:11:43.220 --> 00:11:50.280] allows. Next slide. So the trade-off here is it solves the problem for the developer. They don't
+[00:11:50.280 --> 00:11:56.620] have to wake up early, stay up late, try to find a particular window where the queue looks good and
+[00:11:56.620 --> 00:12:03.340] hit the button on their end. We will handle that for them but the other side of this, the path that
+[00:12:03.340 --> 00:12:10.280] comes with this is that it doesn't really solve the waiting for the developer. You still have to
+[00:12:10.280 --> 00:12:18.940] wait the same amount of time for your expensive change to go into the queue. Next slide. So before
+[00:12:18.940 --> 00:12:26.400] we look at the next and final optimization that we did, I want to touch a little bit about the
+[00:12:26.400 --> 00:12:33.360] on the concept of what a target overlap is and how that serializes work in some way.
+[00:12:33.920 --> 00:12:37.680] So recall that Fritham mentioned the target analysis that we perform
+[00:12:37.680 --> 00:12:44.920] to determine whether two requests should be serialized or can they go in parallel.
+[00:12:45.560 --> 00:12:49.980] So an example that we are looking at here is a strict one connected component.
+[00:12:49.980 --> 00:13:02.620] What this means is that each of these requests, A through F, touch some subset of targets and there's at least one overlap of targets between each pair of views.
+[00:13:02.740 --> 00:13:10.320] So like A and B overlap on at least one target, B and C overlap at least one target, similarly for C, D, E, and F.
+[00:13:10.680 --> 00:13:16.660] And what this makes SubmitQ do is group all of these requests into a single component.
+[00:13:16.660 --> 00:13:25.480] and that means that all of these have to go together and this is basically what prevents
+[00:13:25.480 --> 00:13:34.080] us from doing work faster and the next optimization we do is how do we break this
+[00:13:34.080 --> 00:13:41.000] is there a way where we can break this up in a smart way um next slide so conflict relaxation
+[00:13:41.000 --> 00:13:49.440] is what helps us break these links in an informed fashion. Before is basically the status quo.
+[00:13:49.880 --> 00:13:56.400] Any relevant overlap between two requests makes them conflict with each other and makes
+[00:13:56.400 --> 00:14:04.000] them serialize one behind the other. But with relaxation, we essentially do three steps. First,
+[00:14:04.000 --> 00:14:11.380] we rank the overlap. So it's no longer a binary decision of, is there at least one overlap between
+[00:14:11.380 --> 00:14:19.400] these two requests? Think of it more as a, how strong is this overlap? Once we have that, we keep
+[00:14:19.400 --> 00:14:28.000] the stronger links and relax the weaker ones to buy back parallelism based on a config value that
+[00:14:28.000 --> 00:14:36.160] we set. Next slide. So the first step is essentially scoring these edges or these overlaps. We use a
+[00:14:36.160 --> 00:14:42.320] Jaccard scoring for computing this dependency overlap. We basically have overlapping targets.
+[00:14:42.860 --> 00:14:49.340] We check for that and any new dependency edges that are introduced. We compute a combination of
+[00:14:49.340 --> 00:14:56.700] these two into a continuous valued score between 0 and 1 where a higher value of score indicates a
+[00:14:56.700 --> 00:15:04.060] stronger overlap and a lower value of the score indicates a weaker edge with fewer targets that
+[00:15:04.060 --> 00:15:09.500] overlap between the requests. Next slide. Once we are armed with this knowledge, we basically
+[00:15:09.500 --> 00:15:17.000] make this conflict graph again, right? So taking the same example and adding some numbers to the
+[00:15:17.000 --> 00:15:23.360] conflicts that we have from the earlier slide, let's say we have these six changes and the
+[00:15:23.360 --> 00:15:30.300] config value we set says we want at least 50% parallelism in the queue at all times. What this
+[00:15:30.300 --> 00:15:39.160] means is that we need at least three separate queues that are working independent of each other.
+[00:15:40.100 --> 00:15:48.520] And based on the overlap scores that we have computed, we are able to make this choice of
+[00:15:48.520 --> 00:15:55.620] dropping certain edges in order to be able to achieve that target queue size that we have.
+[00:15:55.620 --> 00:16:02.580] So in this case, the weakest edges are between B and C and D and E. And we drop those two,
+[00:16:02.780 --> 00:16:09.440] which gives us three separate connected components. And this is how we essentially go from
+[00:16:09.440 --> 00:16:18.020] a serial chain of six requests to a parallelized chain where two each exist in three separate
+[00:16:18.020 --> 00:16:28.940] So next comes a question of where exactly do we make this determination of dropping the edges,
+[00:16:29.140 --> 00:16:35.900] right? So there are two places where we can do this. One is at a global level. Every time
+[00:16:35.900 --> 00:16:43.420] we are trying to assign conflict drafts and building them, we can basically recompute this
+[00:16:43.420 --> 00:16:51.380] every time and what that does is it introduces some level of instability into the graph which
+[00:16:51.380 --> 00:16:58.380] is determined by any new requests that enter the queue any work that finishes and exits the queue
+[00:16:58.380 --> 00:17:07.720] so essentially what we we can do that but what we chose to do instead was a more local assignment
+[00:17:07.720 --> 00:17:14.940] of overlaps and the place that we choose to do this at is only at the new arrival
+[00:17:14.940 --> 00:17:22.920] checkpoint. So once a new request comes in we essentially take that and compute the edges of
+[00:17:22.920 --> 00:17:30.000] this with everything that exists in the queue, make the decisions and that's how it stays. The
+[00:17:30.000 --> 00:17:36.300] next decision making will only happen when another new arrival comes in. So the concept is simple we
+[00:17:36.300 --> 00:17:44.340] assign once at entry time and basically reuse this. What this helps us do is any work that we
+[00:17:44.340 --> 00:17:53.600] schedule based on previous conflict graphs that we have created is preserved and it helps us
+[00:17:53.600 --> 00:18:00.100] hang on to speculative builds that can help us move faster towards a finalization of its best.
+[00:18:00.100 --> 00:18:10.420] So the trade-off of this final intervention was the biggest that we saw. We saw over 50%
+[00:18:10.420 --> 00:18:17.720] increase in the throughput. So we went from about 160 labs per hour to almost 250, sometimes even
+[00:18:17.720 --> 00:18:26.060] greater during peak hours. So it worked in that it not only helped us significantly improve our
+[00:18:26.060 --> 00:18:35.340] throughputs while giving us extremely good P95 land times, but it came at a cost as everything
+[00:18:35.340 --> 00:18:41.600] does. And the trade-off that we have given away here is basically what Pritham related to in the
+[00:18:41.600 --> 00:18:48.940] very first slide talking about the integration testing. Some combinations of changes will land
+[00:18:48.940 --> 00:18:57.420] untested because we are dropping edges from our conflict graph. What this means is main can now
+[00:18:57.420 --> 00:19:06.980] be broken. And this creates essentially a new obligation where we have to validate what lands
+[00:19:06.980 --> 00:19:13.940] after it has landed. And to talk a little bit more about how we do this, I will hand it back
+[00:19:13.940 --> 00:19:23.860] to pre-term. Great. Thanks, Manjri, for walking us through those three solutions that we employed.
+[00:19:24.680 --> 00:19:31.800] So taking back this example that we had initially, we had basically two changes here, A and B, and say
+[00:19:31.800 --> 00:19:38.260] we do a pre-merge validation independently after relaxing those conflict between those two things.
+[00:19:38.260 --> 00:19:40.040] and then say we landed.
+[00:19:40.440 --> 00:19:45.340] So now the landed state is essentially A lands first,
+[00:19:45.340 --> 00:19:48.700] then B, and now the combination of A plus B
+[00:19:48.700 --> 00:19:50.360] fails on the trunk.
+[00:19:51.100 --> 00:19:55.460] So this is where we started at the start of this talk.
+[00:19:56.520 --> 00:19:58.760] And so now we have a broken trunk again.
+[00:19:59.720 --> 00:20:02.200] So now how are we dealing with this?
+[00:20:03.300 --> 00:20:06.700] So we have a system here called StowPipe.
+[00:20:06.700 --> 00:20:11.700] and store pipe is our post-land validation system.
+[00:20:12.880 --> 00:20:14.920] It's responsible for validating any commit
+[00:20:14.920 --> 00:20:17.100] that lands on to the main
+[00:20:17.100 --> 00:20:20.840] and then making sure that it detects basically
+[00:20:20.840 --> 00:20:23.380] if builds are broken and if so,
+[00:20:23.380 --> 00:20:28.380] then it creates a recovery strategy for that.
+[00:20:29.020 --> 00:20:33.100] Now, here we have basically two things.
+[00:20:33.100 --> 00:20:36.320] One is every change that is being landed by SummitQ.
+[00:20:36.700 --> 00:20:39.160] lands on the main trunk.
+[00:20:39.160 --> 00:20:41.200] And then we have the second reference here,
+[00:20:41.200 --> 00:20:45.980] or the pointer, if you call, is the verified main.
+[00:20:45.980 --> 00:20:47.740] And the verified main is essentially the one
+[00:20:47.740 --> 00:20:52.240] that is being managed by StowPype.
+[00:20:52.240 --> 00:20:55.300] So let's take an example to understand it better.
+[00:20:55.300 --> 00:20:59.640] So imagine we have this committee where main
+[00:20:59.640 --> 00:21:01.840] and verified main both are pointing to it.
+[00:21:01.840 --> 00:21:04.060] This is a good known comment.
+[00:21:04.060 --> 00:21:08.140] This is building, this is green on the trunk.
+[00:21:08.140 --> 00:21:11.640] Now let's say we have another set of commit
+[00:21:11.640 --> 00:21:15.000] that land onto the main, say B, C, and D.
+[00:21:15.000 --> 00:21:19.580] Now main moves to point to the D commit.
+[00:21:19.580 --> 00:21:22.700] So at this point, a store pipe is gonna take this range
+[00:21:22.700 --> 00:21:25.840] of commits, essentially B, C, and D,
+[00:21:25.840 --> 00:21:30.180] on top of A and validate this newly landed changes
+[00:21:30.180 --> 00:21:34.340] to see if this new state is still buildable
+[00:21:34.340 --> 00:21:36.680] and is still passing or not.
+[00:21:36.680 --> 00:21:39.180] In this case, we can see it fails.
+[00:21:39.180 --> 00:21:42.400] And so now StovePipe is not gonna move
+[00:21:42.400 --> 00:21:44.500] the verified main pointer in this case.
+[00:21:44.500 --> 00:21:45.500] It will just keep it at A
+[00:21:45.500 --> 00:21:49.640] because that's what the good known last commit is
+[00:21:49.640 --> 00:21:51.000] on the trunk.
+[00:21:51.000 --> 00:21:55.580] Now, over time, more commits land onto the trunk
+[00:21:55.580 --> 00:21:57.820] and main moves to commit G.
+[00:21:57.820 --> 00:22:02.140] So now between the new state that we have G
+[00:22:02.140 --> 00:22:06.280] and the previously good known state, which is A,
+[00:22:06.280 --> 00:22:07.580] we have more commits in between.
+[00:22:07.580 --> 00:22:12.640] So we have B, C, D, E, F, and G commits in between.
+[00:22:12.640 --> 00:22:16.700] So now store pipe is gonna take those commit range
+[00:22:16.700 --> 00:22:19.700] and basically validate and see if those are buildable
+[00:22:19.700 --> 00:22:21.520] and if builds are passing.
+[00:22:22.480 --> 00:22:26.300] So now say in this case builds are passing.
+[00:22:26.300 --> 00:22:37.020] And so the store pipe will basically take the verified main pointer and point it to the newly validated good known commit G in this case.
+[00:22:37.020 --> 00:22:46.100] So that's what a store pipe does. It is essentially observing the newly landed commits onto the main, verifying if they can build or not.
+[00:22:46.580 --> 00:22:54.240] And if they pass, move the pointer. If not, then continuously look for more changes and keep validating.
+[00:22:54.240 --> 00:23:03.840] So now let's look at like when a commit landed on main breaks the trunk. So what happens in that
+[00:23:03.840 --> 00:23:09.600] case? As I said earlier, StowPipe is essentially validating and then detecting that it failed.
+[00:23:09.600 --> 00:23:18.560] And on failure, it basically alerts. So on-call gets paged. And as a response to this broken trunk,
+[00:23:18.560 --> 00:23:25.360] on call is responsible to prepare a fix or revert that change get it reviewed and then land through
+[00:23:25.360 --> 00:23:31.520] summit queue and then eventually it merges back into the trunk and then a store pipe continuously
+[00:23:32.160 --> 00:23:37.840] validates the new state to see if it has been fixed or not and then accordingly move the pointer
+[00:23:39.040 --> 00:23:47.840] to the newly landed comment so with all of this i want to just recap on basically what we have
+[00:23:47.840 --> 00:23:57.360] achieved. So at peak times, we are able to do roughly 300 LANs per hour. We are still able to
+[00:23:57.360 --> 00:24:06.320] maintain our P95 LAN time to 30 minutes. And this is essentially a 233% increase since the January
+[00:24:07.120 --> 00:24:16.480] numbers that we have, which were like 90 LANs per hour. So with this, we are doing all this work
+[00:24:16.480 --> 00:24:25.840] in the open. We have SummitQ and StorePipe being developed and everything is in the open source.
+[00:24:26.140 --> 00:24:31.540] So if you want to explore and contribute, do scan the QR code, explore the project,
+[00:24:31.920 --> 00:24:41.720] and feel free to contribute to the project. What are we doing next? And as we have already
+[00:24:41.720 --> 00:24:50.360] on this work, we are still looking ways to make it better, optimize for throughput, handle the
+[00:24:51.880 --> 00:25:00.360] recovery process in a better way, and also improve on how we tag what is green or not.
+[00:25:01.160 --> 00:25:06.760] So as a first thing we are thinking about is on SummitQ side, basically batching related changes
+[00:25:06.760 --> 00:25:12.280] together so that way we run less number of builds and we can do more work with the same
+[00:25:14.040 --> 00:25:20.520] amount of resources. Second is today we have a single pointer, verified main, which points
+[00:25:20.520 --> 00:25:26.680] whether a repository head is green or not or a given commit is green or not. We want to do better
+[00:25:26.680 --> 00:25:31.720] where basically we can say a given service is green, a given project is green. So even if a
+[00:25:31.720 --> 00:25:39.880] a commit on the trunk is broken, we can essentially tell which part of the trunk is broken and not all
+[00:25:39.880 --> 00:25:47.420] of it. So that would allow us to basically do a better sort of rollouts of those services and
+[00:25:47.420 --> 00:25:53.760] changes, and we don't have to block it. And the third one is basically, as I said, the recovery
+[00:25:53.760 --> 00:26:00.460] process from a broken trunk is manual. So the most of the investment is around automating the fixes
+[00:26:00.460 --> 00:26:07.980] or reverting the fixes and then landing those to Summit Q in automated way so that our time
+[00:26:07.980 --> 00:26:16.080] to recovery can be reduced and we can fix the broken fronts faster. And so as a closing point,
+[00:26:16.900 --> 00:26:24.120] I want to call out that we chose a hybrid approach to validating the changes. One,
+[00:26:24.120 --> 00:26:27.560] we are still doing the pre-merge validations.
+[00:26:28.920 --> 00:26:37.560] We are still making sure that we test the changes where it matters and relax the changes where we
+[00:26:37.560 --> 00:26:45.160] can take that hit and validate them later after they land to the trunk. And then we are running
+[00:26:45.160 --> 00:26:52.840] the whole exhaustive validation with the help of a store pipe post landing to the trunk. And that
+[00:26:52.840 --> 00:26:55.080] that allows us to basically have this balance
+[00:26:55.080 --> 00:26:58.420] where we are validating whatever matters before
+[00:26:58.420 --> 00:27:00.140] and then validating everything at the end
+[00:27:00.140 --> 00:27:01.940] to make sure it is still right
+[00:27:03.120 --> 00:27:06.680] and our consumers can consume the good estate.
+[00:27:07.720 --> 00:27:11.240] And with that, that would be our end of the talk.
+[00:27:12.900 --> 00:27:15.840] If you wanna learn more about SummitQ and inner working
+[00:27:15.840 --> 00:27:19.580] soffit, feel free to scan these QR codes.
+[00:27:19.580 --> 00:27:22.860] These are the previously talks that we have done
+[00:27:22.860 --> 00:27:24.500] on Summit Q in depth.
+[00:27:24.500 --> 00:27:26.800] And they go over like in detail
+[00:27:26.800 --> 00:27:29.240] on how it functions internally.
+[00:27:29.240 --> 00:27:30.900] And again, thank you.
+[00:27:30.900 --> 00:27:31.740] Thank you.

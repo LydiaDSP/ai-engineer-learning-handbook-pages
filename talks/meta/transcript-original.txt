@@ -1,0 +1,196 @@
+Meta 怎样让 AI 成为轮值队友？
+Chinmay Gandhi、Swaapnika Motapothula、Vlad Tsvang
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[01:58:35.580 --> 01:58:39.120] Hi, I'm Chinmay, and with me are Swapnika and Vlad.
+[01:58:39.420 --> 01:58:41.180] We're excited to share our journey,
+[01:58:41.260 --> 01:58:44.540] as well as our learnings, around building an AI on-call
+[01:58:44.540 --> 01:58:49.220] teammate at Meta that now runs real on-call rotations every day
+[01:58:49.220 --> 01:58:50.160] and around the clock.
+[01:58:51.720 --> 01:58:53.020] We are part of the engineering team
+[01:58:53.020 --> 01:58:55.800] that builds the tooling, platform, and infrastructure
+[01:58:55.800 --> 01:58:59.360] for incident response, on-call experience,
+[01:58:59.520 --> 01:59:01.500] and mitigations at Meta.
+[01:59:01.500 --> 01:59:05.520] That space is evolving rapidly with the increase in AI capabilities.
+[01:59:06.940 --> 01:59:09.340] AI changed how fast we write code.
+[01:59:09.840 --> 01:59:12.620] About three quarters of new code is now written with AI.
+[01:59:12.920 --> 01:59:17.720] And more AI-generated changes reach production every single day.
+[01:59:18.540 --> 01:59:24.200] And some of it can cause production failures, just like any other code change can.
+[01:59:25.200 --> 01:59:27.520] But on-call did not speed up with it.
+[01:59:27.520 --> 01:59:32.080] High quality code can pass review and still break in production.
+[01:59:32.380 --> 01:59:35.780] And when it does, someone still gets paged at 2 a.m.
+[01:59:36.480 --> 01:59:40.600] The bottleneck moved from writing code to operating it in production.
+[01:59:41.440 --> 01:59:44.620] And on-call is where that operational load lands.
+[01:59:44.880 --> 01:59:51.460] So we asked, if AI is writing the code, can AI also help operate it?
+[01:59:53.360 --> 01:59:55.180] And we think it can.
+[01:59:55.960 --> 01:59:59.900] Now let's quickly run through one of those on-call pages with a simple
+[02:00:00.000 --> 02:00:08.860] example it's 2 a.m. and 12 alerts are firing same night it can go two different ways on the left is
+[02:00:08.860 --> 02:00:15.600] how most of us do this today and notice we already have good AI first you sort the alerts by yourself
+[02:00:15.600 --> 02:00:22.000] check out payments disk which one to pick first let's say you pick checkout then you ask your
+[02:00:22.000 --> 02:00:28.300] assistant why p99 late and say is hi it's genuinely useful it pulls the metrics and
+[02:00:30.380 --> 02:00:37.720] 49 and when you ask it reads what changed and checks the runbook it figured out that the time
+[02:00:37.720 --> 02:00:44.520] config was changed to a lower value and based on the runbook it suggests to roll back which is all
+[02:00:44.520 --> 02:00:52.300] very helpful however if you look at the shape of it it waited to be asked you picked every next
+[02:00:52.300 --> 02:01:01.840] step you were the glue between the questions and once it answered it went dormant at 239
+[02:01:02.540 --> 02:01:11.120] you know the cause but the rollback the changes and the follow-ups are still yours now on the right
+[02:01:12.060 --> 02:01:20.380] the same 12 alerts but an ai teammate started before you woke up it had already ranked them
+[02:01:22.580 --> 02:01:27.060] payments merged in as the same cause and the other 10 handled separately.
+[02:01:27.980 --> 02:01:29.680] It read the dashboards,
+[02:01:30.200 --> 02:01:34.460] diffed the same 149 AM config change and matched two past incidents.
+[02:01:35.380 --> 02:01:39.660] You get a hypothesis, a 30 second way to verify it,
+[02:01:40.040 --> 02:01:42.860] and a fix waiting for your review.
+[02:01:43.360 --> 02:01:46.680] At 201, you verified it and you're back to sleep.
+[02:01:47.480 --> 02:01:49.860] That gap is what this talk is about.
+[02:01:49.860 --> 02:02:00.660] out. So why were you the glue? Every team was bolting automation onto on call, one silo
+[02:02:00.660 --> 02:02:07.620] at a time. An alert script for alerts, a triage bot for tickets, a deploy bot for deploys,
+[02:02:07.880 --> 02:02:14.860] a fixit agent for incidents. Each one solves its slice, keeps its own context and forgets
+[02:02:14.860 --> 02:02:21.500] Now replaying your 2 AM page, the alert script saw P99 latency about two seconds.
+[02:02:22.140 --> 02:02:25.260] The triage bot saw three tickets saying checkout is slow.
+[02:02:25.620 --> 02:02:32.360] The deploy bot knew about a config change at 149, and the incident history had two similar past incidents.
+[02:02:33.080 --> 02:02:37.280] Every clue existed, but nothing connected them.
+[02:02:38.240 --> 02:02:45.420] so the on call became the glue exactly as we saw on the left side of the previous slide
+[02:02:46.720 --> 02:02:55.820] our bet was one ai teammate per rotation instead one loop across every signal one team memory
+[02:02:55.820 --> 02:03:03.000] that learns every shift its own identity so it acts as itself and a human gate so you approve
+[02:03:03.000 --> 02:03:04.160] instead of operate.
+[02:03:04.760 --> 02:03:08.920] But giving one agent all that context and reach raises the stakes,
+[02:03:09.500 --> 02:03:12.420] which is why autonomy has to be earned.
+[02:03:14.600 --> 02:03:20.160] Under the hood, the teammate or the AI teammate is the simplest agent there is.
+[02:03:21.020 --> 02:03:26.480] Model using tools in the loop, acting on an environment, and reading the feedback.
+[02:03:27.300 --> 02:03:33.840] Everything else in this talk is what we build around that loop to make it safe to leave it running.
+[02:03:34.340 --> 02:03:41.000] And for that, I will hand over to Swapnika and Vlad next to get into the actual details of how it works.
+[02:03:42.700 --> 02:03:45.720] To achieve this, we started with an autonomy ladder.
+[02:03:46.080 --> 02:03:48.960] Think about how you onboard a new engineer to Oncall.
+[02:03:49.660 --> 02:03:54.740] First, the shadow. They investigate and suggest, but they don't touch production.
+[02:03:56.220 --> 02:04:02.100] pair. They write the fix and another engineer approves it with time they gain knowledge.
+[02:04:02.580 --> 02:04:08.940] We give our agent exactly the same ladder. At level 1, it investigates and tells you what it
+[02:04:08.940 --> 02:04:15.820] found. It changes nothing. At level 2, it acts with approval. It drafts the fix but nothing reaches
+[02:04:15.820 --> 02:04:22.400] production until a human approves. At level 3, it clears lower criticality work on its own
+[02:04:22.400 --> 02:04:24.920] and only interrupts you for what matters.
+[02:04:25.340 --> 02:04:28.040] High criticality work stays with humans.
+[02:04:29.500 --> 02:04:30.880] So what earns the next run?
+[02:04:31.620 --> 02:04:33.280] We use a simple test.
+[02:04:33.500 --> 02:04:36.840] How costly is a mistake and how easy is it to catch?
+[02:04:37.460 --> 02:04:40.960] So an action climbs only when mistakes are cheap,
+[02:04:41.260 --> 02:04:44.420] they are caught by test, CI, or review.
+[02:04:44.700 --> 02:04:48.660] And the agent already has a track record on that exact action.
+[02:04:48.660 --> 02:04:55.120] That's why the agent can close a noisy alert on its own while a production mitigation still
+[02:04:55.120 --> 02:04:55.940] waits for a human.
+[02:04:58.640 --> 02:05:03.120] At level 1, the investigation is layered and stops at the first confident answer.
+[02:05:03.520 --> 02:05:07.640] The agent investigated the issue using the team's memory and runbook.
+[02:05:07.940 --> 02:05:12.180] It also shared the root cause analysis, but human had to apply the fix.
+[02:05:13.260 --> 02:05:18.640] At level 2, it writes the fix with the root cause and a test plan.
+[02:05:18.920 --> 02:05:21.980] It answers reviewers' comments and fixes CI.
+[02:05:22.520 --> 02:05:25.760] But nothing reaches prediction until a human approves.
+[02:05:26.600 --> 02:05:29.620] Most drafts don't land, and that's fine.
+[02:05:30.060 --> 02:05:31.300] Review is the filter.
+[02:05:31.940 --> 02:05:38.520] At both levels, the agent does the homework, but you still had to grade every single paper.
+[02:05:38.520 --> 02:05:44.680] The help got much better, but the tasks requiring human input didn't get smaller.
+[02:05:45.420 --> 02:05:47.660] Level 3 shrinks the pile.
+[02:05:49.660 --> 02:05:51.080] Look at this example.
+[02:05:51.640 --> 02:05:55.220] 23 items came in, but only 3 need you.
+[02:05:55.660 --> 02:06:04.740] On the right, the agent handled the long tail, noisy alerts, duplicates, routine fixes that went through normal review and CI.
+[02:06:05.300 --> 02:06:07.420] Two more are still being worked.
+[02:06:08.520 --> 02:06:15.360] to drive each one to completion. In the middle is your much smaller decision queue. Each item
+[02:06:15.360 --> 02:06:22.360] makes clear what it needs from you with a run this button that has a call to action. And remember
+[02:06:22.360 --> 02:06:29.220] our 2am checkout page? That still stays human owned. The agent brings the investigation, the human
+[02:06:29.220 --> 02:06:35.340] owns the critical decision. It's the new hire ladder again. Trusted to handle routine work,
+[02:06:35.340 --> 02:06:37.500] ready with the homework when it needs help.
+[02:06:37.840 --> 02:06:42.380] Not just less work per item, but fewer items waiting on you.
+[02:06:44.660 --> 02:06:47.100] That board is where the work lives,
+[02:06:47.280 --> 02:06:50.100] but nobody stares at a board all the time, right?
+[02:06:50.440 --> 02:06:54.020] So the agent is also available across many surfaces
+[02:06:54.020 --> 02:06:56.640] like chat and native incident surfaces.
+[02:06:57.280 --> 02:07:00.600] At 9 every morning, it posts a digest.
+[02:07:01.100 --> 02:07:04.640] 23 came in, 3 need you, 18 handled.
+[02:07:05.420 --> 02:07:09.180] Each thing that needs you come with a one-click next step.
+[02:07:09.680 --> 02:07:13.780] So, approving the quota bump takes one tap from your phone.
+[02:07:14.260 --> 02:07:17.420] The 18 it handled are summarized, not listed.
+[02:07:17.980 --> 02:07:21.900] And the two that are still in progress tell you what it's doing about them.
+[02:07:22.680 --> 02:07:26.200] And when you want to dig in, you just reply in the thread.
+[02:07:26.760 --> 02:07:31.780] As you see on the right, here you open the checkout incident and ask for the evidence.
+[02:07:32.080 --> 02:07:33.340] It already has it.
+[02:07:35.920 --> 02:07:39.780] 2 minutes after a config push cut the payment client timeout.
+[02:07:39.960 --> 02:07:42.060] The same pattern as two past incidents.
+[02:07:43.160 --> 02:07:45.240] You ask a follow-up, is it only EU?
+[02:07:45.620 --> 02:07:46.980] And it answers with a breakdown.
+[02:07:47.460 --> 02:07:52.520] It drafts the role back, you approve it right there, and errors start recovering.
+[02:07:52.920 --> 02:07:57.700] You never opened a dashboard and you never had to explain the context, because it was
+[02:07:57.700 --> 02:07:58.300] already there.
+[02:07:58.640 --> 02:08:00.420] That's what a teammate feels like.
+[02:08:00.540 --> 02:08:02.820] A morning handoff, a colleague you can ask.
+[02:08:06.480 --> 02:08:10.560] Now, under the hood of this AI teammate is AI automations.
+[02:08:11.340 --> 02:08:12.960] The first, Investigates.
+[02:08:13.200 --> 02:08:20.280] On every new signal, Auto-Triage classifies it, checks its criticality, and kicks off the right agent.
+[02:08:20.920 --> 02:08:31.480] An alert goes to the incident investigator, a task to the team's own agent, a test failure to a coding agent, a lookup to memory and code search.
+[02:08:32.260 --> 02:08:35.060] The second keeps the system healthy.
+[02:08:35.620 --> 02:08:38.080] Unattended automation fails quietly.
+[02:08:38.640 --> 02:08:45.120] So on a schedule, it looks for stuck or failed runs, retrace and repairs broken schedules,
+[02:08:45.400 --> 02:08:49.000] and it only peaches a human if it can't fix it itself.
+[02:08:50.480 --> 02:08:51.620] Nothing stalls silently.
+[02:08:53.360 --> 02:08:54.400] The third hands off.
+[02:08:55.360 --> 02:08:59.320] At every shift change and every morning at 9, it summarizes the shift.
+[02:08:59.320 --> 02:09:03.700] what needs you with the fix ready and what it handled on its own,
+[02:09:03.880 --> 02:09:05.200] posted to the team chat.
+[02:09:05.500 --> 02:09:09.580] Not only in the morning, but every urgent issue that needs user attention
+[02:09:09.580 --> 02:09:13.280] gets notified in chat with findings and draft fixes.
+[02:09:13.740 --> 02:09:17.120] It also tags the next on call in the chat during handoff.
+[02:09:17.340 --> 02:09:19.600] The entire cycle still continues.
+[02:09:22.760 --> 02:09:25.120] And because it belongs to the team,
+[02:09:25.360 --> 02:09:29.040] it runs the agents and the skills the team already trusts.
+[02:09:29.320 --> 02:09:31.020] That's the slot in the middle.
+[02:09:31.500 --> 02:09:33.880] Bring your own agent, add your own skills.
+[02:09:34.600 --> 02:09:39.880] If a team already has an agent that has the team's runbooks and the knowledge base, the
+[02:09:39.880 --> 02:09:41.060] automations leverage it.
+[02:09:41.700 --> 02:09:46.660] Alongside that, it has our own incident investigator and a deep dive coding session.
+[02:09:48.420 --> 02:09:54.200] Work comes in from alerts, tickets, incidents, team posts and chat.
+[02:09:54.600 --> 02:09:56.320] The agent itself is generic.
+[02:09:56.320 --> 02:10:03.300] What makes it good at an on-call rotation is the team's agents, skills, memory, and playbook.
+[02:10:03.700 --> 02:10:10.140] And every run is logged so anyone on the team can inspect the trajectory or resume the conversation.
+[02:10:10.860 --> 02:10:15.200] Now, I'm handing off to my teammate Vlad to talk more on the shared agent.
+[02:10:18.800 --> 02:10:24.120] An on-call agent can't belong to just a single person because the on-call itself doesn't.
+[02:10:24.580 --> 02:10:25.940] So it belongs to the team.
+[02:10:26.320 --> 02:10:29.500] There is one teammate per rotation on one board.
+[02:10:30.260 --> 02:10:34.200] Whoever's on call can ask it, correct it, or pick up its word mid-investigation.
+[02:10:35.100 --> 02:10:39.620] It carries the team's on-call expertise, the playbook of lower profiles and past decisions
+[02:10:39.620 --> 02:10:43.140] from one shift to the next one the way a good handoff should.
+[02:10:44.180 --> 02:10:45.560] Here's what that looks like.
+[02:10:46.260 --> 02:10:52.460] Monday at 2 am, Sam is on call and tells it, remember, if checkout times out after a config
+[02:10:52.460 --> 02:10:54.440] push, roll back the config first.
+[02:10:57.040 --> 02:11:03.100] memory. Three days later, Jordan is on call, hits the exact same alert, and just asks for
+[02:11:03.100 --> 02:11:09.540] a fix. The agent answers with same fix, says where it came from, and has the rollback drafted.
+[02:11:10.100 --> 02:11:17.800] Teach it once, the next on call gets it. And it accesses the team. Its own identity, owned
+[02:11:17.800 --> 02:11:24.920] by the rotation, with only the access the team is comfortable granting it. And it learns
+[02:11:26.900 --> 02:11:32.200] handoffs, decisions, and corrections all flow into memory, so shift number 30 is
+[02:11:32.200 --> 02:11:35.940] better than the shift number one, the same way a new on-call gets better every
+[02:11:35.940 --> 02:11:43.320] week. But memory erodes over time, so ours has to earn its place. It retrieves
+[02:11:43.320 --> 02:11:49.440] semantically, uses what it finds, scores where it actually helped, and promotes or
+[02:11:49.440 --> 02:11:54.840] retires entries automatically. When someone says that was wrong, the item
+[02:11:56.320 --> 02:11:56.840] becomes memory.
+[02:11:58.860 --> 02:12:01.420] Three things made this work be on our team.
+[02:12:02.560 --> 02:12:05.240] First, a loop that never stops listening.
+[02:12:05.520 --> 02:12:08.160] Every piece of feedback or course correction
+[02:12:08.160 --> 02:12:11.460] reopens the item and ultimately gets absorbed into memory.
+[02:12:12.660 --> 02:12:15.720] Feedback is an input to the system, not a sorry read
+[02:12:15.720 --> 02:12:16.400] once a quarter.
+[02:12:17.260 --> 02:12:20.360] Second, customize instead of forking.
+[02:12:21.200 --> 02:12:24.340] Teams bring their own playbooks and skill workflows.
+[02:12:27.600 --> 02:12:35.100] underneath. Third, what we call one rotation to end. Identity, config, and memory are per team,
+[02:12:35.300 --> 02:12:41.600] so added rotation becomes a setup, not a new project. The agent is generic, while the expertise
+[02:12:41.600 --> 02:12:49.960] is owned by the team. So what has changed for the people on call? Well, first, their job shifted
+[02:12:49.960 --> 02:12:55.100] from driving deep investigations to making key decisions. They start from a hypothesis with
+[02:12:56.320 --> 02:13:03.840] not a blank task or dashboard. Second, the load is getting lighter. Early signs of on-call load
+[02:13:03.840 --> 02:13:09.760] reduction are promising for teams that run it autonomously, and we want to measure it rigorously
+[02:13:09.760 --> 02:13:16.680] before we put a number on it. And the third, every change that agent writes still meets a human.
+[02:13:17.440 --> 02:13:23.080] Fixes land only through normal review and continuous integration. And most drafts don't land.
+[02:13:23.740 --> 02:13:30.020] That's the point. Review is the filter. On-call stops being a tax and becomes a review queue.
+[02:13:32.200 --> 02:13:37.060] Here's what we're focusing on next. First, mitigations that get approved,
+[02:13:37.120 --> 02:13:42.100] not just drafted. We grade every mitigation that agent proposes and feed the outcome back,
+[02:13:42.320 --> 02:13:48.680] so it earns its next level instead of being handed it. Second, skills are written from the chat,
+[02:13:48.680 --> 02:13:52.740] so a team can turn its runbooks into skills without writing any code.
+[02:13:53.440 --> 02:13:56.680] And third, measuring the time we give back properly
+[02:13:56.680 --> 02:14:00.540] with a rigorous study of uncalled times saved rather than usage counts.
+[02:14:01.420 --> 02:14:07.620] And the next rung on the latter is earning medium criticality autonomy with evidence.
+[02:14:08.240 --> 02:14:12.680] On that, thank you so much for listening to us, and hopefully that was helpful.

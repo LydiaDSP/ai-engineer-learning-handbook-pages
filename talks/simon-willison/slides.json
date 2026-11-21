@@ -1,0 +1,35 @@
+[
+  {
+    "id": "coding-turn",
+    "after": "p04",
+    "title": "编程 Agent 开始进入日常工作的时间点",
+    "time": "08:32:25",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30745s",
+    "en": "assets/coding-turn-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>编程 Agent 开始进入日常工作的时间点</h3><dl><div><dt>讲者的时间线</dt><dd>Willison 把第一个转折点放在 2025 年 11 月，并列出 Claude Opus 4.5 和 GPT-5.1。</dd></div><div><dt>观察口径</dt><dd>这段回顾关注他何时开始每天使用编程 Agent。</dd></div></dl></div>",
+    "note": "画面呈现讲者对个人使用经验的归纳。",
+    "sourceSeconds": 30745
+  },
+  {
+    "id": "beep-locator",
+    "after": "p31",
+    "title": "把微弱蜂鸣声缩小到一个可去检查的范围",
+    "time": "08:40:42",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31242s",
+    "en": "assets/beep-locator-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把微弱蜂鸣声缩小到一个可去检查的范围</h3><dl><div><dt>输入</dt><dd>家里的几台设备作为监听点，界面记录各设备与声音候选位置。</dd></div><div><dt>核验</dt><dd>界面给出约 41 厘米的候选范围，讲者随后开箱找到实物。</dd></div></dl></div>",
+    "note": "这是 Willison 展示的 Beep Locator 运行界面。",
+    "sourceSeconds": 31242
+  },
+  {
+    "id": "game-playtest",
+    "after": "p54",
+    "title": "从能运行的原型继续改游戏玩法",
+    "time": "08:47:30",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31650s",
+    "en": "assets/game-playtest-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从能运行的原型继续改游戏玩法</h3><dl><div><dt>迭代对象</dt><dd>讲者把即时战略游戏的早期版本交给 Agent 改进。</dd></div><div><dt>看实际体验</dt><dd>跟踪可争夺的目标、反馈和玩法变化，再亲自试玩。</dd></div></dl></div>",
+    "note": "画面展示讲者演示的 3D 版本。好玩是他对体验的评价。",
+    "sourceSeconds": 31650
+  }
+]

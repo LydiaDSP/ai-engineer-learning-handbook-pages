@@ -1,0 +1,375 @@
+Cline 怎样从评测失败中改进 Agent 运行框架？
+Ara Khan
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[03:59:46.540 --> 03:59:48.020] Hey guys, this is ERA.
+[03:59:48.340 --> 03:59:50.400] I'm a founding engineer at Klein.
+[03:59:51.280 --> 03:59:54.060] talking about recursively self-approving coding agents.
+[03:59:54.340 --> 03:59:58.280] So this is a very interesting conversation
+[03:59:58.900 --> 03:59:59.980] in the sense that every
+[04:00:00.000 --> 04:00:03.940] Everyone wants to understand what RSI is, how we accomplish it, how we go through it,
+[04:00:04.020 --> 04:00:05.140] and how it affects our career.
+[04:00:05.440 --> 04:00:09.100] So I'm going to start with giving you just three goals of this entire conversation,
+[04:00:09.280 --> 04:00:14.160] just three simple goals, and that would help you understand what we get out of it
+[04:00:14.160 --> 04:00:16.140] and what the future for this looks like.
+[04:00:16.260 --> 04:00:19.980] So the goal number first is understanding the intent of the Frontier Labs.
+[04:00:20.280 --> 04:00:23.360] Everyone who's outside of the Frontier Labs is always trying to speculate like,
+[04:00:23.640 --> 04:00:25.420] hey, what is the topic in OpenAI?
+[04:00:25.600 --> 04:00:26.880] Or what is DeepMind going to come out with?
+[04:00:26.920 --> 04:00:27.980] Or what are they trying to make?
+[04:00:27.980 --> 04:00:30.180] and what's the future going to look like?
+[04:00:30.340 --> 04:00:31.340] Who has cracked the RSI?
+[04:00:31.540 --> 04:00:35.020] So this kind of helps you get a rough outline
+[04:00:35.020 --> 04:00:36.860] of what their roadmap looks like.
+[04:00:37.020 --> 04:00:37.980] And the second thing is that
+[04:00:38.520 --> 04:00:40.380] if the models are improving so fast,
+[04:00:40.440 --> 04:00:41.760] how do you think of your career
+[04:00:41.760 --> 04:00:43.080] over the next few years?
+[04:00:43.420 --> 04:00:45.180] That is really what we want to understand.
+[04:00:45.300 --> 04:00:45.900] We want to understand,
+[04:00:46.060 --> 04:00:49.020] okay, things are changing so fast.
+[04:00:49.180 --> 04:00:52.020] The ground underneath us is shifting so quickly.
+[04:00:52.280 --> 04:00:53.060] Right now,
+[04:00:55.200 --> 04:00:56.240] there used to be a time
+[04:00:58.060 --> 04:01:01.300] demonstrate your side projects on your personal website on GitHub.
+[04:01:01.580 --> 04:01:05.420] And now it's just like you could literally one shot them using any frontier coding
+[04:01:05.420 --> 04:01:10.340] vision. And with that, it's like, it's like, oh, well, how do we demonstrate proof of
+[04:01:10.340 --> 04:01:14.860] work? How do we demonstrate, you know, that we know what we're doing and how do we
+[04:01:14.860 --> 04:01:16.900] think of our career for the next coming years? Right.
+[04:01:17.300 --> 04:01:20.140] So it's very interesting times that we're living in.
+[04:01:20.220 --> 04:01:23.300] And then the third and the most important goal of the conversation is escaping
+[04:01:23.300 --> 04:01:25.100] department underclass. Right.
+[04:01:25.100 --> 04:01:31.560] So I know this seems like a joke, but this really is a very valid possibility that people are contemplating.
+[04:01:31.740 --> 04:01:37.660] Everyone's like, oh, well, if everything that we want to be doing can potentially easily be done by a frontier model,
+[04:01:37.760 --> 04:01:38.960] what are we good for?
+[04:01:39.080 --> 04:01:40.820] And where does software go?
+[04:01:41.140 --> 04:01:43.200] Where is the future of technology going to go?
+[04:01:43.280 --> 04:01:45.500] And what are we going to do as things evolve so fast?
+[04:01:46.800 --> 04:01:52.220] So I think that there's a lot of fear-mongering, but also there's some very valid merits
+[04:01:52.220 --> 04:01:59.240] where people are concerned that if all the revenue of the planet is going to go to a few hardware companies
+[04:01:59.240 --> 04:02:05.500] that make front-tier GPUs and then a few AI companies that make the best models,
+[04:02:06.040 --> 04:02:09.900] how are the rest of us going to thrive and what are we going to do here?
+[04:02:10.160 --> 04:02:16.640] So I think I'll walk you through a few examples and a few ideas that will really help you reconsider
+[04:02:16.640 --> 04:02:21.540] the career choices and the life choices you're making and what are your problems you're picking up.
+[04:02:22.220 --> 04:02:36.780] And then that would help you realign what it is that we should be working on and what it is that you could work on that would stand the test of time and help you both not just on a psychological level but financial and other levels as well.
+[04:02:37.260 --> 04:02:41.340] So to give a very precise example, let's start with something very precise that I had done.
+[04:02:41.520 --> 04:02:50.020] So a couple of months ago, I came up with recursive improvements on IA coding harness.
+[04:02:50.020 --> 04:02:55.040] So this was the first public example of an automatic eval improvement.
+[04:02:55.300 --> 04:02:59.180] So to give you an example, we used to do this thing where we would measure
+[04:02:59.820 --> 04:03:02.920] the quality of a coding agent using evaluation scores.
+[04:03:03.140 --> 04:03:11.520] So on TerminalBandge 2.1, Kimi K3 with Klein would score usually 60-70%,
+[04:03:11.520 --> 04:03:17.140] and then depending on how good the model is, you get better scores on TerminalBandge 2.1.
+[04:03:17.140 --> 04:03:22.100] So we noticed that when Kimi K3 came out, our score was 77.5%, which is a good score.
+[04:03:22.300 --> 04:03:28.220] But we were like, oh, is this truly the best score that this model can get on this benchmark?
+[04:03:28.440 --> 04:03:33.260] And also, like, what does the model release paper claim about what their best score is?
+[04:03:33.380 --> 04:03:37.640] So the model's release paper said that they could score up to 85% or even more.
+[04:03:37.760 --> 04:03:38.820] So we were just like, okay, okay.
+[04:03:39.060 --> 04:03:41.020] So we are not getting the sort of score.
+[04:03:41.220 --> 04:03:46.920] And often what we do with model releases in client is that we try to, like, optimize your score and try to get the best out of the model.
+[04:03:48.240 --> 04:04:00.820] So, when we started hill climbing on the model, we realized that there's a lot of steps that we do, it says that we do it gracefully, it says that we pursue the right kind of problems and do it the right way.
+[04:04:01.880 --> 04:04:06.800] And we started thinking, okay, there's a lot of groundwork here, how do we automate it?
+[04:04:06.860 --> 04:04:09.320] And this is a demonstration of how we automated it.
+[04:04:09.320 --> 04:04:19.240] So I'll just leave that as a placeholder for now, and we'll get back to it later where we talk about in detail of like how does this automatic improvement loop of a client harness work.
+[04:04:19.480 --> 04:04:26.060] So this basically means that like you have a coding agent harness that could just like basically improve itself and become better on the same set of problems.
+[04:04:26.840 --> 04:04:28.720] So let's start with the ground terms.
+[04:04:28.720 --> 04:04:29.740] What is recursive self-reformance?
+[04:04:29.860 --> 04:04:35.700] Recruiting self-improvement is the idea that an AI system that helps build a more capable successor,
+[04:04:35.700 --> 04:04:40.120] which repeats the process until you hit artificial general intelligence.
+[04:04:40.280 --> 04:04:44.380] You have better systems, you have better improvements, you have a better system, and you have singularity.
+[04:04:44.980 --> 04:04:48.180] So a classic example is like a self-reformance coding agent.
+[04:04:48.280 --> 04:04:51.480] Self-reformance coding agent is just like a coding agent that can improve itself.
+[04:04:51.620 --> 04:04:54.880] So this is all like a pie-in-the-sky idea.
+[04:04:55.100 --> 04:04:57.180] It's like, yeah, sure, this looks cool.
+[04:04:58.720 --> 04:05:00.600] How did we even get to here?
+[04:05:01.340 --> 04:05:04.240] So if you notice in Topics Roadmap in 2021,
+[04:05:04.860 --> 04:05:08.080] in 2021's roadmap, they very specifically said that
+[04:05:09.560 --> 04:05:13.440] they want to develop a general AI system that can interact conversationally with
+[04:05:13.440 --> 04:05:15.780] a user to create, edit, and explain software.
+[04:05:16.060 --> 04:05:19.100] It would display all the capabilities of a software engineer colleague.
+[04:05:19.260 --> 04:05:20.900] It would write functions, it would identify bugs,
+[04:05:21.060 --> 04:05:24.100] it would design an API, discuss style, and best practices.
+[04:05:24.380 --> 04:05:26.500] So we don't expect to reach this goal right away,
+[04:05:26.640 --> 04:05:27.980] but it's in the direction which we're striving.
+[04:05:28.780 --> 04:05:33.520] interesting how this was more than five years ago. More than five years ago, people had predicted
+[04:05:33.520 --> 04:05:38.260] that there is a day where you will have like a full-blown journal assistant that can basically
+[04:05:38.260 --> 04:05:43.960] act like a colleague, which we do have right now. Then in 2022, chat-zpd got released. We all know
+[04:05:43.960 --> 04:05:48.820] how that happened. It was a fun moment. It was like the first time things got sparked for us.
+[04:05:49.780 --> 04:05:56.420] Then in 2023, 2024, there was the first time chat models could call functions. These functions would
+[04:05:56.420 --> 04:06:02.020] be simple functions like hey what's the weather or you know what's the what's you know what's this
+[04:06:02.020 --> 04:06:07.680] competition or what are these competitions result in python um and then finally in 2024 when sonat
+[04:06:07.680 --> 04:06:13.820] 345 was released that was when the agents could like truly call like actual tools the way we call
+[04:06:13.820 --> 04:06:18.760] like think of tools so it's like reading a file editing a file you know reading searching something
+[04:06:18.760 --> 04:06:24.340] on web uh listing listing a folder searching and grabbing through you know a file system things
+[04:06:24.340 --> 04:06:30.680] like that. So and in 2024 we had the intuition that like chat box, what if chat box could actually
+[04:06:30.680 --> 04:06:34.740] talk to each other, you know, so then that was the first time when we had like, you know,
+[04:06:35.540 --> 04:06:39.320] multi-agen conversations. Now at the time these things were very janky, right? Like they were just
+[04:06:39.320 --> 04:06:45.240] like taped together in this like weird, weird, bizarre ways where you have just like these
+[04:06:45.240 --> 04:06:49.820] classes and these things and then like these hierarchies of classes and it was like it was
+[04:06:49.820 --> 04:06:54.620] all like kind of like a very janky attempt to like make us think that like these these models
+[04:06:54.620 --> 04:06:57.860] could like have these pipeline of flows of responses that can all communicate with each
+[04:06:57.860 --> 04:07:03.340] other but a lot of it was like mostly deterministic and it was like you know it was not as free-flowing
+[04:07:03.340 --> 04:07:09.160] as it is right now so and you know we started getting the intuition so this was the autogen
+[04:07:09.160 --> 04:07:13.660] project but like in only in 2025 we we started getting the just like what if the agents just
+[04:07:13.660 --> 04:07:18.780] kept getting better and faster and cheaper like what if that just kept happening and then in 2026
+[04:07:19.820 --> 04:07:22.040] we had the intuition that like,
+[04:07:22.180 --> 04:07:24.100] what if the agent could improve itself,
+[04:07:24.280 --> 04:07:26.040] which is like the final, you know,
+[04:07:26.160 --> 04:07:27.880] the final part of the whole process.
+[04:07:28.040 --> 04:07:29.280] So let me give an example,
+[04:07:29.400 --> 04:07:31.600] like what does it mean for an agent to improve itself, right?
+[04:07:31.720 --> 04:07:34.300] So like, it's like a lot of times when we think of like
+[04:07:34.300 --> 04:07:37.160] evaluating an agent, we initially used to think
+[04:07:37.160 --> 04:07:38.980] of evaluating an agent in the form of like,
+[04:07:39.280 --> 04:07:40.520] just a single turn conversation.
+[04:07:40.800 --> 04:07:44.940] So we would tell, we would tell like agents
+[04:07:44.940 --> 04:07:46.180] that like ask a simple question,
+[04:07:46.300 --> 04:07:49.100] like how many toes does a dash animal has?
+[04:07:49.940 --> 04:07:51.420] Let's say, how many toes does a cat have?
+[04:07:51.860 --> 04:07:54.800] And then the alum would go through, and the alum would prepare a response,
+[04:07:54.920 --> 04:07:55.900] and then we would grade the response.
+[04:07:56.020 --> 04:07:59.040] So a cat has maybe 10 toes, 18 toes, whatever many.
+[04:07:59.340 --> 04:08:01.080] I actually don't know how many toes a cat has.
+[04:08:01.520 --> 04:08:07.000] But anyway, yeah, so then we grade the response as a yes or no.
+[04:08:07.100 --> 04:08:10.160] But when you work with an agent, there's a ton of things that you're doing.
+[04:08:10.320 --> 04:08:11.420] So let me give an example.
+[04:08:11.580 --> 04:08:12.240] Let me give an example.
+[04:08:12.380 --> 04:08:15.960] So for example, you're going to ask an agent, like, hey, set up this MCP for me.
+[04:08:15.960 --> 04:08:45.220] So now it's not just like, it's not just like, you know, a trivial one shotable like thing, like it will like search online and go, what's the MCP? What is the config? So I'll like edit and download some soft files. Like maybe I need to add database update the MCP tool. Maybe I need to read and edit some files. Maybe I need to run some bash commands, right? So you do all of that. And then the agent responds like, hey, I did it. And then you create that with a bunch of tasks to gauge like, hey, did the agent actually accomplish the thing that it said it would do?
+[04:08:45.960 --> 04:08:54.800] So to do that thing, the second part, which is like more intricate, where you're actually like truly, you know, testing agents like to their best extent.
+[04:08:55.020 --> 04:08:58.920] Like it's like, you know, we use the same call terminal bench.
+[04:08:59.040 --> 04:09:02.500] Terminal bench is a benchmark for, you know, agents in terminal environments.
+[04:09:02.760 --> 04:09:06.860] And that is something that we are we have a lot of experience with a client.
+[04:09:06.860 --> 04:09:17.160] And it's like one of the best ways to really gauge, is your coding agent accomplishing, in general, the tasks that you're doing that you want to be doing with HRD model.
+[04:09:17.160 --> 04:09:21.180] So there's many different parts of evaluation suits.
+[04:09:21.500 --> 04:09:29.280] So ideally, you want that to run in individual sandboxes.
+[04:09:29.480 --> 04:09:39.960] Then you have independent graders that check everything, like how many channels it took, how many tokens it took, how much latency it took, how many tool calls did it make, what was the trajectory looking like.
+[04:09:39.960 --> 04:09:42.180] and then grading all the results for things like,
+[04:09:42.340 --> 04:09:43.380] hey, did you not reward hack?
+[04:09:43.460 --> 04:09:44.560] Did you not cheat through the solution?
+[04:09:44.700 --> 04:09:46.700] Did you not just look up the solution online?
+[04:09:46.920 --> 04:09:47.560] Things like that.
+[04:09:49.160 --> 04:09:52.300] So basically, a lot of these data sets
+[04:09:52.300 --> 04:09:55.360] of evaluation problems have a set of tasks.
+[04:09:55.560 --> 04:09:58.320] So in case of Terminal Bench 2.1, they have 89 tasks.
+[04:09:58.480 --> 04:10:01.760] So what we do is we spin up 89 parallel containers
+[04:10:01.760 --> 04:10:03.700] where they all run online,
+[04:10:03.960 --> 04:10:05.880] and they run in parallel in their sandbox,
+[04:10:06.160 --> 04:10:08.580] and then they each try to solve a problem.
+[04:10:09.960 --> 04:10:12.020] in parallel and independent of each other,
+[04:10:12.200 --> 04:10:14.540] and then at the end we get a score.
+[04:10:14.760 --> 04:10:16.540] So our score could give us measures,
+[04:10:16.720 --> 04:10:20.180] like is the model performing well,
+[04:10:20.420 --> 04:10:22.440] and what kind of failures it has, right?
+[04:10:22.540 --> 04:10:24.360] So you run the evaluation, you get a score.
+[04:10:24.560 --> 04:10:25.720] So you get an aggregate score,
+[04:10:25.880 --> 04:10:28.840] and the aggregate score could reveal a set of failures.
+[04:10:29.160 --> 04:10:30.420] Failures could be of any kind.
+[04:10:30.600 --> 04:10:33.280] Failures could be, hey, the refile tool is not working.
+[04:10:33.620 --> 04:10:36.960] Sometimes the inference is so slow that the agent's working,
+[04:10:37.160 --> 04:10:38.400] it's doing, it's making progress,
+[04:10:39.960 --> 04:10:41.840] It's so slow that it literally runs out of time.
+[04:10:42.040 --> 04:10:43.560] It runs out of 45 minutes or whatever.
+[04:10:43.700 --> 04:10:46.500] Many that were given for the task and just stopped working.
+[04:10:46.740 --> 04:10:50.260] So once you do that, once you understand, hey, this is what we ran,
+[04:10:50.360 --> 04:10:53.860] this is what the failures we got, we bucket the failures in different categories.
+[04:10:54.140 --> 04:10:59.620] So like 10 failures of this kind of tool called 20 failures of say infants not working or something else.
+[04:10:59.860 --> 04:11:02.520] And then once we bucket the failures into different categories,
+[04:11:02.720 --> 04:11:04.640] we try to make an improvement to the harness.
+[04:11:04.820 --> 04:11:08.520] Because what if there's something wrong with the harness that we could change
+[04:11:09.960 --> 04:11:14.160] improve, right? And on and on and on. You do this iteratively, it takes a while. It's just like,
+[04:11:14.340 --> 04:11:18.900] you know, hill climbing is like a very groundworky kind of process. And, you know, usually,
+[04:11:19.140 --> 04:11:23.560] usually we, we took, we used to take a lot of time trying to do this, but it was a great way
+[04:11:23.560 --> 04:11:29.940] for us to like learn how to improve models. So one way to hill climb on public evals is that like,
+[04:11:31.040 --> 04:11:36.600] and, you know, we could have a thing where, you know, we started doing this thing where we could
+[04:11:36.600 --> 04:11:41.160] just like what if we could have like a long running agent that runs for a while and automatically
+[04:11:41.160 --> 04:11:47.460] improves the model score and that's what we did so we ran gpd 5.6 so that led the work and that
+[04:11:47.460 --> 04:11:52.740] was like the main agent and then uh kimmy k3 was just running eval so what it was doing is that
+[04:11:52.740 --> 04:11:58.500] like gpd 5.6 was like hey run these evals get these scores let me look at the failures let me
+[04:11:58.500 --> 04:12:03.520] look at where it went wrong and then i'll make changes to client's harness and then i'll run
+[04:12:03.520 --> 04:12:08.580] these evals again and then I'll keep trying. So again you can see how like very quickly this can
+[04:12:08.580 --> 04:12:12.340] like go off the rails because this is supposed to be like the running an evaluation itself takes
+[04:12:12.340 --> 04:12:16.860] like an hour then you have to read the feedback then you have to like see if you're properly
+[04:12:16.860 --> 04:12:20.940] interpreting the feedback to make reasonable changes to the harness that are like not reward
+[04:12:20.940 --> 04:12:23.860] hacking they're just like actual genuine improvements and then run the eval again.
+[04:12:24.080 --> 04:12:30.120] So we ran that for 17 hours and when we ran that for 17 hours there was like a legitimate hell
+[04:12:30.120 --> 04:12:33.780] climbing and what we found that was very interesting this happened with a very
+[04:12:33.780 --> 04:12:40.440] detailed prompt that accomplished this is that like we had baseline scores 207 percent and then
+[04:12:41.320 --> 04:12:45.960] you know we we found issues like loop detection loop detection is when a harness just runs in
+[04:12:45.960 --> 04:12:50.460] circles around the problem right uh we found like background process grinding where background
+[04:12:50.460 --> 04:12:56.060] processes would run too long uh we found some file index issues and other things as well i mean when
+[04:12:56.060 --> 04:13:01.180] SAV, what I've actually made is GPT-5.6 Sol, right? So that found those issues, that found
+[04:13:01.180 --> 04:13:05.600] and bucketed those issues. It's like, hey, how about I make those changes in the harness and I
+[04:13:05.600 --> 04:13:10.240] run the Eval again? And iteratively built the hill climbing process completely autonomously on
+[04:13:10.240 --> 04:13:14.660] its own without my interference. And 13 hours later, when I come back to it, it has improved
+[04:13:14.660 --> 04:13:20.740] the harnesses performance in so many ways. So see what does that mean? What does that mean? It just
+[04:13:20.740 --> 04:13:27.060] basically means that like we are at a point where the experience could make the harness better that
+[04:13:27.060 --> 04:13:31.940] like there's like a two-level learning loop where the harness does some action interacts with the
+[04:13:31.940 --> 04:13:36.740] environment understands whether or not it did the right thing or the wrong thing and gets some reward
+[04:13:36.740 --> 04:13:41.900] and and like almost and then has there's like a meta agent that's observing the main harness
+[04:13:42.460 --> 04:13:46.940] and finding the changes to it and just like incorporating those changes and improving now
+[04:13:46.940 --> 04:13:58.180] Now, I think in my personal opinion, it's much harder to do in real time because if you do it in real time, you over-index on solving certain problems or you're just like too curtailed to a specific thing.
+[04:13:58.440 --> 04:14:03.340] But I do think that this is something that works on a broader scale of working on a wider range of problems.
+[04:14:04.300 --> 04:14:15.760] And you want to be able to justify the changes you're making on a broader applicability so that the changes you make here will apply to a broader range of problems as well.
+[04:14:17.040 --> 04:14:28.760] So what does that mean? What am I trying to get at here? The point I'm trying to get at is that the models are so good right now that if they can improve the harness, they can improve a lot of other things. So then what else can they improve?
+[04:14:28.760 --> 04:14:38.420] So this is a post primarily from OpenAI where GPT-5.6 SOL autonomously rewrote and optimized its own production kernels.
+[04:14:38.640 --> 04:14:43.780] And those production kernel improvements removed the entry and serving costs by 20%.
+[04:14:44.600 --> 04:14:48.660] It also had 15% higher token generation efficiency.
+[04:14:48.800 --> 04:14:52.040] And this was completely done by 5.6 SOL on itself.
+[04:14:52.660 --> 04:14:56.600] So what that means is that inference is becoming much cheaper.
+[04:14:56.600 --> 04:15:07.620] And that means that if for a company like OpenAI, if you're having 20% lower serving cost for a frontier model, that could be billions of dollars of improvement in price.
+[04:15:07.680 --> 04:15:10.000] And you could do that as well for your own models.
+[04:15:11.600 --> 04:15:18.740] Another interesting thing is that when people have kernel writing competitions, so Core Auto is a company which has kernel writing competitions.
+[04:15:18.740 --> 04:15:24.960] and you'll notice that they mentioned that the person who won the kernel writing competition,
+[04:15:25.160 --> 04:15:30.220] they exclusively said that I've never handwritten a GP operator, it's all ALM and agent driven.
+[04:15:30.760 --> 04:15:36.460] So notice that how the best inference improvements, kernel improvements are at this point
+[04:15:36.460 --> 04:15:42.340] completely exclusively done by a swarm of agents or generally just agents doing some magic to
+[04:15:42.340 --> 04:15:47.320] magically improve the kernel code and have faster inference, cheaper inference.
+[04:15:48.740 --> 04:15:55.120] Yeah. So basically, like the improvement surface that you think of is not just like the harness improvement.
+[04:15:55.380 --> 04:15:57.180] It's literally the whole surface stack, right?
+[04:15:57.460 --> 04:16:04.200] So the whole stack from like evaluation to harness improvements to training data to post training to world interaction to inference,
+[04:16:04.560 --> 04:16:13.800] like literally the entire part of the pipeline, like all the way from like electricity going through your machine to like making an error request,
+[04:16:13.800 --> 04:16:16.360] going through the model, models doing inference,
+[04:16:16.920 --> 04:16:18.760] making a response and getting back to you.
+[04:16:18.840 --> 04:16:21.400] Every single part of the pipeline, we can optimize it.
+[04:16:21.580 --> 04:16:25.040] So the whole RSI loop has a couple of different parts.
+[04:16:25.180 --> 04:16:30.900] So it's pre-training, Nematron examples of AI curated pre-training data.
+[04:16:31.080 --> 04:16:31.500] That was good.
+[04:16:31.940 --> 04:16:36.920] There's post-training examples, which are where there's constitutional AI.
+[04:16:37.280 --> 04:16:39.720] Examples of post-training improvements.
+[04:16:39.980 --> 04:16:42.720] Then inference, I gave you the example of GPT-5.6.
+[04:16:43.800 --> 04:16:46.180] and eval generation, I give you our own example
+[04:16:46.180 --> 04:16:48.480] of how we improve ourselves on our own evals.
+[04:16:49.340 --> 04:16:51.780] In general, what you wanna think of is that like,
+[04:16:52.100 --> 04:16:53.740] any time a model is trying to do something
+[04:16:53.740 --> 04:16:56.500] and it's like not able to do it or not able to accomplish it.
+[04:16:56.680 --> 04:16:59.260] So for example, like imagine you're having a long conversation
+[04:16:59.260 --> 04:17:01.420] where you ask the model something obvious.
+[04:17:01.640 --> 04:17:04.480] So like it's like, or something that you think
+[04:17:04.480 --> 04:17:07.500] is not necessarily obvious, but it's like, it's hard,
+[04:17:07.600 --> 04:17:09.860] but you would assume that a model could potentially do it.
+[04:17:09.960 --> 04:17:12.480] So to give an example, let's say you wanna make,
+[04:17:13.920 --> 04:17:16.460] to a database and then fill that column, right?
+[04:17:17.060 --> 04:17:18.740] And then put a cache in front of it.
+[04:17:18.860 --> 04:17:21.160] So what happens is that it does the whole thing,
+[04:17:21.260 --> 04:17:23.280] but for some reason the way it pushes the cache
+[04:17:23.280 --> 04:17:24.800] in front of the whole database,
+[04:17:24.980 --> 04:17:26.100] like it kind of doesn't do it right.
+[04:17:26.240 --> 04:17:27.440] So at that point you were like, oh no,
+[04:17:27.980 --> 04:17:30.540] set this cache differently, set this as the TTL,
+[04:17:30.620 --> 04:17:32.180] and then you give like a correction signal,
+[04:17:32.500 --> 04:17:34.800] and then that kind of like fixes your problem
+[04:17:34.800 --> 04:17:35.980] and you kind of go about your day.
+[04:17:36.100 --> 04:17:38.220] But the way I want to think of it is that
+[04:17:38.220 --> 04:17:39.940] I want to think of like every single time,
+[04:17:40.180 --> 04:17:43.260] like a human correction to the digital landscape.
+[04:17:44.060 --> 04:17:47.700] is a part of a delta that needs to be covered.
+[04:17:48.380 --> 04:17:53.440] And what that means is that every single time you're finding the edge of model capabilities
+[04:17:53.440 --> 04:17:59.300] of how far it can push for infants, how much it can push for this, how much it can push for solving your problems,
+[04:18:00.200 --> 04:18:05.200] you want to find the delta and we want to push that frontier a little bit further, a little bit further.
+[04:18:05.600 --> 04:18:10.360] And that's what post training does, right? So post training is in that post training.
+[04:18:10.360 --> 04:18:21.340] We find these really interesting and really hard long horizon problems for coding agents or for other kinds of problems, and then just slowly hill climb the models on those kind of problems.
+[04:18:21.540 --> 04:18:24.700] So anything that has a verifiable loop can be optimized.
+[04:18:24.700 --> 04:18:28.260] But this is not just limited to software.
+[04:18:29.040 --> 04:18:32.860] Literally, the physical world itself could have a verifiable loop.
+[04:18:32.860 --> 04:18:52.100] So to give an example, let me give you a very funny, kind of bizarre example where you look at this and you look at this robot and it's typing something and it's really interesting what the robot is typing.
+[04:19:00.900 --> 04:19:07.040] So notice how the robot is itself typing how it wants to solve robotics.
+[04:19:07.400 --> 04:19:13.940] And imagine if the robot itself could interpret the results of the answers and just keep improving.
+[04:19:14.160 --> 04:19:17.700] Then that means that this is basically an ASI robot.
+[04:19:17.700 --> 04:19:29.180] Another example that I could give you from my personal life is that I have this chip that has the ability to see and has a speaker and has a microphone inside of it.
+[04:19:29.260 --> 04:19:36.560] So I was trying to set up this with my machine, and it was a gift that I had for my girlfriend.
+[04:19:36.880 --> 04:19:40.780] And what I find very interesting about this is I was trying to set it up.
+[04:19:40.880 --> 04:19:41.840] It's very slow.
+[04:19:41.980 --> 04:19:42.920] It was slow to respond.
+[04:19:43.040 --> 04:19:43.840] It had higher latency.
+[04:19:44.040 --> 04:19:45.320] It had an agent in and of itself.
+[04:19:45.320 --> 04:19:54.440] right? So what I did was I connected the chip to my computer and I let coding
+[04:19:54.440 --> 04:19:59.840] agents run on this hardware and basically run on this hardware automatically
+[04:20:00.000 --> 04:20:06.060] magically make tests to it. So like my computer would talk to my hardware, give it some tests,
+[04:20:06.200 --> 04:20:11.240] like, hey, do this, do that. And just like, what do you see right now? So then it would notice the
+[04:20:11.240 --> 04:20:16.640] end-to-end latency of like the inference response of like how fast my hardware is responding. And
+[04:20:16.640 --> 04:20:22.880] then what I found is that like it was able to do the breakdown of like every single case and
+[04:20:22.880 --> 04:20:29.260] scenario where there was like higher latency, slower response, or just the algorithm wasn't
+[04:20:30.000 --> 04:20:35.220] I could then set up a recursive loop where both the firmware could be updated,
+[04:20:35.580 --> 04:20:41.220] the tool calls, the inference model used, the speech-retext model used,
+[04:20:41.300 --> 04:20:44.420] all of those could be improved automatically with an open router key,
+[04:20:44.520 --> 04:20:46.020] which I'd given to a coding agent,
+[04:20:46.140 --> 04:20:49.100] and then overnight with self-running experiments with the hardware,
+[04:20:51.040 --> 04:20:54.960] this tiny little piece of beautiful hardware that I have was deeply optimized.
+[04:20:55.240 --> 04:20:58.780] So this also, even hardware, could be a part of the RSI loop.
+[04:21:00.000 --> 04:21:03.500] you connect these loops right that's the next question like you could have cheaper inference
+[04:21:03.500 --> 04:21:08.640] you could have like more experiments budget you have like you know better data and better models
+[04:21:08.640 --> 04:21:13.140] so is this single rarity it's a very close question to ask and i think that the part of the
+[04:21:13.140 --> 04:21:18.020] parts of the loop are already weird right like we we are really we really are very close to
+[04:21:18.020 --> 04:21:24.000] parts of the rsi loop right and what do we do like what do we do about this and it's like how do we
+[04:21:24.000 --> 04:21:28.980] think of that in terms of like our career and how do you think of that in terms of you know our lives
+[04:21:30.380 --> 04:21:32.580] So here's my advice to everyone who is watching this.
+[04:21:32.760 --> 04:21:36.580] Like, please, please, please, please move closer to the RSI group, right?
+[04:21:36.700 --> 04:21:41.040] So it's like right now, like people are working on all these like different kinds of software,
+[04:21:41.180 --> 04:21:44.760] which is like, you know, agents for, you know, construction agents for this agents for that.
+[04:21:44.860 --> 04:21:50.520] And it's like, I think that you're, you know, well, the way I see those things is that like,
+[04:21:50.580 --> 04:21:53.240] I think of those as like, you're missing the forest for the, for the trees.
+[04:21:53.400 --> 04:21:54.020] You really are.
+[04:21:54.020 --> 04:22:00.660] And it's like you have this like very interesting godlike technology that can change the course of humanity.
+[04:22:00.660 --> 04:22:04.560] And then we're not ambitious enough to pursue the best problems.
+[04:22:04.780 --> 04:22:05.780] We really are not.
+[04:22:05.920 --> 04:22:10.900] And we're just like I think that it's not just like the problem isn't just that we're not ambitious.
+[04:22:11.040 --> 04:22:12.840] And we're also like what we're pursuing.
+[04:22:13.260 --> 04:22:18.320] A lot of those things are just like one model release away from like being completely like wiped out.
+[04:22:18.320 --> 04:22:23.420] right so like it's also like it's also like it may not be that intellectually simulating because
+[04:22:23.420 --> 04:22:26.800] like all you're essentially all we're essentially doing is like sitting all day it's like hey cloud
+[04:22:26.800 --> 04:22:30.100] do this for me a cloud do this for me and i don't know if that's like i don't know if that's like
+[04:22:30.100 --> 04:22:35.640] the most intellectually simulating or like uh or like um thoughtful use of a person's time like
+[04:22:35.640 --> 04:22:40.020] maybe maybe you know we're supposed to be solving harder and more uh more frontier problems and i
+[04:22:40.020 --> 04:22:44.700] think that like it's like the ceiling is like our ambition so instead of like working on these
+[04:22:44.700 --> 04:22:50.560] tiny things my suggestion to people is to like you know do things that of course like goes without
+[04:22:50.560 --> 04:22:54.340] saying but you should do things you believe in and you know i'm just a guy on the internet but
+[04:22:54.340 --> 04:22:59.740] do things to help you move closer to the rsi loop right so like anything that's just like the end
+[04:22:59.740 --> 04:23:06.060] to end pipeline of like hey this is where like the models are lacking like it's like whether that's
+[04:23:06.060 --> 04:23:09.240] inference whether that's post training whether there's literally like physical interaction
+[04:23:09.240 --> 04:23:14.360] whether that could be sending end-to-end pipelines of truly any kind,
+[04:23:14.540 --> 04:23:17.900] whether that's hardware problems, whether that's networking problems,
+[04:23:18.100 --> 04:23:20.020] whether that's building a sense of community,
+[04:23:20.120 --> 04:23:32.980] things that just help you as an engineer get closer to the benefits of the improvements in the model.
+[04:23:33.160 --> 04:23:35.980] So this is a very interesting slide from Satya Identity topic.
+[04:23:35.980 --> 04:23:43.280] So they mentioned that like you want to have like this.
+[04:23:43.400 --> 04:23:47.640] You're in this space where it's like, you know, you only you only have like one to five years left to contribute to luxury.
+[04:23:47.840 --> 04:23:54.680] Well, what do you do? Right. So it's like they gave great suggestions where like prefer ambitious, targeted and fast collaborations.
+[04:23:54.740 --> 04:24:02.100] Right. And, you know, in general, like the timescale, like all the timelines that you give to yourself, like they should be just completely squeezed out.
+[04:24:02.100 --> 04:24:03.180] You're completely screwed up.
+[04:24:03.320 --> 04:24:15.480] Because it's like a lot of times, and you also have to think through that, like, if the problem that you're working on is too ambitious, like, it's like, is it probably better to wait for just, like, the next frontier model to come out or not?
+[04:24:15.640 --> 04:24:18.100] Like, that's something you also have to wait through, right?
+[04:24:19.740 --> 04:24:23.580] And you ideally want to work on problems that benefit from scale.
+[04:24:23.580 --> 04:24:27.500] and you also at the same time want to work projects that can be solved by sale alone.
+[04:24:27.900 --> 04:24:32.580] Because then, you know, it's like if you're working on a problem and then the next model release comes out and solves the problem.
+[04:24:32.720 --> 04:24:34.320] So that's probably not a good thing to do.
+[04:24:34.480 --> 04:24:42.100] So you have to think philosophically of what is the endeavor that benefits greatly from other improvements,
+[04:24:42.260 --> 04:24:44.300] but isn't also completely wiped out from it.
+[04:24:44.720 --> 04:24:52.300] And then ideally, if the endeavor could also be a part of the improvement pipeline,
+[04:24:53.580 --> 04:25:00.360] be amazing so you see a lot of companies raising on say um making data pipelines and there's a lot
+[04:25:00.360 --> 04:25:05.140] of money there there's a lot of companies working on physical hardware and stuff so i think if you're
+[04:25:05.140 --> 04:25:09.280] a software engineer watching these it's like i think that if you're if you feel like you're like
+[04:25:09.280 --> 04:25:14.860] here the delta of your intellect and ability in your day-to-day it's like not contributing
+[04:25:15.420 --> 04:25:20.140] as in like you have the intellect you can make a difference but like if cloud is just like one
+[04:25:20.140 --> 04:25:24.040] shotting all those problems like in your day-to-day and you're just like kind of like becoming a meat
+[04:25:24.040 --> 04:25:28.040] proxy we should work the thing through take a step back and think through it's like okay where
+[04:25:28.040 --> 04:25:32.560] are the problems where where you're actually truly uh contributing and that they will stand the test
+[04:25:32.560 --> 04:25:36.920] of time and then those that kind of reflection and realignment right now would i think like
+[04:25:36.920 --> 04:25:44.220] have like very interesting consequences for you um in the long term um so yeah so thank you so much
+[04:25:44.220 --> 04:25:48.900] you know thank you so much for your time like i think that i think that if you're watching this
+[04:25:50.140 --> 04:25:52.320] that you're definitely contemplating
+[04:25:52.860 --> 04:25:54.380] one of the most interesting improvements
+[04:25:54.380 --> 04:25:55.620] in the course of humanity.
+[04:25:56.840 --> 04:25:59.120] And there's many philosophical arguments here.
+[04:25:59.260 --> 04:26:00.400] Some people might say,
+[04:26:00.520 --> 04:26:04.480] hey, I think maybe I'm off on the timelines
+[04:26:04.480 --> 04:26:06.940] or maybe I'm just being too pessimistic
+[04:26:06.940 --> 04:26:08.120] or maybe I'm being too optimistic.
+[04:26:08.440 --> 04:26:10.380] But I would love to hear all those thoughts.
+[04:26:10.520 --> 04:26:11.740] So this is my QR code.
+[04:26:11.840 --> 04:26:13.040] Please feel free to scan it
+[04:26:13.040 --> 04:26:14.840] and let me know all your thoughts.
+[04:26:15.020 --> 04:26:15.640] Thank you so much.
+[04:26:15.720 --> 04:26:16.900] Very kind of you to give me your time.

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p03",
+    "title": "SubmitQueue 预先验证可能的合并顺序",
+    "time": "00:03:05",
+    "url": "https://www.youtube.com/watch?v=hX140a5klW0&t=185s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>队列分别构建和测试只合并 A、只合并 B、先合并 A 再合并 B 的候选状态，给真正落地的组合提供验证证据。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 185
+  },
+  {
+    "id": "frame-02",
+    "after": "p12",
+    "title": "放宽冲突边能恢复并行度",
+    "time": "00:15:25",
+    "url": "https://www.youtube.com/watch?v=hX140a5klW0&t=925s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>六项改动原本构成一条长链。图中保留强重叠关系，弱化两条连接后得到三条队列，但被放宽的关系可能带来合并后失败。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 925
+  },
+  {
+    "id": "frame-03",
+    "after": "p16",
+    "title": "同一提交历史上的 main 与 verified/main",
+    "time": "00:21:15",
+    "url": "https://www.youtube.com/watch?v=hX140a5klW0&t=1275s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>main 可以前进到 D。若 A 到 D 的整段验证失败，Stovepipe 将 verified/main 留在上一次验证成功的 A。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 1275
+  }
+]

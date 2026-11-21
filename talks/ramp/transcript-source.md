@@ -1,0 +1,273 @@
+# Ramp 怎样让同事接得上 Agent 做过的事？
+
+Zach Bruggeman
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 25 场（07:48:52–08:04:02）的 41 段中英资料整理。官方议程英文题名为 How to build an agent that builds the culture。英文为机器转写，中文保留缺漏提示。代码占比和排障结果来自讲者自述，演讲未给出统计口径和独立复核。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 开场与 Inspect 的远程协作方式 / Introduction and Inspect’s remote collaboration model
+
+[07:48:52.040—07:49:10.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28132s)
+
+非常感谢。我们先等一下。这里有旧金山 49 人队的球迷吗？好，这反应比我今年在其他活动上问当地球队时好多了。我经常问完就冷场。嗯，这种玩笑找错了听众。不过这回总算有人接了。
+
+Thank you so much. So let's get a second here. Any 49ers fans? Okay, that's a better reaction I've gotten to other events this year when I've asked you know about their local sports teams. I've gotten a lot of just like muted signs after the, you know, well, wrong audience for that type of joke, but glad at least I could hit this time.
+
+[07:49:28.220—07:49:29.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28168s)
+
+［现场调试串词］需要帮忙吗？
+
+Do you need help?
+
+转写校注。Brief on-stage setup exchange.
+
+[07:49:57.260—07:50:13.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28197s)
+
+然后……[转写有缺漏] 对，太好了。好，可以了。谢谢大家等我。我叫 Zach，是 Ramp 的工程师。我很高兴跟大家聊聊，今年在我们的机器人朋友 Inspect 帮助下，Ramp 的工程文化有了什么变化。
+
+And then, . Yeah, perfect. All right, good. Well, thanks so much for waiting, everyone. My name is Zach, and I'm an engineer at RAMP. I'm just really excited to tell you all a bit about how RAMP has evolved its engineering culture this year through the help of our robotic friend, Inspect.
+
+[07:50:14.400—07:50:47.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28214s)
+
+先简单介绍一下，Inspect 是 Ramp 用于协作的编程 Agent。大约一年前，我们决定赌一把，自己做一个编程 Agent，让每个会话都在远程运行，而且支持多人协作。不管是在 Inspect 自己的界面、Slack、Linear，还是我们接入的其他地方，它都能和你及团队一起工作。现在它能做的早已超出写代码。我们有基础设计组件、审查 Agent，还有可以播放验证过程的工具，让任何开发者都能在 Inspect 里从写提示词一路做到交付。Inspect 也连上了公司各处的集成。
+
+As a quick introduction, Inspect is RAMP's collaborative coding agent. About a year ago, we decided to take a bet on building our own coding agent with every session running remotely and being fully multiplayer. Inspect can work alongside you and your team, whether that be an Inspect itself, Slack, Linear, or any other of our integrations. And now it goes far beyond just writing the code with the design primitives, review agents, and verification players that let any builder go from prompt to shipping all inside Inspect. Inspect is also connected with all of our integrations company-wide,
+
+[07:50:47.420—07:51:04.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28247s)
+
+这样每个人都自动接上了最重要的数据和工具，包括遥测数据、数据库和其他可用工具。靠这套做法，我们现在看到 Ramp 全部代码里大约有 75% 是由 Inspect 编写并交付的。
+
+so everyone's automatically connected to the data and tools that matter most, whether that be telemetry, databases, or any of the other tooling available. Through this we now see around 75% of all of RAMP's code being written and shipped by Inspect.
+
+[07:51:05.220—07:51:27.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28265s)
+
+今年初我们开始对外分享 Inspect 时，更让人觉得新鲜的是技术本身。沙箱不到五秒就能启动，内部上下文全接上，还能让 Agent 在多人环境里协作。大家问了很多底层怎么接的问题。但现在许多这样的做法大家已经熟悉，Inspect 自己也成了市场上可用的产品。技术门槛已经比过去低多了。
+
+When we started sharing Inspect publicly at the start of the year, the technology itself was the more novel part, spinning up sandboxes in under five seconds, wiring up all that internal context, having agents work together in a multiplayer setting. People had a lot of questions about the plumbing, but now with much of these concepts, and Inspect itself now being a product on the market, the technology isn't nearly the barrier that it once was.
+
+[07:51:28.560—07:51:48.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28288s)
+
+今天我想换个角度，谈谈围绕 Inspect 培养协作文化时，我们学到了什么，以及你可以带走哪些做法，用来启发身边一起工作的同事和团队。Inspect 的技术细节今天会讲得少些。如果你感兴趣，可以读我们的博客，也可以看看几个月前《The Pragmatic Engineer》跟我们做的那篇深度报道。
+
+Instead, I want to talk about the other angle, the lessons we've learned around building a culture around Inspect and what you can take away to inspire the people and teams that you work with. I'm not going to talk as much about those technical aspects of Inspect today, but if you are curious about that, you can read our blog posts or take a look at Pragmatic Engineer's deep dive that they did with us a few months ago.
+
+## 全公司共用一套起点 / A shared starting point across the company
+
+[07:51:48.840—07:52:19.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28308s)
+
+也可以在 Twitter 上关注我哥们儿 Dylan Garcia。他最近很用心经营社交账号。Inspect 推出以来，他分享了许多很棒的使用心得。给 Dylan 打个招呼，大家去关注一下吧。在 Ramp 工作有一件事，你会渐渐习惯凡事都从能不能省时间、能不能省钱来想。我觉得理解手头的系统和工具怎么运行很重要。不过，如果一个组织有几百甚至几千人，每个人都得花……
+
+You can also follow my boy Dylan Garcia on Twitter. He's on his social media grind, but he's also been posting a ton of really great inspect insights since we've launched it. So shout out Dylan. Please give him a follow. One thing about working at RAMP is that it really makes you start thinking about everything through the lens of saving time and money. And although I think it is important to understand the systems that you work with and understand how your tooling works, if you're a multi-hundred or multi-thousand person organization and everyone has to go through
+
+[07:52:19.880—07:52:41.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28339s)
+
+比方说 15 分钟配置一下，乘上全公司的人数，就会有好几天花在这种重复劳动上。再想想现在最佳实践和 Agent 的新配置方法更新得多快，这笔配置成本并非只花一次。何况这些改进也未必能均匀传到每个人手里。
+
+say 15 minutes of setup, once you start multiplying that across an organization, this is days lost for what is very rote work. Then, if you consider how fast the frontier moves here on best practices and new ways to set up an agent, you realize this setup cost isn't just one time. Not to mention, these advancements won't always spread equally.
+
+[07:52:42.260—07:52:57.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28362s)
+
+这样一来，没人说得清维护花了多少时间和精力，知识又没能传给所有人，组织内部的结果自然参差不齐。对个人来说，这或许能成为自己的优势。但整个团队要想赢，就得让每个人都发挥出最好的水平。
+
+So now you have an indeterminate amount of time and effort spent on this maintenance without an equal spread of knowledge, leading to disparate outcomes across an organization. While you can perceive this as an advantage on an individual level, when you're trying to win, you need everyone on your A-game.
+
+[07:52:58.400—07:53:30.800](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28378s)
+
+这就是我们学到的第一件事，做能打通信息孤岛的工具。我们发现某种用法有效，或者某个工具对大家都有帮助，就立刻推广到整个组织。[转写有缺漏] 你愿意花时间调自己的配置，当然也可以。Inspect 一直都在那里，给你一个很可靠的起点。我们发现，从来不用强制大家使用 Inspect，因为有这个现成的起点，大家就少了很多非得用自己那套配置的时候。我觉得它好用，还有部分原因是……
+
+So this was our first lesson, build tools that kill information silos. When we found patterns that worked well or tools that benefited everyone, organization immediately. If you want to spend time tweaking your own setup, that's fine, but Inspect is always available as a very solid baseline. And what we've found is that we've never needed to mandate usage of Inspect because it existing as this baseline reduced the need for people to reach for their own setups all the time. Part of what I think makes this powerful as well
+
+[07:53:30.800—07:54:02.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28410s)
+
+这个行业的现实是，单靠一个人，几乎不可能在所有事情上都知道怎样用 Agent 最好。就算紧跟进展是你的全职工作，也会有遗漏、有偏见、有盲区。所以 Inspect 有一项设计是全公司共用同一个 Inspect。有人摸索出更好的用法，或者想到怎样让它更适合自己的工作，我们就可以把改进带给全公司。最好的一点是，大多数改动……
+
+is that the reality of this industry is that it's unlikely that you, as an individual, always know the absolute best way to work with agents across everything. Even if keeping up with this is your full-time job, we all miss things, hold biases, and have blind spots. So part of the design of Inspect is that there's just one single Inspect for the whole company. When people figure out better ways to use it or have ideas for what would make it better for the work they do, we're able to bring it to the entire company. The best part of this is that for most changes,
+
+[07:54:02.900—07:54:19.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28442s)
+
+其他人压根不用特意留意。照常用 Inspect 就行，所有人陆续做出的改进，你自然都能用上。我们还发现，真的没必要把大家正式叫到一起，开个培训会教他们怎样用 Inspect 高效地使用 AI。
+
+this is invisible to everyone else. You just keep using Inspect as you normally would and benefit from the improvements that everyone's making over time. And what we found is that we really don't have to run these formal sit down, here's how you use AI effectively training sessions for Inspect.
+
+[07:54:20.020—07:54:37.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28460s)
+
+每次 Inspect 会话默认在公司内部公开，公开工作实际上比私下工作更容易。于是大家自然会把工作放在公开频道里。你可以在自己已经加入的频道里，看同事怎么用 Inspect 来学，他们也能反过来跟你学。
+
+With every Inspect session being public within the company by default, it's actually easier to work in public than in private. As such, you default to working in public and you can learn how to use it teammates use it in the channels that you're already in, and your teammates can learn from you.
+
+[07:54:37.640—07:54:58.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28477s)
+
+你甚至可以直接让 Inspect 看看他们最近的会话，讲讲他们怎么工作，怎么组织提示词，怎么拆那些棘手的问题。这对 Ramp 里做东西的人有帮助，对 Inspect 团队自己也有帮助。我们经常发现，大家用 Inspect 的方式是我们当初压根没想到的。
+
+You can literally ask Inspect to go through their recent sessions and tell you about how they work, how they structure prompts, or how they break down gnarly problems. I think this has not just been helpful for the builders at Ramp, but also for the Inspect team itself. We frequently see the way that people use Inspect in ways that we didn't originally imagine.
+
+[07:54:58.460—07:55:16.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28498s)
+
+这些发现会影响我们接下来做什么。比如，常见的操作要不要做成内置功能，哪些地方还缺工具或数据。这样就形成了一个能自己转下去的循环。我们看看大家已经拿 Inspect 做成了什么，就知道朝哪些方向改能让 Inspect 更好用。
+
+This then informs what we should build towards, whether that should be more native primitives for common patterns or where tools and data are missing. All in all, it creates this self-sustaining loop where we're able to build towards what makes Inspect the most successful by seeing what people are already achieving with Inspect.
+
+## 评审如何看到改动是怎样做出来的 / What reviewers can see about how a change was made
+
+[07:55:18.280—07:55:38.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28518s)
+
+这就说到我们学到的第二件事，怎么建立信任。我想可以这么说，今年每位工程师在采用 Agent 驱动的编程时，都经历了一次规模不小的信任建立过程。模型越来越擅长写高质量的代码，这当然有帮助。还有很大一部分，是我们慢慢学会信任 Agent 做出来的东西。
+
+This feeds into the second lesson that we've learned. It's all about building trust. I think it's fair to say that adopting agentic-driven coding has been a massive trust-building every engineer this year. It's helped that the models have become more competent at writing high quality code, but there's a large part of this that's just learning to trust what an agent builds.
+
+[07:55:39.360—07:56:10.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28539s)
+
+我们之所以能信任一个工具，很大程度上是跟别人学来的。说到底，这也是我们大多数人今天坐在这里的原因，对吧？你们想听自己尊重的人分享他们学到了什么，至少我希望你们是尊重他们的。不过，如果我们的知识只来自那些以公开演讲为乐的怪人，看到的就仍然只是一部分。让知识分享变成人人都能参与的事，这个想法很吸引我。能不能有一种系统，天然就能分享……
+
+So much of building trust in tools comes from learning from other people. After all, that's why most of us are here, right? You wanted to listen to people you respect, or at least I hope you respect, teach you about the things that they learned. But if we limit our corpus of knowledge to just those who find the perverse enjoyment in public speaking, we're still not getting the full picture. This democratization of knowledge sharing is just fascinating to me as a concept. Instead of grouping around a select few leaders, can we build systems that inherently share the knowledge of
+
+[07:56:10.680—07:56:46.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28570s)
+
+每个人的知识，让大家不用只围着少数几位带头人转？Inspect 一直在朝这个方向做。每当有人用 Inspect 交付东西，别人都能在那项工作里看到过程。会话本身很容易分享，也一直记录着这项变更是怎样做出来的。拉取请求一发出来，审查者手里有的就远不止一份突然扔过来的 400 行代码差异，不用看着它干祈祷。他们可以看原原本本的对话、Inspect 用过的所有工具、改动前后的截图，甚至能看验证 Agent 在浏览器里一步步点过应用的录像……
+
+everyone? This is what Inspect has built towards. Every time someone ships something with Inspect, people can see it right there on the work you've done. The session itself is easy to share. a living artifact of how that change came to be. When a pull request goes up, anyone reviewing it doesn't just see the 400-line diff dropped over the wall and hope for the best. They can see the exact conversation that you had, all the tools that InSpec used, before and after screenshots, or even a video recording of the verification agent clicking through the app in the browser
+
+[07:56:46.280—07:56:58.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28606s)
+
+证明它做的东西经得起检查。这样就很容易说清改了什么，为什么可以相信这项改动。平时不常一起工作的人，要加入讨论也更容易。
+
+to prove its work holds up. It makes it effortless to show not just what changed, but why you can trust it. It also just makes it easier to bring people you don't work with all the time into the fold.
+
+## 一次排障怎样在同一个频道里继续 / Following an Inspect incident in the same channel
+
+[07:56:58.840—07:57:15.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28618s)
+
+有个挺有意思的例子。二月的时候，我们的一位工程师 Andrew 报告说 Inspect 有个 bug。我当然就打开 Inspect，让它来调查。有趣的是，Inspect 接入 Datadog 已经有一阵子了，但我们那时才刚刚给 Inspect 自身加好监测。
+
+A fun moment on this one, it was back in February. One of our engineers, Andrew, reported a bug in Inspect. So naturally, I reached for Inspect and asked it to investigate. What's funny here is that although Inspect had access to Datadog for a while, we'd only just finished instrumenting Inspect itself.
+
+[07:57:16.280—07:57:31.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28636s)
+
+Inspect 主要由做前端和产品的工程师开发，所以链路追踪对我们还有点陌生。这正好是个机会，可以拿 Inspect 自己来试一试。Inspect 说，错误是监测代码造成的。
+
+I mean, Inspect was primarily built by front-end e-product engineers, so tracing is a little bit of a foreign concept for us. is a great time for us to put it to the test for inspect. And inspect says, the instrumentation was causing the error.
+
+[07:57:32.180—07:57:44.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28652s)
+
+对，帮我们排查这次错误的监测代码，恰恰就是引发错误的东西。我和 Dylan 对这个机器人给的解释不太信。Andrew 则说，随便吧，我用 Claude Code 去了。
+
+Yes, the very instrumentation that was letting us debug this error was actually causing this error. So Dylan and I were not exactly convinced by the robot here. And Andrew is just like, whatever, I'll use Cloud Code.
+
+转写校注。“Cloud Code” in the transcript refers to Claude Code.
+
+[07:57:44.840—07:58:20.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28664s)
+
+我们确实没有规定大家必须用 Inspect，可我个人可不想听到这句话。于是当时大家谁也信不过谁。我和 Dylan 不信机器人的解释，Andrew 不信我们能把东西做得好用。至于 Inspect，我也不知道它信谁，不过没关系，没关系。因为大家在公开频道里一起处理，我们就接着追。Dylan 让 Inspect 检查我们用的遥测库的代码，看看这个问题是不是早就存在，只是以前观测不到。
+
+And while we don't have a mandate to use inspect, I mean, personally, these were not the words I wanted to hear. So nobody here is really trusting anybody. Dylan and I don't trust the robot's explanation. Andrew doesn't trust us to build something that works. And Inspect, well, I don't know if Inspect trusts anyone, but that's okay. That's okay. But because this is happening together in public, we keep prodding at it. Dylan asked Inspect to look through the code of the telemetry library we're using and see if this was just something that was happening before without visibility.
+
+[07:58:21.260—07:58:32.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28701s)
+
+毕竟写代码这事早就被解决了嘛，当然不可能是我们引入的 bug。这一次 Inspect 回得具体了一些。OpenTelemetry 库调用了 `fetch`，但既没有读取响应体，也没有取消它。
+
+Early by now, coding has been solved, and there can't be bugs that we introduced. And this time it comes back with something a bit more specific. The OTEL library calls fetch, but it never reads or cancels the response body.
+
+[07:58:32.660—07:58:46.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28712s)
+
+这是 Cloudflare 平台当时的一项限制，不过碰到这个问题的偏偏是一个专门为 Cloudflare Workers 写的库。这种事也难免。毕竟这个库是 AGI 时代之前写的。到这一步，我们就请 Inspect 做个补丁。
+
+This was just a Cloudflare platform limitation at the time, albeit happening in a library specifically made for Cloudflare workers. But that happens. This library was written pre-AGI, after all. At this point, we ask Inspect to make a patch.
+
+[07:58:46.220—07:59:01.120](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28726s)
+
+它修改了导出器，显式取消响应体。等部署时我们在讨论串里聊了会儿。[转写有缺漏] 部署完，我们看到再也没有出现同样的报错。好，Inspect 修了一个 bug。到了这个阶段，单是修一个 bug 也没什么特别的。
+
+It updates the exporter to explicitly cancel the response body. in the thread a bit while it's deploying, but we see after it deployed, there haven't been any errors since. So great, inspect fixed a bug, which at this point, it's nothing special in itself.
+
+[07:59:01.360—07:59:12.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28741s)
+
+不过这个讨论串里发生的事，比修 bug 本身更重要。以前没有 Inspect 时，像这样的报告可能会先被回复一句收到，再开个工单，然后我们当中的一个人单独去排查。
+
+But there was a much more important story playing out in this thread. Before inspect, a report like this might have been acknowledged, a ticket filed, and then one of us would have gone away to debug it.
+
+[07:59:13.220—07:59:47.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28753s)
+
+Andrew 过后也许会收到一条消息，说已经修好了，真正有意思的工作都在私下做完了。现在，把整件事放在公开频道里做反而更容易。Andrew 自然也开始参与，想把自己的想法和经验讲一讲。接下来，同一条讨论里又冒出了点子，说 Inspect 还能帮忙做别的工作。整个过程没人催，也没人要求一定要协作。大家只是想，哦，他们做的事挺酷，我们也可以一起做。于是大概一个小时里，我们从……
+
+Andrew might have received a message later saying it was fixed, but the interesting work would have been done in private. Now, though, it's easier to do all of this in public. And as such, Andrew naturally starts becoming engaged, wanting to chime in with his thoughts and experiences. And then in that same thread, this leads to ideas coming up about how Inspect could power other work. And none of this required any prodding or pressure to work together. Instead, it was just like, oh, these guys are doing something cool, and we could work on it together. So in the span of an hour, we go from
+
+## 同事借现有能力做出了 ReviewBuddy / How colleagues built ReviewBuddy on existing tools
+
+[07:59:48.180—08:00:23.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28788s)
+
+用户体验出了问题，变成有一位同事愿意参与、想一起做东西，Inspect 也更稳定了。那有了一个能让每个人从第一天就用上最佳配置、打通信息孤岛的工具，也建立了信任，大家能一起尝试新东西，接下来做什么？这是我想分享的最后一点。我觉得剩下的事，就是一起把目标想得更大些。今年让我挺不舒服的是，大家特别推崇单枪匹马做事的人。借助 AI，我们一个人能做更多，当然很棒。但在我看来，这……
+
+with a broken user experience to an engaged colleague wanting to build together and a more stable inspect. So once you have a tool that gives everyone the best setup on day one with no information silos and you've built a system of trust that brings innovation together, what happens next? This is the last lesson I want to share. I think the only thing left is to think bigger together. Something that's pained me this year is how much reverence has been built for the lone wolf operator. It's great that we can all do more individually with the help of AI, but this
+
+[08:00:23.020—08:00:47.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28823s)
+
+还不是最后的目标。如果我们不向外做、不和别人合作，也不把进展和学到的东西分享出去，我觉得最后整件事会越来越封闭。我们会只把自己当成目标用户，也就没法从别人的观点和经验中成长。我对此也不全是悲观。我们今天能聚在这里，希望这本身就能说明人与人建立联系的价值。
+
+can't be the end game in my opinion. If we don't build outwards, collaborate with other people, share the progress and learnings we make, I think this is all going to collapse in on itself. We'll only consider ourselves as our target audience, and we won't grow through the consideration of others' perspectives and experiences. This is not to say I'm all doom and gloom about this. The fact we're all here hopefully is a testament to the value of connection.
+
+[08:00:48.720—08:01:02.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28848s)
+
+更重要的是，我认为我们可以把工具做成让这种联系比从前更紧密的样子。我刚讲的 Andrew 的经历，在 Ramp 内部发生过很多次。[转写有缺漏] 老实说，这大概是 Inspect 最让我受启发的地方。
+
+More importantly, though, I think we can shape our tools to enable these connections to flourish even stronger than before. That story I told about Andrew has played out so many times within It's probably the most inspiring thing about InSpec to me, honestly.
+
+[08:01:03.560—08:01:17.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28863s)
+
+它当然是个编程 Agent，有意思的是，它已经成了团队文化的一部分。Ramp 人人都认识它的样子，过节还会给它换装，隔一段时间就埋些彩蛋。Ramp 自己在变，我们也跟着让 Inspect 一起变。
+
+Sure, it's a coding agent, but remarkably, it's become part of the culture. Everyone at RAMP knows its face, we dress it up on holidays, we throw in Easter eggs over time, and we evolve it as RAMP itself has evolved.
+
+[08:01:17.800—08:01:50.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28877s)
+
+你去问 Ramp 随便哪位工程师，他们都会说并非每次迭代都很完美。不过我觉得，每次我们都是一起做的。回到今年早些时候，那时 Inspect 的功能远没有今天这么多。代码审查 Agent 就是个好例子。之前我们轮换着用各种现成的代码审查产品，想找一个合适的。后来有两位工程师 Daniel 和 Frangel 意识到，也许我们可以自己做，因为 Inspect 已经能从多种来源触发自动化……
+
+Not L iterations have been perfect, as any RAMP engineer could tell you, but I do think every iteration has been together. Going back to earlier this year, InSpec didn't have nearly the amount it has today. A great example is its code review agent. Before this, we were using various off-the-shelf code review products, frequently rotating between them to find a good fit. At some point, though, a couple engineers, Daniel and Frangel, realized that we could probably build it ourselves, as Inspect already had automation triggers that fired from a variety of sources,
+
+[08:01:50.680—08:02:16.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28910s)
+
+比如在有人创建拉取请求时触发。他们就用我们已经做好的东西动手，做出了 Ramp 另一个很受欢迎的 Agent，ReviewBuddy。特别酷的一点是，跟 Inspect 最早也是个副项目一样，这两位工程师想做就去做了。他们不用找人批准。他们想挑战一下自己，做出个更好的东西，用 Inspect 提高速度，很快就做出了一个更适合整个 Ramp 的 Agent。
+
+including when a pull request was opened. With just what we built already, they got to work building another beloved agent at RAMP, ReviewBuddy. And what was so cool about this is that, much like Inspect's own origins as a side project, these engineers were working on this. They didn't need to ask for permission to build it. They just challenged themselves to build something better, used Inspect to move faster, and quickly built an agent that was better for all of RAMP.
+
+[08:02:18.180—08:02:46.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28938s)
+
+这确实让我们这些做 Inspect 的人不得不换个角度看 Inspect。当时我们挺满足于它只是一个所谓的“编程 Agent”。看到别的同事在推动它做什么之后，我们才开始想，Inspect 怎么把前前后后的工作接成完整流程。要是这股推动力没有自然出现，我想 Inspect 团队要多花很久才能走到那一步。这就是我说的一起把目标想得更大些。
+
+This really did force us working on Inspect to think about Inspect differently. At that point in time, we were pretty okay with Inspect quote-unquote just being a coding agent, but once we saw what others were pushing it to do, it got us thinking about how Inspect could become full circle. If this push didn't happen naturally, I think it would have taken the Inspect team a lot longer to get there. This is what I mean about thinking bigger together.
+
+## 结尾与团队接下来能尝试的事 / Closing and what teams can try next
+
+[08:02:47.080—08:03:03.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28967s)
+
+模型表现还在不断提升，现在正是推动自己和身边的人把目标想大一点的时候。我建议各位下周抽点时间问问身边一起工作的每个人，有哪些事是我们一直想做、一直在等，可到现在还没做的？
+
+Especially with the continued improvements in model performance, now's the time to push yourself the people around you to think bigger. I encourage all of you to take some time in this coming week to ask everyone that you work with, what have we been waiting to do that we haven't done yet?
+
+[08:03:03.580—08:03:21.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28983s)
+
+找出来之后，就试着一起把它做出来。如今真的找不到多少理由，连试都不去试了。大家都能用到同样的模型，你总得找个地方开始。我觉得这里有很多做成事的机会，你自己能受益，身边的人也能受益。
+
+And once you've found those things, try to build them together. There's really not an excuse to not just try anymore. You have access to the same models as everyone else, but you have to start somewhere. And I believe that there is so much potential in unlocking wins, not just for yourself, but for the people around you.
+
+[08:03:22.600—08:03:35.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29002s)
+
+Inspect 本身就是这么来的。除了我想做、Jason 也想做以外，还有一个原因。我真的很喜欢、也很尊重这个团队，想给他们做点东西，让他们每天的工作能多一点乐趣。
+
+Inspect itself was born this way, not only as something that I wanted to build and Jason wanted to build, but out of a want to build something for a team that I truly love and truly respect, that would just make their jobs a little more enjoyable.
+
+[08:03:36.680—08:03:49.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29016s)
+
+如果你想用一个吸收了这些经验的编程 Agent，我很高兴告诉大家，现在 Ramp 之外的人也能用 Inspect 了。访问 inspect.com/aie，你和你的团队可以在等候名单里得到优先安排。
+
+Now, if you'd like to use a coding agent that has embodied all these lessons that we've learned, I'm happy to say that Inspect is now available outside of RAMP. If you go to inspect.com slash AIE, we'll prioritize you and your team on the waitlist.
+
+[08:03:50.160—08:04:01.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=29030s)
+
+我们会很快处理这份名单，[转写有缺漏] 应该很快就会联系你们。希望大家喜欢听我们聊机器人朋友 Inspect。如果你对这些话题有兴趣，可以在这里来找我，也可以在 X 上联系我。非常感谢大家听我讲。
+
+his waitlist pretty quickly, so expect to hear from us soon. But otherwise, I hope you've enjoyed hearing about our robotic friend, Inspect. If these topics interest you, feel free to reach out here, or on X. But otherwise, thanks so much for listening.

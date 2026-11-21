@@ -1,0 +1,35 @@
+[
+  {
+    "id": "safe",
+    "after": "p23",
+    "title": "为多 Agent 交接约定可检查的输入和边界",
+    "time": "06:48:53",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=24533s",
+    "en": "assets/safe-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>为多 Agent 交接约定可检查的输入和边界</h3><dl><div><dt>带来源的读取</dt><dd>事实带来源、截至时间和版本。</dd></div><div><dt>副作用与扇出</dt><dd>每项写入有明确标识和一次性批准，每个下游都有容量上限。</dd></div></dl></div>",
+    "note": "原图正在逐项展开，显式结果状态由讲者随后说明。",
+    "sourceSeconds": 24533
+  },
+  {
+    "id": "side-effects",
+    "after": "p33",
+    "title": "恢复会话与确认写入结果",
+    "time": "06:53:17",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=24797s",
+    "en": "assets/side-effects-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>恢复会话与确认写入结果</h3><dl><div><dt>恢复通信</dt><dd>初始化握手可以重新执行，工具状态需要单独确认。</dd></div><div><dt>结果不确定时</dt><dd>用同一动作标识查询结果，避免重复写入。</dd></div></dl></div>",
+    "note": "图中用动作标识串起批准、执行和读回确认。",
+    "sourceSeconds": 24797
+  },
+  {
+    "id": "explicit-status",
+    "after": "p45",
+    "title": "让程序复核子 Agent 交回的数字",
+    "time": "06:57:40",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25060s",
+    "en": "assets/explicit-status-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>让程序复核子 Agent 交回的数字</h3><dl><div><dt>检查步骤</dt><dd>验证结构、证据和时效，再重新计算。</dd></div><div><dt>图中例子</dt><dd>错误数从 10 变成 6，但请求数也从 1,000 变成 600，错误率仍是 1%。</dd></div></dl></div>",
+    "note": "复算结果不支持错误率下降，校验器返回拒绝及原因。",
+    "sourceSeconds": 25060
+  }
+]

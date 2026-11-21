@@ -1,0 +1,211 @@
+Factory 怎样把一次性 Missions 做成持续运行的 Workstreams？
+Luke Alvoeiro
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[03:42:44.480 --> 03:42:45.320] All set.
+[03:42:47.340 --> 03:42:52.700] Hi, everyone. I'm Luke. I lead our core agent team here at Factory. Today I want to talk
+[03:42:52.700 --> 03:42:57.500] about autonomy and why the teams that are getting the most out of coding agents are
+[03:42:57.500 --> 03:43:01.240] not actually the ones that are handing over the most work on day one. It's instead the
+[03:43:01.240 --> 03:43:06.220] folks who are ramping up autonomy gradually, one checkpoint at a time until what they have
+[03:43:06.220 --> 03:43:11.820] starts to resemble a software factory. So for those who don't know us, Factory is a
+[03:43:11.820 --> 03:43:17.280] platform that builds Droid and then a whole surface for software engineering and building
+[03:43:17.280 --> 03:43:22.160] software on top of that coding agent. Hundreds of thousands of developers use us around the
+[03:43:22.160 --> 03:43:28.040] world at companies like NVIDIA, T-Mobile, and Adobe. What these companies engineers are
+[03:43:28.040 --> 03:43:33.320] building with us is really like a software factory, a system that runs 24-7 and builds
+[03:43:33.320 --> 03:43:38.560] software under the company's control. And that's a loop that takes in signals from
+[03:43:38.560 --> 03:43:43.460] from whatever information is already available, turns them into changes, validates them, and
+[03:43:43.460 --> 03:43:47.220] then learns from what production shows. A signal is really like anything that tells
+[03:43:47.220 --> 03:43:52.260] you how your software should evolve. So that could be a century alert or someone's idea
+[03:43:52.260 --> 03:43:59.080] on Slack. Every signal goes to the same stages, so you standardize the process, not the output.
+[03:44:00.240 --> 03:44:06.400] So we built that platform on five foundations. It has to be transparent, modular, governable,
+[03:44:06.400 --> 03:44:13.640] efficient, and frontier. Most people picture a software factory as this kind of like lights-out
+[03:44:13.640 --> 03:44:19.260] building where there's no people inside of it, requirements come in one end and merged PRs come
+[03:44:19.260 --> 03:44:24.560] out the other. And really what we saw firsthand in the field is that that's not the case. The best
+[03:44:24.560 --> 03:44:30.600] ones aren't set up like that. They're built around people instead. Humans decide what matters and how
+[03:44:30.600 --> 03:44:35.000] we should trust droids over time, and those droids earn their keep as they deliver more work that's
+[03:44:36.660 --> 03:44:39.260] Every company's software factory looks very different to each other.
+[03:44:39.700 --> 03:44:43.820] So what we sell is not really this factory, it's the tools and the building blocks to
+[03:44:43.820 --> 03:44:44.440] compose them.
+[03:44:46.520 --> 03:44:49.500] It's worth kind of looking at how we got here in the first place.
+[03:44:49.780 --> 03:44:54.820] Back in April, one of our flagship products was Missions, which was one of the first multi-agent
+[03:44:55.660 --> 03:45:00.140] products to really take a bite out of the human potential bottleneck that existed in
+[03:45:00.140 --> 03:45:01.080] software engineering.
+[03:45:01.700 --> 03:45:06.740] You describe a goal, you'd argue with the orchestrator until you were aligned, you'd
+[03:45:06.740 --> 03:45:11.240] approve the plan, and then it would go handle implementation for days or even weeks.
+[03:45:11.680 --> 03:45:16.280] When the goal was clear and verifiable, you really could come back to completed work pretty
+[03:45:16.280 --> 03:45:16.760] consistently.
+[03:45:17.720 --> 03:45:21.920] But as more teams adopted it, we heard some consistent pieces of feedback.
+[03:45:22.340 --> 03:45:24.400] The first was how missions asked you to work.
+[03:45:24.760 --> 03:45:28.240] The product assumed that you could plan everything up front and then it would just work.
+[03:45:28.240 --> 03:45:31.240] work. And the UX sort of suggested that you shouldn't interrupt them.
+[03:45:31.620 --> 03:45:37.300] Machines didn't ask you any questions or provide an interactive surface for that communication
+[03:45:37.300 --> 03:45:39.900] between you and the agent once it was starting implementation.
+[03:45:40.640 --> 03:45:46.460] So this suits migrations and big coding, like feature projects, but it didn't fit the bill
+[03:45:46.460 --> 03:45:51.100] for most kinds of other work. The second was cost and time.
+[03:45:51.660 --> 03:45:55.000] And that came from, honestly, the models getting really, really good.
+[03:45:55.000 --> 03:46:00.960] I'm sure you've all seen now, adversarial review is really, really good at finding these issues in your code.
+[03:46:01.380 --> 03:46:06.620] And so at the time, we were adding adversarial review into every milestone's boundary.
+[03:46:07.280 --> 03:46:13.740] That just kind of like grew the scope of that mission from something like 60 features to over 200.
+[03:46:14.560 --> 03:46:17.860] And so you ended up having a token bill and a timeline that matched that.
+[03:46:18.520 --> 03:46:22.100] And then the last one was that missions were keeping their contacts to one person.
+[03:46:22.100 --> 03:46:26.360] mission. So that was fine for a single project, but it meant that the rest of the team couldn't
+[03:46:26.360 --> 03:46:32.260] really build on what that mission had learned. So we went back to the drawing board. And
+[03:46:32.260 --> 03:46:38.140] one mental model kept on coming up. When you have an org that is running dozens or hundreds
+[03:46:38.140 --> 03:46:44.400] of agents at a given point in time, you actually have a lot of the problems that operating systems
+[03:46:44.400 --> 03:46:50.180] back in the day solved. How to schedule work, how to run many things at one safely, and
+[03:46:52.860 --> 03:46:56.760] So, every operating system starts with the thing that actually does the work.
+[03:46:57.320 --> 03:46:58.900] And we wanted to revisit the agent itself.
+[03:46:59.800 --> 03:47:04.860] Long Horizon agents run for thousands of turns and every inefficiency across of those gets
+[03:47:04.860 --> 03:47:05.460] multiplied.
+[03:47:05.740 --> 03:47:11.200] So you could have, you know, an extra inference request that's unnecessary or a tool result
+[03:47:11.200 --> 03:47:13.340] that's pretty bloated or a prompt cache miss.
+[03:47:13.580 --> 03:47:16.560] All those things compound over time and lead to waste.
+[03:47:17.640 --> 03:47:20.940] So we decided to make some pretty significant changes to the harness itself.
+[03:47:22.200 --> 03:47:25.100] The biggest one was programmatic tool calling, also known as code mode.
+[03:47:25.700 --> 03:47:29.940] Instead of calling one tool, waiting on the model and then calling the next, we have the
+[03:47:29.940 --> 03:47:34.440] model write a small program that executes all those tools in one go and then prints
+[03:47:34.440 --> 03:47:35.460] out only what's relevant.
+[03:47:36.480 --> 03:47:40.600] So there's this example here where you have 150 linear tickets that are getting moved
+[03:47:40.600 --> 03:47:42.000] from one project to another.
+[03:47:42.000 --> 03:47:47.760] done the normal way, that's like 30 inference requests, a million tokens, but as one model
+[03:47:47.760 --> 03:47:52.180] generated program, you actually only have like 60k tokens, it runs much faster, and
+[03:47:52.180 --> 03:47:57.000] the model only sees what is actually relevant to the task, the fact whether it was successful
+[03:47:57.000 --> 03:48:03.200] or not. So this layer of the OS is where being frontier and efficient matters the most. A
+[03:48:03.200 --> 03:48:08.100] new model lands every few weeks, and no two fail the same way. So we tune our harness
+[03:48:08.100 --> 03:48:12.840] in such a way that evens out this jaggedness across all these different models. The result
+[03:48:12.840 --> 03:48:17.220] is that Droid is now, you know, higher quality at a lower cost than every other coding agent
+[03:48:17.220 --> 03:48:22.940] on the market. Now, you have a faster agent, but that doesn't really give you, like, a
+[03:48:22.940 --> 03:48:27.780] step function increase in how much work gets done inside of your system. For that, you
+[03:48:27.780 --> 03:48:32.740] need many agents running at once, and they need somewhere to run. Remote missions were
+[03:48:32.740 --> 03:48:37.040] kind of held back by this, like, fundamental limitation in the system where there was one
+[03:48:38.100 --> 03:48:43.800] to work. But to run a software factory, you need compute that scales with the volume of
+[03:48:43.800 --> 03:48:48.440] work in the system. Otherwise, every agent is fighting for the same files or system resources.
+[03:48:49.160 --> 03:48:53.520] So that's why we build environments, which are reusable definitions of the sandboxes
+[03:48:53.520 --> 03:48:58.640] that your droids need, complete with the repos, tools, and dependencies that they need to
+[03:48:58.640 --> 03:49:04.300] get started with. The system is governable, so there's one control plane that orchestrates
+[03:49:04.300 --> 03:49:08.920] all these sandboxes together wherever you need them. They can run inside of your own
+[03:49:08.920 --> 03:49:14.860] VPC on EC2, Kubernetes, whatever compute you already operate. So your code, your data,
+[03:49:15.020 --> 03:49:20.580] and your network are in your control. Compute becomes pluggable, just like we made the BYOK
+[03:49:20.580 --> 03:49:26.460] options and auto model options that we provide, that provides sort of like this model pluggable
+[03:49:26.460 --> 03:49:32.460] layer. So now we had agents that were cheap enough to run all the time and the compute
+[03:49:34.300 --> 03:49:37.180] And so then the next question was, how do we orchestrate all this work?
+[03:49:38.100 --> 03:49:44.260] At first, we tried making this DAG, very complex system of agents composed together by these
+[03:49:44.260 --> 03:49:46.920] very strong rules, and it didn't really work.
+[03:49:47.160 --> 03:49:52.040] You end up having a lot of the same problems that plagued missions in the first place because
+[03:49:52.040 --> 03:49:56.260] it was too rigid, and as a result, it was too expensive to run, and it didn't generalize
+[03:49:56.260 --> 03:49:56.460] well.
+[03:49:57.660 --> 03:50:00.900] So what we landed on instead is something that we call a work stream.
+[03:50:00.900 --> 03:50:04.320] It's a standing goal with a team of agents to support it.
+[03:50:04.740 --> 03:50:09.440] It has this goal, it has an identity, an environment that it runs on, and memory.
+[03:50:10.380 --> 03:50:13.980] A new workstream runs as you, and it has your access.
+[03:50:14.500 --> 03:50:18.640] When it outgrows one person, it can be moved to a service account with its own credentials.
+[03:50:18.960 --> 03:50:24.160] So you stay on as a member, but the work keeps happening under an identity that the org actually
+[03:50:24.160 --> 03:50:24.620] controls.
+[03:50:26.700 --> 03:50:29.120] At the center of every workstream is an orchestrator.
+[03:50:30.900 --> 03:50:36.040] scheduler in an OS. Unlike the graph that we started with, it assembles its agents in
+[03:50:36.040 --> 03:50:40.140] whatever way is most natural for the model. So the instructions are pretty short, right?
+[03:50:40.260 --> 03:50:45.800] It's like delegate first, give each agent an area of ownership, and then for tasks that
+[03:50:45.800 --> 03:50:51.100] can fall into an existing area of ownership, delegate to those. You start by talking to
+[03:50:51.100 --> 03:50:56.100] it, you just kind of hand things over as you think of them, and then it fans out the work
+[03:50:56.100 --> 03:50:59.300] so that then you can get the control back to you.
+[03:51:00.200 --> 03:51:02.900] Agents report back when they finish, when they get blocked,
+[03:51:03.180 --> 03:51:04.960] and when there's something that changes the plan overall.
+[03:51:06.960 --> 03:51:08.700] But the work stream doesn't just stop there
+[03:51:08.700 --> 03:51:11.080] because it takes on more on its own,
+[03:51:11.220 --> 03:51:12.460] and it learns from your habits.
+[03:51:12.780 --> 03:51:14.560] At some point, the orchestrator may ask you
+[03:51:14.560 --> 03:51:16.160] how you decide what to work on,
+[03:51:16.280 --> 03:51:19.140] and it learns that maybe bugs are coming from two Slack channels.
+[03:51:21.080 --> 03:51:23.840] So here, it can set up an intake at a triage listener.
+[03:51:23.840 --> 03:51:29.040] Every 30 minutes, it can go in and pull in those reports from those channels, dedupe
+[03:51:29.040 --> 03:51:35.120] them against existing linear issues or sentry alerts that already exist, and then weigh
+[03:51:35.120 --> 03:51:37.000] each of those against the work stream's goal.
+[03:51:37.820 --> 03:51:42.280] So a slack complaint and a customer error report become one change.
+[03:51:43.200 --> 03:51:49.780] The output of triage is a spec that you review and you're capable of, like, weighing in on
+[03:51:49.780 --> 03:51:51.020] before any code gets written.
+[03:51:51.020 --> 03:51:56.840] Once you approve a spec, the same worker opens a PR, stewards it until it's merge ready,
+[03:51:57.100 --> 03:52:01.460] and then makes sure that review, comments, and CI are passing.
+[03:52:03.200 --> 03:52:07.340] So each one of those stages actually maps to an autonomy level in this system.
+[03:52:07.700 --> 03:52:14.620] At L1, the work stream pauses for human review at the spec creation, at the PR, and before
+[03:52:14.620 --> 03:52:15.300] hitting merge.
+[03:52:15.960 --> 03:52:22.160] But, you know, as you level up those levels of autonomy, you can get to L4, where you're
+[03:52:22.160 --> 03:52:23.780] auto-merging everything by default.
+[03:52:24.060 --> 03:52:29.060] The owner gets to set the level, but the confidence to raise it comes from watching the work.
+[03:52:29.420 --> 03:52:34.600] So when proposed changes are accurate or PRs consistently merge at the quality that you'd
+[03:52:34.600 --> 03:52:37.460] expect, that's actually your cue to move to the next checkpoint.
+[03:52:37.960 --> 03:52:39.920] And so that becomes the dial for you.
+[03:52:40.100 --> 03:52:45.020] You don't need to decide on day one whether you trust a coding agent to own your CI health
+[03:52:45.300 --> 03:52:50.300] stream off the bat, you just need to trust it to, like, unlock the next checkpoint.
+[03:52:52.280 --> 03:52:57.320] So in a factory, an agent that starts from scratch repeats the same mistakes the last
+[03:52:57.320 --> 03:53:03.820] one already did. And so we built work streams to have a shared file system. Agents are encouraged
+[03:53:03.820 --> 03:53:09.740] to keep memory and version skills, and so their PRs get better over time. They're also
+[03:53:09.740 --> 03:53:14.100] proactive, and they go looking for context that they're missing. So, for example, say
+[03:53:15.300 --> 03:53:17.660] that other people are shipping related changes.
+[03:53:18.140 --> 03:53:20.840] It sets them an automation that pulls in their PRs,
+[03:53:21.760 --> 03:53:23.760] analyzes what they've been working on
+[03:53:23.760 --> 03:53:26.000] and what comments they've been receiving in those PRs,
+[03:53:26.120 --> 03:53:28.880] and then incorporates them into their memory and skills.
+[03:53:29.340 --> 03:53:32.120] So what one agent learns, others can use,
+[03:53:32.240 --> 03:53:33.280] and nothing starts cold.
+[03:53:35.680 --> 03:53:39.440] That folder is also how agents work together on a project.
+[03:53:39.800 --> 03:53:41.460] When the orchestrator spawns an agent,
+[03:53:41.640 --> 03:53:44.160] it's capable of telling each agent
+[03:53:45.300 --> 03:53:48.560] where does its result sort of belong inside of this shared folder?
+[03:53:49.940 --> 03:53:53.180] And so every agent can read and write to the same place.
+[03:53:53.760 --> 03:53:59.220] If you ask a work stream why checkout got slower, for example, you can send dozens of
+[03:53:59.220 --> 03:54:03.260] agents out to track out all of those different leads that you have, and then ultimately,
+[03:54:03.500 --> 03:54:07.280] each one can write its findings to the folder and the orchestrator can merge them.
+[03:54:08.880 --> 03:54:12.280] Now you still need a barrier between implementation and merging.
+[03:54:12.280 --> 03:54:15.040] And for us, that barrier is platform-level validation.
+[03:54:15.940 --> 03:54:21.180] Every PR gets code review, security review, and dedicated QA, and it's a live preview.
+[03:54:21.540 --> 03:54:26.500] And so once every review thread is resolved, a risk judge then goes in and decides whether
+[03:54:26.500 --> 03:54:27.680] it's safe to prove or not.
+[03:54:28.180 --> 03:54:32.580] The judge gets the exact if and a check out of the branch so it can build and test it,
+[03:54:33.320 --> 03:54:37.580] but ultimately it reads its policy from our mainline branch so that the change can't rewrite
+[03:54:37.580 --> 03:54:39.400] the rules that it's being judged by.
+[03:54:40.520 --> 03:54:45.840] Every week, a droid minds the review comments and goes through, figures out which one authors
+[03:54:45.840 --> 03:54:52.260] have actually acted on, and then pulls those into review guidelines so that the loop sort
+[03:54:52.260 --> 03:54:58.240] of improves over time. We also have droids that every day run and analyze reverts, hot
+[03:54:58.240 --> 03:55:02.940] fixes, new sentry errors, for example, and traces them back to the PRs that cause them.
+[03:55:02.940 --> 03:55:05.400] And so that also is a signal into this same loop.
+[03:55:07.300 --> 03:55:11.220] What we're really hill climbing on here is the regret-free merge rate.
+[03:55:11.420 --> 03:55:15.960] The share of changes that merge and never need a revert or a follow-up fix.
+[03:55:16.460 --> 03:55:19.800] We measure it for droid-ridden and human-ridden PR side by side.
+[03:55:19.980 --> 03:55:22.980] And it's the same way that we let, like, self-driving cars onto the road.
+[03:55:23.220 --> 03:55:24.940] We didn't just give them the green light.
+[03:55:25.140 --> 03:55:29.980] We only did so once they crashed less often than human-driven ones did.
+[03:55:29.980 --> 03:55:34.920] And so once AI-ridden changes, break things less often than human ones, and you can actually
+[03:55:34.920 --> 03:55:39.460] measure that, then you can let them merge. And that's the bar for turning a Workstream
+[03:55:39.460 --> 03:55:45.400] to L4. Workstream is now like the platform that we build new features on top of. So
+[03:55:45.400 --> 03:55:52.040] Migrate is the first one. It sort of fulfills a niche in our product framework for what
+[03:55:52.040 --> 03:55:57.520] missions used to be, this like dedicated one-shot migration experience. And continuous remediation
+[03:55:57.520 --> 03:56:01.500] is the second, where it follows that circular shape that work streams are best suited for
+[03:56:01.500 --> 03:56:08.900] because there the work never ends. We run factory on top of work streams ourselves.
+[03:56:09.280 --> 03:56:13.380] And so this is what it actually looks like in production. In a week in this past October,
+[03:56:13.740 --> 03:56:19.100] we shipped about 800 pull requests in our dev branch, and Droid wrote 99% of them and
+[03:56:19.100 --> 03:56:23.800] reviewed all of them. Now, work landed in one of two ways. It was either a human picking
+[03:56:23.800 --> 03:56:28.860] picking up a signal manually, or increasingly nowadays, it's a workstream picking it up
+[03:56:29.520 --> 03:56:34.500] automatically, triaging it against the goal of the workstream, and then ultimately writing
+[03:56:34.500 --> 03:56:40.120] a spec and merging it. 52% of PRs that we ship right now are coming
+[03:56:40.120 --> 03:56:43.680] from workstreams themselves. And some of these are operating on full autonomy.
+[03:56:44.260 --> 03:56:50.080] So for example, the one that fixes bug reports from a dedicated Slack channel merges 53 PRs
+[03:56:50.080 --> 03:56:54.200] per week. Another one is our flaky test work stream, which merges at about 40.
+[03:56:56.460 --> 03:57:01.360] Fully autonomous PRs aren't really the only thing worth tracking, though. What matters
+[03:57:01.360 --> 03:57:05.400] a lot more is the progression. How much of your work flows through work streams and how
+[03:57:05.400 --> 03:57:10.400] many checkpoints does each one still need? As more work flows unrestricted, your engineers
+[03:57:10.400 --> 03:57:15.860] become the regulators of this system. They decide what signals to watch, what are the
+[03:57:15.860 --> 03:57:19.400] goals and the owners of those, what are the skills and review guidelines that you need
+[03:57:20.080 --> 03:57:23.580] code high quality and how much autonomy each work stream gets.
+[03:57:24.660 --> 03:57:29.720] And so there's just one question that tells you whether you have a software factory or
+[03:57:29.720 --> 03:57:33.360] faster engineers, and that is, can you name and track your signals?
+[03:57:33.840 --> 03:57:35.260] Every team already has them.
+[03:57:35.460 --> 03:57:40.960] You have bug reports in Slack, failing CI jobs, error spikes, tickets that nobody ever
+[03:57:40.960 --> 03:57:43.680] picks up, but most of them wait on a person to notice.
+[03:57:44.300 --> 03:57:48.900] And so my ask to all of you is to write them down and then pick the one that you waste
+[03:57:50.540 --> 03:57:54.860] Give it to Workstream on L1, and then set up our validation experience, and then you're
+[03:57:54.860 --> 03:57:58.880] well on your way to building software that improves itself with all the signals that
+[03:57:58.880 --> 03:57:59.580] you choose to track.
+[03:58:00.840 --> 03:58:03.200] Thanks, everyone, and I'll be around to answer any questions today.

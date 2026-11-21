@@ -1,0 +1,219 @@
+原型做得越快，越需要知道该选哪一个
+Ishaan Dey
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[06:08:25.820 --> 06:08:26.920] Hey everyone.
+[06:08:26.920 --> 06:08:33.040] Hi, everyone. I'm Ishan, and I work on anti-gravity at Google DeepMind. Today I'm going to talk
+[06:08:33.040 --> 06:08:38.360] about the future of building products, what judgment looks like, and some lessons that
+[06:08:38.360 --> 06:08:46.680] we've learned from shipping anti-gravity at Google. So anti-gravity is a tool to get work
+[06:08:46.680 --> 06:08:51.120] done with agents, and we're trying to make the best interface for developers and knowledge
+[06:08:51.120 --> 06:08:52.840] workers to do high intelligence tasks.
+[06:08:55.940 --> 06:08:59.140] The software engineering we used to know has completely changed.
+[06:08:59.640 --> 06:09:03.120] We can do things now that we wouldn't have even dreamed of a year ago.
+[06:09:04.180 --> 06:09:09.160] A sentence can turn into an operating system, and my voice can create a AAA game.
+[06:09:11.060 --> 06:09:12.540] So what's left for us?
+[06:09:14.480 --> 06:09:15.780] The tools we use have changed.
+[06:09:16.520 --> 06:09:17.780] We used to use the code editor.
+[06:09:17.920 --> 06:09:19.080] It's been around for decades.
+[06:09:19.080 --> 06:09:25.100] But now every year, if not more often than that, there's a new paradigm for how to do our work.
+[06:09:25.260 --> 06:09:27.140] It redefines what our work even looks like.
+[06:09:28.860 --> 06:09:32.640] And on the side of building products, that's changed as well.
+[06:09:34.000 --> 06:09:38.880] We used to spend a lot of time up front figuring out the right thing to make.
+[06:09:40.520 --> 06:09:43.600] Because building was expensive. It took a lot of time, effort, and resources.
+[06:09:44.000 --> 06:09:46.600] So we idea-ed more and invested more in that phase.
+[06:09:47.580 --> 06:09:52.580] This is completely flipped, where now you should still understand the problem you're
+[06:09:52.580 --> 06:09:57.220] trying to solve and how to go about it, but if you want to make something, it can exist
+[06:09:57.220 --> 06:09:57.980] just like that.
+[06:10:00.420 --> 06:10:05.400] You can try it, feel it, get feedback, and understand the nuances that you might not
+[06:10:05.400 --> 06:10:08.600] have realized about it before, and use that to inform how to move forward.
+[06:10:09.700 --> 06:10:13.340] This is exciting, but it's also a little bit deceptive.
+[06:10:14.060 --> 06:10:18.820] It's easier than ever to just turn our brains off and blindly accept what's made for us.
+[06:10:19.620 --> 06:10:26.380] So if anything can be made by anyone, then it's more important than ever to know what the right thing to even make is.
+[06:10:28.000 --> 06:10:31.680] Everyone knows their own definition for what taste or judgment looks like.
+[06:10:34.060 --> 06:10:35.640] And I think that's okay. That's good.
+[06:10:36.560 --> 06:10:39.900] Because we all work in different ways and we're all working towards different things.
+[06:10:41.140 --> 06:10:45.360] But by the end of this talk, I'm hoping that I can help you form a little bit of a clearer
+[06:10:45.360 --> 06:10:51.400] idea on what judgment in building products looks like to you. I've gone from the scale
+[06:10:51.400 --> 06:10:56.960] of working at startups to now at Google DeepMind, where the scale feels pretty incredible. We're
+[06:10:56.960 --> 06:11:03.980] making frontier models, and on the product side, we're able to use this internal frontier to build
+[06:11:03.980 --> 06:11:09.300] the interfaces that will use the next steps everyone will see in intelligence. We're very
+[06:11:09.900 --> 06:11:12.740] and we can experiment and iterate really fast
+[06:11:12.740 --> 06:11:16.060] and ship to over 100,000 people inside Google.
+[06:11:18.180 --> 06:11:20.480] These people at Google are using anti-gravity internally
+[06:11:20.480 --> 06:11:22.300] in really ambitious and unique ways,
+[06:11:22.460 --> 06:11:24.580] and this creates a really cool feedback loop
+[06:11:24.580 --> 06:11:26.860] where we can continue building and do awesome things.
+[06:11:27.920 --> 06:11:30.240] I want to walk you through three big lessons
+[06:11:30.240 --> 06:11:32.220] that we've learned from this cycle.
+[06:11:34.600 --> 06:11:36.460] So I think we've all seen this first pattern
+[06:11:36.460 --> 06:11:39.460] of the tools we use scaling up with intelligence.
+[06:11:41.020 --> 06:11:45.140] We used to build products in a pretty relatively straightforward way.
+[06:11:45.360 --> 06:11:47.820] We had to identify a problem, understand it deeply,
+[06:11:48.080 --> 06:11:50.980] and make something that people want with a clear target.
+[06:11:51.880 --> 06:11:53.220] Now that target is moving.
+[06:11:53.520 --> 06:11:56.600] The ceiling is going up for what's even possible to make,
+[06:11:57.140 --> 06:12:00.100] and with that, the possible value that you can create
+[06:12:00.100 --> 06:12:02.360] in the products that you build is changing as well.
+[06:12:05.380 --> 06:12:10.140] So I'm always coming back to a few thoughts whenever I'm working, of what we can achieve
+[06:12:10.140 --> 06:12:14.160] now and what's just past the edge of what we can achieve.
+[06:12:14.680 --> 06:12:18.020] And we've seen this look like two main ways in building a deep mind.
+[06:12:20.120 --> 06:12:24.380] As our models got better earlier in the year, they got better at communicating with and
+[06:12:24.380 --> 06:12:29.060] orchestrating each other, we created systems for teamwork to do more ambitious work.
+[06:12:29.060 --> 06:12:32.240] We stepped up in intelligence to let users do more.
+[06:12:32.580 --> 06:12:33.620] At the time, it was awesome.
+[06:12:33.720 --> 06:12:36.160] You could create operating systems and really cool things
+[06:12:36.160 --> 06:12:39.360] we've never seen before, but it was also pretty prescriptive
+[06:12:39.360 --> 06:12:40.660] because the models needed it at the time.
+[06:12:41.440 --> 06:12:43.840] More recently, this has looked like our version of agent swarms.
+[06:12:43.980 --> 06:12:45.600] You can actually try this now in anti-gravity.
+[06:12:46.000 --> 06:12:49.540] This has been creating a ton of value inside Google for us.
+[06:12:50.420 --> 06:12:51.580] People can be more ambitious.
+[06:12:51.780 --> 06:12:52.840] There's more agents working together,
+[06:12:52.840 --> 06:12:56.940] and we're able to relax the constraints to achieve more.
+[06:12:56.940 --> 06:13:02.580] more. You can bet that with the next models coming out, we'll see even more cool patterns
+[06:13:03.100 --> 06:13:08.560] and things we didn't expect. But I think we all already kind of knew this. We've been
+[06:13:08.560 --> 06:13:11.300] seeing this for the past few years, where all the tools we're using are just adding
+[06:13:11.300 --> 06:13:18.120] more and more new cool ways to scale up with intelligence. But the second way I've seen
+[06:13:18.960 --> 06:13:23.680] evolving with intelligence look is a little bit trickier. Because being ambitious does
+[06:13:23.680 --> 06:13:24.840] not always mean adding more.
+[06:13:26.340 --> 06:13:27.840] Let's go back in time a little bit
+[06:13:27.840 --> 06:13:31.680] and walk together through a decision in the product.
+[06:13:32.540 --> 06:13:35.280] The way we used to use AI tools looked very much
+[06:13:35.280 --> 06:13:37.580] like a structured turn-based format, like this.
+[06:13:38.060 --> 06:13:41.160] I would ask for some small scoped change, for example,
+[06:13:41.280 --> 06:13:42.100] editing a few files.
+[06:13:42.300 --> 06:13:43.660] The model would do it, and then we'd
+[06:13:43.660 --> 06:13:45.640] move on to the next thing, step by step.
+[06:13:45.960 --> 06:13:49.560] It made sense at the time to be able to cue instructions
+[06:13:50.180 --> 06:13:52.780] so the next things I wanted could be delivered to the model
+[06:13:53.700 --> 06:13:57.820] They might not have been smart enough to get everything at once, but it made sense to give
+[06:13:57.820 --> 06:14:02.000] it limited context progressively so it could get the work done bit by bit.
+[06:14:03.440 --> 06:14:04.340] Fast forward to now.
+[06:14:07.080 --> 06:14:08.360] There's a lot more going on.
+[06:14:09.180 --> 06:14:13.200] Long running agents, asynchronous tasks, external triggers, and everything else we're doing.
+[06:14:14.240 --> 06:14:16.820] Things are looking more complicated, and the agents are also smarter.
+[06:14:17.260 --> 06:14:20.380] So maybe the decision we made in the past might no longer be correct.
+[06:14:21.020 --> 06:14:28.640] Maybe a better pattern looks like treating the agent more as an entity that can make better decisions and giving it user intent immediately, just like this.
+[06:14:30.560 --> 06:14:35.320] Maybe it'll choose to orchestrate to a bunch of worker agents or do the task after we're done the current task at hand.
+[06:14:35.560 --> 06:14:37.740] It's smarter so it can decide for itself.
+[06:14:39.180 --> 06:14:46.500] The decision we made in the past can easily become obsolete as intelligence grows, and you need to challenge your prior assumptions.
+[06:14:49.340 --> 06:14:54.180] If we separate the timeline of what we can achieve into three clear parts, if you build
+[06:14:54.180 --> 06:14:56.500] too far in the past, it will be obsolete.
+[06:14:56.880 --> 06:15:00.460] If you build too far for the future, it could be visionary but impractical.
+[06:15:01.220 --> 06:15:06.720] It's important for us to ideate quickly and work towards building in the right time window
+[06:15:07.340 --> 06:15:08.200] to create the most value.
+[06:15:09.060 --> 06:15:12.880] Challenge your past assumptions and rebuild your foundations to create good systems at
+[06:15:12.880 --> 06:15:13.500] scale with intelligence.
+[06:15:15.620 --> 06:15:19.580] foundations. With these foundations, we've seen another really awesome pattern evolve
+[06:15:19.580 --> 06:15:29.060] or come out at Google where we see the value in creating a platform for ambition. So something
+[06:15:29.060 --> 06:15:33.900] like this might sound familiar. I used to use design tools in a very manual way. I'd
+[06:15:33.900 --> 06:15:42.060] create frames, build user interfaces manually, and create things by hand. And the tool, if
+[06:15:43.500 --> 06:15:44.800] from before to now, it looks pretty similar.
+[06:15:45.020 --> 06:15:46.660] But the way I use it is completely flipped.
+[06:15:46.980 --> 06:15:49.260] Maybe now agents are creating hundreds of visualizations
+[06:15:49.260 --> 06:15:52.480] for me to go over very broadly before I go deeper into something.
+[06:15:56.800 --> 06:15:58.540] Building software now doesn't always
+[06:15:58.540 --> 06:16:01.780] look like giving the user value in a very clear and deterministic
+[06:16:01.780 --> 06:16:02.040] way.
+[06:16:02.600 --> 06:16:04.280] Users can create their own leverage
+[06:16:04.280 --> 06:16:05.880] and make room for their own ambition.
+[06:16:06.780 --> 06:16:08.760] Let me walk you through how this has looked for us.
+[06:16:10.440 --> 06:16:13.260] In our product, there's a lot of room for extensibility.
+[06:16:13.540 --> 06:16:19.560] People can build specialized tools that work for them, and this can often end up leading back into the product.
+[06:16:20.260 --> 06:16:32.920] I'll show you some examples. Personal software can come up where I can make a dashboard where agents will scan across feedback channels and bug fixes to show me all this information in a way that just I like.
+[06:16:34.620 --> 06:16:40.480] Maybe it'll look like software for my team, where designers can create the tool that works just for them,
+[06:16:40.720 --> 06:16:42.660] where they can collaborate visually on demos.
+[06:16:44.020 --> 06:16:45.580] This can also branch out even more.
+[06:16:45.800 --> 06:16:48.960] The science team at Google is doing some awesome things with their science plugins.
+[06:16:50.040 --> 06:16:54.860] We're creating this platform for ambition for a wide range of users to create their own value and create their own leverage.
+[06:16:55.760 --> 06:16:59.240] And this can actually feed back into the product you're making at its core.
+[06:17:00.540 --> 06:17:05.520] The agent swarm example I mentioned earlier actually started as a plug-in through our extensibility system.
+[06:17:06.100 --> 06:17:12.640] It's created a ton of value internally for us at Google, and by giving the users surface area to
+[06:17:12.640 --> 06:17:17.160] explore and create value for themselves, we were able to learn from it and iterate in the product
+[06:17:17.160 --> 06:17:24.580] to make the core better. Let your users be ambitious and watch it feed back into your product
+[06:17:24.580 --> 06:17:26.460] to create more value for everyone.
+[06:17:28.960 --> 06:17:30.620] The last principle I want to go over
+[06:17:30.620 --> 06:17:32.340] kind of applies to all of this.
+[06:17:35.820 --> 06:17:37.480] There's a lot of great talks at this conference
+[06:17:37.480 --> 06:17:39.040] about software factories.
+[06:17:39.420 --> 06:17:40.420] You know, it's really exciting.
+[06:17:40.680 --> 06:17:43.000] We can give our agents ways to build more,
+[06:17:43.300 --> 06:17:45.880] verify more reliably, and ship faster.
+[06:17:46.320 --> 06:17:47.140] It's exciting.
+[06:17:47.860 --> 06:17:50.500] But if all the parts of what software engineering
+[06:17:50.500 --> 06:17:52.180] used to look like get abstracted away,
+[06:17:52.180 --> 06:17:58.900] then how do we define what the remaining value in our human judgment is? I'll argue
+[06:17:58.900 --> 06:18:03.960] that human judgment is more important than ever. If I ask an agent to, say, make
+[06:18:03.960 --> 06:18:08.120] this slide better, maybe it'll add some visualizations and a bunch of dashboards
+[06:18:08.120 --> 06:18:14.200] and cool colors and everything. Maybe it'll rewrite the whole slideshow in Rust. So,
+[06:18:14.380 --> 06:18:21.160] it'll solve every problem, but does every problem need to be solved? Take, for
+[06:18:22.180 --> 06:18:23.860] the agent manager looked like around a year ago
+[06:18:23.860 --> 06:18:25.660] when Antigravity first launched.
+[06:18:27.320 --> 06:18:30.300] If we want to make it better to an agent,
+[06:18:30.400 --> 06:18:32.280] that might look like adding a lot more detail.
+[06:18:32.920 --> 06:18:33.800] Ship everything.
+[06:18:33.980 --> 06:18:36.720] Add more detail into every single step the agent is taking
+[06:18:37.200 --> 06:18:39.300] and give the user knobs for everything.
+[06:18:40.480 --> 06:18:41.760] Might be better in some ways.
+[06:18:44.840 --> 06:18:47.480] It's easy to blindly accept the first thing that we're given.
+[06:18:48.300 --> 06:18:49.800] What does better even mean to us?
+[06:18:49.800 --> 06:18:52.360] If we're trying to make a better agent manager interface,
+[06:18:52.800 --> 06:18:54.380] maybe that looks a little bit different.
+[06:18:55.040 --> 06:18:58.440] Maybe we need to ship fast, but understand
+[06:18:58.440 --> 06:19:00.020] at each step of the iteration process
+[06:19:00.020 --> 06:19:03.100] what better actually means to us and what the next direction is.
+[06:19:04.880 --> 06:19:05.660] Let's start here.
+[06:19:08.400 --> 06:19:11.040] Better might mean simplifying the interface,
+[06:19:11.500 --> 06:19:14.100] only showing the user exactly what the latest thing
+[06:19:14.100 --> 06:19:16.220] the agent is doing semantically, so they're not
+[06:19:16.220 --> 06:19:17.960] shown a wall of text and tool calls.
+[06:19:19.800 --> 06:19:26.460] Maybe it looks like simplifying the whole interface to give the user less cognitive load so that they can
+[06:19:27.040 --> 06:19:30.380] multitask easier and be able to achieve more in a different way.
+[06:19:35.680 --> 06:19:40.140] So this kind of brings us closer to what antigravity looks like today.
+[06:19:41.020 --> 06:19:45.280] All these steps along the process have brought us closer to what good means.
+[06:19:46.700 --> 06:19:49.820] And we're making a lot of improvements fast, so I'm excited for you all to see it.
+[06:19:51.460 --> 06:19:53.480] Now is the time to try many things.
+[06:19:54.120 --> 06:19:54.900] Be ambitious.
+[06:19:55.420 --> 06:19:59.140] It's more exciting than ever, and it'll actually get more exciting as the models get better.
+[06:20:03.380 --> 06:20:06.140] Try many directions, but take a moment to think.
+[06:20:06.360 --> 06:20:07.160] Use your human judgment.
+[06:20:08.100 --> 06:20:10.320] Just because you're finished creating something first,
+[06:20:10.520 --> 06:20:11.940] which can be done in an instant,
+[06:20:12.280 --> 06:20:13.460] it doesn't actually mean you're done.
+[06:20:15.760 --> 06:20:17.280] Think about what you're actually trying to achieve
+[06:20:17.280 --> 06:20:18.660] and how the thing you're making feels.
+[06:20:20.600 --> 06:20:21.320] Iterate quickly.
+[06:20:21.820 --> 06:20:24.700] Identify many directions you can go in and try them,
+[06:20:24.800 --> 06:20:28.020] but arrive at the right thing and go deep into that.
+[06:20:30.820 --> 06:20:34.760] So make time to think, make room to think, and use your human judgment.
+[06:20:36.440 --> 06:20:42.000] To summarize, some of the lessons we've learned involve scaling up with intelligence, which
+[06:20:42.000 --> 06:20:43.080] doesn't always mean adding more.
+[06:20:43.500 --> 06:20:45.100] It could mean rebuilding your foundations.
+[06:20:46.000 --> 06:20:49.800] Take these foundations and enable your users to be ambitious in new ways you might not
+[06:20:49.800 --> 06:20:50.620] have expected before.
+[06:20:51.600 --> 06:20:55.860] And at the end of all this, when we're shipping faster and faster, make room to think and
+[06:20:55.860 --> 06:20:58.060] and protect the human side of software engineering.
+[06:21:00.460 --> 06:21:02.320] At Google, this has led to some awesome things
+[06:21:02.320 --> 06:21:03.600] by creating a platform for ambition.
+[06:21:04.460 --> 06:21:07.060] Improvements to YouTube, better video decoders,
+[06:21:07.700 --> 06:21:09.020] and memory optimizations.
+[06:21:11.060 --> 06:21:12.560] As for DeepMind and anti-gravity,
+[06:21:12.680 --> 06:21:13.880] it's a more exciting time than ever,
+[06:21:14.040 --> 06:21:15.120] with new models coming out.
+[06:21:16.460 --> 06:21:19.160] And on the product side, we're also moving quicker than ever.
+[06:21:19.520 --> 06:21:22.760] These are just some of the future launches
+[06:21:22.760 --> 06:21:24.200] as we've announced in the last two weeks.
+[06:21:28.100 --> 06:21:30.420] And we're continuing to use the principles we've covered today
+[06:21:30.980 --> 06:21:32.820] to work on the future of interfaces for higher intelligence.
+[06:21:33.180 --> 06:21:34.540] I'm excited for you all to see it.
+[06:21:34.760 --> 06:21:35.920] And I'll leave you with this.
+[06:21:37.420 --> 06:21:38.860] This new age of software engineering
+[06:21:38.860 --> 06:21:40.040] is actually worth celebrating.
+[06:21:41.060 --> 06:21:42.400] Agents might be doing more and more,
+[06:21:42.480 --> 06:21:45.860] but it's also more important than ever to solve real problems
+[06:21:45.860 --> 06:21:46.920] and use good product thinking.
+[06:21:48.680 --> 06:21:51.080] Protect your judgment and build things that people want.
+[06:21:52.760 --> 06:21:53.100] Thank you.

@@ -1,0 +1,92 @@
+用负载试验找出适合当前机器的模型服务配置
+Rohan Pandey
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[02:13:37.220 --> 02:13:38.420] All right.
+[02:13:38.560 --> 02:13:39.280] Hello, everyone.
+[02:13:39.280 --> 02:13:46.160] So my name is Rohan, and this is a quick demo on the optimization agent that has been recently built.
+[02:13:46.520 --> 02:13:51.700] So a quick intro into what the purpose is and what the goal is of this agent,
+[02:13:51.760 --> 02:13:56.440] and then I'll get into a brief demo and results from a previous run that we just did.
+[02:13:56.960 --> 02:14:07.100] So what the goal is here is to build an agent that helps find the best VLM serving config for any given model.
+[02:14:07.880 --> 02:14:14.580] The purpose is to reduce the time it takes to manually find the best configs and the
+[02:14:14.580 --> 02:14:15.560] VLM serving recipe.
+[02:14:15.960 --> 02:14:21.560] And if we can automate this and have it run in the background and have the agent find
+[02:14:21.560 --> 02:14:26.000] the recipes and the optimized parameters faster, then it will save a lot of time.
+[02:14:26.280 --> 02:14:31.120] So that's the goal of the agent and a little bit more into how the agent actually does
+[02:14:31.120 --> 02:14:31.460] this.
+[02:14:31.460 --> 02:14:35.820] So the strategy that the agent uses is called Bayesian optimization.
+[02:14:36.360 --> 02:14:45.360] And Bayesian optimization is a technique that's used to find the most optimal numbers in any given situation.
+[02:14:45.360 --> 02:14:50.540] So in our situation, it's to find the optimal numbers in this VL1 recipe.
+[02:14:50.840 --> 02:14:55.760] It uses mathematical steps that essentially minimizes the search space.
+[02:14:55.760 --> 02:15:05.120] So by minimizing the search space, it reduces a lot of the time that it takes in finding the optimized numbers in this recipe during the run.
+[02:15:05.820 --> 02:15:13.960] So Bayesian optimization is a strategy that is used, but Optuna is the tool that uses a strategy in the search loop.
+[02:15:14.140 --> 02:15:16.440] So Optuna uses Bayesian optimization.
+[02:15:16.580 --> 02:15:20.500] It feeds it the current recipe, the starting recipe.
+[02:15:20.500 --> 02:15:26.060] Bayesian optimization runs on that, and over many iterations or many trials, it eventually
+[02:15:26.060 --> 02:15:27.740] finds the optimized recipe.
+[02:15:28.360 --> 02:15:34.500] And Optina basically takes each recipe after every trial, assesses it, gets a score, uses
+[02:15:34.500 --> 02:15:39.500] the strategy to change the recipe, improve it, and then it reruns it within the search
+[02:15:39.500 --> 02:15:41.420] loop until the trials is done.
+[02:15:42.260 --> 02:15:45.560] So let's go a little bit into how we do this.
+[02:15:45.560 --> 02:15:53.380] So I'm currently in a droplet here, and this droplet, for example, has GPT OSS 120b model loaded up.
+[02:15:54.100 --> 02:16:01.960] So what we can do is we can look at the current recipe.
+[02:16:02.140 --> 02:16:05.800] So what we see here is four regimes that we're testing it on.
+[02:16:05.840 --> 02:16:09.920] So there's chat short, there's chat long, there's rag and batch classify.
+[02:16:10.240 --> 02:16:13.640] They have their own set of ISL OSL tokens that we're feeding it through.
+[02:16:15.560 --> 02:16:18.340] be changed depending on what we want to see.
+[02:16:18.560 --> 02:16:21.680] But essentially, this is the starting config, starting
+[02:16:21.680 --> 02:16:24.180] recipe that you would get when you download the weights
+[02:16:24.180 --> 02:16:24.820] of the model.
+[02:16:26.380 --> 02:16:29.600] So moving on, once you have the model downloaded
+[02:16:29.600 --> 02:16:32.900] in your Droplet and you are ready to run this agent,
+[02:16:33.100 --> 02:16:36.880] you paste in this command, which essentially tells you
+[02:16:36.880 --> 02:16:39.200] where the weights are coming from,
+[02:16:39.820 --> 02:16:48.040] activate a virtual environment and have, or not have, but run the script called tuner.py.
+[02:16:48.320 --> 02:16:51.700] This script essentially tells you, or it has a couple of things you have to tell it.
+[02:16:51.880 --> 02:16:54.040] So you want to give it the name of the study.
+[02:16:54.380 --> 02:16:59.860] You want to tell it the starting YAML file, which we just saw above here.
+[02:17:00.120 --> 02:17:01.940] You want to tell it the hardware that it's running on.
+[02:17:02.320 --> 02:17:04.900] And you want to tell it the number of trials that you want.
+[02:17:05.040 --> 02:17:07.540] So in this example, we have 24.
+[02:17:09.200 --> 02:17:12.540] I'll show you another example of a past run that was run
+[02:17:13.200 --> 02:17:14.220] that had only nine trials.
+[02:17:14.820 --> 02:17:20.280] So anyway, this is the command that's run.
+[02:17:20.860 --> 02:17:25.080] Typically these commands take a couple hours to run.
+[02:17:25.260 --> 02:17:28.600] I think for the GPT-LSS, it took about four or five hours.
+[02:17:28.840 --> 02:17:31.980] And then for the other model, it took a couple hours as well.
+[02:17:32.120 --> 02:17:36.400] So we can go into the HTML report that's generated
+[02:17:36.400 --> 02:17:40.760] after the agent finishes its work.
+[02:17:41.160 --> 02:17:43.760] So this one is for the GPT-OSS model that I mentioned.
+[02:17:44.300 --> 02:17:46.120] What we see in the HTML report
+[02:17:46.120 --> 02:17:48.140] is which trial number was the best trial
+[02:17:48.740 --> 02:17:50.200] out of the total of how many trials.
+[02:17:50.320 --> 02:17:51.560] So in this case, it was 50 trials.
+[02:17:52.520 --> 02:17:53.840] You get, so at the end of the run,
+[02:17:53.900 --> 02:17:56.160] you get an optimized YAML file,
+[02:17:56.340 --> 02:17:58.860] which includes all the numbers that we currently look for
+[02:17:58.860 --> 02:18:01.380] in the BLM serving recipe.
+[02:18:01.820 --> 02:18:03.100] So in this case, we found,
+[02:18:03.220 --> 02:18:05.660] or the agent found that 256 was the optimized number.
+[02:18:06.400 --> 02:18:07.200] and so on and so forth.
+[02:18:07.360 --> 02:18:09.080] And the way that it's getting the accuracy
+[02:18:09.080 --> 02:18:12.260] is the amount of good put tokens that's being generated.
+[02:18:12.460 --> 02:18:15.540] So overall, we found that from the first config,
+[02:18:15.720 --> 02:18:20.380] we had an improvement of 17.5% in terms of tokens generated.
+[02:18:21.620 --> 02:18:24.260] And this one, as I mentioned, is for GPT-OSS.
+[02:18:24.580 --> 02:18:26.360] We have another HTML report here,
+[02:18:26.400 --> 02:18:29.920] which is for the DeepSeq R1 distill model.
+[02:18:30.100 --> 02:18:34.440] And here we found that, or in here we had nine trials
+[02:18:36.400 --> 02:18:37.320] the ninth one was the best.
+[02:18:37.700 --> 02:18:40.260] We found that token throughput doubled,
+[02:18:40.500 --> 02:18:42.940] and ITL was improved by almost half,
+[02:18:43.060 --> 02:18:45.280] AKA it was reduced by almost half.
+[02:18:45.500 --> 02:18:48.580] So this is a quick intro and brief demo
+[02:18:48.580 --> 02:18:51.280] on the commands you run and what the output looks like.
+[02:18:51.640 --> 02:18:54.160] In general, you get an HTML report that tells you
+[02:18:54.880 --> 02:18:59.740] how each trial went, and then you also get a YAML file
+[02:18:59.740 --> 02:19:02.060] that has the optimized recipe at the end of the day.
+[02:19:02.240 --> 02:19:03.540] So hopefully that was helpful.
+[02:19:03.680 --> 02:19:04.080] Thank you.

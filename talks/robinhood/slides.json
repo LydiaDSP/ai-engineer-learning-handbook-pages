@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "第一层脚本直接检查线上事实",
+    "time": "00:07:10",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=430s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>示例将数据契约与 schema registry 连起来。脚本核对新增列是否确实存在于上游并符合登记。另一个从 int 拓宽为 bigint 的既有列位于数据湖表。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 430
+  },
+  {
+    "id": "frame-02",
+    "after": "p07",
+    "title": "仓库搜索发现未登记的下游用户",
+    "time": "00:12:30",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=750s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>已登记的消费者均通过检查。仓库搜索找到一个未登记作业，它读取湖表中已扩宽的列，随后向仍使用 int 的另一张表写入。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 750
+  },
+  {
+    "id": "frame-03",
+    "after": "p14",
+    "title": "评审变轻，关键决定仍交给人",
+    "time": "00:24:07",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1447s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>团队报告截至 2026 年 8 月 31 日，约 60% 的数据管道 PR 无需人工评审即可合并，人工评审投入减少约 75%，每月节省约 132 个工程师小时，相关事故减少约 30%。敏感字段授权、可能改变数据含义的迁移和低置信度的判断仍交给人。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 1447
+  }
+]

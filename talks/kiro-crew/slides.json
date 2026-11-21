@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p03",
+    "title": "软件工厂要反复回答两类问题",
+    "time": "03:26:18",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=12378s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>演讲将下一步交付目标与当前做法是否可靠并列，并用真实合并量说明为什么后一问变得紧迫。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 12378
+  },
+  {
+    "id": "frame-02",
+    "after": "p13",
+    "title": "多专业评审汇入合并关卡",
+    "time": "03:37:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=13020s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>代码、设计、原则、体验和安全等评审分别判断，结论汇入 PR 是否已就绪的检查，失败走修复回路。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 13020
+  },
+  {
+    "id": "frame-03",
+    "after": "p16",
+    "title": "高速交付也需要主动删减",
+    "time": "03:38:56",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=13136s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>团队把复杂度增长与默认同意需求列为扩张风险，让评审能识别过度工程与缺少用途的功能。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 13136
+  }
+]

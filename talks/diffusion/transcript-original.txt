@@ -1,0 +1,320 @@
+给老系统建软件工厂，从写清已有承诺开始
+Justin McCarthy
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[06:34:30.780 --> 06:34:37.600] All right. My name is Justin McCarthy. I'm the founder and CEO at Diffusion. And we are
+[06:34:37.600 --> 06:34:43.000] diffusing the capabilities of the model into the global economy. It's a big place out there.
+[06:34:44.680 --> 06:34:46.200] a billion of us, so there's a lot to do.
+[06:34:47.200 --> 06:34:48.540] And that's what we're doing.
+[06:34:48.640 --> 06:34:51.520] And one way we're doing it is by building software factories.
+[06:34:52.460 --> 06:34:56.060] This talk actually, I guess it's got the factory thing
+[06:34:56.060 --> 06:34:56.540] in the name.
+[06:34:57.280 --> 06:34:58.520] It's not going to be super technical.
+[06:34:58.760 --> 06:35:00.280] There's a QR code at the end that
+[06:35:00.280 --> 06:35:02.680] is going to have some technical stuff for you.
+[06:35:02.740 --> 06:35:04.240] So I would encourage you to pick up
+[06:35:04.240 --> 06:35:05.940] or have your agents pick things up.
+[06:35:06.200 --> 06:35:08.540] I'm sending a lot of dual channel messages these days
+[06:35:08.540 --> 06:35:10.580] where I say the human stuff up here,
+[06:35:10.620 --> 06:35:12.540] and then I attach something for the agent down there.
+[06:35:12.600 --> 06:35:14.000] So that's kind of this presentation.
+[06:35:14.680 --> 06:35:16.880] human things to you, and then your agents are going to pick up
+[06:35:16.880 --> 06:35:18.160] the agent channel stuff at the end.
+[06:35:19.280 --> 06:35:24.480] OK, so this started for me in July of last year.
+[06:35:24.660 --> 06:35:27.520] We were on the Claude 4 series of models.
+[06:35:27.720 --> 06:35:31.580] And I had the privilege of being able to dive very, very deep
+[06:35:32.720 --> 06:35:36.400] and really ask what happens when you begin looping these things.
+[06:35:37.160 --> 06:35:40.900] So that was the story of the beginning of the software
+[06:35:40.900 --> 06:35:43.640] factory that I built together with the team.
+[06:35:44.680 --> 06:35:50.580] that even on the four series of models, even as we were awaiting GPT-5 and the initial Codex
+[06:35:50.580 --> 06:35:56.860] harness, even then we could see glimmers that this thing was going to work, but at tremendous token
+[06:35:56.860 --> 06:36:03.740] expense and only in the presence of a real Rube Goldberg contraption. So only when the loops were
+[06:36:03.740 --> 06:36:11.140] very duct taped together and very sort of handcrafted would you be able to see these glimmers
+[06:36:11.140 --> 06:36:14.340] of some kind of an output that would stabilize the input,
+[06:36:14.500 --> 06:36:16.200] that would lead to the kinds of reliability
+[06:36:17.260 --> 06:36:18.840] that we would ultimately want.
+[06:36:18.900 --> 06:36:19.220] OK?
+[06:36:19.440 --> 06:36:21.880] So I'll just say that feeling, if you
+[06:36:21.880 --> 06:36:24.360] judge from the number of software factory talks that
+[06:36:24.360 --> 06:36:26.020] have been present here at the conference,
+[06:36:26.020 --> 06:36:29.140] that feeling I think is what we know now as software factories.
+[06:36:29.160 --> 06:36:31.020] And it's sort of accepted in the zeitgeist
+[06:36:31.020 --> 06:36:34.740] that at least some part of this just kind of happens now.
+[06:36:34.740 --> 06:36:36.760] And it requires substantially less of our creativity
+[06:36:36.760 --> 06:36:37.720] and input to achieve.
+[06:36:40.140 --> 06:36:43.920] So that's, of course, the time for me to say, please stop building software factories.
+[06:36:44.380 --> 06:36:50.960] Right? So, and I'm, you know, obviously, you know, a little bit tongue-in-cheek here,
+[06:36:51.100 --> 06:36:59.420] but also serious. I think you really should stop subjecting your ideas and your ambitions and your
+[06:36:59.420 --> 06:37:06.560] goals to a factory process, you know, because most of the time we don't know what we want,
+[06:37:07.720 --> 06:37:12.520] of the time we're creating something new, we don't yet know what we want. And if we're trying
+[06:37:12.520 --> 06:37:17.100] to industrialize something where we don't know what we want, we're certainly, we're not going
+[06:37:17.100 --> 06:37:20.640] to get the right thing, or we're going to take too long, or we're going to spend too much. We're
+[06:37:20.640 --> 06:37:27.300] going to have all, it's going to be sad in multiple ways. Okay. So what I would say is, let's begin to
+[06:37:27.300 --> 06:37:32.700] use some discernment about whether we're discovering product market fit, we're breaking new ground,
+[06:37:32.700 --> 06:37:39.960] we're conquering new territory, or whether we are doing something that, you know, already has a precedent and is already working, okay?
+[06:37:40.560 --> 06:37:47.800] And that discernment about sort of what way, what mode we're working in, you know, I find it really helpful
+[06:37:48.700 --> 06:37:54.580] because the great thing about a brownfield factory is it's something that we're already being paid for.
+[06:37:54.620 --> 06:38:00.080] It's something where customers are saying with their dollars and their utilization, like, yeah, this works for me.
+[06:38:00.120 --> 06:38:01.900] I like it. I want more of this, okay?
+[06:38:02.700 --> 06:38:04.800] It's the existing things that's keeping the lights on,
+[06:38:04.920 --> 06:38:06.880] paying the bills, keeping customers happy.
+[06:38:07.680 --> 06:38:09.780] And you don't need to discover anything about it,
+[06:38:09.800 --> 06:38:11.540] because everything you need to know
+[06:38:12.060 --> 06:38:13.620] to loop the stability of that system
+[06:38:13.620 --> 06:38:15.400] is just built into the runtime.
+[06:38:16.880 --> 06:38:18.640] So everything that's happening, all the ways
+[06:38:18.640 --> 06:38:19.840] your customers are using it, everything
+[06:38:19.840 --> 06:38:22.220] they're saying about it, maybe even the support tickets,
+[06:38:22.420 --> 06:38:26.900] those are reinforcing the integrity and the vitality
+[06:38:26.900 --> 06:38:29.480] and the utility of whatever you've got in that brownfield.
+[06:38:30.120 --> 06:38:31.760] And then, of course, we're going to talk about this,
+[06:38:33.460 --> 06:38:36.780] Another exciting thing, as we heard from many of our other speakers,
+[06:38:37.860 --> 06:38:43.200] Jared just talked all about rewriting BUN and Cloud Code,
+[06:38:43.400 --> 06:38:45.760] you can rewrite a lot of that brownfield, of course.
+[06:38:46.100 --> 06:38:51.140] So this becomes all of that technical debt, all those boat anchors that are slowing us down historically,
+[06:38:52.340 --> 06:38:54.700] all that impossibly long backlog.
+[06:38:55.260 --> 06:39:01.620] We can see those drying up now, and we don't have to spend much energy asking what the customer wants
+[06:39:02.700 --> 06:39:03.880] arriving every day, and they're saying,
+[06:39:04.080 --> 06:39:05.840] what I'm using is what I want.
+[06:39:12.080 --> 06:39:14.840] OK, so we know what to build.
+[06:39:15.860 --> 06:39:17.280] We build the existing thing.
+[06:39:20.400 --> 06:39:23.840] And a couple of notes about just ways
+[06:39:23.840 --> 06:39:25.960] of thinking about working with your brownfield
+[06:39:25.960 --> 06:39:28.780] and cleaning it up and making it self-sustaining.
+[06:39:30.480 --> 06:39:36.860] At Diffusion, we use the word promise to represent some guarantee, some aspect, some priority,
+[06:39:36.900 --> 06:39:39.720] and some dimension within the product that we value.
+[06:39:42.280 --> 06:39:42.920] Feature is a promise.
+[06:39:44.620 --> 06:39:46.440] The cost and price of a thing is a promise.
+[06:39:47.440 --> 06:39:48.740] The security of a thing is a promise.
+[06:39:49.300 --> 06:39:53.260] And it's rare that you want to revert and regress on your promises.
+[06:39:53.260 --> 06:39:53.780] OK?
+[06:39:55.040 --> 06:39:57.720] So if you can start talking about the ways
+[06:39:57.720 --> 06:39:59.800] that we have expectations that are
+[06:40:00.000 --> 06:40:03.380] against an existing product, you can begin to encode those
+[06:40:03.380 --> 06:40:03.900] in loops.
+[06:40:05.260 --> 06:40:08.900] And a loop, just like any of the factory schemes
+[06:40:08.900 --> 06:40:11.320] we've been discussing, whether represented in a YAML file
+[06:40:11.320 --> 06:40:14.640] or some Python or graph, a loop has
+[06:40:14.640 --> 06:40:19.600] the characteristic of somehow taking an input and an output
+[06:40:19.600 --> 06:40:21.520] and then somehow feeding it back.
+[06:40:22.040 --> 06:40:25.340] As many of you know, this is the sort of idealized block
+[06:40:25.340 --> 06:40:26.480] diagram of an amplifier.
+[06:40:26.640 --> 06:40:28.900] And if you cut that feedback leg,
+[06:40:30.000 --> 06:40:30.540] noise, OK?
+[06:40:30.740 --> 06:40:33.600] And I think we all have this feeling now
+[06:40:33.600 --> 06:40:35.260] that we've been working with software factories
+[06:40:35.260 --> 06:40:36.200] and working with loops.
+[06:40:36.440 --> 06:40:39.980] There has to be some way of feeding back that fidelity
+[06:40:40.560 --> 06:40:41.660] into the input of the system.
+[06:40:41.680 --> 06:40:46.540] But if you do it and you tune it right, it can work, right?
+[06:40:47.680 --> 06:40:49.740] So this is what we should strive for,
+[06:40:49.760 --> 06:40:51.000] especially in a brown field.
+[06:40:51.000 --> 06:40:54.480] We're getting all the signal we need to cure, stabilize,
+[06:40:54.520 --> 06:40:55.940] and improve those loops.
+[06:40:58.060 --> 06:41:03.460] The next attribute of a brownfield factory is, you know, it really should be continuous.
+[06:41:05.760 --> 06:41:10.220] If you look at the history and the before times of when commits would arrive,
+[06:41:10.560 --> 06:41:12.220] there's some seasonality to those commits.
+[06:41:12.380 --> 06:41:14.580] There would be a daily and hourly seasonality.
+[06:41:14.780 --> 06:41:17.840] There'd be a weekly cycle, and you would see those commits come in at intervals.
+[06:41:20.460 --> 06:41:22.080] It can happen continuously now.
+[06:41:22.080 --> 06:41:28.440] When your loops are being maintained by your agents in a factory, I don't know, like it might look like a straight line.
+[06:41:28.740 --> 06:41:34.500] Just a solid list of activity that's happening 24-7 because there's always something to worry about.
+[06:41:35.280 --> 06:41:38.940] Is it a little bit slow? Is it a little bit insecure? Is it a little bit whatever?
+[06:41:39.520 --> 06:41:41.860] All those worries apply around the clock.
+[06:41:42.040 --> 06:41:49.380] And if you're building your brownfield factory the right way, it should be compatible with continuous intelligence,
+[06:41:49.620 --> 06:41:51.380] continuous application of this question.
+[06:41:52.180 --> 06:41:54.200] And it should just run, okay?
+[06:41:54.440 --> 06:41:56.660] So you've got an existing code estate.
+[06:41:56.840 --> 06:41:58.120] You've got an existing set of promises.
+[06:41:58.980 --> 06:42:01.400] Just make it continuous, make it loop,
+[06:42:01.440 --> 06:42:03.580] and make it keep those promises, okay?
+[06:42:03.740 --> 06:42:06.640] So another way to summarize that is, you know,
+[06:42:06.740 --> 06:42:09.500] my brownfield factory on an existing set of promises,
+[06:42:09.500 --> 06:42:12.020] it should just be continuous, it should be background,
+[06:42:12.040 --> 06:42:15.800] and should be keeping those promises for me, okay?
+[06:42:16.060 --> 06:42:20.500] So I'm a strong advocate of building a system like this.
+[06:42:22.080 --> 06:42:25.000] it's going to give you the freedom and the creativity
+[06:42:25.000 --> 06:42:28.060] to begin asking what you should be doing in the greenfield.
+[06:42:29.040 --> 06:42:31.560] Probably not with the same level of looping rigor,
+[06:42:31.800 --> 06:42:34.540] probably with more true product market fit and discovery
+[06:42:34.540 --> 06:42:35.380] sort of energy.
+[06:42:36.860 --> 06:42:39.600] All right, one other really fascinating property.
+[06:42:40.000 --> 06:42:41.960] This is certainly something that I've experienced
+[06:42:42.480 --> 06:42:43.260] over the last year.
+[06:42:43.420 --> 06:42:47.040] I mentioned earlier, a year ago it would work,
+[06:42:47.060 --> 06:42:48.560] but there was a lot of componentry.
+[06:42:48.560 --> 06:42:51.960] Okay, getting it getting it to work was still very much engineering
+[06:42:52.840 --> 06:42:55.720] As we heard for some others from Zack and from potato
+[06:42:56.380 --> 06:43:02.700] These systems are they're getting a little bit easier and a lot of credit goes to the model itself as well as the harnesses
+[06:43:02.700 --> 06:43:07.740] but one thing you can expect from your factory is that it is going to
+[06:43:08.320 --> 06:43:08.760] simplify
+[06:43:09.660 --> 06:43:10.400] over time
+[06:43:11.440 --> 06:43:17.400] Okay, this is something that we've seen in our skills. The skills are getting shorter. Of course the harnesses are getting more general
+[06:43:18.560 --> 06:43:21.780] And a lot of this, again, is credit to the models themselves.
+[06:43:22.280 --> 06:43:27.080] I'll note that there's a famous AI company that also
+[06:43:27.080 --> 06:43:27.900] makes these widgets.
+[06:43:28.540 --> 06:43:31.060] And this is kind of a famous progression.
+[06:43:31.060 --> 06:43:33.600] So the Raptor One engine from that AI company
+[06:43:34.560 --> 06:43:36.520] was really fiddly, but it worked.
+[06:43:37.500 --> 06:43:38.880] It looked like this.
+[06:43:38.980 --> 06:43:40.000] There were a lot of tubes.
+[06:43:40.720 --> 06:43:42.660] But it definitely propelled the rocket.
+[06:43:43.520 --> 06:43:47.620] In that same package, that same approximate external dimension,
+[06:43:48.720 --> 06:43:51.180] had higher performance and fewer moving parts.
+[06:43:51.660 --> 06:43:52.180] Okay?
+[06:43:52.440 --> 06:43:55.140] The delta between this one and this one
+[06:43:55.800 --> 06:43:57.800] was a tremendous application of intelligence.
+[06:43:58.140 --> 06:43:58.400] Okay?
+[06:43:58.800 --> 06:44:00.760] Like literal rocket scientists and engineers
+[06:44:01.340 --> 06:44:03.400] focusing on how can we make this thing simpler?
+[06:44:03.900 --> 06:44:04.240] Okay?
+[06:44:04.960 --> 06:44:05.980] You know, that's hard.
+[06:44:06.060 --> 06:44:06.860] It's hard to get those people
+[06:44:06.860 --> 06:44:08.880] and it's hard to concentrate them on a difficult problem.
+[06:44:09.620 --> 06:44:12.080] We have tremendous allies in this simplification,
+[06:44:12.140 --> 06:44:15.260] of course, because we have Astra and Fable and Carbon, right?
+[06:44:15.260 --> 06:44:29.620] And so they are trying to take our factory from version 1 to 2 to 3 so that by the time we come back and start our jobs on Monday or whatever, maybe we have a much simpler factory than when we started.
+[06:44:29.940 --> 06:44:37.080] Or we wait one more model version and our factory has fewer moving parts yet twice the performance.
+[06:44:37.960 --> 06:44:41.560] So this is a really interesting feature of this moment that hasn't existed before.
+[06:44:41.560 --> 06:44:52.640] So if you can just barely get the thing to work, you can expect a smoother, laminar flow, higher performance soon, okay?
+[06:44:52.920 --> 06:44:55.020] Without much of your creative contribution in between.
+[06:44:58.000 --> 06:45:01.540] Okay, so let's make a brownfield factory.
+[06:45:02.860 --> 06:45:06.860] A great instruction to give that factory is the same but faster.
+[06:45:07.800 --> 06:45:08.320] here.
+[06:45:09.300 --> 06:45:11.820] I've been in very few meetings where someone debated
+[06:45:13.080 --> 06:45:14.680] increasing the performance of a system.
+[06:45:15.860 --> 06:45:20.320] As long as you are at some sort of a Pareto equilibrium,
+[06:45:20.440 --> 06:45:22.660] where you're not trading faster for cheaper
+[06:45:22.660 --> 06:45:27.280] or trading safer for faster, then this is just good.
+[06:45:29.100 --> 06:45:31.740] So it should be faster, it should be cheaper,
+[06:45:31.900 --> 06:45:32.580] it should be safer.
+[06:45:34.580 --> 06:45:39.280] Note that sometimes we include better in this mix, and better may be difficult to achieve in a
+[06:45:39.800 --> 06:45:44.360] brownfield factory. Better may involve more of your intent. Better may involve more of your
+[06:45:44.360 --> 06:45:48.380] judgment and taste. So maybe that's where you go into discovery and use different techniques.
+[06:45:48.660 --> 06:45:52.880] But gosh, faster, cheaper, safer, especially on the other side of the vulnpocalypse. Sorry,
+[06:45:53.000 --> 06:45:56.140] other side still at the beginning of the vulnpocalypse. We definitely need these things
+[06:45:56.140 --> 06:45:58.100] to just autonomously get safer, right?
+[06:45:58.580 --> 06:45:58.900] OK.
+[06:45:59.080 --> 06:45:59.860] So you should have that.
+[06:46:00.980 --> 06:46:01.340] OK.
+[06:46:01.640 --> 06:46:05.600] So I think everyone should have the Brownfield factory.
+[06:46:05.640 --> 06:46:06.980] You should have it for your existing commitments.
+[06:46:07.080 --> 06:46:07.660] You should have it.
+[06:46:07.700 --> 06:46:09.500] It should become better, faster, and cheaper over time.
+[06:46:09.980 --> 06:46:11.760] I find that this takes like a week.
+[06:46:12.660 --> 06:46:15.300] So if you haven't spent that week yet, just do it.
+[06:46:15.400 --> 06:46:17.120] Just like whenever you get home, go.
+[06:46:17.760 --> 06:46:18.280] Spend a week.
+[06:46:18.680 --> 06:46:20.080] Say you're on vacation next week.
+[06:46:20.160 --> 06:46:22.020] And just stand up your Brownfield factory
+[06:46:22.020 --> 06:46:23.380] on all your existing commitments.
+[06:46:23.820 --> 06:46:25.640] If you don't have a way to do that,
+[06:46:26.140 --> 06:46:27.740] like you need help, you can always reach out to me,
+[06:46:27.800 --> 06:46:29.380] and we're standing by to help.
+[06:46:30.640 --> 06:46:33.040] So brownfield factories, you should do them, but also,
+[06:46:33.880 --> 06:46:34.600] too easy.
+[06:46:35.980 --> 06:46:37.320] Like, come on, too easy.
+[06:46:39.400 --> 06:46:41.940] You need to elevate your ambition as well.
+[06:46:42.420 --> 06:46:44.420] So in my remaining couple minutes here,
+[06:46:45.660 --> 06:46:47.580] we're going to talk about how to elevate our ambition.
+[06:46:48.840 --> 06:46:50.200] So one of the things that I think
+[06:46:50.820 --> 06:46:53.100] we are all struggling with at this moment is, gosh,
+[06:46:53.200 --> 06:46:54.320] there's a lot of code coming out.
+[06:46:56.160 --> 06:47:03.740] working. That's a lot of stuff. It's maybe too much stuff. We maybe have a
+[06:47:03.740 --> 06:47:09.160] glut of stuff. And it could be the case that our customers didn't want all this
+[06:47:09.160 --> 06:47:12.460] software. They actually weren't asking for software. They were
+[06:47:12.460 --> 06:47:15.680] asking for more gross margin. They were asking for more customers. They
+[06:47:15.680 --> 06:47:19.500] were asking for more brand differentiation. Okay? And just shipping
+[06:47:19.500 --> 06:47:23.840] them more windows to click on and buttons to click on, that's not doing it for
+[06:47:23.840 --> 06:47:24.320] for them anymore.
+[06:47:26.500 --> 06:47:30.040] And this is where all of us are beginning
+[06:47:30.040 --> 06:47:32.900] to see the emergence of our new job.
+[06:47:34.140 --> 06:47:36.420] We can communicate with the models quite well.
+[06:47:36.500 --> 06:47:37.220] That's why you're here.
+[06:47:38.320 --> 06:47:39.960] There are other people in your firms
+[06:47:39.960 --> 06:47:42.840] who are not as fluent in communicating with these things.
+[06:47:44.300 --> 06:47:46.540] So that means we have a new job now.
+[06:47:48.600 --> 06:47:52.140] We have to figure out how to build a demand factory,
+[06:47:53.840 --> 06:47:57.140] A brownfield factory can't build the moat, right?
+[06:47:57.280 --> 06:47:59.620] All it can do is keep our existing promises running well.
+[06:48:00.120 --> 06:48:03.580] That's great because it allows us to focus on outside the building
+[06:48:03.580 --> 06:48:05.280] and look toward the market and look toward the future.
+[06:48:06.720 --> 06:48:09.760] But gosh, we need to start working on the demand factory, OK?
+[06:48:10.580 --> 06:48:12.160] I don't really know what a demand factory is,
+[06:48:12.200 --> 06:48:15.300] but it probably looks something like this.
+[06:48:16.160 --> 06:48:18.880] It probably looks like the thing that we need
+[06:48:18.880 --> 06:48:21.980] so that when we boost performance in the back end here,
+[06:48:23.840 --> 06:48:30.180] billing software all over the floor. And we rate match the demand systems to our production systems,
+[06:48:30.300 --> 06:48:36.300] okay? But there's a lot of discovery that needs to go into the demand factory. This is a new idea,
+[06:48:36.500 --> 06:48:42.380] okay? But I think you are absolutely the ones who can begin pushing your organizations to ask these
+[06:48:42.380 --> 06:48:48.220] questions. Like, don't wait for sales and marketing to come to you on this question. Like, you can see
+[06:48:48.220 --> 06:48:52.040] that within the envelope of your brand,
+[06:48:52.200 --> 06:48:53.580] there's something more you can ship,
+[06:48:54.200 --> 06:48:56.080] but you're going to need to explain that to the world,
+[06:48:56.080 --> 06:48:58.280] and you're going to need to explain it using new words
+[06:48:58.280 --> 06:49:00.620] and new imagery and new product lines and so forth.
+[06:49:01.820 --> 06:49:05.320] I think your demand factory helps you ask better questions
+[06:49:05.320 --> 06:49:08.560] of your market because the agents can help prioritize
+[06:49:08.560 --> 06:49:09.540] what to ask next.
+[06:49:10.020 --> 06:49:11.940] I think it can help with better listening
+[06:49:11.940 --> 06:49:14.780] because the agents can synthesize the answers you get back
+[06:49:14.780 --> 06:49:16.860] from those questions and can help you re-rank,
+[06:49:18.440 --> 06:49:20.340] and they can compare it to everything else you've heard.
+[06:49:20.900 --> 06:49:20.980] Okay?
+[06:49:21.280 --> 06:49:23.600] And therefore, I think they can schedule better experiments.
+[06:49:23.820 --> 06:49:25.620] How do we get the price elasticity of demand
+[06:49:25.620 --> 06:49:26.640] on this particular offering?
+[06:49:26.940 --> 06:49:29.060] You have a finite amount of experimental bandwidth.
+[06:49:29.300 --> 06:49:30.100] How do you allocate it?
+[06:49:30.380 --> 06:49:31.660] The models are gonna help you with that.
+[06:49:31.940 --> 06:49:34.840] I think this could lead to lower latency responses
+[06:49:34.840 --> 06:49:37.340] where we are saying yes, faster, okay?
+[06:49:37.520 --> 06:49:39.620] And customers begin uncensoring themselves
+[06:49:39.620 --> 06:49:41.060] and they start asking for more.
+[06:49:41.180 --> 06:49:41.780] That would be great.
+[06:49:42.860 --> 06:49:44.640] I think like weirdly, you know,
+[06:49:44.700 --> 06:49:47.320] even though our competitors have the same models,
+[06:49:48.300 --> 06:49:52.460] of some new equilibrium where we're all doing game theory optimal competition,
+[06:49:52.820 --> 06:49:56.440] and yet still if we start first, there'll be some edge, okay?
+[06:49:56.660 --> 06:49:57.640] So get started now.
+[06:49:58.100 --> 06:50:02.960] And then figure out what is the maximum extent of what I can possibly promise to the market,
+[06:50:03.000 --> 06:50:05.640] and that's my brand envelope, and let's fill it up.
+[06:50:05.780 --> 06:50:07.540] And just quick digression on brand envelope.
+[06:50:08.780 --> 06:50:13.240] Let's say we're Spindrift, we're selling some awesome sparkling water with a little fruit juice.
+[06:50:13.640 --> 06:50:16.380] I propose, hey, you know what, let's throw some caffeine in there.
+[06:50:18.220 --> 06:50:22.880] Like maybe we ship that and then the next week I come in and I say like and motor oil
+[06:50:23.940 --> 06:50:26.360] okay, you know that's gonna get shut down but
+[06:50:27.100 --> 06:50:31.320] Energy drink that's a good expansion of our brand envelope for every one of your companies. You have the same thing
+[06:50:31.320 --> 06:50:34.100] Maybe you can't sell motor oil, but maybe you can sell an energy drink
+[06:50:34.100 --> 06:50:37.900] So figure out what your energy drink is and start selling it now
+[06:50:39.000 --> 06:50:41.760] Okay, so let's build your demand factory
+[06:50:42.320 --> 06:50:48.080] It's gonna have a high volume of high quality signal coming in from customers coming in from the market coming in from
+[06:50:48.220 --> 06:50:50.560] any place where you can measure demand, okay?
+[06:50:51.400 --> 06:50:55.160] And it's going to have a high volume of flow, okay?
+[06:50:55.560 --> 06:50:59.900] But in order for that flow to not overwhelm change management, desire,
+[06:51:00.540 --> 06:51:02.900] it can't blow out the needs of your customer.
+[06:51:03.060 --> 06:51:05.900] So therefore, you need to have more customers, okay?
+[06:51:06.100 --> 06:51:07.600] You, in fact, need to have more of everything,
+[06:51:07.620 --> 06:51:11.100] but you need to have more wallet within those customers, okay?
+[06:51:11.240 --> 06:51:13.140] To get more share of wallet within those customers,
+[06:51:13.160 --> 06:51:15.600] you're going to have to sell more SKUs, okay?
+[06:51:16.280 --> 06:51:19.620] In addition to more SKUs, you're going to have to organize them into coherent product lines.
+[06:51:19.680 --> 06:51:21.620] You're going to have more product lines.
+[06:51:22.080 --> 06:51:26.220] And once you've maxed out all of that, you're going to need to just acquire your competitor.
+[06:51:27.020 --> 06:51:30.240] And if you get started now, you're going to be the one doing the acquiring.
+[06:51:35.040 --> 06:51:35.400] Okay.
+[06:51:35.720 --> 06:51:37.340] So this is it.
+[06:51:37.440 --> 06:51:38.440] This is Brownfield Factories.
+[06:51:38.620 --> 06:51:40.980] I think you can build your Brownfield factory.
+[06:51:41.060 --> 06:51:44.360] I think you can absolutely build your demand factory beginning now.
+[06:51:45.600 --> 06:51:47.620] I obviously think you can reboot your product management
+[06:51:47.620 --> 06:51:49.700] and reboot and you could wake up your executive team.
+[06:51:50.320 --> 06:51:52.640] And we are standing by at Diffusion,
+[06:51:52.680 --> 06:51:55.500] so we do have some technical resources attached there
+[06:51:55.500 --> 06:51:57.640] on some brownfield techniques that I really like.
+[06:51:58.320 --> 06:52:01.680] And yeah, I look forward to connecting with many of you.
+[06:52:01.800 --> 06:52:02.640] OK, take care.
+[06:52:02.820 --> 06:52:03.020] Thanks.

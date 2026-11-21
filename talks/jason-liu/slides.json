@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p03",
+    "title": "提效之外，团队对 AI 有哪些担忧？",
+    "time": "00:22:26",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=1346s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者列出低质量产物、思考能力和工作替代三个问题，用它们引出如何对产出承担责任。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 1346
+  },
+  {
+    "id": "frame-02",
+    "after": "p09",
+    "title": "找出应用里的隐式状态机",
+    "time": "00:29:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=1740s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>这一提示引用自 Steve Ruiz。它示范了如何用准确的概念描述问题，让模型帮助发现原先没明写的状态与转移。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 1740
+  },
+  {
+    "id": "frame-03",
+    "after": "p12",
+    "title": "重新拾起曾经搁置的领域",
+    "time": "00:32:49",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=1969s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>卡片请读者想一个为了写软件而放下的领域，把模型用于实际探索和学习。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 1969
+  }
+]

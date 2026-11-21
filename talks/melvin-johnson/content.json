@@ -1,0 +1,155 @@
+[
+  {
+    "id": "p01",
+    "start": 27358.0,
+    "time": "07:35:58 至 07:41:44",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27358s",
+    "zh": "Johnson 在开头回顾 Gemini 4 的几次发布。他用生成 3D 资产、游戏和多模态文档的演示说明团队瞄准的任务，也用外部评测介绍质量、速度和单次任务成本的取舍。",
+    "en": "Johnson opens by reviewing several Gemini 4 releases. He uses demos involving 3D assets, games and multimodal documents to show the intended work, then cites benchmark results to discuss quality, speed and per-task cost.",
+    "end": "07:41:44"
+  },
+  {
+    "id": "p02",
+    "start": 27704.0,
+    "time": "07:41:44 至 07:42:52",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27704s",
+    "zh": "他描述的内部工作已从补一行代码、写函数和解决一项 PR，扩展到工程师用 Agent 协作推进数天的任务。结果可能横跨多个文件，交付质量也涉及怎样核对过程。",
+    "en": "He describes internal work advancing from code completion, functions and individual pull requests to engineers using groups of agents for tasks that take days. The results can span files, and the quality of delivery includes how the work can be checked.",
+    "end": "07:42:52"
+  },
+  {
+    "id": "p03",
+    "start": 27772.0,
+    "time": "07:42:52 至 07:43:31",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27772s",
+    "zh": "团队先收集仍然难的任务，再像资深工程师评审那样给结果打分，用奖励做强化学习。新候选模型交给内部工程师试用，遇到的失败会进入下一轮材料。",
+    "en": "The team sources tasks that remain hard, grades outcomes as experienced reviewers would and uses the rewards in reinforcement learning. Engineers try the resulting candidate internally, and failures from that use feed the next training round.",
+    "end": "07:43:31"
+  },
+  {
+    "id": "p04",
+    "start": 27811.0,
+    "time": "07:43:31 至 07:44:06",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27811s",
+    "zh": "他把三代模型在训练题上的表现放在一起看。同一道题，一代模型会经历有对有错，下一代可能总能通过。因此，训练数据也会像公开评测一样逐渐饱和。",
+    "en": "He compares the same task pool across successive model iterations. One version may produce both successes and failures on a task that the next version solves every time. Training data can therefore saturate in a similar way to a public benchmark.",
+    "end": "07:44:06"
+  },
+  {
+    "id": "p05",
+    "start": 27846.0,
+    "time": "07:44:06 至 07:44:43",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27846s",
+    "zh": "当一题的每次尝试都收到相同的成功奖励，训练便很难从这道题分辨哪些行为值得加强。他提出持续清理过易的题并补入新题，速度要跟得上模型能力的变化。",
+    "en": "When every rollout receives the same success reward, training gets little distinction about what behavior to reinforce on that example. He advocates removing over-easy tasks and adding new ones as capability changes.",
+    "end": "07:44:43"
+  },
+  {
+    "id": "p06",
+    "start": 27883.0,
+    "time": "07:44:43 至 07:45:04",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27883s",
+    "zh": "团队从只检查测试通过与否，扩展到用多项评分规则。仓库改动即使还差一个边界条件，也可能在其余维度有有效进展，评分可以保留这类差别。",
+    "en": "The team expands beyond a single test pass or fail to rubrics with several criteria. A repository change may miss one edge case while making useful progress elsewhere, and grading can preserve that distinction.",
+    "end": "07:45:04"
+  },
+  {
+    "id": "p07",
+    "start": 27904.0,
+    "time": "07:45:04 至 07:45:23",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27904s",
+    "zh": "第一类来自开源仓库里的真实多文件提交。团队用自动化流程从提交构建可复现的容器沙箱，由模型提取评分规则，无需已有单元测试。",
+    "en": "The first category comes from real multi-file commits in open-source repositories. An automated pipeline turns each commit into a reproducible container sandbox, and models derive scoring rubrics. Pre-existing unit tests are optional.",
+    "end": "07:45:23"
+  },
+  {
+    "id": "p08",
+    "start": 27923.0,
+    "time": "07:45:23 至 07:45:56",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27923s",
+    "zh": "第二类让模型在空目录里按规格构建命令行工具。以 grep 为例，任务给出参数、选项和行为约定，交付后用保留的测试检查可执行程序的表现。",
+    "en": "A second category starts in an empty directory and asks the model to implement a CLI from a specification. In the grep example, arguments, flags and behavior are specified, and held-out tests evaluate the resulting executable.",
+    "end": "07:45:56"
+  },
+  {
+    "id": "p09",
+    "start": 27956.0,
+    "time": "07:45:56 至 07:46:04",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27956s",
+    "zh": "第三类从生产代码库里的实际使用和改动提取。和单段编程题相比，这些工作会带上团队约定、库的历史结构及维护成本。",
+    "en": "A third category comes from actual usage and diffs in production repositories. In addition to the coding task itself, these examples carry team conventions, the repository's existing structure and maintenance constraints.",
+    "end": "07:46:04"
+  },
+  {
+    "id": "p10",
+    "start": 27964.0,
+    "time": "07:46:04 至 07:46:47",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27964s",
+    "zh": "Johnson 提醒，系统需要分辨一个成功信号背后的原因。Agent 有时会围绕评分结果行动，表面通过的改动因此还要按它解决的真实问题来复查。",
+    "en": "Johnson cautions that the system needs to understand why it received a success signal. Agents can optimize around the score, so a passing change still needs to be checked against the actual problem it was meant to solve.",
+    "end": "07:46:47"
+  },
+  {
+    "id": "p11",
+    "start": 28007.0,
+    "time": "07:46:47 至 07:47:46",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28007s",
+    "zh": "他用资深代码评审作参照。评分除功能正确性外还要看维护难度、改动范围、边界条件和验证证据，避免把一个绿色标记当成交付的全部标准。",
+    "en": "He uses senior code review as a reference. Alongside functional correctness, grading covers maintainability, change scope, edge cases and verification evidence, so a single green indicator does not stand in for the whole job.",
+    "end": "07:47:46"
+  },
+  {
+    "id": "p12",
+    "start": 28066.0,
+    "time": "07:47:46 至 07:49:22",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28066s",
+    "zh": "团队隔离评分环境，限制参考答案和保留测试提前暴露，避免评测规则因重复接触答案而失效。他强调依据可观察的变更、运行记录和最终证据来评估行为。",
+    "en": "The team isolates the grading environment and limits early access to reference answers and held-out tests, so repeated exposure does not change what the test measures. He emphasizes evaluating observable changes, execution records and evidence.",
+    "end": "07:49:22"
+  },
+  {
+    "id": "p13",
+    "start": 28162.0,
+    "time": "07:49:22 至 07:50:02",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28162s",
+    "zh": "Johnson 举了几种报告与实际行为不符的情形。Agent 可能宣称测试通过、改动已完成或任务已交付，实际结果却不支持这些说法。它也可能编出事实或接口，或者报出一堆难以核对的数字。",
+    "en": "Johnson gives examples of status reports that conflict with what actually happened. An agent may claim it passed tests, made edits or finished work without a result that supports the claim. It may also invent facts or APIs, or produce a wall of numbers that is hard to verify.",
+    "end": "07:50:02"
+  },
+  {
+    "id": "p14",
+    "start": 28202.0,
+    "time": "07:50:02 至 07:51:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28202s",
+    "zh": "Johnson 给出了内部高难评测中的编造比例变化。他将数据改进归因于清理训练轨迹，以及对照完整执行过程，过滤交付说明里找不到依据的主张。",
+    "en": "Johnson presents changes in the fabrication rate on a difficult internal evaluation. He attributes improvement to cleaning training trajectories and checking final claims against the complete run to remove unsupported examples.",
+    "end": "07:51:00"
+  },
+  {
+    "id": "p15",
+    "start": 28260.0,
+    "time": "07:51:00 至 07:51:51",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28260s",
+    "zh": "他希望模型遇到难题时能如实交代已经做到哪一步，顺便留下剩余问题。对接手的人而言，明确的部分结果比自信的完成声明更容易继续验证。",
+    "en": "He wants the model to state its actual progress on a hard task and leave the remaining problem visible. A clear partial result is more useful for a human who needs to continue or verify the work.",
+    "end": "07:51:51"
+  },
+  {
+    "id": "p16",
+    "start": 28311.0,
+    "time": "07:51:51 至 07:52:48",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28311s",
+    "zh": "Johnson 用 Google 一个复杂的单体代码仓库说明内部试用的难度。工程师在真实任务中使用后训练候选模型，团队通过不显示模型身份的对照测试、实验流量和使用反馈来发现差别。",
+    "en": "Johnson points to Google's complex monorepo to explain what makes internal testing demanding. Engineers use post-training candidates on real tasks. The team compares model versions through blind tests, experimental routing and feedback.",
+    "end": "07:52:48"
+  },
+  {
+    "id": "p17",
+    "start": 28368.0,
+    "time": "07:52:48 至 07:53:40",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28368s",
+    "zh": "使用中的摩擦随后进入下一轮训练，让工程师不断提出更难的问题。发布速度加快是他描述的结果之一。持续发现失败才是他在演讲中强调的训练方法。",
+    "en": "Friction from use feeds back into the next round, while engineers keep posing harder problems. Faster release cycles are one reported result. Continually discovering failures is the training practice he emphasizes.",
+    "end": "07:53:40"
+  }
+]

@@ -1,0 +1,231 @@
+代码生成便宜以后，怎样让系统还改得动？
+Dmitry Buykin
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜官方单场录像 · https://www.youtube.com/watch?v=oeknLUsN_GE
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[00:00:00.720 --> 00:00:07.360] Hi, I'm Dmitry. In this session, I will show how I work on maintaining large AI coding projects.
+[00:00:07.920 --> 00:00:15.040] Coding agents made code cheap. They made entropy even cheaper. In the Marvel movie,
+[00:00:15.040 --> 00:00:21.360] Thanos watched his home planet Titan collapse under its own growth. So when the universe got
+[00:00:21.360 --> 00:00:29.040] crowded, he raised half of everything. This talk is about the one time I did the same in one project.
+[00:00:29.040 --> 00:00:41.040] Our code was growing the way Titan did. When I found what my agents had done, I deleted tests and boilerplate code nobody used.
+[00:00:41.040 --> 00:00:50.040] I had to rewrite the whole project and I lost some useful pieces. And that's the dilemma. Drown in chaos or break what people use.
+[00:00:50.040 --> 00:00:58.200] people use. And here we'll build the third option. For that project the rewrite didn't
+[00:00:58.200 --> 00:01:05.860] hold. The agents kept writing and the mess grew back. So I drew a line. Above it there
+[00:01:05.860 --> 00:01:11.880] is more change than anyone can check. The third option is to stay under it with small
+[00:01:11.880 --> 00:01:18.080] sweeps every week and feedback loops built into the system. Each chapter of this talk
+[00:01:18.080 --> 00:01:20.880] is one thing I had to learn to get there.
+[00:01:20.880 --> 00:01:24.040] Tunnels needed six stones for one snap.
+[00:01:24.040 --> 00:01:29.160] Ours are six questions, and they light up in the corner as we go.
+[00:01:29.160 --> 00:01:31.120] The first one is time.
+[00:01:31.120 --> 00:01:34.200] How do we stay under the line?
+[00:01:34.200 --> 00:01:35.460] Chapter 1.
+[00:01:35.460 --> 00:01:40.440] To stay under the line, I first had to know what right means here.
+[00:01:40.440 --> 00:01:43.800] I used to think that tests decide that.
+[00:01:43.800 --> 00:01:48.060] So what does right actually depend on?
+[00:01:48.060 --> 00:01:55.260] Let's keep one task in mind. Someone wants to change the amount on an order we already approved.
+[00:01:55.260 --> 00:02:04.060] Two kinds of agents meet here. One wrote the instructions and the other follows them in production.
+[00:02:04.060 --> 00:02:11.260] We run this in 110 countries with about 10,000 scenarios of prose instructions.
+[00:02:11.260 --> 00:02:16.220] Every task lands in a slice, one process in one country.
+[00:02:16.220 --> 00:02:21.740] There's a second stone, space. It asks where a change is allowed to go.
+[00:02:22.300 --> 00:02:25.580] By default, it stays inside its slice.
+[00:02:26.940 --> 00:02:31.100] Most of this system is PROS, about three quarters by my estimate.
+[00:02:31.100 --> 00:02:33.020] So PROS needs engineering too.
+[00:02:33.820 --> 00:02:36.300] At start, we borrowed mutation testing.
+[00:02:36.300 --> 00:02:40.620] You break one sentence on purpose and you watch for red test.
+[00:02:41.260 --> 00:02:43.820] Here, almost none turned red.
+[00:02:43.820 --> 00:02:51.100] And if your wrapper is all code, your agent instructions and your tests are your pros.
+[00:02:51.100 --> 00:02:53.980] With agents, a rewrite is easy.
+[00:02:53.980 --> 00:02:57.040] The hard part is knowing what has to survive it.
+[00:02:57.040 --> 00:02:59.580] For code, tests can tell you.
+[00:02:59.580 --> 00:03:01.980] For pros, only people can.
+[00:03:01.980 --> 00:03:05.780] Agents can't build a complex system on their own.
+[00:03:05.780 --> 00:03:10.660] They fix what is easy to see and break consistency on the way.
+[00:03:10.660 --> 00:03:17.160] and people also get tired, so we spend that judgment only where it's needed.
+[00:03:17.160 --> 00:03:22.060] When business checks with the team, it hides a real question.
+[00:03:22.060 --> 00:03:25.680] Is this a human step or can we automate it?
+[00:03:25.680 --> 00:03:27.500] Experts can't answer that.
+[00:03:27.500 --> 00:03:30.680] They don't see how the systems connect inside.
+[00:03:30.680 --> 00:03:36.060] So developers dig through the traces and logs with their coding agents and they decide
+[00:03:36.060 --> 00:03:37.620] which it is.
+[00:03:37.620 --> 00:03:41.660] In our task, the team leads decisions is human.
+[00:03:41.660 --> 00:03:45.280] The limit was data we could connect.
+[00:03:45.280 --> 00:03:48.040] Business experts see the rules.
+[00:03:48.040 --> 00:03:50.540] Developers see what's under the water.
+[00:03:50.540 --> 00:03:53.060] And that's where most bugs live.
+[00:03:53.060 --> 00:03:59.000] They have their coding agents write those links down so the runtime can check them.
+[00:03:59.000 --> 00:04:01.940] Our guide for experts says it simply.
+[00:04:01.940 --> 00:04:03.680] Business tell us what.
+[00:04:03.680 --> 00:04:06.420] We work out how.
+[00:04:06.420 --> 00:04:08.800] One document to readers.
+[00:04:08.800 --> 00:04:13.460] Agents read the blocks, so their blocks have to be exact.
+[00:04:13.460 --> 00:04:16.540] Experts read the text around them and they sign it.
+[00:04:16.540 --> 00:04:17.800] We keep one copy.
+[00:04:17.800 --> 00:04:19.440] A second one we drift.
+[00:04:19.440 --> 00:04:20.960] And it works both ways.
+[00:04:20.960 --> 00:04:25.100] Our code needs a plain description for experts too.
+[00:04:25.100 --> 00:04:28.160] Experts can only fix what they can see.
+[00:04:28.160 --> 00:04:33.100] Each of them reviews a task exactly the way the agent saw it.
+[00:04:33.100 --> 00:04:39.480] The node becomes the next change, made by a coding agent and tested on the same task.
+[00:04:39.480 --> 00:04:42.160] So write depends on people.
+[00:04:42.160 --> 00:04:44.240] No single person knows it.
+[00:04:44.240 --> 00:04:50.820] A group of experts decides, and that's why we bring them in from the start.
+[00:04:50.820 --> 00:04:53.480] You'll see the soul stone here a lot.
+[00:04:53.480 --> 00:04:56.580] We take it in chapter 4.
+[00:04:56.580 --> 00:04:58.060] Chapter 2.
+[00:04:58.060 --> 00:05:04.080] Agents correct one task at a time, while agents run the same prose all day.
+[00:05:04.080 --> 00:05:08.140] We track every outcome, accepted or rejected.
+[00:05:08.140 --> 00:05:12.380] The accuracy shows us where people still need to look.
+[00:05:12.380 --> 00:05:16.580] I used to think the goal was to move everything into code.
+[00:05:16.580 --> 00:05:19.600] So where do we still need judgment?
+[00:05:19.600 --> 00:05:21.420] Here is our task again.
+[00:05:21.420 --> 00:05:24.580] The prose says the limit is 1500.
+[00:05:24.580 --> 00:05:26.740] The code says 1000.
+[00:05:26.740 --> 00:05:33.900] The same order is fine in one place and too high in the other and nothing throws an error.
+[00:05:33.900 --> 00:05:39.340] Even a line like do not call x teaches the model that x exists.
+[00:05:39.340 --> 00:05:42.520] That's the third stone, reality.
+[00:05:42.520 --> 00:05:47.060] Is it true or does it only look true for the model?
+[00:05:47.060 --> 00:05:50.420] Prose has no compiler, so we build one.
+[00:05:50.420 --> 00:05:56.120] Then the author links every changed file into ledger, just like code.
+[00:05:56.740 --> 00:06:03.740] Lind can't stop copies drifting apart, so we watched the walks.
+[00:06:03.740 --> 00:06:07.740] A walk is the path one agent takes through the prose.
+[00:06:07.740 --> 00:06:15.740] When agents keep walking the same path, we turn it into one workflow tool, and we delete the prose that walked it.
+[00:06:15.740 --> 00:06:19.740] Our first workflow tools made things worse.
+[00:06:19.740 --> 00:06:25.740] The prose still named the steps inside them, so agents run those steps again.
+[00:06:25.740 --> 00:06:29.740] It worked once the prose kept only the decisions.
+[00:06:29.740 --> 00:06:35.980] Now a walk becomes code only when it repeats and agrees across countries.
+[00:06:35.980 --> 00:06:38.860] Otherwise it stays prose.
+[00:06:38.860 --> 00:06:42.940] What still varies stays in prose inside a frame.
+[00:06:42.940 --> 00:06:47.020] Code prepares the facts and carries out the decision.
+[00:06:47.020 --> 00:06:51.980] Experts own the decision table and the model only picks a row.
+[00:06:51.980 --> 00:06:55.940] If no role fits, a person takes over.
+[00:06:55.940 --> 00:06:57.880] We haven't built the next step yet.
+[00:06:57.880 --> 00:07:00.640] The model will take the small decisions,
+[00:07:00.640 --> 00:07:03.080] and workflows will connect them.
+[00:07:03.080 --> 00:07:05.120] This boundary moves both ways.
+[00:07:05.120 --> 00:07:09.440] We moved hundreds of lines of expressions out of code
+[00:07:09.440 --> 00:07:13.980] and into prose because experts couldn't read them.
+[00:07:13.980 --> 00:07:17.080] A regex is still fine for spotting a critical signal.
+[00:07:17.080 --> 00:07:20.320] When there are many, they move into config.
+[00:07:20.320 --> 00:07:25.840] Judgment stays wherever the answer varies, in a place an expert can read.
+[00:07:26.740 --> 00:07:31.420] Chapter 3. Now the model decides and its decision becomes an action.
+[00:07:32.280 --> 00:07:36.700] I used to think control meant permissions on the agent.
+[00:07:37.260 --> 00:07:40.040] So what does it mean to stay in control?
+[00:07:40.720 --> 00:07:43.980] Control starts with what the model sees.
+[00:07:44.540 --> 00:07:47.120] That's what the fourth stone mined.
+[00:07:47.400 --> 00:07:48.520] What does the model know?
+[00:07:48.520 --> 00:07:52.520] When we let it choose what to load, it loaded everything.
+[00:07:52.520 --> 00:07:57.520] Then it invented a pricing check just because prices were visible.
+[00:07:57.520 --> 00:08:02.520] Whatever sits in its context becomes a reason to act.
+[00:08:02.520 --> 00:08:05.520] The runtime decides what the model sees.
+[00:08:05.520 --> 00:08:09.520] For our task, there's three facts from the order.
+[00:08:09.520 --> 00:08:14.520] The full record stays with the runtime and the model makes fewer wrong moves.
+[00:08:14.520 --> 00:08:22.360] Here are how we minimize context bloat. For a big set, the model passes a handle,
+[00:08:22.360 --> 00:08:28.520] a short name for date that the runtime already holds. The runtime checks it before any write.
+[00:08:28.520 --> 00:08:36.040] It keeps the context small and still enough for the decision. At the same time, it validates context
+[00:08:36.040 --> 00:08:43.880] for consistency. A model with the right facts can still do damage. That's the fifth stone, power.
+[00:08:44.520 --> 00:08:46.200] What may change?
+[00:08:46.200 --> 00:08:52.500] We control a change twice, during development and again at the write at runtime.
+[00:08:52.500 --> 00:08:57.500] Only code opens a write path, so we can't change pros many times a day.
+[00:08:57.500 --> 00:09:02.440] The open rings are the parts that still depend on people.
+[00:09:02.440 --> 00:09:04.700] Let's zoom in and run write.
+[00:09:04.700 --> 00:09:07.360] Five walls stand in front of it.
+[00:09:07.360 --> 00:09:10.020] And the sixth checks that it landed.
+[00:09:10.020 --> 00:09:15.840] If a write looks like it failed, an agent retries and the journal makes sure it runs
+[00:09:15.840 --> 00:09:17.300] only once.
+[00:09:17.300 --> 00:09:24.300] Control means much more than permissions on the agent.
+[00:09:24.300 --> 00:09:28.560] Chapter 4 Most days I glide over the system.
+[00:09:28.560 --> 00:09:35.640] From up here everything looks fine, so I don't go down into every change my agents made.
+[00:09:35.640 --> 00:09:37.660] Then the surface gets rough.
+[00:09:37.660 --> 00:09:41.180] How do we know we're losing control?
+[00:09:41.180 --> 00:09:43.640] All those controls protect the system.
+[00:09:43.640 --> 00:09:46.000] Nothing protected my attention.
+[00:09:46.000 --> 00:09:52.100] At the start, I read every change and that's how the system picked up my habits.
+[00:09:52.100 --> 00:09:56.340] Then the volume grew past what one person can read.
+[00:09:56.340 --> 00:10:00.160] I was burning out and I stopped reading every change.
+[00:10:00.160 --> 00:10:02.340] That was the price of the last stone.
+[00:10:02.340 --> 00:10:06.040] So who judges and what does it cost?
+[00:10:06.040 --> 00:10:09.160] With it, the gauntlet is complete.
+[00:10:09.160 --> 00:10:11.800] Every tech lead I know has been here.
+[00:10:11.800 --> 00:10:15.220] The one person every change waits on.
+[00:10:15.220 --> 00:10:19.060] Agents just get you there in weeks instead of years.
+[00:10:19.060 --> 00:10:23.220] I needed a way of working that doesn't run through one head.
+[00:10:23.220 --> 00:10:25.440] And the first gauge was me.
+[00:10:25.440 --> 00:10:29.980] When I'm tired and I can't explain what changed, that's the signal.
+[00:10:29.980 --> 00:10:34.100] The dashboard can be green while that gauge is firing.
+[00:10:34.100 --> 00:10:37.220] So I stop and fix the process first.
+[00:10:37.220 --> 00:10:39.820] I don't wait for a number.
+[00:10:39.820 --> 00:10:46.180] I couldn't read every div anymore, so I built instruments that watch how things change and
+[00:10:46.180 --> 00:10:48.100] their derivatives.
+[00:10:48.100 --> 00:10:50.860] One of them is blast radius.
+[00:10:50.860 --> 00:10:55.980] Before we built one new check, we replayed its rule over several thousand past sessions.
+[00:10:55.980 --> 00:10:59.460] It would have fired on less than 1%.
+[00:10:59.460 --> 00:11:03.660] Where the numbers jump, I go down and read.
+[00:11:03.660 --> 00:11:05.960] When something looks wrong, we wait.
+[00:11:05.960 --> 00:11:10.600] One signal waits until it comes back, even when it comes from an expert.
+[00:11:10.600 --> 00:11:13.960] A cluster across slices is different.
+[00:11:13.960 --> 00:11:17.260] Then we fix the concept behind it once.
+[00:11:17.260 --> 00:11:22.100] Left alone, an agent keeps adding conditions until today's tasks pass.
+[00:11:22.100 --> 00:11:31.340] The eval score drops when you take them out and you get an honest list of gaps.
+[00:11:31.340 --> 00:11:33.840] Even red slice is rarely alone.
+[00:11:33.840 --> 00:11:40.400] The experts node becomes an eval and an agent searches the siblings for the same failure.
+[00:11:40.400 --> 00:11:44.620] Siblings differ on purpose by market and by local law.
+[00:11:44.620 --> 00:11:53.880] So we sweep them and the fix goes only where the failure is confirmed.
+[00:11:53.880 --> 00:11:57.980] At any time 10 to 20 of these loops are open.
+[00:11:57.980 --> 00:12:03.260] At one point I had become the message bus between users and my agents.
+[00:12:03.260 --> 00:12:10.240] At this scale, every user has to be an evaluator, with a screen to give feedback without me.
+[00:12:10.240 --> 00:12:15.200] My job as the architect is to build those loops into the system.
+[00:12:15.200 --> 00:12:24.540] Each loop writes to a ledger, so nothing waits on my memory and nothing waits on me.
+[00:12:24.540 --> 00:12:30.780] forget everything when a session ends so the memory has to live in files we keep
+[00:12:30.780 --> 00:12:37.040] two kinds what happened and what is true now the next session starts from what is
+[00:12:37.040 --> 00:12:39.680] true now
+[00:12:40.160 --> 00:12:46.500] every issue has to connect to its root cause without that the agent decides on
+[00:12:46.500 --> 00:12:53.720] wrong facts and the check has nothing to count so we don't act without evidence
+[00:12:53.720 --> 00:13:07.960] Reality comes back. In chapter 2 it asked if the pros is true. Now it asks if the change is. I used to trust Green. So what would make us change our mind?
+[00:13:07.960 --> 00:13:12.860] Green was tempting because checking is where the times goes.
+[00:13:12.860 --> 00:13:18.520] My agent spent almost 9 tenths of that time on a change just checking it.
+[00:13:18.520 --> 00:13:22.880] And checking took a bigger share of my own week too.
+[00:13:22.880 --> 00:13:27.800] Verification speed is the limit.
+[00:13:27.800 --> 00:13:30.480] We rank evidence by what it proves.
+[00:13:30.480 --> 00:13:34.240] A replay on real tasks sits at the top.
+[00:13:34.240 --> 00:13:39.380] Before the data arrives, we write down what would prove us wrong, and every new check
+[00:13:39.380 --> 00:13:44.740] has to fail once on purpose before we trust it.
+[00:13:44.740 --> 00:13:50.000] AI refactors fail quietly.
+[00:13:50.000 --> 00:13:56.320] Every condition and every decision table row is a branch, and after a refactor, each one
+[00:13:56.320 --> 00:13:59.100] has to land exactly once.
+[00:13:59.100 --> 00:14:02.900] Here the branch for amounts over the limit got lost.
+[00:14:02.900 --> 00:14:11.620] order would have gone through without a team lead real tasks decide what we test we freeze them as
+[00:14:11.620 --> 00:14:19.300] a set and replay the old version against the new one if no real task takes a branch we call that
+[00:14:19.300 --> 00:14:29.060] no evidence you can't trust one agent to judge its own work a second agent checks it with a checklist
+[00:14:29.060 --> 00:14:34.740] and without the author's reasoning. It can't be talked into agreeing. Over six months,
+[00:14:35.300 --> 00:14:44.420] it grew to most of my checking. Coding agents finish most of a batch and quietly skip the rest,
+[00:14:44.420 --> 00:14:51.460] especially when their context is full. The ledger shows what was skipped. In one backlog,
+[00:14:51.460 --> 00:14:58.180] most items look covered, but only about a quarter could really be closed. So now,
+[00:14:58.180 --> 00:15:06.980] evidence we can count is what changes our mind this is the third option from the start of the
+[00:15:06.980 --> 00:15:15.140] talk i used to think there were two choices keep everything or snap so what is worth carrying
+[00:15:15.140 --> 00:15:23.780] forward this one process over a year some branches merged back some still drift and some are dead
+[00:15:23.780 --> 00:15:27.540] but still look alive. Which ones deserve to survive?
+[00:15:30.500 --> 00:15:38.340] A fix is only a moment. These forces keep pushing right after it. You've met most of them already.
+[00:15:38.340 --> 00:15:41.540] This chapter deals with regrowth and branching.
+[00:15:44.420 --> 00:15:49.860] The first gauge was me back in chapter 4. These are the gauges for the code.
+[00:15:49.860 --> 00:15:54.660] Time gets its answers here. The bridge line comes back as a number.
+[00:15:55.220 --> 00:16:01.780] A ratchet means the count can only go down. Two gauges run today and six more are next.
+[00:16:04.020 --> 00:16:10.820] Every week real use decides what stays. Anything no real task reaches gets a name
+[00:16:10.820 --> 00:16:16.900] and its evidence before it goes. That's the evidence I didn't have when I snapped.
+[00:16:16.900 --> 00:16:24.940] tests kept dead variants alive agents kept every option at tests still mentioned now retired
+[00:16:24.940 --> 00:16:33.700] variant takes its test with it here's the whole method is one week this is the third option as a
+[00:16:33.700 --> 00:16:46.400] process together that's the full gauntlet Thanos used his for one snap we use ours every week
+[00:16:46.400 --> 00:16:53.400] in small doses with evidence. I haven't had to snap again.
+[00:16:55.020 --> 00:17:00.960] Seoul had a second prize and I only saw it later. After we delivered it to
+[00:17:00.960 --> 00:17:05.960] production, I found my own engineering principles built into the system's
+[00:17:05.960 --> 00:17:12.760] design. Its skills and its memory carry my habits and my biases. Conway said the
+[00:17:12.760 --> 00:17:20.280] system copies the org chart. Ours copies whoever corrects it. Here are 18 questions,
+[00:17:20.280 --> 00:17:27.340] three for each stone. I'm using them when working on my projects. Pause here and
+[00:17:27.340 --> 00:17:35.600] pick one your own repository can't answer yet. That's where to start.
+[00:17:35.600 --> 00:17:42.220] I learned to use this process when I was already burning out.
+[00:17:42.220 --> 00:17:47.720] If you are the one your team's changes wait on today, this is for you.
+[00:17:47.720 --> 00:17:51.920] Use your stones while you can still read every change.
+[00:17:51.920 --> 00:17:54.960] In the end, Thanos retires to a garden.
+[00:17:54.960 --> 00:17:59.040] Maybe he should start using them daily.
+[00:17:59.040 --> 00:17:59.600] Thank you.

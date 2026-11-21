@@ -1,0 +1,338 @@
+Cloudflare 如何让小模型分担 Agent 的判断和提取？
+Michelle Chen
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[00:40:09.180 --> 00:40:13.220] Hi, everyone. My name is Michelle Chen. I'm so excited to be here today at AI Engineer
+[00:40:13.220 --> 00:40:18.740] Code Summit chatting a little bit more about why Cloudflare became a Neolab. So at Cloudflare,
+[00:40:18.820 --> 00:40:23.320] I am the group PM here. I run on the product team working on products like workers AI,
+[00:40:23.620 --> 00:40:27.520] AI Search, AI Gateway as well. And so today we're going to go through this little journey
+[00:40:27.520 --> 00:40:29.060] of how Cloudflare came to be.
+[00:40:29.280 --> 00:40:30.480] You might have heard that we launched
+[00:40:30.480 --> 00:40:31.940] and trained some models recently.
+[00:40:32.240 --> 00:40:33.980] I'm going to tell you a little bit more about why
+[00:40:33.980 --> 00:40:36.340] and what you can be doing with it.
+[00:40:36.520 --> 00:40:37.800] And so we're going to go through a little bit
+[00:40:37.800 --> 00:40:38.980] of a philosophical journey.
+[00:40:39.880 --> 00:40:41.240] When I was preparing for this talk,
+[00:40:41.360 --> 00:40:42.480] I wanted to use this quote,
+[00:40:42.640 --> 00:40:46.000] and then Anthropic launched a blog post last weekend
+[00:40:46.000 --> 00:40:47.960] and used my quote, but I'm still going to use it anyways.
+[00:40:49.140 --> 00:40:50.700] So the quote goes...
+[00:40:53.800 --> 00:40:54.680] In one second.
+[00:40:55.200 --> 00:40:56.520] The quote is from Kierkegaard,
+[00:40:56.580 --> 00:40:57.080] and it says,
+[00:40:57.520 --> 00:41:00.360] Life can only be understood backwards, but it must be lived forwards.
+[00:41:00.680 --> 00:41:04.860] And I think this is really, really apt quote here for us because at Cloudflare,
+[00:41:05.020 --> 00:41:08.020] we're a 16 year old company and we've done so many things over the years.
+[00:41:08.160 --> 00:41:11.040] But somehow we got some of the pieces right and
+[00:41:11.040 --> 00:41:13.160] we ended up having to become a new lab.
+[00:41:13.300 --> 00:41:14.400] So we're gonna go through a little bit journey.
+[00:41:14.800 --> 00:41:18.060] The first thing we're gonna do is look backwards and
+[00:41:18.060 --> 00:41:23.320] talk through why Cloudflare had to became a new lab.
+[00:41:25.680 --> 00:41:26.880] Give me one second here.
+[00:41:29.560 --> 00:41:34.120] Perfect, we're going to go backwards and talk through why Cloudflare became a Neolab.
+[00:41:34.420 --> 00:41:38.580] So Cloudflare is a 16-year-old CDN company.
+[00:41:38.740 --> 00:41:44.260] We just celebrated our 16th birthday at birthday week this year in September.
+[00:41:45.980 --> 00:41:47.980] And we first started as a CDN.
+[00:41:48.160 --> 00:41:52.420] So as a CDN company, what you have to do is you have to serve content as quick to your
+[00:41:52.420 --> 00:41:53.280] users as possible.
+[00:41:53.280 --> 00:41:58.760] You sit between the user's request and the origin, and you help sit in the middle, and
+[00:41:58.760 --> 00:42:01.880] you can do things like cache and protect, do security and things like that.
+[00:42:02.000 --> 00:42:03.480] So that's kind of how Cloudflare started.
+[00:42:04.980 --> 00:42:09.800] But Cloudflare's infrastructure had to be adaptable in order to become the CDN.
+[00:42:09.960 --> 00:42:13.940] And so what we did was 16 years ago, in 2010, we launched with our own infrastructure.
+[00:42:14.280 --> 00:42:16.360] Our fast CDN had to be everywhere.
+[00:42:16.520 --> 00:42:20.820] And this looks really different than a traditional hyperscaler where compute is centralized in
+[00:42:20.820 --> 00:42:22.580] US East one or US West one.
+[00:42:23.280 --> 00:42:27.700] infrastructure is a completely different paradigm. We have data centers all around
+[00:42:27.700 --> 00:42:31.760] the world as close to the user as possible and this is really important in
+[00:42:31.760 --> 00:42:35.900] becoming a CDN but now we have these computers basically running as close to
+[00:42:35.900 --> 00:42:39.440] the user as possible so we thought to ourselves what else can we be doing with
+[00:42:39.440 --> 00:42:44.720] these computers that people would want to build with and so came compute. We
+[00:42:44.720 --> 00:42:48.240] started launching these compute primitives as well and so in 2017 we
+[00:42:48.240 --> 00:42:51.840] launched a product called workers which is basically like serverless functions
+[00:42:53.360 --> 00:42:57.700] It contrasted VMs at that time where you had to rent a whole machine and pay for the whole
+[00:42:57.700 --> 00:43:00.220] machine, either you're using it or not using it.
+[00:43:00.560 --> 00:43:04.080] And so with workers, you just execute some code and then the worker goes away.
+[00:43:04.240 --> 00:43:05.260] You don't have to pay for it.
+[00:43:05.380 --> 00:43:07.960] It takes milliseconds to start up, not seconds as well.
+[00:43:08.160 --> 00:43:11.940] And then we followed with other compute primitives like durable objects, which are more stateful.
+[00:43:12.120 --> 00:43:15.860] And then in 2025, we launched containers as well, because there are some workloads that
+[00:43:15.860 --> 00:43:17.160] do need something like a VM.
+[00:43:17.340 --> 00:43:19.980] And we want all of those workloads to be able to run on Cloudflare.
+[00:43:19.980 --> 00:43:25.320] So now, you know, 2017, start of our developer platform, we have these compute primitives.
+[00:43:25.580 --> 00:43:30.940] People started using it. People started building more like static websites and things like that.
+[00:43:30.940 --> 00:43:34.600] So we thought to ourselves, how do we elevate this and take it to the next level?
+[00:43:35.300 --> 00:43:40.520] So we introduced storage as well. And so we have these storage primitives on Cloudflare's developer
+[00:43:40.520 --> 00:43:46.980] platform. We have KV, we have R2.ObjectStory, we have databases like D1 as well. And the idea here
+[00:43:46.980 --> 00:43:51.500] is that people should be able to build full stack applications all on Cloudflare.
+[00:43:51.700 --> 00:43:55.180] Stateful applications where people can go on and start building
+[00:43:56.260 --> 00:44:00.780] full applications and web apps and platforms on Cloudflare's developer platform.
+[00:44:01.380 --> 00:44:02.940] So we have this infrastructure.
+[00:44:02.980 --> 00:44:04.740] We added compute primitives to it.
+[00:44:05.020 --> 00:44:06.520] We added storage primitives to it.
+[00:44:06.660 --> 00:44:08.340] And then came 2023.
+[00:44:08.760 --> 00:44:10.820] And if you guys remember what happened in 2023,
+[00:44:11.620 --> 00:44:15.700] ChatGPT kind of blew up a little bit and it changed how we think about AI.
+[00:44:17.140 --> 00:44:26.380] And I remember it being birthday week, and three weeks before birthday week, a lot of us sat together in a room, and we were like, what should we do now that ChatGPT is on the rise?
+[00:44:26.540 --> 00:44:32.720] What can Cloudflare play in here with our infrastructure and our primitives in order to be in this AI game?
+[00:44:33.720 --> 00:44:39.060] So in 2023, we launched a product called Workers AI, where we added GPUs to our network.
+[00:44:39.240 --> 00:44:44.020] And so again, this is really distributed, where GPUs are running as close to the user as possible.
+[00:44:44.020 --> 00:44:48.960] It's not centralized like a US East 1 hyperscaler, for example, but it's running as close to
+[00:44:48.960 --> 00:44:49.800] the edge as possible.
+[00:44:50.140 --> 00:44:52.860] And we had a hypothesis when we started to work as AI.
+[00:44:53.620 --> 00:44:58.300] Our hypothesis was that models were going to get smaller, so that network latency was
+[00:44:58.300 --> 00:44:59.940] going to become more and more important.
+[00:45:00.920 --> 00:45:04.980] We launched with small models that could fit on our small hardware around the world that
+[00:45:04.980 --> 00:45:09.660] were super distributed, and we thought that people would have models get better and faster
+[00:45:09.660 --> 00:45:14.000] and smarter and that network latency was going to play a much more bigger impact here.
+[00:45:15.620 --> 00:45:19.620] Well actually the opposite happened and models got larger and larger.
+[00:45:19.900 --> 00:45:25.120] So we went from something like 7 billion parameters which was frontier scale at the time to being
+[00:45:25.120 --> 00:45:27.660] the 3 trillion parameter models that were getting launched.
+[00:45:28.000 --> 00:45:34.040] And I think this is not so shocking when you look back in time because as we're on the
+[00:45:34.040 --> 00:45:39.520] way to AGI if you're following scaling law as you train on more data, as the
+[00:45:39.520 --> 00:45:42.780] models get larger, they're more generalizable. And so on the path to AGI,
+[00:45:42.920 --> 00:45:46.220] it makes sense that we're pushing the frontier of research here in order to
+[00:45:46.220 --> 00:45:51.720] get larger and larger and smarter models. So this goes against our hypothesis,
+[00:45:51.980 --> 00:45:54.840] right, that the models were gonna get smaller. The models actually ended up
+[00:45:54.840 --> 00:45:58.660] being larger and the network latency mattered less and less. So what did we
+[00:45:58.660 --> 00:45:58.860] What did we do?
+[00:46:00.680 --> 00:46:03.740] We ended up pivoting.
+[00:46:04.340 --> 00:46:07.080] So Cloudflare got really good at serving these giant models as well.
+[00:46:07.580 --> 00:46:12.840] So in March 2026, we launched Kimi and followed up with GLM and DeepSeq and these large trillion
+[00:46:12.840 --> 00:46:15.760] parameter models hosted on our infrastructure.
+[00:46:16.360 --> 00:46:17.160] And so this is serverless.
+[00:46:17.360 --> 00:46:19.420] People hit an API call and get a token back.
+[00:46:19.680 --> 00:46:23.280] It actually took us a while in order to decide to do this, right?
+[00:46:24.520 --> 00:46:27.820] March 2026 is actually pretty late in the game to serving this model,
+[00:46:28.060 --> 00:46:30.520] but we were trying to make a conscious decision here on,
+[00:46:30.640 --> 00:46:32.680] does this actually make sense for us to be serving it?
+[00:46:32.840 --> 00:46:34.980] It didn't really fit with our infrastructure story,
+[00:46:35.160 --> 00:46:37.200] but it fit really well with the developer platform.
+[00:46:39.040 --> 00:46:42.800] So in 2026, we had all these primitives in place.
+[00:46:43.040 --> 00:46:45.920] We had the infrastructure, which is unique to Cloudflare,
+[00:46:46.080 --> 00:46:46.940] running close to users.
+[00:46:47.160 --> 00:46:50.240] We had compute primitives where people were building agents on top of,
+[00:46:50.420 --> 00:46:52.320] so workers and durable objects, right?
+[00:46:53.280 --> 00:46:54.160] to complete a task.
+[00:46:54.340 --> 00:46:56.960] It goes on and it spins and does a task
+[00:46:56.960 --> 00:46:58.060] and then sleeps when it doesn't.
+[00:46:58.220 --> 00:47:00.640] We have storage primitives, so your agents can actually
+[00:47:00.640 --> 00:47:02.840] interact with data and storage.
+[00:47:03.220 --> 00:47:05.040] And then we have models, these large models that
+[00:47:05.040 --> 00:47:06.020] are powering agents.
+[00:47:06.300 --> 00:47:10.340] And so all of this fit into the Cloudflare agent cloud story.
+[00:47:10.500 --> 00:47:11.720] And so we started telling this narrative
+[00:47:11.720 --> 00:47:13.340] that we want to be the agent cloud.
+[00:47:13.540 --> 00:47:16.900] We want agents to be deployed on us, powered by models on us,
+[00:47:17.020 --> 00:47:18.580] using our compute and data primitives,
+[00:47:18.680 --> 00:47:20.720] all built on our infrastructure and our network.
+[00:47:20.720 --> 00:47:23.260] But it never felt quite right.
+[00:47:23.640 --> 00:47:25.980] We felt like we were always missing a piece here,
+[00:47:26.120 --> 00:47:29.300] because the infrastructure pattern didn't necessarily fit in with
+[00:47:29.300 --> 00:47:31.680] what workers AI was designed for.
+[00:47:33.300 --> 00:47:36.400] And so I'm just gonna sit here and give you my second philosophical quote,
+[00:47:36.600 --> 00:47:40.380] which is a brisk, considering that I'm a girl in Chinese and AI,
+[00:47:40.560 --> 00:47:42.120] but I'm gonna give you this Chinese quote anyways.
+[00:47:44.180 --> 00:47:46.020] And it basically says,
+[00:47:48.120 --> 00:47:50.260] which means everything is ready here.
+[00:47:50.480 --> 00:47:52.500] All that's missing is the east wind.
+[00:47:53.460 --> 00:47:55.960] And one of the things about this is like,
+[00:47:56.020 --> 00:47:59.380] you can't really predict where the wind is going to come from or how it's going to come,
+[00:47:59.500 --> 00:48:01.380] but you need to be very reactive when it happens.
+[00:48:01.660 --> 00:48:04.780] And so in September 2026, the east wind came.
+[00:48:05.380 --> 00:48:10.080] TypeSafe launched a model called GEV and introduced this idea of system one models.
+[00:48:10.280 --> 00:48:14.780] And it contrasted what we typically knew with LLMs, which were auto regressive and
+[00:48:15.980 --> 00:48:21.400] tokens, it scales quadratically, etc. A system one model is a completely different paradigm,
+[00:48:21.900 --> 00:48:26.460] where it actually just takes one forward pass through the inputs and generates an output
+[00:48:26.460 --> 00:48:31.900] that you can use to make decisions with it. And so I really think that this came down
+[00:48:31.900 --> 00:48:36.480] to perfect timing. I think people were starting to get fed up a little bit with LLMs because
+[00:48:36.480 --> 00:48:41.420] they were so costly, it cost so many tokens, it's super time consuming, and I don't know
+[00:48:41.420 --> 00:48:44.800] about you, but when I read a reasoning trace, sometimes my blood pressure rises when the
+[00:48:46.020 --> 00:48:49.520] the things right and so I think we were sending everything to LLMs and started
+[00:48:49.520 --> 00:48:53.100] getting frustrated with it and so when this system one and JEV paradigm started
+[00:48:53.100 --> 00:48:57.440] coming on board we were like this makes so much sense for us to adopt right we
+[00:48:57.440 --> 00:49:01.260] don't have to send every request to an LLM we can send some of it to a system
+[00:49:01.260 --> 00:49:06.120] one model and so the system one models actually end up taking work off of the
+[00:49:06.120 --> 00:49:09.580] giant LLMs and you give it to the small fast models and the two are supposed to
+[00:49:09.580 --> 00:49:13.260] work in tandem they're supposed to complement each other and get to the end
+[00:49:13.260 --> 00:49:19.320] goal faster. And so if you look, we are back at these small and fast models, right? This
+[00:49:19.320 --> 00:49:26.540] was the original workers AI hypothesis. And so Cloudflare was not wrong here. We actually
+[00:49:26.540 --> 00:49:30.980] were just early. With these small and fast models, the network latency became important
+[00:49:30.980 --> 00:49:35.500] again. We want the model to be responding fast, but also the network latency to be even
+[00:49:35.500 --> 00:49:42.960] faster. And so we decided to do something here. But, Jev was close source. Cloudflare
+[00:49:43.260 --> 00:49:46.200] actually host the JEV models and take advantage of our infrastructure.
+[00:49:46.900 --> 00:49:48.440] So what did we decide to do?
+[00:49:49.260 --> 00:49:50.900] We built our own version of JEV.
+[00:49:51.280 --> 00:49:53.180] So JEV launched on September 15th.
+[00:49:53.440 --> 00:49:57.760] On September 18th, just three days later, we started experimenting and we launched our
+[00:49:57.760 --> 00:50:00.680] version of JEV, our first experiment of it.
+[00:50:00.840 --> 00:50:05.200] And then it took us a week of deliberation to decide, do we actually want to be going
+[00:50:05.200 --> 00:50:06.800] into this Neolab territory?
+[00:50:07.100 --> 00:50:08.560] It's completely new to us.
+[00:50:08.660 --> 00:50:10.200] We don't know what we need to know.
+[00:50:11.120 --> 00:50:13.860] Are we going to set the expectation that we want to be a Neolab?
+[00:50:14.080 --> 00:50:16.100] And are we going to live up to those expectations?
+[00:50:16.560 --> 00:50:17.740] But we decided to do it.
+[00:50:18.000 --> 00:50:21.000] I remember on a Friday evening, we were like, let's just go for it.
+[00:50:21.100 --> 00:50:21.660] And we did it.
+[00:50:21.780 --> 00:50:24.780] And we ended up training the model over 48 hours over the weekend.
+[00:50:25.020 --> 00:50:26.520] And then we launched it the following week.
+[00:50:26.720 --> 00:50:28.480] And so we ended up with a model called Clef.
+[00:50:30.300 --> 00:50:34.480] Clef gave power back to the agents to be able to make decisions on their own.
+[00:50:34.620 --> 00:50:36.980] So agents could act more autonomously.
+[00:50:36.980 --> 00:50:41.780] You didn't need to have LLM reason through for minutes on if it should make this decision
+[00:50:41.780 --> 00:50:42.160] or not.
+[00:50:42.440 --> 00:50:46.480] You also didn't need to put a human in the loop and be interrupted by a human's sleep
+[00:50:46.480 --> 00:50:48.820] schedule when you want your agents to be running 24-7.
+[00:50:49.080 --> 00:50:54.440] So you can now programmatically, in code, decide, make decisions for your agent to take
+[00:50:54.440 --> 00:50:55.020] action on.
+[00:50:57.000 --> 00:51:01.700] So these decision models countered LLM models because they were a lot faster and they were
+[00:51:01.700 --> 00:51:02.980] also a lot cheaper as well.
+[00:51:02.980 --> 00:51:07.280] And so it actually, as an inference provider, takes a lot of pressure off the LLMs as well,
+[00:51:07.440 --> 00:51:10.380] because the LLMs were reserved for meaningful work,
+[00:51:10.520 --> 00:51:16.520] whereas the clef and decision models could be used for fast, intuitive thinking and work, right?
+[00:51:18.300 --> 00:51:21.140] And so we also went back and thought to ourselves,
+[00:51:21.460 --> 00:51:26.620] you know, what else do agents and people use for LLMs that are overkill?
+[00:51:26.900 --> 00:51:31.140] So we came up with decisions, and there must be other workloads out there
+[00:51:33.380 --> 00:51:36.440] both because they are either too expensive or take too long,
+[00:51:36.640 --> 00:51:38.960] or maybe that it just would get the answer wrong,
+[00:51:39.160 --> 00:51:41.180] because the auto-aggressive nature of an LLM
+[00:51:41.180 --> 00:51:42.420] means that it would hallucinate.
+[00:51:43.540 --> 00:51:46.900] So we also launched a model three weeks later called Cleric.
+[00:51:47.020 --> 00:51:49.180] We actually ended up launching four models
+[00:51:49.180 --> 00:51:50.220] in the span of three weeks,
+[00:51:50.320 --> 00:51:52.260] so I think we did a pretty good job as a new lab.
+[00:51:52.780 --> 00:51:54.560] But Cleric is a new model paradigm,
+[00:51:54.780 --> 00:51:57.880] so it's completely new, we're calling it an extraction model,
+[00:51:57.980 --> 00:52:00.380] but it's a system one model in the sense that
+[00:52:00.380 --> 00:52:02.460] that it is just as fast and just as cheap,
+[00:52:02.600 --> 00:52:05.440] but it is also doing like one forward pass through the user.
+[00:52:05.960 --> 00:52:08.080] And the purpose of Cleric is when you're interacting
+[00:52:08.080 --> 00:52:09.740] with the world, you're not interacting
+[00:52:09.740 --> 00:52:11.980] in perfectly typed JSON objects, right?
+[00:52:12.180 --> 00:52:14.740] Sometimes you're getting an email, a tweet, a Slack message,
+[00:52:14.960 --> 00:52:17.200] but those people are not filling out perfect forms
+[00:52:17.200 --> 00:52:19.140] for you to extract inputs out of.
+[00:52:19.380 --> 00:52:22.100] So what Cleric does is it can take unstructured input
+[00:52:22.100 --> 00:52:25.900] and it can extract, compute, estimate, and forecast
+[00:52:25.900 --> 00:52:27.180] values from those inputs.
+[00:52:27.320 --> 00:52:29.840] And it gives you back a perfectly typed JSON objects,
+[00:52:30.380 --> 00:52:33.000] which means the agents are able to do things with it.
+[00:52:33.340 --> 00:52:35.880] So we're kind of giving agents the ability to read here
+[00:52:35.880 --> 00:52:38.100] and take action with Clef as well.
+[00:52:40.080 --> 00:52:43.840] And so in code again, you're giving Cleric typed values
+[00:52:43.840 --> 00:52:44.840] from unstructured data.
+[00:52:44.980 --> 00:52:47.480] You can pass it in whatever kind of unstructured data.
+[00:52:47.580 --> 00:52:49.140] It can also take image input as well.
+[00:52:49.300 --> 00:52:52.740] And so you can just tell it to read basically what's in text here,
+[00:52:53.180 --> 00:52:55.720] pass it to Clef, decide what to do with this text,
+[00:52:55.780 --> 00:52:58.840] and then pass it to an LLM to decide what to do with the agent.
+[00:53:01.140 --> 00:53:03.600] And so Cloudflare had to become a Neolab here.
+[00:53:03.900 --> 00:53:05.040] This was our missing bit.
+[00:53:05.180 --> 00:53:08.940] We had the infrastructure, we had the compute primitives, we had the data primitives, we
+[00:53:08.940 --> 00:53:13.280] had the large models powering the agents, but in order to take advantage of all of that
+[00:53:13.280 --> 00:53:17.400] and our infrastructure that we were built on, we had to be a Neolab and ship these System
+[00:53:17.400 --> 00:53:19.620] 1 models that fit perfectly with our infrastructure.
+[00:53:20.060 --> 00:53:23.440] And I think one of the more important things is that we're not limited to this.
+[00:53:23.680 --> 00:53:27.360] Being a Neolab means that we can create what we are missing, right?
+[00:53:27.360 --> 00:53:37.940] It means that we're not, if we're missing a system one model because we're at risk of things being closed source or regulatory risks or things like that, we can actually create and invent things.
+[00:53:38.140 --> 00:53:42.860] So I think being a Neolab has actually opened a lot of doors for Cloudflare to do more in the AI world.
+[00:53:44.760 --> 00:53:46.020] So we went through backwards.
+[00:53:46.280 --> 00:53:47.720] We went through a little bit of a history lesson.
+[00:53:47.940 --> 00:53:49.160] I want to go forwards as well.
+[00:53:49.320 --> 00:53:52.620] I want to teach you guys what you guys can be doing with Clef and Cleric.
+[00:53:52.720 --> 00:53:55.580] And I'm cognizant that I am at AI Engineer Code Summit.
+[00:53:57.360 --> 00:54:01.760] developers and engineers, how can you guys leverage Clef and cleric and system 1 models
+[00:54:01.760 --> 00:54:03.720] in order to better use your workflows?
+[00:54:05.280 --> 00:54:07.000] So we'll do a quick demo here.
+[00:54:08.440 --> 00:54:09.820] Let's think you have an agent.
+[00:54:10.040 --> 00:54:12.740] You're triaging a CI build that went wrong, right?
+[00:54:13.180 --> 00:54:16.780] Let's say you have 40 tools that are available to this agent.
+[00:54:17.080 --> 00:54:18.580] You have your PR that went wrong.
+[00:54:18.880 --> 00:54:20.040] And then you have your agent.
+[00:54:20.180 --> 00:54:24.680] Maybe it's running PyDurable on a durable object, since all of this is built on Cloudflare.
+[00:54:24.860 --> 00:54:26.200] So this is the setup here.
+[00:54:27.360 --> 00:54:31.320] Typically what you would do is you would take an LLM, and then the LLM would make a tool
+[00:54:31.320 --> 00:54:35.340] call, the tool call would go back to the LLM, the LLM would make another tool call, et cetera,
+[00:54:35.460 --> 00:54:36.880] et cetera, until the issue is resolved.
+[00:54:37.120 --> 00:54:40.800] So this is like five back and forths with GLM 5.3.
+[00:54:41.020 --> 00:54:45.780] You're sending 40 tools every single time, and maybe you're blowing up the context, right,
+[00:54:45.880 --> 00:54:49.100] because you're sending the same kind of inputs back and forth to the LLM.
+[00:54:49.400 --> 00:54:52.180] And so what if we augment this with system one models?
+[00:54:53.600 --> 00:54:59.180] models. With system one models, this could look a lot different. So let's say we want
+[00:54:59.180 --> 00:55:03.720] speed, so we pick cleft flash. Cleft flash can help you prune your tool list. Maybe it
+[00:55:03.720 --> 00:55:07.380] only needs 10 out of the 40 tools that are available. So you only need to pick 10 of
+[00:55:07.380 --> 00:55:12.360] those. Then let's say you take cleric and you use it to extract the values from the
+[00:55:12.360 --> 00:55:16.220] input. So it can get the PR number without reasoning and thinking about it too long.
+[00:55:16.220 --> 00:55:22.000] And then let's say you just orchestrate some code here to execute these API calls, and
+[00:55:22.000 --> 00:55:24.320] you can actually just get those answers back.
+[00:55:24.620 --> 00:55:28.360] Then you ask Cleric again to pull the data from the logs.
+[00:55:28.640 --> 00:55:32.520] So normally when you're working with an LLM, you probably just paste in all of the logs,
+[00:55:32.640 --> 00:55:35.080] all 300, 600 lines of logs.
+[00:55:35.360 --> 00:55:39.520] But Cleric can actually just go through and read those and say, here's the exact error,
+[00:55:39.980 --> 00:55:42.600] here's the error message, here are the lines of code it's affecting.
+[00:55:42.860 --> 00:55:45.120] And you're basically shrinking your context a lot.
+[00:55:46.220 --> 00:55:52.340] you use an LLM to actually do take action and make decisions and take action and extract
+[00:55:52.340 --> 00:55:55.560] values altogether, this same agent can run with system one.
+[00:55:55.960 --> 00:55:57.400] Let's do a little bit of a live demo.
+[00:55:58.220 --> 00:55:59.120] Let's see how it goes.
+[00:55:59.260 --> 00:56:00.920] We're going to have to click run both here.
+[00:56:01.380 --> 00:56:02.460] This is a live demo.
+[00:56:02.660 --> 00:56:10.740] And I will say that Cloudflare, our workers AI, has a very diurnal usage pattern.
+[00:56:10.860 --> 00:56:12.100] So we're in the middle of the workday.
+[00:56:12.220 --> 00:56:13.580] So we'll see how this goes.
+[00:56:13.580 --> 00:56:16.800] but it'll give you some illustrative example here of how it goes.
+[00:56:17.420 --> 00:56:20.680] And we're also dealing with conference Wi-Fi, so bear with me here.
+[00:56:20.920 --> 00:56:24.060] All right, the System 1 model side finished already,
+[00:56:24.560 --> 00:56:26.600] and the all-LLM one is going,
+[00:56:26.780 --> 00:56:32.680] so I think even illustratively you can see that the System 1 set of models is a lot faster.
+[00:56:32.960 --> 00:56:35.180] Even by just this simple waterfall chart,
+[00:56:35.320 --> 00:56:38.080] you can see that the System 1 part takes so much less time
+[00:56:38.080 --> 00:56:41.900] than the actual generation, which is the purple bars here.
+[00:56:43.580 --> 00:56:47.760] We ended up getting to the answer at the end, so the quality was not affected, but it took
+[00:56:48.460 --> 00:56:54.540] a lot less time, it was a lot cheaper, six LLM calls versus one, 40,000 LLM tokens versus
+[00:56:54.540 --> 00:56:55.460] 1,800.
+[00:56:56.020 --> 00:56:59.940] And so you can see how you can use these kind of system one and system two models, even
+[00:56:59.940 --> 00:57:03.760] in like developer workflows, in order to get you to your answer faster.
+[00:57:06.060 --> 00:57:10.540] So the same answer, but it took a fraction of the LLM time and cost, right?
+[00:57:10.540 --> 00:57:18.400] I ran this when we were not doing conference Wi-Fi, but we had about 9.2 seconds and 17.2 seconds on the LLLM.
+[00:57:18.520 --> 00:57:23.440] It was almost two times faster. It was 72% less expensive.
+[00:57:23.840 --> 00:57:29.500] We shrunk our LLM calls from five down to one, and it was about 94% less tokens.
+[00:57:30.100 --> 00:57:36.580] And so this is an illustrative example of how you could be using the System 1 and System 2 models in tandem.
+[00:57:36.580 --> 00:57:41.400] It's not intended to completely replace your LLM usage, but it can augment it and make
+[00:57:41.400 --> 00:57:47.740] it better by allowing you to free up time and compute for your other more important
+[00:57:47.740 --> 00:57:48.420] tasks here.
+[00:57:48.600 --> 00:57:53.720] And you can now do higher concurrency tasks because these models are able and capable
+[00:57:53.720 --> 00:57:54.720] to do so much more.
+[00:57:56.140 --> 00:57:57.980] And so that was one illustrative example.
+[00:57:58.260 --> 00:58:00.000] I just wanted to flash on the screen really quickly as well.
+[00:58:00.080 --> 00:58:02.440] What else are people building with Clef and Cleric, right?
+[00:58:02.440 --> 00:58:06.860] There's a lot of routers that you can build and making decisions there.
+[00:58:07.180 --> 00:58:11.180] There's fraud that we've been seeing a lot, like spam or phishing,
+[00:58:11.280 --> 00:58:12.360] it can make decisions on there.
+[00:58:12.740 --> 00:58:17.580] With cleric, you can use it to extract data from web pages or support tickets and things
+[00:58:17.580 --> 00:58:18.000] like that.
+[00:58:18.180 --> 00:58:21.480] I'm excited to see, we actually have a new launch coming out for cleric.
+[00:58:21.660 --> 00:58:23.380] We released an early preview, but it's coming out.
+[00:58:23.720 --> 00:58:27.520] So these use cases will grow as people are trying it out more and more.
+[00:58:27.760 --> 00:58:32.180] But the idea is that there's so much in the world, we're not limited to just
+[00:58:32.780 --> 00:58:37.880] Now these new paradigms have been introduced, and I think we should all take advantage of that and try building with it.
+[00:58:39.160 --> 00:58:45.140] And so we went backwards, we went forwards, but I think the most important thing here is that we go onwards, right?
+[00:58:45.380 --> 00:58:51.380] We have to be very reactive in this industry, love it or hate it, things just change on a whim.
+[00:58:52.120 --> 00:58:57.060] If we as Cloudflare back in the day said our hypothesis was wrong,
+[00:58:57.560 --> 00:59:02.240] we have to go and actually pivot and start serving these giant LLMs
+[00:59:02.240 --> 00:59:05.440] in order to take advantage of the fact that we want to be an agent cloud
+[00:59:05.440 --> 00:59:06.840] and that it makes sense for our story.
+[00:59:07.080 --> 00:59:12.720] When an east wind comes and we need to have decision models
+[00:59:12.720 --> 00:59:14.880] because it fit perfectly with our infrastructure story,
+[00:59:15.060 --> 00:59:17.340] we have to pivot and be a Neolab as well.
+[00:59:17.340 --> 00:59:21.560] So it's not, it's one thing to sit here and look back, but the more important
+[00:59:21.560 --> 00:59:26.960] thing is that we took what we had in stride and moved forwards. So I'll leave
+[00:59:26.960 --> 00:59:33.160] you with one last quote here, which is a story from Tolstoy. Remember then,
+[00:59:33.400 --> 00:59:37.220] there's only one time that is important now. It is the most important time because
+[00:59:37.220 --> 00:59:41.440] the only time when we have any power. And so I'll leave you with this quote and a
+[00:59:41.440 --> 00:59:43.740] question of what are you going to build today?

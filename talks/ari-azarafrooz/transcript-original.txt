@@ -1,0 +1,78 @@
+怎样用 KV Cache 观察 Agent 的异常行为？
+Ari Azarafrooz
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放（同一演讲在第 2 天重播） · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[01:30:39.840 --> 01:30:43.380] Hi, I'm Ari Azarfuz, founder of Interensec AI.
+[01:30:44.800 --> 01:30:50.900] This talk is for people who build agents and run their own inference stack or plan to.
+[01:30:50.900 --> 01:30:57.260] And if that's you, you associate typically the KVCache, the bird and butter of modern inference engines,
+[01:30:57.300 --> 01:30:58.780] usually as a throughput optimization.
+[01:30:58.780 --> 01:31:03.120] The keys and values computed per token, kept so the model doesn't compute them again.
+[01:31:03.520 --> 01:31:06.580] Today, I like to show KVCache in a different light.
+[01:31:07.240 --> 01:31:12.060] The way agents, AI agent application group go wrong, keep growing, right?
+[01:31:12.200 --> 01:31:19.780] Problem injection, jailbreaks, broken tool calls, sensitive tool calls, sensitive exposures, hidden backdoors, drifts, and so forth, right?
+[01:31:20.900 --> 01:31:27.880] Now, we typically guard against these numerous ways that an AI agent application could go wrong is by guarding the edge,
+[01:31:28.080 --> 01:31:36.060] by perhaps passing a judge model that checks the prompts, the inputs, and the response outputs against your policy.
+[01:31:36.640 --> 01:31:39.120] Or you build a classifier for each case.
+[01:31:39.840 --> 01:31:41.440] But here is a different light.
+[01:31:41.640 --> 01:31:49.480] The model turns every input into a computation before it acts, before it decodes, before it generates the response,
+[01:31:50.900 --> 01:31:57.520] another tool call the kv cache is your engine's record of that computation that modern inference
+[01:31:57.520 --> 01:32:04.040] engine for free are using it and reading it and therefore on this talk i would like to suggest
+[01:32:04.040 --> 01:32:08.900] as a complement to the way you're already using your own guardrails to use this
+[01:32:08.900 --> 01:32:14.900] data and integrate it with your kv cache infrastructure i refer to this as a kv first
+[01:32:14.900 --> 01:32:20.540] security signals and basically three reasons that matters right so the data
+[01:32:20.540 --> 01:32:25.440] is already there you pick the gems from the pile your inference stack were
+[01:32:25.440 --> 01:32:30.860] already throwing away it covers the guardrails blind spots because whatever
+[01:32:30.860 --> 01:32:35.760] slips past those guardrails it still becomes computation and it stays in
+[01:32:35.760 --> 01:32:40.360] plate so it's perfect for data privacy application for cases where you do not
+[01:32:40.360 --> 01:32:45.700] have the luxury to read the inputs and outputs and the recipe is pretty straightforward right
+[01:32:45.700 --> 01:32:51.940] has three steps you learn a baseline for your ai workload for your ai inference traffic how your
+[01:32:51.940 --> 01:33:00.300] kb page typically look like and then find the kb pages that are rare against your baseline typically
+[01:33:00.300 --> 01:33:06.100] your anomalies and then you can even classify and explain those so first let's start with
+[01:33:06.100 --> 01:33:08.900] where in this stack this integration could happen.
+[01:33:10.180 --> 01:33:13.620] The interesting thing about the KV cache is that in a way,
+[01:33:13.780 --> 01:33:18.220] existence of those has made the inference in a way stateful.
+[01:33:18.600 --> 01:33:23.580] So for example, things like KV cache management layers such as LMCache stores them
+[01:33:23.580 --> 01:33:29.280] from GPU down to remote storage, or LLMD and NVIDIA Dynamo route,
+[01:33:29.320 --> 01:33:35.020] each new request towards the worker that already holds perhaps that cached KV page.
+[01:33:36.100 --> 01:33:41.840] integration points you you you can integrate those anomaly detection or those classifiers
+[01:33:41.840 --> 01:33:48.240] into either you can implement it directly inside of your inference engine vllmsg line and so forth
+[01:33:48.240 --> 01:33:55.220] the beauty of this approach is that it's real time and and the the alert that it would perhaps
+[01:33:55.220 --> 01:34:03.560] generate could ride along your future tool calls or your future policies so you can harden basically
+[01:34:03.560 --> 01:34:09.300] your policies or guardrails but just generating the computational anomalies that you observe within
+[01:34:09.300 --> 01:34:15.880] your inference engines and you'll perhaps you can integrate it with as a way of threat discovery
+[01:34:15.880 --> 01:34:23.480] in a sense so you can integrate with your lm cache so it reads the stored kb pages and find things
+[01:34:23.480 --> 01:34:29.440] that don't belong with the rest right so now i want to show you some numbers and just a very
+[01:34:29.440 --> 01:34:36.080] simple hello world use case if this is actually working and this is a valid approach and for that
+[01:34:36.080 --> 01:34:42.940] let me use video use case that has no text to filter at all a voice agent so here's a case
+[01:34:42.940 --> 01:34:49.640] study of a voice agent in this case it was a gemma for e4b our baseline was 72 ordinary clips and
+[01:34:49.640 --> 01:34:55.780] spoken four voices we're looking at 16 talking pages obviously this grand granularity could
+[01:34:55.780 --> 01:35:02.540] change but here we just use this shorter pages so we can have more data in the baseline and then
+[01:35:02.540 --> 01:35:09.420] on the test we have different voices and one clean voice and the other one has a hidden instruction
+[01:35:09.420 --> 01:35:16.400] within it and as you can as it's shown here not only you can detect in these cases just using
+[01:35:16.400 --> 01:35:23.920] simple anomaly detection but also you would know which part of um which page which part of your
+[01:35:26.260 --> 01:35:33.460] We even went further and we trained a model that uses the KB pages as features and we
+[01:35:33.460 --> 01:35:36.640] didn't be trying to explain it or tag it with things that are useful.
+[01:35:36.920 --> 01:35:41.400] In this case, although it wasn't even trained on audio, it was able to generate correct
+[01:35:41.400 --> 01:35:45.200] information about personal information, home address, location data, travel information,
+[01:35:45.420 --> 01:35:45.700] destination.
+[01:35:49.120 --> 01:35:51.140] So now back to text agents.
+[01:35:51.140 --> 01:35:58.560] in this case it was a coin 3 14 billion live and billable cash the one on the left shows you an
+[01:35:58.560 --> 01:36:03.760] idea for how attacks and normal traffic would typically separate from each other and then the
+[01:36:03.760 --> 01:36:10.780] one on the right which is perhaps more meaningful it was using the at bench and hugging face it has
+[01:36:10.780 --> 01:36:18.000] its own baseline of benign agent races and aids kind of agent failure from injected tools description
+[01:36:18.000 --> 01:36:25.020] to misinformation and so forth. We look at the top 10 alerts that anomalous detection would generate
+[01:36:25.020 --> 01:36:32.140] and about seven to eight times out of 10 of these alerts are actually anomalous, meaningful,
+[01:36:32.340 --> 01:36:38.320] and useful anomalous activities. We even went further and we looked at whether there's any
+[01:36:38.320 --> 01:36:47.700] kind of anomalous event that stands out more than the rest. To make things hard in production, first
+[01:36:48.000 --> 01:37:17.100] Models change. Fine-tunes and new releases, but also agents that each run on a different model, and routers that pick a specialist model per request. That means each model writes its pages its own coordinates, so either you learn every baseline, classifier, and explainer, which is computationally prohibitive, or you have to find a way to map them all into one shared representation space.
+[01:37:18.140 --> 01:37:22.260] Second, real-time means moving big objects.
+[01:37:22.400 --> 01:37:29.700] For example, a 1.256 token chunk of Qn3 14 billion is about 40 MB of KV.
+[01:37:31.000 --> 01:37:36.480] Compression and streaming like hash gen could help, but moving that for security analysis
+[01:37:36.480 --> 01:37:38.540] and acting in real-time is still slow.
+[01:37:38.800 --> 01:37:40.740] And that's what we saw at Inferencing AI.
+[01:37:41.040 --> 01:37:46.060] We are looking for teams building their own inference stacks who treat security as a foundational
+[01:37:46.060 --> 01:37:46.980] design decision.
+[01:37:48.000 --> 01:37:52.560] was helpful for you thank you so much for listening let me start with one number from last month

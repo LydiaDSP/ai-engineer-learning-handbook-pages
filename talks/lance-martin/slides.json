@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p06",
+    "title": "用于形式化证明的多 Agent 环境",
+    "time": "03:51:50",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=13910s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>多名 Agent 分别在隔离沙箱里工作，经网关访问共享的代码、数据库与监控。图中把协作所需的持久状态和每个 Agent 的运行环境分开。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 13910
+  },
+  {
+    "id": "frame-02",
+    "after": "p20",
+    "title": "Dreaming 连接前后两次会话",
+    "time": "04:01:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=14485s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>会话留下可搜索的原始转录与重点笔记；Dreaming 根据这些材料构建更易复用的表示，为下一次会话准备注入的上下文。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 14485
+  },
+  {
+    "id": "frame-03",
+    "after": "p23",
+    "title": "在游戏环境中纠正错误记忆",
+    "time": "04:02:45",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=14565s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>左右画面对比只有记忆与加入 Dreaming 的运行结果。这里是讲者用于检验能否越过一条误导性记忆的案例。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 14565
+  }
+]

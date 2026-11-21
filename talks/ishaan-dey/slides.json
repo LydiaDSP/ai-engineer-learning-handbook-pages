@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "研究、产品与真实使用互相反馈",
+    "time": "06:11:22",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=22282s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图示把模型研究、产品试验和内部使用接成循环，让真实问题能回到研发过程。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 22282
+  },
+  {
+    "id": "frame-02",
+    "after": "p07",
+    "title": "运行期间继续给 Agent 指令",
+    "time": "06:14:30",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=22470s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>演示展示用户在 Agent 已经开始工作时补充输入，缩短纠偏和验证的反馈环。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 22470
+  },
+  {
+    "id": "frame-03",
+    "after": "p09",
+    "title": "过去在设计工具里逐个搭界面",
+    "time": "06:15:45",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=22545s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>“Before” 展示的是手工画框架和界面的设计方式。Dey 用它对照自己现在让 Agent 大量生成视觉方案，再从中挑选方向的工作方式。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 22545
+  }
+]

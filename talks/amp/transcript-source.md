@@ -1,0 +1,111 @@
+# 把任务、交付和用户反馈放进同一条会话
+
+Quinn Slack
+
+中英整理稿
+
+中文和英文均为按演讲整理的编辑转述。带时间戳的英文机器转写原文可在下方来源说明打开。
+
+依据 11 月 12 日主直播整理。人员规模、部署节奏、客户沟通和组织安排均来自 Slack 的分享，反映 Amp 当时的做法。 页面同时提供中文导读、按时间定位的中英整理稿和参考练习。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 改变工作方式比批准试点更难 / Changing how a company works takes more than permission
+
+[07:55:39 至 07:56:38](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28539s)
+
+Quinn Slack 介绍 Amp 的来历。他想讲的是 Agent 给自己和公司工作方式带来的改变，尤其是团队一边服务现有用户、一边摸索新产品时碰到的约束。
+
+Quinn Slack introduces how Amp came to be. He wants to describe what agents changed about his work and his company's routines, including the constraints a team faces while serving existing customers and exploring a new product.
+
+[07:56:38 至 07:57:41](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28598s)
+
+2025 年初，他第一次让一个 Agent 执行小到改变背景色的任务。令他在意的是它能运行命令、观察结果、给自己下一步反馈。他和同事由此决定去试这种工作方式。
+
+In early 2025, he tried an agent on a tiny task such as changing a background color. What struck him was seeing it run commands, inspect the result and feed that observation into its next step. He and a colleague decided to pursue that way of working.
+
+[07:57:41 至 07:59:02](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28661s)
+
+当时 Sourcegraph 是一家做企业代码搜索的公司。Slack 虽然是 CEO，调整评审规则或改团队结构依旧很难，既有客户和运行习惯都有现实影响。他们先抽出一小队人做 Amp。
+
+Sourcegraph was then a company selling enterprise code search. Even as CEO, Slack found it difficult to change review rules or team structure while serving existing customers. They started by assembling a smaller team to build Amp.
+
+## 分拆带来的小团队约束 / Spinout constraints shaped the team
+
+[07:59:02 至 08:00:57](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28742s)
+
+他认为编程 Agent 的产品特点很容易被同行追上。把竞争优势写成三项功能，无法回答客户用了之后为什么还想继续用。团队因此需要更短的学习与回访周期。
+
+He argues that competitors can catch up with individual features of a coding agent. A list of three features does not explain why customers will keep using the product once they try it. The team therefore needs a short cycle for learning and following up.
+
+[08:00:57 至 08:02:53](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28857s)
+
+Amp 分拆过程中一度无法正常招聘和授予期权。他报告团队靠 21 人运转，已有成员不得不扩大责任范围，用 Agent 处理以前可能交给其他岗位的工作。
+
+During the Amp separation, the team could not hire normally or grant options for a time. He says it operated with 21 people, which required members to broaden their responsibilities and use agents on work previously routed to other functions.
+
+[08:02:53 至 08:03:53](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28973s)
+
+在他的描述中，任务、支持和沟通集中到 Amp 的 thread。发现问题的人能带着完整上下文开始修复，觉得自己处理不了时可以把同事拉进会话，少一次重新转述。
+
+In his account, tasks, support and communication are concentrated in Amp threads. The person seeing a problem can begin with the relevant context and bring a colleague directly into the thread when necessary.
+
+## 用小发布换来更早的生产证据 / Use small releases to get earlier production evidence
+
+[08:03:53 至 08:04:20](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29033s)
+
+Slack 介绍团队频繁向主分支推送的做法。他解释，较快的发布路径让团队可以把较大的改动拆成小片，先增加日志核对对系统的理解，再安排下一步。
+
+Slack describes the team's frequent pushes to its main branch. He argues that a fast release path lets engineers break larger changes into increments, first adding logs to verify their understanding before choosing the next step.
+
+[08:04:20 至 08:05:00](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29060s)
+
+一种后续改动是让新旧路径并行运行，观察它们为同一输入算出的结果是否一致。有了差异证据，负责人才知道可以切换，还是需要继续排查。
+
+One follow-up is to run old and new paths in parallel and observe whether they produce the same outputs on equivalent inputs. Evidence of agreement or divergence informs the choice to switch or investigate further.
+
+[08:05:00 至 08:05:56](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29100s)
+
+他还介绍用逐帧对比检查界面抖动，以及一次生成多个视觉方案来试。Agent 扩大了检查范围，人的工作就更集中在设定要看什么和筛选证据。
+
+He also describes frame-by-frame comparison for a UI jitter problem and generating several visual alternatives at once. The agent broadens what can be inspected while people still specify what matters and interpret the evidence.
+
+## 一次客诉可以修到下一位用户之前 / Follow the support issue through to other affected users
+
+[08:05:56 至 08:06:45](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29156s)
+
+Amp 处理反馈时，他描述的是一条连续过程。团队修复缺陷，联系最早反馈的人致谢和确认处理，在合适的情况下补发使用额度。
+
+He describes support as a continuous process. The team repairs a defect, contacts the original reporter to thank them and explain the result, and can issue credits where appropriate.
+
+[08:06:45 至 08:07:41](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29205s)
+
+日志能帮助团队找出遇到同一错误、却没有报告的用户，并在修复后主动联系他们。Slack 认为，这样做会让用户更愿意反馈。他说，如果每一步都要转给产品经理、负责该模块的团队或设计师，这个闭环很难跑顺。
+
+Logs help the team find users who saw the same error without reporting it and reach out after the fix. Slack argues that this encourages future feedback. He says the loop would be hard to run if each case had to pass through a product manager, the team that owns the bug, or designers.
+
+[08:07:41 至 08:08:42](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29261s)
+
+Slack 用语音听写向 Agent 交代任务，认为这能加快输入，并猜测它可能改变远程协作。接下来他展示接入会话的生产工具，并追问，当 Agent 直接使用这些能力时，团队还需要原来的整套软件产品吗？
+
+Slack dictates to the agent to get ideas across quickly and speculates that dictation could change how people work remotely. He then shows the tools connected to agent threads and asks when the team still needs the full software product if the agent can use the relevant capabilities directly.
+
+## 挑出真正需要的工具功能 / Build the part of the tool that fits the work
+
+[08:08:42 至 08:10:43](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29322s)
+
+Slack 用 CRM 举例。他只想覆盖少数真正用到的功能，再把省下的工作投入适配自己的工具链。这个范围比重新做出一个大而全的 CRM 小得多。
+
+Slack uses CRM as an example. He wants to cover the handful of features people use and spend the remaining effort fitting them into the team's own workflow. That is a smaller commitment than reproducing an entire broad CRM product.
+
+[08:10:43 至 08:11:48](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29443s)
+
+他举例说，一位原本做销售开发的同事做了银行转账收款流程，让支付额度超出信用卡场景的客户能完成付款。这个事例用来说明人能够在职责名片以外承担具体结果。
+
+He describes a colleague who previously worked in sales development building a bank-transfer payment workflow for customers whose payments exceeded ordinary card limits. The anecdote shows a person owning an outcome outside the conventional job title.
+
+[08:11:48 至 08:14:08](https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29508s)
+
+Slack 说，Amp 每周开一次会，其余时候鼓励成员主动发现要做的事。他把这种安排与成员的持股和责任联系起来，并在现场称公司已经盈利，年度经常性收入（ARR）超过 1 亿。
+
+Slack says Amp holds one meeting a week and encourages team members to find useful work for themselves the rest of the time. He links that arrangement to ownership and responsibility and reports that the company is profitable with more than 100 million in annual recurring revenue (ARR).

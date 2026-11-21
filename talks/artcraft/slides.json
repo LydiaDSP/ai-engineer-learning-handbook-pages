@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p07",
+    "title": "重开创作者可自行改造的软件空间",
+    "time": "01:29:44",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5384s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>ArtCraft 用这一页过渡到开放、易改的创作工具，回应订阅式、封闭式软件带来的使用限制。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 5384
+  },
+  {
+    "id": "frame-02",
+    "after": "p12",
+    "title": "Linux 使用者占比",
+    "time": "01:35:30",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5730s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者展示团队统计中的 Linux 使用者比例，用来说明原生、跨平台桌面方案服务了哪些用户。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 5730
+  },
+  {
+    "id": "frame-03",
+    "after": "p13",
+    "title": "为何选择 Rust 来写原生应用",
+    "time": "01:37:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5820s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>幻灯片列出原生性能、安装包、内存、安全、缺陷与冷启动等考虑；这是团队的技术取舍。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 5820
+  }
+]

@@ -1,0 +1,521 @@
+# Cline 怎样从评测失败中改进 Agent 运行框架？
+
+Ara Khan
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 13 场（03:59:46–04:26:16）的 82 段中英资料整理。英文沿用机器转写，中文保留缺漏、转写疑点和语意冲突标记。评测数字、实验时长和其他案例源自讲者报告。演讲后半部分关于模型进步和职业选择的内容属于讲者观点。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 演讲目标与职业背景 / Talk goals and career context
+
+[03:59:46.540—04:00:05.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14386s)
+
+大家好，我是 Ara，Cline 的创始工程师。今天聊聊能递归自我改进的编程 Agent。这个话题很有意思。大家都想弄明白 RSI 是什么、怎么实现、一路会经历什么，以及它对我们的职业有什么影响。
+
+Hey guys, this is ERA. I'm a founding engineer at Klein. talking about recursively self-approving coding agents. So this is a very interesting conversation in the sense that every Everyone wants to understand what RSI is, how we accomplish it, how we go through it, and how it affects our career.
+
+转写校注。The speaker identifies himself as Ara from Cline. The talk is about recursive self-improvement.
+
+[04:00:05.440—04:00:16.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14405s)
+
+我先说说这次谈话的三个目标。就三个简单的目标，帮你理解我们能从中得到什么，以及以后可能往哪儿走。
+
+So I'm going to start with giving you just three goals of this entire conversation, just three simple goals, and that would help you understand what we get out of it and what the future for this looks like.
+
+[04:00:16.260—04:00:26.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14416s)
+
+第一个是理解前沿实验室想做什么。没在这些实验室工作的人总在猜，嘿，OpenAI 在琢磨什么？DeepMind 会做出什么？
+
+So the goal number first is understanding the intent of the Frontier Labs. Everyone who's outside of the Frontier Labs is always trying to speculate like, hey, what is the topic in OpenAI? Or what is DeepMind going to come out with?
+
+[04:00:26.920—04:00:43.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14426s)
+
+或者，它们现在想造什么？未来会是什么样？谁已经攻克了 RSI？这能帮你大致勾勒出它们的路线图。第二个问题是，如果模型进步得这么快，你该怎么考虑未来几年的职业发展？
+
+Or what are they trying to make? and what's the future going to look like? Who has cracked the RSI? So this kind of helps you get a rough outline of what their roadmap looks like. And the second thing is that if the models are improving so fast, how do you think of your career over the next few years?
+
+[04:00:43.420—04:01:01.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14443s)
+
+这是我们很想弄明白的事。现在情况变化太快，脚下的地面都在变。以前有一段时间，你会在个人网站或 GitHub 上展示自己的业余项目。
+
+That is really what we want to understand. We want to understand, okay, things are changing so fast. The ground underneath us is shifting so quickly. Right now, there used to be a time demonstrate your side projects on your personal website on GitHub.
+
+[04:01:01.580—04:01:16.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14461s)
+
+现在你随便找个前沿编程模型，可能一次提示就能把这样的项目做出来。于是问题就来了，我们怎么拿出做过事的证据？怎么证明自己真懂？接下来几年又该怎样考虑自己的职业？
+
+And now it's just like you could literally one shot them using any frontier coding vision. And with that, it's like, it's like, oh, well, how do we demonstrate proof of work? How do we demonstrate, you know, that we know what we're doing and how do we think of our career for the next coming years? Right.
+
+[04:01:17.300—04:01:31.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14477s)
+
+我们生活在一个挺有意思的时代。第三个，也是这次最重要的目标，就是别沦为处在永久底层的人。我知道这听起来像个玩笑，但很多人真在想这种可能。
+
+So it's very interesting times that we're living in. And then the third and the most important goal of the conversation is escaping department underclass. Right. So I know this seems like a joke, but this really is a very valid possibility that people are contemplating.
+
+[04:01:31.740—04:01:43.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14491s)
+
+大家会想，如果我们想做的每件事，前沿模型都可能轻松完成，那还要我们做什么？软件会走向哪里？未来的技术会走向哪里？
+
+Everyone's like, oh, well, if everything that we want to be doing can potentially easily be done by a frontier model, what are we good for? And where does software go? Where is the future of technology going to go?
+
+[04:01:43.280—04:02:09.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14503s)
+
+事情变得这么快，我们该做什么？这里面我觉得有不少制造恐慌的话，但有些担忧也确实有道理。假如全世界的收入都流向少数做前沿 GPU 的硬件公司，以及少数做顶尖模型的 AI 公司，我们其余人靠什么发展，又该做些什么？
+
+And what are we going to do as things evolve so fast? So I think that there's a lot of fear-mongering, but also there's some very valid merits where people are concerned that if all the revenue of the planet is going to go to a few hardware companies that make front-tier GPUs and then a few AI companies that make the best models, how are the rest of us going to thrive and what are we going to do here?
+
+[04:02:10.160—04:02:36.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14530s)
+
+所以我会讲几个例子和想法，帮你重新考虑自己正在做的职业和生活选择，以及选了哪些问题来解决。你可以重新想一想，我们应该做什么，你自己有哪些经得起时间考验的事可以做。这对心理、财务以及其他方面都会有帮助。
+
+So I think I'll walk you through a few examples and a few ideas that will really help you reconsider the career choices and the life choices you're making and what are your problems you're picking up. And then that would help you realign what it is that we should be working on and what it is that you could work on that would stand the test of time and help you both not just on a psychological level but financial and other levels as well.
+
+## 从 Cline 实验引入递归自我改进 / Introducing recursive self-improvement through Cline
+
+[04:02:37.260—04:02:55.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14557s)
+
+先举个很具体的例子，是我自己做过的。几个月前，我做了 AI 编程 Agent 运行框架的递归改进。按我的说法，这是第一个公开展示如何自动提高评测成绩的例子。
+
+So to give a very precise example, let's start with something very precise that I had done. So a couple of months ago, I came up with recursive improvements on IA coding harness. So this was the first public example of an automatic eval improvement.
+
+[04:02:55.300—04:03:17.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14575s)
+
+我们以前用评测成绩衡量编程 Agent 的质量。以 Terminal-Bench 2.1 为例，Kimi K3 配上 Cline 通常会得 60% 到 70%。模型能力越强，Terminal-Bench 2.1 上的成绩通常也会更好。
+
+So to give you an example, we used to do this thing where we would measure the quality of a coding agent using evaluation scores. So on TerminalBandge 2.1, Kimi K3 with Klein would score usually 60-70%, and then depending on how good the model is, you get better scores on TerminalBandge 2.1.
+
+[04:03:17.140—04:03:33.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14597s)
+
+Kimi K3 推出时，我们注意到自己的分数是 77.5%。这已经是个好成绩，但我们还是想问，这真是它在这项基准上能拿到的最高分吗？模型发布论文声称它最高能拿多少分？
+
+So we noticed that when Kimi K3 came out, our score was 77.5%, which is a good score. But we were like, oh, is this truly the best score that this model can get on this benchmark? And also, like, what does the model release paper claim about what their best score is?
+
+[04:03:33.380—04:03:46.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14613s)
+
+那篇发布论文说，它可以得 85%，甚至更高。我们就想，原来我们没跑出这个水平。Cline 遇到模型发布时，经常会想办法提高分数，把模型的能力尽量发挥出来。
+
+So the model's release paper said that they could score up to 85% or even more. So we were just like, okay, okay. So we are not getting the sort of score. And often what we do with model releases in client is that we try to, like, optimize your score and try to get the best out of the model.
+
+[04:03:48.240—04:04:00.820](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14628s)
+
+所以我们开始用爬坡式迭代改进模型表现，发现里面有很多步骤，得仔细做，选对问题，用正确的办法处理。[转写有缺漏]
+
+So, when we started hill climbing on the model, we realized that there's a lot of steps that we do, it says that we do it gracefully, it says that we pursue the right kind of problems and do it the right way.
+
+[04:04:01.880—04:04:19.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14641s)
+
+我们就开始想，这里有这么多基础工作，怎么把它自动化？这里展示的是我们怎么做的。先把这个例子放在这里，后面我会回来详讲 Cline 运行框架的自动改进循环怎么运行。
+
+And we started thinking, okay, there's a lot of groundwork here, how do we automate it? And this is a demonstration of how we automated it. So I'll just leave that as a placeholder for now, and we'll get back to it later where we talk about in detail of like how does this automatic improvement loop of a client harness work.
+
+[04:04:19.480—04:04:29.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14659s)
+
+大体上，你有了一个能自己改进的编程 Agent 运行框架，让它在同一组问题上做得更好。先从基本概念讲起。什么是递归自我改进？
+
+So this basically means that like you have a coding agent harness that could just like basically improve itself and become better on the same set of problems. So let's start with the ground terms. What is recursive self-reformance?
+
+[04:04:29.860—04:04:44.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14669s)
+
+递归自我改进指的是，一个 AI 系统帮助造出一个能力更强的后继系统，后继系统再重复这个过程，直到达到通用人工智能。系统做出更好的改进，改进又造出更好的系统，最后到达所谓的奇点。
+
+Recruiting self-improvement is the idea that an AI system that helps build a more capable successor, which repeats the process until you hit artificial general intelligence. You have better systems, you have better improvements, you have a better system, and you have singularity.
+
+[04:04:44.980—04:04:57.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14684s)
+
+经典的例子就是自我改进的编程 Agent。意思很简单，这个编程 Agent 能改进自己。这听上去很像空想。好，看着是很酷。
+
+So a classic example is like a self-reformance coding agent. Self-reformance coding agent is just like a coding agent that can improve itself. So this is all like a pie-in-the-sky idea. It's like, yeah, sure, this looks cool.
+
+[04:04:58.720—04:05:15.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14698s)
+
+我们是怎么走到这一步的？如果你去看那份 2021 年的路线图 [机构名转写不清]，当时明确说过，目标是开发一个通用 AI 系统，可以通过对话和用户互动，创建、编辑和解释软件。
+
+How did we even get to here? So if you notice in Topics Roadmap in 2021, in 2021's roadmap, they very specifically said that they want to develop a general AI system that can interact conversationally with a user to create, edit, and explain software.
+
+[04:05:16.060—04:05:27.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14716s)
+
+它会展现出软件工程师同事具备的各种能力。写函数、找 bug、设计 API，讨论风格和最佳实践。我们没指望马上达到目标，但这是我们努力的方向。
+
+It would display all the capabilities of a software engineer colleague. It would write functions, it would identify bugs, it would design an API, discuss style, and best practices. So we don't expect to reach this goal right away, but it's in the direction which we're striving.
+
+[04:05:28.780—04:05:48.820](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14728s)
+
+有意思的是，这是五年多前说的。五年多前就有人预料到，有一天会有一个功能完备的通用助手，基本可以像同事一样工作。我们现在确实已经有这样的东西了。后来 2022 年，ChatGPT 发布了。我们都知道接下来发生了什么。那个时刻挺好玩，对我们来说，很多事第一次被点燃了。
+
+interesting how this was more than five years ago. More than five years ago, people had predicted that there is a day where you will have like a full-blown journal assistant that can basically act like a colleague, which we do have right now. Then in 2022, chat-zpd got released. We all know how that happened. It was a fun moment. It was like the first time things got sparked for us.
+
+[04:05:49.780—04:06:24.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14749s)
+
+到了 2023、2024 年，聊天模型第一次能调用函数。那时通常是简单的函数，比如查天气，或者用 Python 算点东西 [示例转写不清]。到 2024 年 Sonnet 3.5 发布，Agent 才能调用我们平时所说的真正的工具，比如读文件、改文件、搜网页、列目录，以及在文件系统里搜索并取回内容。
+
+Then in 2023, 2024, there was the first time chat models could call functions. These functions would be simple functions like hey what's the weather or you know what's the what's you know what's this competition or what are these competitions result in python um and then finally in 2024 when sonat 345 was released that was when the agents could like truly call like actual tools the way we call like think of tools so it's like reading a file editing a file you know reading searching something on web uh listing listing a folder searching and grabbing through you know a file system things
+
+[04:06:24.340—04:06:54.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14784s)
+
+就这类东西。2024 年我们还想到，如果聊天机器人能彼此说话会怎么样？那时候我们第一次有了多 Agent 对话。那时这些东西都很粗糙。像拿胶带把零件粘在一起，东拼西凑出各种类和类的继承层次。我们就这样用一种相当笨拙的方式试图让这些模型……
+
+like that. So and in 2024 we had the intuition that like chat box, what if chat box could actually talk to each other, you know, so then that was the first time when we had like, you know, multi-agen conversations. Now at the time these things were very janky, right? Like they were just like taped together in this like weird, weird, bizarre ways where you have just like these classes and these things and then like these hierarchies of classes and it was like it was all like kind of like a very janky attempt to like make us think that like these these models
+
+[04:06:54.620—04:07:18.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14814s)
+
+连成一条接一条传递回复的流程，彼此通信。但大部分运行方式都提前规定好了，远没有现在这么自由。我们那时已经开始有一点这样的想法，这就是 AutoGen 项目。直到 2025 年，我们才开始问，如果 Agent 继续变得更好、更快、更便宜，而且一直这么发展下去呢？再到 2026 年……
+
+could like have these pipeline of flows of responses that can all communicate with each other but a lot of it was like mostly deterministic and it was like you know it was not as free-flowing as it is right now so and you know we started getting the intuition so this was the autogen project but like in only in 2025 we we started getting the just like what if the agents just kept getting better and faster and cheaper like what if that just kept happening and then in 2026
+
+[04:07:19.820—04:07:31.600](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14839s)
+
+我们开始想，如果 Agent 能改进自己呢？这是整个过程的最后一步。举个例子，Agent 改进自己到底是什么意思？
+
+we had the intuition that like, what if the agent could improve itself, which is like the final, you know, the final part of the whole process. So let me give an example, like what does it mean for an agent to improve itself, right?
+
+## 从单轮问答到独立的工具任务评测 / From single-turn answers to independently graded tool tasks
+
+[04:07:31.720—04:07:49.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14851s)
+
+最早考虑怎么评估 Agent 的时候，我们想的通常只是单轮对话。就让 Agent 回答一个很简单的问题，比如，某种动物有几根脚趾？
+
+So like, it's like a lot of times when we think of like evaluating an agent, we initially used to think of evaluating an agent in the form of like, just a single turn conversation. So we would tell, we would tell like agents that like ask a simple question, like how many toes does a dash animal has?
+
+[04:07:49.940—04:07:59.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14869s)
+
+比方说，猫有几根脚趾？大模型会处理这道题，准备一个回答，我们再给它打分。比如猫可能有 10 根、18 根，或者别的数。
+
+Let's say, how many toes does a cat have? And then the alum would go through, and the alum would prepare a response, and then we would grade the response. So a cat has maybe 10 toes, 18 toes, whatever many.
+
+[04:07:59.340—04:08:10.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14879s)
+
+其实我也不知道猫有几根脚趾。总之，我们判的是它答对了还是答错了。但真正用 Agent 干活，你要做的事情可多了。
+
+I actually don't know how many toes a cat has. But anyway, yeah, so then we grade the response as a yes or no. But when you work with an agent, there's a ton of things that you're doing.
+
+[04:08:10.320—04:08:45.220](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14890s)
+
+举个例子。你跟 Agent 说，嘿，帮我配置一下这个 MCP。这就不是一句话能答完的简单问题了。它会上网查这是哪个 MCP、怎么配置，可能要编辑和下载一些文件，或许还要添加数据库、更新 MCP 工具，读写文件，运行一些 Bash 命令。所有这些做完，Agent 回一句“嘿，我搞定了”。然后你还得设计几项检查，看看它是不是真的完成了它说要做的事。
+
+So let me give an example. Let me give an example. So for example, you're going to ask an agent, like, hey, set up this MCP for me. So now it's not just like, it's not just like, you know, a trivial one shotable like thing, like it will like search online and go, what's the MCP? What is the config? So I'll like edit and download some soft files. Like maybe I need to add database update the MCP tool. Maybe I need to read and edit some files. Maybe I need to run some bash commands, right? So you do all of that. And then the agent responds like, hey, I did it. And then you create that with a bunch of tasks to gauge like, hey, did the agent actually accomplish the thing that it said it would do?
+
+[04:08:45.960—04:08:58.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14925s)
+
+第二部分更复杂，是真正尽可能全面地测试 Agent。为了做这件事，我们用的就是 Terminal-Bench。
+
+So to do that thing, the second part, which is like more intricate, where you're actually like truly, you know, testing agents like to their best extent. Like it's like, you know, we use the same call terminal bench.
+
+[04:08:59.040—04:09:17.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14939s)
+
+Terminal-Bench 是一个评估 Agent 在终端环境里表现的基准。我们在 Cline 用它很多。要了解编程 Agent 配上某个模型后，总体上能不能完成你想让它做的事，这是很好的办法之一。
+
+Terminal bench is a benchmark for, you know, agents in terminal environments. And that is something that we are we have a lot of experience with a client. And it's like one of the best ways to really gauge, is your coding agent accomplishing, in general, the tasks that you're doing that you want to be doing with HRD model.
+
+[04:09:17.160—04:09:39.960](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14957s)
+
+评测套件有几个不同的部分。理想情况下，每个任务都在单独的沙箱里运行，再由独立评分器检查各项结果，比如经过了多少交互轮次（原图指标为 n_turns）、用了多少 token、耗时多久、调用了多少次工具、运行轨迹是什么样的。
+
+So there's many different parts of evaluation suits. So ideally, you want that to run in individual sandboxes. Then you have independent graders that check everything, like how many channels it took, how many tokens it took, how much latency it took, how many tool calls did it make, what was the trajectory looking like.
+
+[04:09:39.960—04:09:55.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14979s)
+
+然后再给所有结果打分，检查它有没有钻奖励机制的空子，有没有靠作弊找出解法，有没有直接上网查答案，诸如此类。所以这些评测数据集，很多都包含一组要做的任务。
+
+and then grading all the results for things like, hey, did you not reward hack? Did you not cheat through the solution? Did you not just look up the solution online? Things like that. So basically, a lot of these data sets of evaluation problems have a set of tasks.
+
+[04:09:55.560—04:10:08.580](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14995s)
+
+Terminal-Bench 2.1 这里有 89 项任务。我们就启动 89 个容器，让它们都上线，在各自的沙箱里同时运行，每个都试着解一道题。
+
+So in case of Terminal Bench 2.1, they have 89 tasks. So what we do is we spin up 89 parallel containers where they all run online, and they run in parallel in their sandbox, and then they each try to solve a problem.
+
+[04:10:09.960—04:10:24.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15009s)
+
+它们并行工作，彼此独立，最后给我们一个分数。这个分数能反映模型表现好不好、有哪些失败。所以你运行评测，拿到成绩。
+
+in parallel and independent of each other, and then at the end we get a score. So our score could give us measures, like is the model performing well, and what kind of failures it has, right? So you run the evaluation, you get a score.
+
+## 从失败归因到改框架和重跑 / From failure diagnosis to harness changes and reruns
+
+[04:10:24.560—04:10:41.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15024s)
+
+你会拿到一个总分，也会看到一系列失败。失败可以有各种原因。比如读文件工具坏了。有时候推理太慢，Agent 还在做，也在一点点往前推进，但慢到最后真的没时间了。
+
+So you get an aggregate score, and the aggregate score could reveal a set of failures. Failures could be of any kind. Failures could be, hey, the refile tool is not working. Sometimes the inference is so slow that the agent's working, it's doing, it's making progress, It's so slow that it literally runs out of time.
+
+[04:10:42.040—04:10:53.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15042s)
+
+比如任务分了 45 分钟，不管到底给了多久，时间一用完它就停了。等你知道我们跑了什么、遇到了哪些失败，就把失败按类别分组。
+
+It runs out of 45 minutes or whatever. Many that were given for the task and just stopped working. So once you do that, once you understand, hey, this is what we ran, this is what the failures we got, we bucket the failures in different categories.
+
+[04:10:54.140—04:11:04.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15054s)
+
+比方说某类工具调用失败 10 次，推理有问题 20 次，或者还有别的原因。失败分好类之后，我们就试着改进运行框架。
+
+So like 10 failures of this kind of tool called 20 failures of say infants not working or something else. And then once we bucket the failures into different categories, we try to make an improvement to the harness.
+
+[04:11:04.820—04:11:36.600](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15064s)
+
+万一是框架本身出了什么问题，可以改掉呢？然后就不断重复。这种迭代要花些时间，逐步提高分数有很多基础工作。我们过去往往要做很久，不过也因此学会了怎么改善模型表现。公开评测上做迭代，有一种办法。我们开始想，能不能……
+
+Because what if there's something wrong with the harness that we could change improve, right? And on and on and on. You do this iteratively, it takes a while. It's just like, you know, hill climbing is like a very groundworky kind of process. And, you know, usually, usually we, we took, we used to take a lot of time trying to do this, but it was a great way for us to like learn how to improve models. So one way to hill climb on public evals is that like, and, you know, we could have a thing where, you know, we started doing this thing where we could
+
+[04:11:36.600—04:12:03.520](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15096s)
+
+找个能长时间运行的 Agent，让它跑一阵，自动提高模型得分？我们就这么做了。我们让 GPT-5.6 带头，做主 Agent，再让 Kimi K3 跑评测。GPT-5.6 就会说，先跑这些评测，拿到分数，看看哪里失败、为什么失败。我来改 Cline 的运行框架，然后再跑……
+
+just like what if we could have like a long running agent that runs for a while and automatically improves the model score and that's what we did so we ran gpd 5.6 so that led the work and that was like the main agent and then uh kimmy k3 was just running eval so what it was doing is that like gpd 5.6 was like hey run these evals get these scores let me look at the failures let me look at where it went wrong and then i'll make changes to client's harness and then i'll run
+
+[04:12:03.520—04:12:23.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15123s)
+
+这些评测，继续试。你也能看出来，这个过程很容易跑偏。光跑一次评测可能就要一小时，随后还得读反馈，判断自己有没有正确解读反馈，能不能做出合理的修改。这些改动应该是真改进，不能只是钻评分的空子。做完之后，再跑一遍评测。
+
+these evals again and then I'll keep trying. So again you can see how like very quickly this can like go off the rails because this is supposed to be like the running an evaluation itself takes like an hour then you have to read the feedback then you have to like see if you're properly interpreting the feedback to make reasonable changes to the harness that are like not reward hacking they're just like actual genuine improvements and then run the eval again.
+
+[04:12:24.080—04:12:56.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15144s)
+
+我们把它跑了 17 个小时。这 17 小时里，确实有逐步改进。很有意思，我们是用一份很详细的提示词做到的。我们原来的基准分数按 04:04:21 原图是 69/89（77.5%）。我们发现了循环检测的问题，就是框架围着一道题一直打转。也发现有些后台进程会跑得太久，还有文件索引等问题。我刚才说……
+
+So we ran that for 17 hours and when we ran that for 17 hours there was like a legitimate hell climbing and what we found that was very interesting this happened with a very detailed prompt that accomplished this is that like we had baseline scores 207 percent and then you know we we found issues like loop detection loop detection is when a harness just runs in circles around the problem right uh we found like background process grinding where background processes would run too long uh we found some file index issues and other things as well i mean when
+
+转写校注。The baseline on the slide at 04:04:21 is 69/89 (77.5%). The “207 percent” in the machine transcript is an apparent recognition error.
+
+[04:12:56.060—04:13:27.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15176s)
+
+[转写有缺漏] 实际用的是 GPT-5.6 Sol。它发现了这些问题，还把它们分了类。然后它就说，我把运行框架里的这些地方改一下，再跑一遍评测怎么样？它就这样迭代，完全自主地进行爬坡式改进，我没有干预。按我后来回来看时的说法，那是 13 小时后，框架已经在很多方面有所改善。这意味着什么？就是运行中获得的经验，已经能拿来改进运行框架了。
+
+SAV, what I've actually made is GPT-5.6 Sol, right? So that found those issues, that found and bucketed those issues. It's like, hey, how about I make those changes in the harness and I run the Eval again? And iteratively built the hill climbing process completely autonomously on its own without my interference. And 13 hours later, when I come back to it, it has improved the harnesses performance in so many ways. So see what does that mean? What does that mean? It just basically means that like we are at a point where the experience could make the harness better that
+
+## 内外两层循环与更广的技术案例 / Two feedback loops and examples across the stack
+
+[04:13:27.060—04:13:58.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15207s)
+
+这里有两层学习循环。一层是框架做了一个动作，和环境互动，弄清楚刚才做对了还是做错了，并得到一些奖励信号。另一层是有一个元 Agent 观察主要框架，找出该改的地方，把改动加进去，再提升框架。我个人觉得实时做这个难得多。因为一旦实时调整，就容易把注意力过多放在解决某几道题上，或者只针对一件具体的事。
+
+like there's like a two-level learning loop where the harness does some action interacts with the environment understands whether or not it did the right thing or the wrong thing and gets some reward and and like almost and then has there's like a meta agent that's observing the main harness and finding the changes to it and just like incorporating those changes and improving now Now, I think in my personal opinion, it's much harder to do in real time because if you do it in real time, you over-index on solving certain problems or you're just like too curtailed to a specific thing.
+
+[04:13:58.440—04:14:15.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15238s)
+
+不过我确实认为，放到更广的范围、让它处理更多不同问题时，这种做法是能用的。你得能说明为什么这些改动适用面够宽，让你在这里做的改进也能用到更广的问题上。
+
+But I do think that this is something that works on a broader scale of working on a wider range of problems. And you want to be able to justify the changes you're making on a broader applicability so that the changes you make here will apply to a broader range of problems as well.
+
+[04:14:17.040—04:14:28.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15257s)
+
+那这意味着什么？我到底想说什么？现在的模型已经这么强，如果它们可以改进运行框架，也能改进许多别的东西。那还可以改进什么？
+
+So what does that mean? What am I trying to get at here? The point I'm trying to get at is that the models are so good right now that if they can improve the harness, they can improve a lot of other things. So then what else can they improve?
+
+[04:14:28.760—04:14:48.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15268s)
+
+这是 OpenAI 发的一则帖子。帖子说，GPT-5.6 Sol 自主重写并优化了自己在生产中用的计算内核。这些改进让线上推理服务成本降低了 20%，token 生成效率提高了 15%。
+
+So this is a post primarily from OpenAI where GPT-5.6 SOL autonomously rewrote and optimized its own production kernels. And those production kernel improvements removed the entry and serving costs by 20%. It also had 15% higher token generation efficiency.
+
+[04:14:48.800—04:15:07.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15288s)
+
+这完全是 5.6 Sol 对自己做的。这意味着推理会便宜很多。对 OpenAI 这样的公司，如果一个前沿模型的线上服务成本降了 20%，价格层面可能就是数十亿美元的改善。
+
+And this was completely done by 5.6 SOL on itself. So what that means is that inference is becoming much cheaper. And that means that if for a company like OpenAI, if you're having 20% lower serving cost for a frontier model, that could be billions of dollars of improvement in price.
+
+[04:15:07.680—04:15:30.220](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15307s)
+
+你的模型也能试这个。还有一件有意思的事，有人举办计算内核编程比赛，比如有家公司 [公司名转写不清] 就在办。你会看到，拿到第一的人特意说，我从来没手写过 GPU 算子，都是大模型和 Agent 驱动完成的。
+
+And you could do that as well for your own models. Another interesting thing is that when people have kernel writing competitions, so Core Auto is a company which has kernel writing competitions. and you'll notice that they mentioned that the person who won the kernel writing competition, they exclusively said that I've never handwritten a GP operator, it's all ALM and agent driven.
+
+[04:15:30.760—04:15:47.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15330s)
+
+所以你可以留意，现在顶尖的推理优化、计算内核改进，按我这里的看法，已经完全可以交给一群 Agent，或者直接让 Agent 想办法把内核代码改好，跑出更快、更便宜的推理。
+
+So notice that how the best inference improvements, kernel improvements are at this point completely exclusively done by a swarm of agents or generally just agents doing some magic to magically improve the kernel code and have faster inference, cheaper inference.
+
+[04:15:48.740—04:16:18.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15348s)
+
+对。所以能改进的范围远超运行框架，几乎是整套技术栈。从评测到运行框架，到训练数据、后训练、与现实环境互动，再到推理，整条流程都在里面。从给机器通电开始，到发出一个请求，进入模型，模型做推理，生成回复，最后回到你手里。
+
+Yeah. So basically, like the improvement surface that you think of is not just like the harness improvement. It's literally the whole surface stack, right? So the whole stack from like evaluation to harness improvements to training data to post training to world interaction to inference, like literally the entire part of the pipeline, like all the way from like electricity going through your machine to like making an error request, going through the model, models doing inference, making a response and getting back to you.
+
+[04:16:18.840—04:16:36.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15378s)
+
+这条流程的每个环节都能优化。整个 RSI 循环分成几个部分。比如预训练，Nemotron 有用 AI 筛选整理预训练数据的例子，做得很好。后训练也有例子，比如 Constitutional AI，也就是宪法式 AI。
+
+Every single part of the pipeline, we can optimize it. So the whole RSI loop has a couple of different parts. So it's pre-training, Nematron examples of AI curated pre-training data. That was good. There's post-training examples, which are where there's constitutional AI.
+
+## 把人工纠正和硬件测试变成反馈 / Using human corrections and hardware tests as feedback
+
+[04:16:37.280—04:16:56.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15397s)
+
+这属于后训练改进。推理，我刚才举了 GPT-5.6 的例子。生成评测，我也举了我们的例子，讲怎么在自己的评测上改进。总的来说，你可以留意每一次模型试图做什么，却做不到、没能完成的时候。
+
+Examples of post-training improvements. Then inference, I gave you the example of GPT-5.6. and eval generation, I give you our own example of how we improve ourselves on our own evals. In general, what you wanna think of is that like, any time a model is trying to do something and it's like not able to do it or not able to accomplish it.
+
+[04:16:56.680—04:17:09.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15416s)
+
+比如你正在跟模型长谈，问了它一件你觉得很明显的事。也可能并不明显，是件有难度的事，但你还是觉得，模型应该有可能做出来。
+
+So for example, like imagine you're having a long conversation where you ask the model something obvious. So like it's like, or something that you think is not necessarily obvious, but it's like, it's hard, but you would assume that a model could potentially do it.
+
+[04:17:09.960—04:17:26.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15429s)
+
+举个例子，假设你想在数据库里做个改动，填好那一列，再在数据库前面加个缓存。[转写有缺漏] 模型把这些事都做了，可不知道为什么，放在数据库前面的那层缓存没配对。
+
+So to give an example, let's say you wanna make, to a database and then fill that column, right? And then put a cache in front of it. So what happens is that it does the whole thing, but for some reason the way it pushes the cache in front of the whole database, like it kind of doesn't do it right.
+
+[04:17:26.240—04:17:35.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15446s)
+
+这时你说，不对，缓存要这么设，TTL 要设成这个值。你给了它一个纠正信号，问题大致也就解决了，然后你继续忙自己的事。
+
+So at that point you were like, oh no, set this cache differently, set this as the TTL, and then you give like a correction signal, and then that kind of like fixes your problem and you kind of go about your day.
+
+[04:17:36.100—04:17:47.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15456s)
+
+我想用另一种方式看这件事。每一次人对数字世界里的结果做纠正，都暴露出还有一小块能力差距要补。
+
+But the way I want to think of it is that I want to think of like every single time, like a human correction to the digital landscape. is a part of a delta that needs to be covered.
+
+[04:17:48.380—04:18:05.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15468s)
+
+换句话说，每次你都在找到模型能力的边界，看它在推理上能走多远 [转写有缺漏]，能多大程度解决你的问题。我们要找出差距，再把这个边界一点点往前推。
+
+And what that means is that every single time you're finding the edge of model capabilities of how far it can push for infants, how much it can push for this, how much it can push for solving your problems, you want to find the delta and we want to push that frontier a little bit further, a little bit further.
+
+[04:18:05.600—04:18:21.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15485s)
+
+这就是后训练在做的事。我们给编程 Agent 或其他类型的系统找一些有意思、难度高、跨度长的问题，再让模型在这类问题上逐步爬坡。
+
+And that's what post training does, right? So post training is in that post training. We find these really interesting and really hard long horizon problems for coding agents or for other kinds of problems, and then just slowly hill climb the models on those kind of problems.
+
+[04:18:21.540—04:18:52.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15501s)
+
+只要有一个可以验证的循环，就能做优化。软件之外也可以，现实世界本身也能有可验证的循环。我举个很好笑、还有点怪的例子。你看到这个机器人正在打字，它打出来的内容很有意思。
+
+So anything that has a verifiable loop can be optimized. But this is not just limited to software. Literally, the physical world itself could have a verifiable loop. So to give an example, let me give you a very funny, kind of bizarre example where you look at this and you look at this robot and it's typing something and it's really interesting what the robot is typing.
+
+[04:19:00.900—04:19:17.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15540s)
+
+你看，这个机器人自己在打字，说想怎么解决机器人技术的问题。想象一下，如果机器人自己能理解这些答案的结果，并不断改进，那就基本上是一个人工超级智能机器人了。
+
+So notice how the robot is itself typing how it wants to solve robotics. And imagine if the robot itself could interpret the results of the answers and just keep improving. Then that means that this is basically an ASI robot.
+
+[04:19:17.700—04:19:36.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15557s)
+
+我还能从自己的生活里举个例子。我有一块能看东西的硬件，有扬声器，里面也有麦克风。我想把它接到我的机器上，这是我给女朋友准备的礼物。
+
+Another example that I could give you from my personal life is that I have this chip that has the ability to see and has a speaker and has a microphone inside of it. So I was trying to set up this with my machine, and it was a gift that I had for my girlfriend.
+
+[04:19:36.880—04:20:11.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15576s)
+
+我觉得有意思的是，我给它做设置时，发现它很慢，响应慢，延迟也高。它自己里面有一个 Agent。我就把它连到电脑，让编程 Agent 在这块硬件上运行，给它自动做测试。电脑会跟硬件通信，给它布置些测试，比如做这个、做那个，或者问，你现在看见什么？然后电脑就可以观察……
+
+And what I find very interesting about this is I was trying to set it up. It's very slow. It was slow to respond. It had higher latency. It had an agent in and of itself. right? So what I did was I connected the chip to my computer and I let coding agents run on this hardware and basically run on this hardware automatically magically make tests to it. So like my computer would talk to my hardware, give it some tests, like, hey, do this, do that. And just like, what do you see right now? So then it would notice the
+
+[04:20:11.240—04:20:46.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15611s)
+
+从请求到推理响应的端到端延迟，看看硬件回得有多快。我发现它能把不同情况拆开来看，找出哪些场景延迟更高、响应更慢，或者算法本身有问题 [转写有缺漏]。接着，我可以搭一个递归循环，让它自动改固件、工具调用、推理模型和语音转文字模型。我给编程 Agent 提供了 OpenRouter 的密钥，让它做这些改进。
+
+end-to-end latency of like the inference response of like how fast my hardware is responding. And then what I found is that like it was able to do the breakdown of like every single case and scenario where there was like higher latency, slower response, or just the algorithm wasn't I could then set up a recursive loop where both the firmware could be updated, the tool calls, the inference model used, the speech-retext model used, all of those could be improved automatically with an open router key, which I'd given to a coding agent,
+
+[04:20:46.140—04:21:18.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15646s)
+
+然后用硬件自行跑了一晚上实验，我这块小小的漂亮硬件就被深入优化了一遍。所以硬件也能成为 RSI 循环的一部分。接下来的问题是，怎么把这些循环连起来？你可以有更便宜的推理、更多做实验的预算、更好的数据和模型。这算不算奇点？这个问题已经可以问了。我觉得循环的几个环节已经在运转 [转写有缺漏]。我们真的已经非常接近……
+
+and then overnight with self-running experiments with the hardware, this tiny little piece of beautiful hardware that I have was deeply optimized. So this also, even hardware, could be a part of the RSI loop. you connect these loops right that's the next question like you could have cheaper inference you could have like more experiments budget you have like you know better data and better models so is this single rarity it's a very close question to ask and i think that the part of the parts of the loop are already weird right like we we are really we really are very close to
+
+## 讲者对工程师选题与职业的建议 / The speaker’s advice on research and careers
+
+[04:21:18.020—04:21:32.580](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15678s)
+
+RSI 循环的部分环节。那我们该怎么办？这对自己的职业和生活意味着什么？接下来是我给正在观看演讲的各位的一点建议。
+
+parts of the rsi loop right and what do we do like what do we do about this and it's like how do we think of that in terms of like our career and how do you think of that in terms of you know our lives So here's my advice to everyone who is watching this.
+
+[04:21:32.760—04:21:44.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15692s)
+
+拜托拜托，尽量离 RSI 循环更近一点。现在大家都在做各种软件，比如给建筑行业做 Agent，给这个行业做 Agent，给那个行业也做 Agent。
+
+Like, please, please, please, please move closer to the RSI group, right? So it's like right now, like people are working on all these like different kinds of software, which is like, you know, agents for, you know, construction agents for this agents for that.
+
+[04:21:44.860—04:22:00.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15704s)
+
+照我的看法，这样很容易只见树木，不见森林。你手头有这样一种很有意思、几乎像神一样的技术，可以改变人类的进程。
+
+And it's like, I think that you're, you know, well, the way I see those things is that like, I think of those as like, you're missing the forest for the, for the trees. You really are. And it's like you have this like very interesting godlike technology that can change the course of humanity.
+
+[04:22:00.660—04:22:12.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15720s)
+
+可我们还没有足够的野心去解决最值得做的问题。真的没有。还有一点，我觉得问题也不只出在野心上，还出在我们选了哪些事做。
+
+And then we're not ambitious enough to pursue the best problems. We really are not. And we're just like I think that it's not just like the problem isn't just that we're not ambitious. And we're also like what we're pursuing.
+
+[04:22:13.260—04:22:35.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15733s)
+
+很多事情只差一次模型发布，就可能完全被抹掉。而且，做起来也未必那么动脑。因为我们基本上就是整天坐着说，嘿，Claude，替我做这个，嘿，Claude，替我做那个。我不知道这算不算最能锻炼思考的工作，也不知道这样用一个人的时间，是不是经过了认真考虑。
+
+A lot of those things are just like one model release away from like being completely like wiped out. right so like it's also like it's also like it may not be that intellectually simulating because like all you're essentially all we're essentially doing is like sitting all day it's like hey cloud do this for me a cloud do this for me and i don't know if that's like i don't know if that's like the most intellectually simulating or like uh or like um thoughtful use of a person's time like
+
+[04:22:35.640—04:22:59.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15755s)
+
+也许我们应该解决更难、更靠近前沿的问题。我觉得能做到哪里，要看我们的目标有多大。与其老做这些小事，我建议大家去做自己真心相信的事。这当然不用我说，我也只是网上的一个人，但你可以去做那些让自己离 RSI 循环更近的事。比如端到端……
+
+maybe maybe you know we're supposed to be solving harder and more uh more frontier problems and i think that like it's like the ceiling is like our ambition so instead of like working on these tiny things my suggestion to people is to like you know do things that of course like goes without saying but you should do things you believe in and you know i'm just a guy on the internet but do things to help you move closer to the rsi loop right so like anything that's just like the end
+
+[04:22:59.740—04:23:32.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15779s)
+
+流程中，模型现在做不好的部分。可以是推理，可以是后训练，也可以是实实在在的物理交互。任何类型的端到端流程都可以，也可能是硬件、网络，或者把社区建立起来。作为工程师，你可以做那些让自己更直接受益于模型改进的事情。
+
+to end pipeline of like hey this is where like the models are lacking like it's like whether that's inference whether that's post training whether there's literally like physical interaction whether that could be sending end-to-end pipelines of truly any kind, whether that's hardware problems, whether that's networking problems, whether that's building a sense of community, things that just help you as an engineer get closer to the benefits of the improvements in the model.
+
+[04:23:33.160—04:23:47.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15813s)
+
+这里有一页挺有意思的幻灯片 [演讲者与题目转写不清]。它让你设想，假如你所处的领域只剩一到五年，留给你作出贡献，你会怎么办？[领域转写不清]
+
+So this is a very interesting slide from Satya Identity topic. So they mentioned that like you want to have like this. You're in this space where it's like, you know, you only you only have like one to five years left to contribute to luxury.
+
+[04:23:47.840—04:24:02.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15827s)
+
+你会怎么做？他们给了很好的建议，优先选择有野心、目标明确、推进快的合作。总体上，你给自己划的时间尺度，也就是每件事的时间线，都该尽量压缩。
+
+Well, what do you do? Right. So it's like they gave great suggestions where like prefer ambitious, targeted and fast collaborations. Right. And, you know, in general, like the timescale, like all the timelines that you give to yourself, like they should be just completely squeezed out.
+
+[04:24:02.100—04:24:15.480](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15842s)
+
+压得很紧。[转写有缺漏] 很多时候，你还得想明白，如果手头的问题太有野心，会不会干脆等下一个前沿模型出来更合适？
+
+You're completely screwed up. Because it's like a lot of times, and you also have to think through that, like, if the problem that you're working on is too ambitious, like, it's like, is it probably better to wait for just, like, the next frontier model to come out or not?
+
+[04:24:15.640—04:24:27.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15855s)
+
+这也是你要权衡的事。理想情况下，你要做能从规模扩大中受益的问题。同时还要考虑这个项目是不是只靠把规模做大就能解决。[转写与后文语意不一致]
+
+Like, that's something you also have to wait through, right? And you ideally want to work on problems that benefit from scale. and you also at the same time want to work projects that can be solved by sale alone.
+
+[04:24:27.900—04:24:44.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15867s)
+
+因为如果你在解决一个问题，结果下一次模型发布直接把问题解决了，那可能就不太值得做。所以你得想深一点，什么样的事业会从其他改进中得到很多好处，同时又不会直接被这些改进消掉？
+
+Because then, you know, it's like if you're working on a problem and then the next model release comes out and solves the problem. So that's probably not a good thing to do. So you have to think philosophically of what is the endeavor that benefits greatly from other improvements, but isn't also completely wiped out from it.
+
+[04:24:44.720—04:25:20.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15884s)
+
+如果这件事本身还能成为改进流程的一部分，就更好了。你会看到不少公司为做数据管道融资，里面有很多钱。也有不少公司在做实体硬件之类的东西。如果你是一位在看这段视频的软件工程师，而且你觉得，你的判断力和能力其实没能在日常工作里发挥出来，本来明明能作出贡献，但 Claude 在你日常遇到的这些问题上，总能一次……
+
+And then ideally, if the endeavor could also be a part of the improvement pipeline, be amazing so you see a lot of companies raising on say um making data pipelines and there's a lot of money there there's a lot of companies working on physical hardware and stuff so i think if you're a software engineer watching these it's like i think that if you're if you feel like you're like here the delta of your intellect and ability in your day-to-day it's like not contributing as in like you have the intellect you can make a difference but like if cloud is just like one
+
+[04:25:20.140—04:25:48.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15920s)
+
+就做完，自己快成了替它传话的人，那就该认真想想了。先退一步，问问自己，哪些问题我真的能作出贡献，又能经得起时间考验？我觉得现在花点时间反思，重新找准方向，从长远看会带来很有意思的结果。好，非常感谢，感谢各位给我时间。如果你在看……
+
+shotting all those problems like in your day-to-day and you're just like kind of like becoming a meat proxy we should work the thing through take a step back and think through it's like okay where are the problems where where you're actually truly uh contributing and that they will stand the test of time and then those that kind of reflection and realignment right now would i think like have like very interesting consequences for you um in the long term um so yeah so thank you so much you know thank you so much for your time like i think that i think that if you're watching this
+
+[04:25:50.140—04:26:08.120](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15950s)
+
+这场演讲，那你一定也在思考人类历史上最有意思的进步之一。这里面有很多哲学层面的争论。有人可能会说，我对时间线的估计错了，可能太悲观了，也可能太乐观了。
+
+that you're definitely contemplating one of the most interesting improvements in the course of humanity. And there's many philosophical arguments here. Some people might say, hey, I think maybe I'm off on the timelines or maybe I'm just being too pessimistic or maybe I'm being too optimistic.
+
+[04:26:08.440—04:26:16.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15968s)
+
+我很想听听各种看法。这是我的二维码，欢迎扫一下，告诉我你们怎么想。非常感谢各位把时间给我。
+
+But I would love to hear all those thoughts. So this is my QR code. Please feel free to scan it and let me know all your thoughts. Thank you so much. Very kind of you to give me your time.

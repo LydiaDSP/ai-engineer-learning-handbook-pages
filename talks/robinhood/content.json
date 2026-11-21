@@ -1,0 +1,137 @@
+[
+  {
+    "id": "p01",
+    "start": 0.0,
+    "time": "00:00:00 至 00:03:30",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=0s",
+    "zh": "一条数据管道 PR 通过测试和 lint，CI 仍无法回答生产里的每个问题。某个下游作业可能没登记，或者处理时间可能让数据触发新鲜度告警。Agent 产出 PR 速度增加后，懂管道边界的维护者就成了排队点。",
+    "en": "A data pipeline change can pass tests and lint and still break production consumers or miss a freshness target. As agents generate pull requests faster, the few maintainers with enough context to assess those risks become the scarce resource.",
+    "end": "00:03:30"
+  },
+  {
+    "id": "p02",
+    "start": 210.0,
+    "time": "00:03:30 至 00:06:00",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=210s",
+    "zh": "Robinhood 把审查任务分在三层。脚本核验权威记录中的事实，Agent 结合代码判断登记之外的风险，人类负责需要权限或更完整上下文的决定。每一层先写清自己能看到哪些信息。演讲使用一条示例 PR，摄取管道要把上游的一个新增列同步进数据湖，同时修改湖表中另一条已有列的类型。",
+    "en": "Robinhood gives three layers distinct jobs. Scripts check authoritative records, the agent reasons about risks outside the registered picture, and people decide cases requiring authority or fuller context. Each layer has a defined field of view. The example PR brings a new upstream column into the lake and changes the type of a different, existing lake-table column.",
+    "end": "00:06:00"
+  },
+  {
+    "id": "p03",
+    "start": 360.0,
+    "time": "00:06:00 至 00:06:47",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=360s",
+    "zh": "数据湖表里已有的一列从 integer 扩宽为 bigint，以容纳更大的值。已登记的血缘能显示一部分消费者，仍要确认有没有其他作业读取这一列，再把值写进别处。",
+    "en": "An existing column in the lake table widens from integer to bigint to hold larger values. Registered lineage shows some consumers. The question is whether other jobs read that column and write the values elsewhere.",
+    "end": "00:06:47"
+  },
+  {
+    "id": "p04",
+    "start": 407.0,
+    "time": "00:06:47 至 00:08:04",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=407s",
+    "zh": "脚本把 schema 和键与注册表核对。此例检查的是新增列是否确实存在于上游，并与登记一致。目录检查另行核实湖表的所有者和个人信息标签。任一强制检查失败都会阻止合并。",
+    "en": "Scripts compare the schema and keys with the registry. In this case, the contract check verifies that the new column exists upstream as registered. The catalog check verifies the lake table’s owner and personal-information labels. Either failed requirement blocks merging.",
+    "end": "00:08:04"
+  },
+  {
+    "id": "p05",
+    "start": 484.0,
+    "time": "00:08:04 至 00:10:22",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=484s",
+    "zh": "另外两项检查关注已登记的下游和运行表现。团队用模拟数据在接近实际规模的环境里测试管道，并检查任务是否还能满足新鲜度目标。跑通这一层，只能说明注册范围内的风险有证据。",
+    "en": "Two further checks address registered consumers and runtime performance. Mock data at production-like scale helps test the pipeline against its freshness target. The results establish what was checked within the registered picture.",
+    "end": "00:10:22"
+  },
+  {
+    "id": "p06",
+    "start": 622.0,
+    "time": "00:10:22 至 00:12:03",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=622s",
+    "zh": "Agent 拿到 diff、PR 作者的说明和仓库搜索工具。它可以查字段的使用和作业定义，无法直接查询真实目录、血缘系统或生产运行状态。因此它的报告要附上下文与检索范围。",
+    "en": "The agent receives the diff, the author's description, and repository tools. It can search definitions and uses but cannot query live lineage or production state. Its report has to carry the context and the scope of that search.",
+    "end": "00:12:03"
+  },
+  {
+    "id": "p07",
+    "start": 723.0,
+    "time": "00:12:03 至 00:14:05",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=723s",
+    "zh": "这次搜索发现有一个没登记的作业读取这一列，后来把值写入仍是 integer 的目标列。小数据不会马上出错，大值才可能在目标处失败。Agent 把沿途的代码证据列出来并升级给人。",
+    "en": "Repository search finds an unregistered consumer writing into a destination that still uses integer. Small values can keep working, and a large value can fail later. The agent exposes the path and escalates the change.",
+    "end": "00:14:05"
+  },
+  {
+    "id": "p08",
+    "start": 845.0,
+    "time": "00:14:05 至 00:15:01",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=845s",
+    "zh": "临时查询和外部仪表盘可能完全不在仓库里。没有找到读者时，Agent 只能说在已搜索的位置没找到。把它写成所有下游都安全，会让人高估代码检索的覆盖。",
+    "en": "Ad hoc queries and external dashboards may sit outside the repository. A finding should say where the search found no readers. It cannot establish comprehensive downstream safety.",
+    "end": "00:15:01"
+  },
+  {
+    "id": "p09",
+    "start": 901.0,
+    "time": "00:15:01 至 00:16:04",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=901s",
+    "zh": "只有脚本检查通过，再得到 Agent 或人的审批，改动才能往前走。需要升级时，团队附上可追查的链条与理由，减少人从头重查的负担。",
+    "en": "A merge needs passing deterministic checks and an approving review from the agent or a person. An escalation carries its reasoning and evidence chain so the human need not reconstruct the investigation.",
+    "end": "00:16:04"
+  },
+  {
+    "id": "p10",
+    "start": 964.0,
+    "time": "00:16:04 至 00:16:47",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=964s",
+    "zh": "人工确认那个消费者仍在真正运行。处理方案改变合并顺序，先把目标表的字段扩宽，再允许源表变更。这样可以完成原任务，又不留下已查到的隐患。",
+    "en": "A reviewer verifies that the consumer is active in production. The fix is sequencing: widen the destination first, then merge the originating change.",
+    "end": "00:16:47"
+  },
+  {
+    "id": "p11",
+    "start": 1007.0,
+    "time": "00:16:47 至 00:18:04",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1007s",
+    "zh": "敏感数据权限、可能改变数据含义的迁移，以及证据不足的情况走人工。风险大小和谁有权决定是两件事，模型不能用自己的置信度替代权限。",
+    "en": "Sensitive-data grants, changes in data semantics, and insufficiently evidenced cases go to a person. The perceived degree of risk and the authority to make the call are separate.",
+    "end": "00:18:04"
+  },
+  {
+    "id": "p12",
+    "start": 1084.0,
+    "time": "00:18:04 至 00:20:14",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1084s",
+    "zh": "人会在审查评论里说明同意或反对的理由。团队每天收集解释，值班工程师每周手动更新规则。一次误升级涉及入湖前加密的字段，修正时补上该管道的转换与分类依据。讲者也提到可让调查 Agent 协助每周复核，当时还未实现。",
+    "en": "People use review replies to explain why they agree or disagree. The team collects replies daily, and the on-call engineer updates the rules by hand each week. One unnecessary escalation called for adding pipeline-specific transformation and classification context about encryption before the data lands. An investigation agent to assist the weekly review was an idea that had yet to be built.",
+    "end": "00:20:14"
+  },
+  {
+    "id": "p13",
+    "start": 1214.0,
+    "time": "00:20:14 至 00:21:40",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1214s",
+    "zh": "讲者用漏判和不必要的升级分别评估审查器，并报告漏判约 2%，归因多为规则缺口。他没有给出可直接对比的单一误升级比例。更多上下文能修正一些误升级，某些漏判则需要加明确检查。",
+    "en": "Joshi measures misses separately from unnecessary escalation. He reports a miss rate of about two percent, largely attributed to gaps in written rules, and does not give a single clean false-escalation rate. Context can fix some needless escalation while misses may require another explicit check.",
+    "end": "00:21:40"
+  },
+  {
+    "id": "p14",
+    "start": 1300.0,
+    "time": "00:21:40 至 00:24:18",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1300s",
+    "zh": "有一次敏感字段从开放副本迁出，仍有读者指向将失去该列的表。审查器漏掉这条，事后加入搜索剩余读者的规则。新增规则针对已经发生的故障。讲者报告，截至 2026 年 8 月 31 日，约 60% 的数据管道 PR 无需人工评审即可合并，人工评审投入减少约 75%，每月节省约 132 个工程师小时，与这批 PR 相关的事故减少约 30%。须由人决定的变更仍会升级。",
+    "en": "A missed case moved a sensitive column out of its open copy while a reader still pointed there. The incident became a rule to search for consumers of the copy about to lose the field. As of August 31, 2026, Joshi reports that about 60% of data pipeline PRs merged without human review, manual review effort fell about 75%, roughly 132 engineering hours were saved per month, and incidents tied to these PRs fell about 30%. Protected decisions still go to people.",
+    "end": "00:24:18"
+  },
+  {
+    "id": "p15",
+    "start": 1458.0,
+    "time": "00:24:18 至 00:28:00",
+    "url": "https://www.youtube.com/watch?v=MQiojLnK-E0&t=1458s",
+    "zh": "在单场录像尾段，讲者解释，脚本和 Agent 当时独立触发、并行运行，各自都看不到对方的通过、失败或不可用状态。Agent 只能查仓库，无法按需调用脚本获取生产事实，一层无法完成时需要等人处理。团队正在探索一个入口审整份 PR，由分类器决定哪些改动分别查、哪些合起来查，并让 Agent 按需调用第一层脚本。讲者最后重申用脚本核实事实、把敏感决定交给人，并记录无谓升级的成本。",
+    "en": "In the full recording, Joshi explains that scripts and the agent run independently in parallel. Neither sees whether the other passed, failed, or was unavailable. The agent only searches the repository and cannot call live checks on demand. A person must step in when one side cannot finish. The team is exploring a single entry point that classifies related changes across the whole PR and lets the agent call first-layer checks. He closes by emphasizing verifiable facts, human authority over protected decisions, and the cost of false escalations.",
+    "end": "00:28:00"
+  }
+]

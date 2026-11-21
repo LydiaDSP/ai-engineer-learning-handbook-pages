@@ -1,0 +1,35 @@
+[
+  {
+    "id": "kv-baseline",
+    "after": "p05",
+    "title": "用正常流量为 KV 页建立基线",
+    "time": "01:32:30",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5550s",
+    "en": "assets/kv-baseline-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用正常流量为 KV 页建立基线</h3><dl><div><dt>已有信号</dt><dd>推理引擎处理输入时写入 KV Cache。</dd></div><div><dt>识别偏离</dt><dd>将新出现的 KV 页与基线比较，把偏离较大的样本交给后续复核。</dd></div></dl></div>",
+    "note": "幻灯片展示的是检测思路。异常分数可用于安排复核优先级。",
+    "sourceSeconds": 5550
+  },
+  {
+    "id": "integration-points",
+    "after": "p08",
+    "title": "在引擎与缓存层观察 KV 页",
+    "time": "01:33:48",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5628s",
+    "en": "assets/integration-points-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在引擎与缓存层观察 KV 页</h3><dl><div><dt>推理引擎</dt><dd>在写入 KV 页时读取信号，供实时流程参考。</dd></div><div><dt>缓存层</dt><dd>从已经保存的页面提取信号，做后续分析。</dd></div></dl></div>",
+    "note": "图中按信号读取位置画出两种接入方式。",
+    "sourceSeconds": 5628
+  },
+  {
+    "id": "deploy-limits",
+    "after": "p14",
+    "title": "部署前核对模型变化与数据搬运成本",
+    "time": "01:37:26",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5846s",
+    "en": "assets/deploy-limits-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>部署前核对模型变化与数据搬运成本</h3><dl><div><dt>模型变化</dt><dd>新版本、微调或换模型后，需要用对应数据重新检验基线。</dd></div><div><dt>实时开销</dt><dd>原图以 Qwen3-14B 为例，一个 256 token 块约有 40 MB 的 KV 数据。讲者举 CacheGen 说明压缩和流式传输可以降低开销，安全分析仍需实际测量延迟和资源占用。</dd></div></dl></div>",
+    "note": "原图用特定模型和块大小举例，数据规模随配置变化。",
+    "sourceSeconds": 5846
+  }
+]

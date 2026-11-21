@@ -1,0 +1,396 @@
+给软件工厂装上能起作用的验收关口
+Dexter Horthy
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[08:15:48.320 --> 08:15:49.200] What's up, everybody?
+[08:15:50.040 --> 08:15:50.860] How are we all doing?
+[08:15:52.440 --> 08:15:54.880] Give it up for all the fucking organizers out here.
+[08:15:55.180 --> 08:15:56.100] They are killing it.
+[08:15:56.240 --> 08:15:57.780] Swixxon team, let's get a round of applause.
+[08:15:58.720 --> 08:16:00.500] All the speakers, keep it going for the speakers.
+[08:16:02.340 --> 08:16:04.780] I knew Quinn was really smart, but that was a really dope talk.
+[08:16:04.920 --> 08:16:06.280] I enjoyed watching it from backstage.
+[08:16:07.380 --> 08:16:08.040] Hi, everybody.
+[08:16:08.260 --> 08:16:08.880] I'm Dex.
+[08:16:09.460 --> 08:16:12.900] is 12 factor factories, which started as a joke title,
+[08:16:12.940 --> 08:16:14.340] but then everyone started calling it that.
+[08:16:15.020 --> 08:16:16.140] And the war on slop.
+[08:16:16.880 --> 08:16:18.020] So thank you all for coming.
+[08:16:19.700 --> 08:16:22.520] I like to yap about coding agents on the internet.
+[08:16:22.840 --> 08:16:25.220] And like a year ago, we did the whole context engineering
+[08:16:25.220 --> 08:16:27.600] thing, a lot of views on YouTube.
+[08:16:27.860 --> 08:16:30.800] And up until about a week ago, I was the CEO and co-founder
+[08:16:30.800 --> 08:16:33.520] at a company called Human Layer, the multiplayer coding
+[08:16:33.520 --> 08:16:34.100] agent workspace.
+[08:16:34.760 --> 08:16:37.800] And for those of you who are blessed to not be quite
+[08:16:39.480 --> 08:16:44.180] some of us may be. We are now a part of Factory, which I'm very excited about and I will be
+[08:16:44.180 --> 08:16:49.260] touching on during this talk. But I want to get right into it. Last summer was all about,
+[08:16:49.460 --> 08:16:52.540] this is like, you know, three months ago, it feels like forever. Factories were all the hype.
+[08:16:52.840 --> 08:16:57.140] And I gave an intuition-based talk back in June of like, we should probably still read the code,
+[08:16:57.180 --> 08:17:02.960] and here's how RL and verifiers are working. And like, exactly as our friends at Google were saying,
+[08:17:03.080 --> 08:17:05.880] you know, models really like just solving the tests, just getting them to pass.
+[08:17:06.640 --> 08:17:09.060] I now have some data beyond just that intuition.
+[08:17:09.700 --> 08:17:13.500] There's a benchmark called Slopcode Bench, which we just released actually today a bunch
+[08:17:13.500 --> 08:17:16.780] of new data on from the lab at University of Wisconsin.
+[08:17:17.620 --> 08:17:19.360] But very unsaturated benchmark.
+[08:17:19.600 --> 08:17:22.100] You know, GPT 5.5 got a 15%.
+[08:17:22.100 --> 08:17:24.160] Astra, I think, scored 16.3.
+[08:17:24.340 --> 08:17:28.060] So like, we are getting better at this, but there's a lot of ways to go.
+[08:17:28.220 --> 08:17:29.580] I'll talk all about that data in a sec.
+[08:17:29.760 --> 08:17:34.480] We of course have the study from Pharos of, you know, 30% of PRs merging without review,
+[08:17:36.040 --> 08:17:39.020] more incidents per PR, more bugs per developer.
+[08:17:39.620 --> 08:17:42.180] And I titled this talk, I don't think it was quite correct.
+[08:17:42.280 --> 08:17:43.800] I said, why software factories fail?
+[08:17:44.040 --> 08:17:46.660] And everyone said, oh, Dex is the anti-software factory guy.
+[08:17:46.740 --> 08:17:48.280] Dex hates software factories.
+[08:17:48.460 --> 08:17:50.220] I actually love software factories.
+[08:17:50.340 --> 08:17:51.220] I'm a huge fan.
+[08:17:52.020 --> 08:17:54.200] The title was probably more along the lines of, you know,
+[08:17:54.480 --> 08:17:57.160] there are certain things you could do in your software factory
+[08:17:57.160 --> 08:17:58.640] that would cause it to fail.
+[08:17:59.140 --> 08:18:01.700] And here's what those things, what I think those things might be,
+[08:18:01.880 --> 08:18:03.720] and, you know, please don't do them.
+[08:18:04.400 --> 08:18:05.700] maybe the dark factory thing.
+[08:18:07.080 --> 08:18:08.860] But I think the main takeaway here,
+[08:18:08.940 --> 08:18:10.200] and I think we've heard this from a lot of folks,
+[08:18:10.680 --> 08:18:12.500] is software factories is just good engineering.
+[08:18:13.540 --> 08:18:16.240] A friend of the pod, friend of the conference,
+[08:18:16.860 --> 08:18:18.140] Lauren was talking about this yesterday,
+[08:18:18.300 --> 08:18:19.300] of like a lot of this is just stuff
+[08:18:19.300 --> 08:18:20.720] we've been doing for a long time.
+[08:18:21.180 --> 08:18:22.460] Actually, Eno from factory had a really,
+[08:18:22.580 --> 08:18:24.080] the post is much longer, but it's like,
+[08:18:24.160 --> 08:18:26.520] the factory mindset is about how do we standardize
+[08:18:26.520 --> 08:18:28.360] our process, not just the output.
+[08:18:29.180 --> 08:18:31.100] And there's a whole bunch of stuff we'll dig into there
+[08:18:31.100 --> 08:18:32.480] on like how we're thinking about that.
+[08:18:33.720 --> 08:18:37.380] to make the same point, right? It's like your standard software factory is going to look
+[08:18:37.380 --> 08:18:44.200] something like you have some engineers, some product managers, maybe a CEO or someone to
+[08:18:44.200 --> 08:18:48.780] drive the vision. And those people are going to come up with stuff that we want to build
+[08:18:48.780 --> 08:18:53.760] and they're going to put it in a tracker. This is again, this is pre AI. A lot of the things we hear
+[08:18:53.760 --> 08:18:59.020] about software factories today were around for 30 years, right? You take stuff off the tracker,
+[08:18:59.140 --> 08:19:03.140] you build it, you run some unit tests, automated tests. Maybe you poke it locally when you're
+[08:19:03.720 --> 08:19:09.880] a pull request. At that point, someone might pull it down, interact with it, test it. Your
+[08:19:09.880 --> 08:19:14.680] CI is going to run a bunch of checks and static linters. And none of this is that new. And
+[08:19:14.680 --> 08:19:19.880] if anything is wrong with it, you send it back. You go fix the problems. And when it's
+[08:19:19.880 --> 08:19:24.480] actually ready to go to prod, we do some canaries and rollouts and feature flags and all kinds
+[08:19:24.480 --> 08:19:29.720] of fun stuff there. And eventually, it makes contact with our users. And I love our users.
+[08:19:29.720 --> 08:19:35.560] I love customers, but they do like to complain about things that are broken and ask for stuff
+[08:19:35.560 --> 08:19:36.480] that we haven't built yet.
+[08:19:36.880 --> 08:19:38.280] And so that goes back to the team.
+[08:19:38.700 --> 08:19:42.240] And at some point, something breaks at 3 in the morning and the customers are the first
+[08:19:42.240 --> 08:19:42.960] one to figure it out.
+[08:19:43.000 --> 08:19:46.380] So we add monitoring so that we can wake people up at 3 in the morning and they can solve
+[08:19:46.380 --> 08:19:47.420] it before anybody notices.
+[08:19:48.060 --> 08:19:50.180] This is your pre-AI software factory.
+[08:19:50.540 --> 08:19:55.440] And the basic point is like, all you need to do to make this agentic is replace someone
+[08:19:55.440 --> 08:19:57.520] builds the thing with an agent builds the thing.
+[08:19:57.960 --> 08:19:58.680] So you have orchestration.
+[08:19:58.780 --> 08:19:59.980] I'm not going to go into the details of the sample.
+[08:20:00.000 --> 08:20:01.280] box and the model and all this stuff.
+[08:20:01.920 --> 08:20:03.760] But you can incrementally build this up
+[08:20:03.760 --> 08:20:05.820] by adding what I'll call forward pressure.
+[08:20:06.040 --> 08:20:07.500] What causes work to start?
+[08:20:07.640 --> 08:20:09.140] Can we take all of the feature requests
+[08:20:09.140 --> 08:20:10.780] and just route them straight to our factory?
+[08:20:11.080 --> 08:20:12.840] Can we take all of the incidents that happen
+[08:20:12.840 --> 08:20:14.440] so that when I get paged at 3 in the morning,
+[08:20:14.620 --> 08:20:17.160] I'm looking at a pull request that we think is going to solve it,
+[08:20:17.260 --> 08:20:21.080] not just a stack trace about what went wrong?
+[08:20:21.880 --> 08:20:24.520] So forward pressure, what causes new work to start?
+[08:20:25.040 --> 08:20:27.400] And back pressure, which is sort of like, OK, cool.
+[08:20:27.400 --> 08:20:32.020] Now we can build things in minutes or hours, but the review and testing still takes hours
+[08:20:32.020 --> 08:20:33.500] or days if we're doing it in the old way.
+[08:20:33.660 --> 08:20:36.240] So we bring in agentic code review, agentic testing.
+[08:20:36.620 --> 08:20:39.080] Anyone doing agents code reviewing their pull requests?
+[08:20:40.760 --> 08:20:41.140] Okay.
+[08:20:41.480 --> 08:20:43.220] I thought it would be a little bit more, but that's pretty good.
+[08:20:43.460 --> 08:20:44.360] Y'all are catching up.
+[08:20:45.140 --> 08:20:49.220] And then we invest heavily into our CI, CD, and our linters, and our, anyone doing like
+[08:20:49.220 --> 08:20:51.800] lean checks on their code, like formal verification?
+[08:20:52.600 --> 08:20:52.860] All right.
+[08:20:53.360 --> 08:20:53.740] Hardcore.
+[08:20:53.900 --> 08:20:54.400] I like it.
+[08:20:55.080 --> 08:20:59.140] So the back pressure, how do we let agents hill climb to a better outcome without needing
+[08:20:59.140 --> 08:20:59.940] to involve humans?
+[08:21:00.020 --> 08:21:03.680] How do we just overall increase the quality of what is coming out of our build step?
+[08:21:04.260 --> 08:21:08.860] And agents help here, but a lot of what makes software factories good is stuff we've kind
+[08:21:08.860 --> 08:21:09.780] of had for decades.
+[08:21:10.280 --> 08:21:14.120] And just like context engineering, which was the thing that I was talking about last summer
+[08:21:14.120 --> 08:21:18.920] in like June of 2025, there was all these ideas of like rag and memory and state and
+[08:21:18.920 --> 08:21:19.800] history and all this stuff.
+[08:21:19.800 --> 08:21:23.840] and we tried to distill out what are the timeless things that go into building agents.
+[08:21:24.400 --> 08:21:28.420] So I want to distill out now some of what I think are the timeless things that go into
+[08:21:28.420 --> 08:21:30.160] building and designing a software factory.
+[08:21:30.940 --> 08:21:32.500] Because there's a lot of noise and hype.
+[08:21:32.740 --> 08:21:36.300] Like I said, Terminally Online Twitter is going to break your brain if you spend too
+[08:21:36.300 --> 08:21:37.960] much time wondering what everyone else is doing.
+[08:21:38.740 --> 08:21:43.040] I'm also going to talk about Slop because I have a very fun project that I've been working
+[08:21:43.040 --> 08:21:47.300] on with Swix and a handful of other speakers here, but we'll get to that later.
+[08:21:48.020 --> 08:21:51.020] We're going to do 12 great practices for software factories.
+[08:21:51.300 --> 08:21:54.660] I think the first time I started talking about this, it was only like 9, but we are at 12
+[08:21:54.660 --> 08:21:56.120] now, so I'm very excited about this.
+[08:21:56.820 --> 08:22:00.080] I touched on this, but loops was this concept that was very in vogue.
+[08:22:00.220 --> 08:22:04.720] I think this is much more useful if you think about the interplay of forward pressure and
+[08:22:04.720 --> 08:22:05.340] back pressure.
+[08:22:06.060 --> 08:22:10.080] So, you know, again, very hyped up, but the actual tactical thing is like, how do you
+[08:22:10.080 --> 08:22:14.380] start work automatically and how do you make sure that whatever comes out and is touched
+[08:22:14.380 --> 08:22:17.480] by a human by the end, all the low-hanging stuff is already fixed.
+[08:22:17.580 --> 08:22:20.120] The outcome is as good as it can be autonomously.
+[08:22:21.040 --> 08:22:22.920] Number two, I will call know your enemy.
+[08:22:23.260 --> 08:22:28.760] I will still posit that unattended models don't do a great job of maintaining and improving
+[08:22:28.760 --> 08:22:30.160] code-based quality over time.
+[08:22:30.320 --> 08:22:33.640] So if you care about having a system that's going to be still maintainable in three or
+[08:22:33.640 --> 08:22:37.980] six months, I mean, again, I gave this talk and said, please read the code because a lot
+[08:22:37.980 --> 08:22:38.560] of it is slop.
+[08:22:39.100 --> 08:22:43.680] Agents got really good at solving one-off problems and making video games and blender
+[08:22:44.380 --> 08:22:48.680] this stuff. I don't think, you know, if you steer a model to fix your code base, it can go fix your
+[08:22:48.680 --> 08:22:54.060] code base. But then you have to know what is there and what you want. So if you are just hands-off
+[08:22:54.060 --> 08:22:59.040] pushing features into the machine, you may not find that it autonomously will make things better
+[08:22:59.040 --> 08:23:04.960] over time. Back then I didn't have a benchmark. Now I have a benchmark that basically has the
+[08:23:04.960 --> 08:23:09.880] model solve problems and checkpoints. Like a model can clone all of Excel or Redis in a couple days,
+[08:23:10.420 --> 08:23:14.280] maybe even a couple hours now with like agent swarms but that requires knowing
+[08:23:14.280 --> 08:23:18.660] the entire problem in advance and most of us don't write software that way most
+[08:23:18.660 --> 08:23:21.680] of us ship a feature and then ship another feature and then ship another
+[08:23:21.680 --> 08:23:24.800] feature and if you're building by hand without AI along the way you say oh
+[08:23:24.800 --> 08:23:27.340] that's a bad abstraction we need to centralize this or we need to remove
+[08:23:27.340 --> 08:23:30.700] this and so this is a benchmark that metals measures a model's ability to
+[08:23:30.700 --> 08:23:37.440] evolve a code base over time and so Astra again is 16% very unsaturated
+[08:23:37.780 --> 08:23:38.800] There's a bunch of data here.
+[08:23:38.920 --> 08:23:42.860] I probably don't have time to look at all of it, but we can look at code quality metrics
+[08:23:42.860 --> 08:23:48.940] like cyclomatic complexity, lines per symbol, the percentage of functions that have high
+[08:23:48.940 --> 08:23:49.420] complexity.
+[08:23:49.640 --> 08:23:49.920] There's more.
+[08:23:50.060 --> 08:23:51.340] There's 200 custom rules.
+[08:23:52.020 --> 08:23:54.840] Fifty of them are based on things we've been doing for a while, and a lot of them are custom
+[08:23:54.840 --> 08:23:58.980] based on looking at code that models right, comparing it to pre-AI repos.
+[08:23:59.760 --> 08:24:01.180] I wrote a long article about that.
+[08:24:01.220 --> 08:24:01.700] I've read a bunch.
+[08:24:02.140 --> 08:24:06.060] Gabe Orlansky, who runs the lab that does this benchmark, just put up this paper today
+[08:24:07.440 --> 08:24:08.660] some of the research we did with them.
+[08:24:09.040 --> 08:24:10.220] There's a bunch of stuff in here.
+[08:24:10.300 --> 08:24:13.780] I probably don't have time to go through all of it, but they also test the model's ability
+[08:24:13.780 --> 08:24:15.680] to design good libraries and interfaces.
+[08:24:16.940 --> 08:24:22.300] The craziest one here is models did learn to use exceptions instead of returning tuples
+[08:24:22.300 --> 08:24:22.840] in Python.
+[08:24:23.600 --> 08:24:29.260] There was a lot of patterns that were identified as probably not great that were way less present
+[08:24:29.260 --> 08:24:32.380] in the six months ago models than they are in today's models.
+[08:24:32.380 --> 08:24:36.040] so it almost feels like the slop is amplifying over time.
+[08:24:37.220 --> 08:24:40.940] And Claude and GLM are now writing Python 3 in Python 2 style.
+[08:24:41.160 --> 08:24:46.980] So we have %s format strings are back, and they will not use fstrings by default anymore.
+[08:24:47.260 --> 08:24:48.420] So things to be aware of.
+[08:24:48.460 --> 08:24:49.300] You may not care about this.
+[08:24:49.380 --> 08:24:50.220] I care about this.
+[08:24:50.660 --> 08:24:52.800] The jury's still out on Fable 5.2.
+[08:24:52.920 --> 08:24:56.220] I love reading the Anthropic blog post about how to prompt the new models.
+[08:24:56.620 --> 08:25:00.000] So allegedly, if you tell Fable it owns the codebase, it should keep it clean.
+[08:25:00.120 --> 08:25:01.220] I haven't tested this yet.
+[08:25:02.380 --> 08:25:07.600] right now. But for those of us not building FPS games, shouts out to Ben, built a cool game. You
+[08:25:07.600 --> 08:25:12.680] should go watch this video, it's insane. You should know your enemy. You should understand that, like,
+[08:25:13.060 --> 08:25:17.020] work with this in mind, that if you need your codebase to last a long time or your codebase
+[08:25:17.020 --> 08:25:21.560] has been around for a long time, we should probably maintain understanding of the system
+[08:25:21.560 --> 08:25:27.340] and the code. To do this, we like to plan before we build. I highly encourage this. You should do
+[08:25:27.340 --> 08:25:31.880] this. We used to do this before in this old software factory. People realize, especially when
+[08:25:32.380 --> 08:25:34.960] building things took hours or days,
+[08:25:35.220 --> 08:25:38.300] and when testing and reviewing things took hours or days,
+[08:25:38.340 --> 08:25:39.400] even if this part is faster,
+[08:25:39.440 --> 08:25:41.780] this part is probably still slow if you're doing it properly,
+[08:25:42.060 --> 08:25:43.540] we would have architecture review,
+[08:25:43.780 --> 08:25:44.880] and we would have sprint planning,
+[08:25:45.000 --> 08:25:45.780] and we would talk as a team,
+[08:25:45.820 --> 08:25:47.660] and we would align in the hopes
+[08:25:47.660 --> 08:25:50.140] that we might decrease the percent chance
+[08:25:50.140 --> 08:25:51.820] that we'd have to rework something later.
+[08:25:51.940 --> 08:25:53.640] We wanted to be rather sure
+[08:25:53.640 --> 08:25:55.620] that we're building the right thing in the right way
+[08:25:55.620 --> 08:25:58.220] before we actually go and spend time building it,
+[08:25:58.320 --> 08:26:00.420] time in tokens, and then get to review
+[08:26:00.420 --> 08:26:01.380] and have to rework it.
+[08:26:02.380 --> 08:26:04.160] A lot of people overdo this as well.
+[08:26:04.280 --> 08:26:06.680] I've overdone this for sure, where you spend six hours
+[08:26:06.680 --> 08:26:07.820] working on a spec, and you're like,
+[08:26:07.900 --> 08:26:09.280] I feel like I could have just YOLO'd this.
+[08:26:10.520 --> 08:26:12.680] Because sometimes you can just YOLO a two-sentence prompt,
+[08:26:12.760 --> 08:26:13.780] and if it's small or you don't care,
+[08:26:13.860 --> 08:26:16.260] there's maybe a 50% chance you send a couple more prompts,
+[08:26:16.300 --> 08:26:16.880] and then it's good.
+[08:26:17.280 --> 08:26:20.300] You could spend five hours handwriting a detailed spec,
+[08:26:20.420 --> 08:26:22.960] and maybe there's a 10% of it you have to change afterwards.
+[08:26:23.700 --> 08:26:25.640] Or you could write all the code by hand in 20 hours,
+[08:26:25.800 --> 08:26:27.420] and then there's a 0% chance.
+[08:26:27.540 --> 08:26:29.580] Well, there's 0% chance you have to rework it because of something
+[08:26:29.580 --> 08:26:30.280] the agent did.
+[08:26:30.280 --> 08:26:31.580] You know, people still make mistakes too.
+[08:26:33.140 --> 08:26:34.980] But I think about this in terms of expected pain.
+[08:26:35.120 --> 08:26:40.580] Like how likely will this have to change later times how hard will it be to change?
+[08:26:41.620 --> 08:26:44.640] I don't argue with the model during planning about what color the button's going to be,
+[08:26:44.740 --> 08:26:48.000] but I do want to make sure we get our database schemas right and stuff like that.
+[08:26:48.500 --> 08:26:49.780] Because it's really hard to change later.
+[08:26:49.900 --> 08:26:54.020] So based on your problem and what you're doing and your code base, you should probably decide
+[08:26:54.020 --> 08:26:55.580] where on this spectrum you want to land.
+[08:26:56.540 --> 08:27:01.160] Align visually, I published a skill called ShowMe, which is optimized for instead of
+[08:27:01.160 --> 08:27:05.300] reading walls of text, you get HTML mockups, you get tables, you get charts, you get all
+[08:27:05.300 --> 08:27:09.520] this stuff that is optimized for the human brain, which is very visual.
+[08:27:10.420 --> 08:27:13.820] We've been, I think Coda said, we've been running away from predators and eating fruit
+[08:27:13.820 --> 08:27:15.640] for millions of years.
+[08:27:15.800 --> 08:27:18.140] We've only been reading text for about 5,000.
+[08:27:18.660 --> 08:27:19.440] Anyways, you can get this.
+[08:27:19.540 --> 08:27:20.760] It's got about 40,000 installs.
+[08:27:21.200 --> 08:27:22.820] You should help agents test their work.
+[08:27:23.620 --> 08:27:26.400] Screenshots, browsers, videos, curl, whatever you can do to help the agent.
+[08:27:26.520 --> 08:27:27.860] Again, he'll climb against an outcome.
+[08:27:28.360 --> 08:27:32.280] If you're building an iOS app, make sure it can build, run, and test that app in whatever
+[08:27:32.280 --> 08:27:33.140] environment it's running.
+[08:27:34.100 --> 08:27:36.360] You should fight slop with anyone here writing in TypeScript?
+[08:27:37.660 --> 08:27:38.000] Okay.
+[08:27:38.580 --> 08:27:39.540] Some people are feeling lazy.
+[08:27:39.680 --> 08:27:40.860] I feel like it should be more than that.
+[08:27:42.700 --> 08:27:45.980] This is a repo from Dylan Mulroy, who's a principal engineer at CloudFlare.
+[08:27:46.120 --> 08:27:46.680] Anti-slop.
+[08:27:46.800 --> 08:27:48.520] If you're not using this, you should go check it out.
+[08:27:48.520 --> 08:27:52.320] It's 100-ish rules on stopping agents from building slop.
+[08:27:52.980 --> 08:27:55.600] Factory also has an ESLint plugin that I should probably mention.
+[08:27:56.340 --> 08:28:02.020] And also, again, you can go slop fork all of the Python code quality rules out of Slop
+[08:28:02.020 --> 08:28:02.460] Code Bench.
+[08:28:02.580 --> 08:28:04.300] This exists for your language.
+[08:28:04.320 --> 08:28:05.000] You should use it.
+[08:28:05.620 --> 08:28:06.380] Slop is a tool.
+[08:28:06.480 --> 08:28:07.340] Not all slop is bad.
+[08:28:07.720 --> 08:28:09.840] Vibe coding prototypes, side projects.
+[08:28:10.020 --> 08:28:12.560] If you have something behind a feature flag, you just need to figure out if people even
+[08:28:12.560 --> 08:28:14.820] want it before you go put in the time.
+[08:28:14.940 --> 08:28:15.920] I think it's great.
+[08:28:15.920 --> 08:28:19.800] I don't think there's always, always, always, always every line of code has to be perfect.
+[08:28:20.540 --> 08:28:25.400] You should give models a feature-plagging system, PostHog or Statsig or LaunchDarkly or whatever
+[08:28:25.400 --> 08:28:29.140] it is, so they can try stuff and see if it performs better and then make decisions about
+[08:28:29.860 --> 08:28:34.200] what the right thing to be in your tool. You should compound over time, eval everything,
+[08:28:34.460 --> 08:28:39.040] learn from past sessions, and you should unify your forge. What I mean by this is,
+[08:28:39.100 --> 08:28:43.420] we used to send Git patches around on mailing lists. I think Linus and the Linux people still
+[08:28:43.420 --> 08:28:45.480] do this, but most people keep all their code in GitHub.
+[08:28:46.640 --> 08:28:52.380] And so before the AI Native Forge, we have centralized patches, but we still have people
+[08:28:52.380 --> 08:28:58.100] pasting like Claude answers back and forth in Slack and hopefully not doing too many
+[08:28:58.100 --> 08:29:01.440] rounds of that because it's like I copy out of mine and send it to my coworker, he pasted
+[08:29:01.440 --> 08:29:04.820] it into his agent and then they send it back to me and then I paste it into my agent and
+[08:29:04.820 --> 08:29:05.620] maybe we get an answer.
+[08:29:06.040 --> 08:29:10.880] So centralizing all of your designs and decisions and whatever you have in Notion and Google
+[08:29:10.880 --> 08:29:15.460] docs and whatever it is, you should try to bring those things as close as possible together
+[08:29:15.460 --> 08:29:19.060] so you can understand not just the code about what something was built, but all the decisions
+[08:29:19.060 --> 08:29:19.820] that went into it.
+[08:29:20.480 --> 08:29:21.860] You can't buy everything.
+[08:29:22.060 --> 08:29:25.120] I think there's things in this space that just cannot be productized.
+[08:29:25.600 --> 08:29:27.880] Obviously you can buy VMs or you can bring your own.
+[08:29:28.020 --> 08:29:30.500] Dev environment I think is very personal to most teams.
+[08:29:30.980 --> 08:29:34.660] The harness, of course, you can go get a frontier harness or you can use something minimal like
+[08:29:34.660 --> 08:29:37.000] OpenCode or Pi and customize the heck out of it.
+[08:29:37.000 --> 08:29:41.000] And then you have this control plane picture of like, how do you collaborate on sessions
+[08:29:41.000 --> 08:29:41.560] and plans?
+[08:29:41.700 --> 08:29:43.100] How do you do automations and scheduling?
+[08:29:43.300 --> 08:29:44.500] How do you respond to events?
+[08:29:44.760 --> 08:29:45.700] All this governance stuff.
+[08:29:46.220 --> 08:29:48.920] Part of the reason I'm really excited to be working with Factory on all this stuff is
+[08:29:48.920 --> 08:29:53.160] like, they have a much bigger view of this picture and have a lot more stuff solved here.
+[08:29:53.660 --> 08:29:57.780] But there are parts, especially at the top here, is like, I don't think anyone can sell
+[08:29:57.780 --> 08:29:59.380] you verification of your code.
+[08:29:59.480 --> 08:30:02.840] Because only you know, if you have hundreds of engineers and hundreds of repos, you have
+[08:30:02.840 --> 08:30:04.600] those opinions and you know how to test your code.
+[08:30:05.980 --> 08:30:09.620] not just a black box you can buy. There are building blocks that are undifferentiated,
+[08:30:09.720 --> 08:30:13.260] but the idea of software factory, I think, is a way of thinking about our work.
+[08:30:14.820 --> 08:30:17.220] So that's software factories. I also want to talk about slop.
+[08:30:20.080 --> 08:30:23.320] Factories are about how do we increase human leverage, right? How do we get the best return
+[08:30:23.320 --> 08:30:28.060] on our time? And I've talked a little bit about why humans should be involved and what it means
+[08:30:28.060 --> 08:30:32.320] to be a diligent steward of what we're building and what we're doing. But I think it's bigger
+[08:30:32.320 --> 08:30:38.800] than just software. So I'm very excited to announce the anti-slop manifesto, which you
+[08:30:38.800 --> 08:30:43.660] can go if you go to slopmanifesto.com, you can read it. I'll put the URL up later. But
+[08:30:43.660 --> 08:30:47.580] we built this in collaboration with a lot of people here, both attendees and speakers.
+[08:30:48.020 --> 08:30:55.020] Special shouts out to Swix and Phillip. It has signers from ZoomInfo and I think XAI
+[08:30:55.020 --> 08:30:59.620] and OpenAI and like there's a lot of cool people on there. I encourage you to go read
+[08:30:59.620 --> 08:31:02.780] it and check it out and be a part of, you know, but I'll tell you what's in it.
+[08:31:03.740 --> 08:31:06.160] We value outcomes over outputs.
+[08:31:06.520 --> 08:31:08.920] We value understanding over speed.
+[08:31:09.340 --> 08:31:13.460] We value our own thinking over whatever the model came up with as a first draft.
+[08:31:14.000 --> 08:31:17.020] We value better work over easier work.
+[08:31:17.880 --> 08:31:21.680] We value improving the system over just patching outputs.
+[08:31:22.540 --> 08:31:27.040] And the things we believe are that AI is the most useful tool most of us have ever worked
+[08:31:27.040 --> 08:31:32.420] with, but it can create a swarm of agents can produce more work in a single day than
+[08:31:32.420 --> 08:31:34.500] a human can review in their entire career.
+[08:31:34.620 --> 08:31:36.380] Look at some of the math stuff coming out of OpenAI.
+[08:31:37.720 --> 08:31:41.980] Slop is when we put less effort into producing something than we ask their consumer on the
+[08:31:41.980 --> 08:31:43.760] other end to spend understanding it.
+[08:31:44.360 --> 08:31:50.540] And using AI doesn't necessarily make something slop, but it happens when we pass off AI output
+[08:31:50.540 --> 08:31:54.260] without taking responsibility for its quality or for the reader's experience.
+[08:31:55.160 --> 08:31:59.580] I believe strongly, I've been saying this for a year now, AI cannot replace human judgment.
+[08:31:59.920 --> 08:32:05.040] It can only amplify our judgment or maybe perhaps our lack of judgment in certain cases.
+[08:32:05.900 --> 08:32:07.460] And the slop is asymmetric.
+[08:32:07.940 --> 08:32:13.060] The cost of producing a thousand-line PR or a ten-page doc is approaching zero, but
+[08:32:13.060 --> 08:32:16.180] the cost of reviewing it is still fairly constant.
+[08:32:16.480 --> 08:32:21.480] And slop proliferates when we repeatedly work around problems instead of solving them correctly.
+[08:32:21.480 --> 08:32:26.020] It comes from tools that love to add and are not biased towards subtracting.
+[08:32:26.760 --> 08:32:27.920] I'm not going to name names.
+[08:32:29.080 --> 08:32:31.360] But I think a lot of slop comes from pressure.
+[08:32:31.920 --> 08:32:35.900] Companies are pushing their people to redefine what is humanly possible.
+[08:32:36.780 --> 08:32:38.660] And I think slop compounds.
+[08:32:39.040 --> 08:32:44.480] So the more slop sits in our knowledge base, in chat, in code, the more of it the next
+[08:32:44.480 --> 08:32:46.000] agent reads and copies.
+[08:32:46.660 --> 08:32:50.800] And the more slop flying around our team, the more we lose the will to fight it.
+[08:32:51.480 --> 08:32:54.520] Everything gets worse over time, communication and quality and all of this.
+[08:32:55.140 --> 08:32:58.760] So as the sign, we the undersigned of the anti-slop manifesto.
+[08:32:59.220 --> 08:33:01.620] Guys, is it a little hot in here?
+[08:33:02.760 --> 08:33:04.600] I might just have to pop off the jack.
+[08:33:04.700 --> 08:33:05.080] There we go.
+[08:33:06.140 --> 08:33:09.260] They couldn't give me one of these with a factory logo on it yet, but I'm sure it's
+[08:33:09.260 --> 08:33:09.740] coming soon.
+[08:33:11.080 --> 08:33:18.160] Thus, we the anti-slop undersigners resolve that human time and attention is incredibly
+[08:33:18.160 --> 08:33:18.700] valuable.
+[08:33:19.400 --> 08:33:21.520] So we optimize for using it wisely.
+[08:33:22.060 --> 08:33:27.160] We fight slop because AI should make our work better, not just easier.
+[08:33:27.780 --> 08:33:32.360] We optimize our systems and tools and products for the efficient elicitation of human intent
+[08:33:32.360 --> 08:33:34.620] and for efficient human understanding.
+[08:33:35.360 --> 08:33:37.660] And we do our own thinking when working with a model.
+[08:33:37.900 --> 08:33:40.020] We explore resources, code, prior art.
+[08:33:40.080 --> 08:33:42.420] We really want to understand the problem before we actually get to work.
+[08:33:42.940 --> 08:33:46.600] And we own the intent and the taste and the consequences of what we ship.
+[08:33:46.600 --> 08:33:49.880] However much AI helps us to make it, we own it.
+[08:33:50.100 --> 08:33:53.900] And when an agent wrote something that we're sending somebody, we make that clear and we
+[08:33:53.900 --> 08:33:57.580] actually make sure it's good before we drop it in Slack or email or whatever it is.
+[08:33:58.340 --> 08:34:01.500] And when someone sends us slop, this is also like we have to push back.
+[08:34:01.660 --> 08:34:05.320] We have to tell people kindly, empathetically, and then ask them to review it first.
+[08:34:05.900 --> 08:34:07.560] And most of us, it's a journey.
+[08:34:07.740 --> 08:34:11.440] I've been on both sides of this one, so I've had to have that note.
+[08:34:11.440 --> 08:34:15.380] I believe there will always be alpha in reviewing something.
+[08:34:16.220 --> 08:34:18.620] As models get better, we may stop reading most of the code.
+[08:34:18.960 --> 08:34:21.660] We may still review a plan or a design or a result.
+[08:34:21.980 --> 08:34:26.560] But if you don't review anything, if you bring nothing to the table, no thinking, then you're
+[08:34:26.560 --> 08:34:28.920] just going to get the same AI output as everybody else.
+[08:34:30.200 --> 08:34:36.560] Agent reviewers, linters, verifiers, they're very useful, but they are not sufficient.
+[08:34:36.960 --> 08:34:39.860] So for now, we'll still review some subset of the outputs.
+[08:34:41.440 --> 08:34:46.140] depends on the stakes. But what's shipped, who's using it, and how it's helping them
+[08:34:46.140 --> 08:34:51.220] matters far more than lines of code or PRs merged or, God forbid, the number of agents
+[08:34:51.220 --> 08:34:56.540] we're running in parallel. It's cool if it gets you to the outcome. But unreviewed output
+[08:34:56.540 --> 08:35:02.420] isn't always necessarily bad. You know, slop is a cool one-shot prompts, vibe coding. These
+[08:35:02.420 --> 08:35:06.340] are all high-leverage things that are in the right place. Slop is bad when it undermines
+[08:35:06.340 --> 08:35:10.220] our outcome. If we want to make a good product, a maintainable system, we want to save people
+[08:35:11.860 --> 08:35:13.920] If Slop undermines that, then it's bad.
+[08:35:14.600 --> 08:35:17.240] And I guess finally, none of us has this figured out.
+[08:35:17.920 --> 08:35:20.060] We're each relearning what we will and won't accept,
+[08:35:20.300 --> 08:35:22.220] and there's no single right answer here.
+[08:35:22.320 --> 08:35:23.200] You've got to calibrate yourself.
+[08:35:23.940 --> 08:35:25.220] The world moves fast.
+[08:35:25.720 --> 08:35:28.180] My goal here is these are principles that we can use
+[08:35:28.180 --> 08:35:30.220] to embrace our important human role
+[08:35:30.220 --> 08:35:33.360] in harnessing AI safely, responsibly,
+[08:35:33.520 --> 08:35:36.040] in a way that creates value for everyone
+[08:35:36.820 --> 08:35:38.280] for many years to come.
+[08:35:39.180 --> 08:35:42.420] So, you can read and sign the manifesto at slotmanifesto.com.
+[08:35:43.860 --> 08:35:45.820] TLDR, you know, give a shit.
+[08:35:46.160 --> 08:35:47.160] Care about what you're doing.
+[08:35:48.860 --> 08:35:52.860] I'm gonna stick around for Tariq's talk, but then, what is that slide?
+[08:35:53.040 --> 08:35:53.220] All right.
+[08:35:53.300 --> 08:35:54.560] I'll be hanging in the hallway afterwards.
+[08:35:55.640 --> 08:35:56.440] Come say hi.
+[08:35:56.840 --> 08:35:57.420] Keep learning.
+[08:35:57.640 --> 08:35:58.280] Keep giving a shit.
+[08:35:58.840 --> 08:36:00.200] I'm excited to keep building with y'all.
+[08:36:00.420 --> 08:36:01.060] Thank you so much.

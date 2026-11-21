@@ -1,0 +1,227 @@
+代码可以写得很快，先选一个你能验证的项目
+Jarred Sumner
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[05:19:15.980 --> 05:19:16.960] Hello, everyone.
+[05:19:18.600 --> 05:19:19.040] My name is Jared.
+[05:19:20.120 --> 05:19:24.560] I'm the creator of Bun, and I work at Anthropic.
+[05:19:25.800 --> 05:19:28.980] Bun is the JavaScript runtime that powers cloud code.
+[05:19:30.220 --> 05:19:37.520] And recently I merged several million line of code PR to add an ahead of time compiler
+[05:19:38.560 --> 05:19:47.640] to Bun, which is basically the idea is instead of paying the cost of a JIT at runtime, you can
+[05:19:50.200 --> 05:19:51.720] compile all the code ahead of time.
+[05:19:55.060 --> 05:19:57.620] And it's like a really big project.
+[05:19:58.880 --> 05:19:59.980] Over the summer...
+[05:20:00.000 --> 05:20:02.660] I rewrote Bun and Rust.
+[05:20:05.060 --> 05:20:07.380] And this is a project on a larger scale.
+[05:20:08.060 --> 05:20:10.100] This ahead of time compiler is like a larger project
+[05:20:10.100 --> 05:20:10.700] than that.
+[05:20:13.640 --> 05:20:15.980] And I think one of the challenges right now
+[05:20:15.980 --> 05:20:17.720] with large projects is like,
+[05:20:17.740 --> 05:20:19.460] how do you actually confidently ship
+[05:20:20.240 --> 05:20:22.780] millions of lines of code written by agents?
+[05:20:24.660 --> 05:20:26.060] So that's what I'm gonna talk about.
+[05:20:27.520 --> 05:20:29.160] This was like the opening prompt
+[05:20:30.540 --> 05:20:38.220] discussion. It was like, basically, we need to make Cloud Code use a lot less memory and
+[05:20:39.120 --> 05:20:46.020] faster, and we can modify either WebKit or Bun. Bun uses JavaScript core, which is WebKit,
+[05:20:47.560 --> 05:20:51.120] under the hood. And it's been a little bit over a month.
+[05:20:56.000 --> 05:20:59.300] This is, this compiler has gone through five rewrites.
+[05:21:01.080 --> 05:21:04.760] You can see the first couple ones were pretty short,
+[05:21:05.440 --> 05:21:07.920] and then I almost shipped the blue one,
+[05:21:08.960 --> 05:21:11.640] and then I was like, this is building way too long,
+[05:21:11.900 --> 05:21:13.740] like it's taking way too long to compile the code.
+[05:21:14.820 --> 05:21:19.200] So, rewrote it again, and this next one is shipping next week.
+[05:21:24.720 --> 05:21:30.440] This is kind of the way I think about a project like this is like you're really constrained
+[05:21:30.440 --> 05:21:33.000] by how you test that the code works.
+[05:21:34.240 --> 05:21:38.640] So that's even more important than what you're specifically, like the approach you go with
+[05:21:38.640 --> 05:21:42.480] for how to build it is entirely driven by how do you verify that it actually is going
+[05:21:42.480 --> 05:21:45.860] to work and not be buggy and that you can trust it.
+[05:21:48.040 --> 05:21:55.040] And so just a little more background on why this particular project, why the ahead of time compiler,
+[05:21:55.180 --> 05:22:03.660] and it's because for a typical JavaScript-based application, roughly half of the CPU time is just
+[05:22:03.660 --> 05:22:11.360] spent compiling code on demand. And so a lot of the general thing you've seen in a lot of
+[05:22:11.360 --> 05:22:15.520] applications where people are rewriting their code bases in a language like Rust or sometimes
+[05:22:17.640 --> 05:22:19.660] So it's like when coming from JavaScript,
+[05:22:19.980 --> 05:22:25.600] it's because it's really the combination of the JIT
+[05:22:25.600 --> 05:22:28.400] and that it's a single-threaded application.
+[05:22:31.260 --> 05:22:34.340] So that's sort of the difference between a JIT and AOT,
+[05:22:34.500 --> 05:22:38.460] is that you compile before, whereas with a JIT,
+[05:22:38.540 --> 05:22:40.040] you compile as you go along.
+[05:22:41.980 --> 05:22:44.820] This is particularly important for something like Cloud Code,
+[05:22:45.860 --> 05:22:51.500] using the Cloud Code iOS app, where the CPU time is a lot
+[05:22:52.420 --> 05:22:56.700] if you have to have every session of Cloud Code also compiling.
+[05:23:01.500 --> 05:23:06.240] So we talked a lot about should we rewrite Cloud Code in Rust?
+[05:23:07.560 --> 05:23:11.680] Because the BUN team, us, rewrote BUN in Rust,
+[05:23:11.680 --> 05:23:25.200] So we're pretty good at rewrites. And we decided not to. And the reason why is because, in Bunn's
+[05:23:25.200 --> 05:23:29.880] case, it's actually pretty easy to do, like Bunn is an easy project to do a Rust rewrite because
+[05:23:29.880 --> 05:23:35.420] the tests were written in a language that's independent of the one it runs in. So because
+[05:23:35.420 --> 05:23:40.800] all the tests were written in TypeScript, we could run the tests on both the Zig version
+[05:23:42.320 --> 05:23:46.140] version, whereas for Cloud Code, we
+[05:23:46.720 --> 05:23:48.480] like Cloud Code's tests are written in TypeScript.
+[05:23:48.800 --> 05:23:51.780] So we would have to port Cloud Code's test suite.
+[05:23:53.560 --> 05:23:56.040] And as soon as you're rewriting the tests,
+[05:23:56.300 --> 05:23:58.380] then you can't really trust the tests anymore.
+[05:24:00.400 --> 05:24:02.100] So that seemed like it'd be too risky.
+[05:24:03.360 --> 05:24:06.560] So instead, what if we just make JavaScript faster
+[05:24:07.200 --> 05:24:09.160] so we don't have to rewrite it in Rust?
+[05:24:12.040 --> 05:24:24.760] This was another prompt a little bit later. And the result is that it actually did have
+[05:24:24.760 --> 05:24:32.720] JavaScript's memory, like the memory usage. It uses about 4x less memory. It starts about
+[05:24:32.720 --> 05:24:42.480] about two times faster. And we're dogfooding this internally, and it'll be external soon.
+[05:24:45.000 --> 05:24:49.140] Some more benchmarks, and then I'll also go into more detail about how we actually did
+[05:24:49.140 --> 05:24:57.680] this. So, like, it's possible that if ‑‑ an interesting thing is, like, TypeScript
+[05:24:57.680 --> 05:25:08.440] 7 rewrote their code by hand from JavaScript slash TypeScript to Go. And the single-threaded
+[05:25:08.440 --> 05:25:15.360] version when compiled via Bunn compile is now faster than the single-threaded TypeScript
+[05:25:15.360 --> 05:25:24.640] Go port. And we will add threads also to the ahead-of-time compiled version of Bunn, but
+[05:25:24.640 --> 05:25:25.660] But we haven't done that yet.
+[05:25:26.720 --> 05:25:27.320] So there is a PR.
+[05:25:29.500 --> 05:25:33.380] And so a little bit about the actual ahead of time compiler.
+[05:25:35.560 --> 05:25:40.040] TypeScript is not, types don't necessarily need to be correct.
+[05:25:40.300 --> 05:25:45.360] So it treats types as predictions instead of trusting them.
+[05:25:48.300 --> 05:25:54.400] And this kind of problem works really well for models because they're just really good
+[05:25:54.900 --> 05:26:10.920] compilers. So this is sort of more about how we were thinking about this decision. And a big thing
+[05:26:10.920 --> 05:26:17.640] here is there's just so many tests you can run when it's ahead of time, like for something like
+[05:26:17.640 --> 05:26:21.640] this, because we don't need to write any tests pretty much ourselves. We actually do write a lot
+[05:26:21.640 --> 05:26:30.040] of tests, but we can largely trust that the tests that predate the project work. And this was the
+[05:26:30.040 --> 05:26:36.180] same thing with the Bun Rust rewrite, where we had Bun's existing test suite we could run. And now
+[05:26:36.180 --> 05:26:43.160] with the compiler, we have Bun's existing test suite plus WebKids tests plus test 262 plus
+[05:26:43.160 --> 05:26:49.880] CloudCodes tests. And then we also made it so that way Bun itself, the Bun's own test runner,
+[05:26:57.040 --> 05:27:02.960] And we have one breaking change with, or really it's two breaking changes with the ahead of
+[05:27:02.960 --> 05:27:07.180] time compiler, and that's pretty much why these particular tests are failing.
+[05:27:09.600 --> 05:27:16.300] And the two breaking changes are actually mostly security things to prevent prototype
+[05:27:16.300 --> 05:27:19.940] pollution attacks, but they also end up benefiting for performance.
+[05:27:22.460 --> 05:27:27.120] So, like, what makes this particular kind of problem pretty good for agents is, like,
+[05:27:28.920 --> 05:27:34.080] you can run all three versions of an application, one with a JIT, one with ahead of time compiled,
+[05:27:34.120 --> 05:27:35.420] and one also without the types.
+[05:27:35.680 --> 05:27:41.660] And as long as the three of them behave the same, then you know that it works, at least
+[05:27:41.660 --> 05:27:42.940] for that specific application.
+[05:27:42.940 --> 05:27:47.660] But then you can take that kind of problem and fuzz it a lot.
+[05:27:50.900 --> 05:27:56.080] And just have Claude churn out code generators to fuzz different patterns.
+[05:27:57.940 --> 05:27:59.680] And you can catch a lot of bugs that way.
+[05:28:02.680 --> 05:28:04.580] This is a very large project.
+[05:28:04.760 --> 05:28:10.180] This is the biggest I think I've worked on in terms of code volume.
+[05:28:10.980 --> 05:28:20.600] home. Most of this is tests, and also because we rewrote it five times. When you're doing
+[05:28:20.600 --> 05:28:27.720] this kind of project, how I think about it is you have batches of, okay, we need to write
+[05:28:27.720 --> 05:28:35.260] a lot of code at once. And then after that initial batch, then it's, okay, let's fix
+[05:28:35.260 --> 05:28:39.740] everything, make sure it compiles, make sure it passes a bunch of tests, and make sure
+[05:28:40.180 --> 05:28:47.440] really truly works. And the actual logistics of that are like, when you're in the big batch
+[05:28:47.440 --> 05:28:53.960] kind of project stage, then you don't want to run builds. You want to run one build,
+[05:28:54.080 --> 05:28:58.580] because otherwise you're going to spend all your time compiling and waiting for build errors,
+[05:28:58.680 --> 05:29:07.020] and it's going to not be a good use of anyone's time. And then separately, for longer running,
+[05:29:07.020 --> 05:29:15.700] like once you've written all the code, you want to have it like have lots of individual
+[05:29:15.700 --> 05:29:29.400] agents. This is like a little bit of the timeline of this project. The first one was not very
+[05:29:29.400 --> 05:29:42.020] good. Cloud code was a gigabyte, which is terrible. And this used as much as possible
+[05:29:42.020 --> 05:29:50.620] from JavaScript core's existing code. So it was basically the ceiling was only as good
+[05:29:50.620 --> 05:29:58.420] as what it could be from that. So then a little bit after this, we added a TypeScript type
+[05:30:02.900 --> 05:30:09.760] itself. These were prompts. And so we added bun check, and then we're like, hey, Claude,
+[05:30:09.880 --> 05:30:19.300] please use bun check. And then after that, startup time got two times faster in Cloud
+[05:30:19.300 --> 05:30:33.700] code and started using about 3x less memory. But the code was slop. And this is not good.
+[05:30:33.860 --> 05:30:39.120] It should never... Basically, this meant that any object that accessed a property called
+[05:30:39.120 --> 05:30:45.700] archive, it would then assume that the bun.archive API was potentially used. And I looked at
+[05:30:45.700 --> 05:30:59.200] this and I was like, we cannot ship this. This is not good. So then, this is like, yeah,
+[05:30:59.840 --> 05:31:06.500] this is another thing too, is like, it just like, when you're doing a large planning,
+[05:31:06.880 --> 05:31:11.460] like when you're starting to have it do a bunch of design docs and stuff, it just loves
+[05:31:11.460 --> 05:31:13.500] writing markdown docs and it doesn't make sense,
+[05:31:13.960 --> 05:31:18.600] because who's gonna, like, 1500 markdown files
+[05:31:18.600 --> 05:31:21.540] is just not reasonable.
+[05:31:28.680 --> 05:31:30.980] So for this it was like, this was like,
+[05:31:31.000 --> 05:31:33.500] I think the third compiler version, maybe it was the fourth.
+[05:31:33.960 --> 05:31:34.640] No, this was the third.
+[05:31:39.380 --> 05:31:46.000] to, like, just to kind of get it all out, 140 agents at the same time, write all the
+[05:31:46.000 --> 05:31:49.540] code all at the same time, then get Cloud Code to run.
+[05:31:54.940 --> 05:31:58.660] And then this is the fourth one.
+[05:31:58.660 --> 05:32:06.640] And this one, the code was not slop, pretty good, with basically the same performance
+[05:32:06.640 --> 05:32:07.160] as before.
+[05:32:07.620 --> 05:32:11.200] However, the compilation time was way too slow.
+[05:32:12.220 --> 05:32:16.740] Because people coming from a JavaScript background don't expect any compilation time.
+[05:32:20.200 --> 05:32:22.380] So 50 seconds for...
+[05:32:22.380 --> 05:32:27.800] Cloud Code is a pretty large code base, but this meant that other projects would take
+[05:32:28.660 --> 05:32:38.480] at seconds, and people don't want to wait that long. So we're going to rewrite it again.
+[05:32:40.360 --> 05:32:47.680] And because in older versions of this compiler, it was taking like 10 to 20 seconds. And then
+[05:32:47.680 --> 05:32:55.100] Cloud does this thing where it'll try to size up everything to judge whether or not it's
+[05:32:55.100 --> 05:33:00.080] worth working on, but it's really easy to convince yourself that your measurements are
+[05:33:00.080 --> 05:33:12.200] good when they're not good. And part of it was also, why is this 900,000 lines of code?
+[05:33:12.300 --> 05:33:24.260] This should be a lot smaller. So then we did it one more time. And the code was good.
+[05:33:25.140 --> 05:33:28.540] and the build time was under 20 seconds.
+[05:33:36.340 --> 05:33:38.440] It's possible that we end up with a sixth time
+[05:33:38.440 --> 05:33:41.800] sometime later, but the fifth one is very shippable,
+[05:33:41.960 --> 05:33:44.240] and I've worked on this for enough time
+[05:33:44.240 --> 05:33:45.880] that it's time to ship it.
+[05:33:48.460 --> 05:33:53.200] A lot of this was just like, hey, Claude, try this idea,
+[05:33:55.100 --> 05:33:56.500] and then it would size up the idea.
+[05:33:57.920 --> 05:34:00.000] And I think this is still kind of not right.
+[05:34:01.720 --> 05:34:06.200] I think a lot of this are things that we should try again
+[05:34:06.940 --> 05:34:09.300] and not let it, kind of what I said earlier
+[05:34:09.300 --> 05:34:14.660] about sizing up the impact of a change
+[05:34:14.660 --> 05:34:18.540] is it's really easy to size it up incorrectly
+[05:34:18.540 --> 05:34:19.780] and then talk yourself out of it.
+[05:34:21.240 --> 05:34:23.660] So I think this probably needs to be revisited more.
+[05:34:26.240 --> 05:34:32.840] My old approach, particularly with the Bunn-Ross rewrite, was very much leaning on cloud code
+[05:34:32.840 --> 05:34:40.920] workflows to do things. And pretty much now, with the most recent models, I mostly just rely on
+[05:34:40.920 --> 05:34:48.200] sub-agents that are very long-lived, except for that initial part where you're writing all the
+[05:34:48.200 --> 05:34:55.760] code all at once. And this, with the subagents, it works pretty well because they keep all
+[05:34:55.760 --> 05:35:02.940] the context of the relevant code in their head or, like, in the context window. And
+[05:35:04.320 --> 05:35:09.000] that's less wasteful. And they can just keep going.
+[05:35:14.580 --> 05:35:17.880] Here's a little more about how the different parts of the compiler works.
+[05:35:19.820 --> 05:35:27.060] Generally, it's like if we can confidently prove that the value is,
+[05:35:27.160 --> 05:35:28.960] like the types are the same, that they're monomorphic,
+[05:35:29.080 --> 05:35:30.800] then it can become a field access.
+[05:35:31.360 --> 05:35:33.740] Otherwise, it has to check every single time.
+[05:35:36.040 --> 05:35:38.960] and it has some inline caching, but not a lot.
+[05:35:42.500 --> 05:35:46.420] As with a project of this size, you really do need to,
+[05:35:46.660 --> 05:35:48.140] it's kind of hard to follow sometimes
+[05:35:48.140 --> 05:35:50.060] what everything's happening.
+[05:35:50.420 --> 05:35:54.780] So I leaned a lot on just having an hourly update
+[05:35:56.580 --> 05:35:58.300] and where it would post a scorecard
+[05:35:58.300 --> 05:36:01.180] comparing a bunch of metrics that we were prioritizing.
+[05:36:04.860 --> 05:36:09.080] Usually, though, when it was posting in Slack, it would show a previous and this version,
+[05:36:09.180 --> 05:36:14.640] so that way it was easy to see if numbers went up or down. But it's not helpful in a
+[05:36:14.640 --> 05:36:26.020] slide because the previous one is just legit. The important thing is none of these tests,
+[05:36:26.020 --> 05:36:34.780] for the most part are things that are made up. They're things that predated the project,
+[05:36:34.840 --> 05:36:41.920] so that way we know that the agent couldn't have messed with it. Fusilli is like a JavaScript
+[05:36:41.920 --> 05:36:49.600] engine fuzzer that V8 uses. And we were already using that in VUN, but we also extended it
+[05:36:49.600 --> 05:36:54.780] to have to test for TypeScript types as well.
+[05:36:59.660 --> 05:37:02.620] And it's also important to check that the tests actually
+[05:37:02.620 --> 05:37:05.700] catch things, because it's really easy to fool yourself
+[05:37:05.700 --> 05:37:07.960] that it's finding bugs when it's not finding bugs.
+[05:37:11.420 --> 05:37:14.940] Some more numbers on the ahead of time compiler.
+[05:37:16.480 --> 05:37:24.760] It generally, for most projects, outperforms the JIT. Not always. You can see in the uglify.js
+[05:37:24.760 --> 05:37:28.880] case. And that's basically if it has to use the interpreter a lot. So if there's a lot
+[05:37:28.880 --> 05:37:41.540] of eval or a new function, then it's not faster. But most applications don't do that. And it's
+[05:37:41.540 --> 05:37:46.740] like make it as close as possible as you can get to a one-liner to make an application
+[05:37:46.740 --> 05:37:53.780] run faster. This is not 100% true, because as you can see, a Glify.js, and there are
+[05:37:53.780 --> 05:38:02.920] other cases as well, but it is often true. So, yeah, the other thing is object prototype.
+[05:38:03.780 --> 05:38:10.480] This is a rare edge case, but basically there's a lot of security vulnerabilities in JavaScript
+[05:38:11.560 --> 05:38:16.280] prototype pollution, and this usually works by assigning properties onto object.prototype,
+[05:38:17.160 --> 05:38:25.200] and the compiler bans that. So, like, for a large project like this, what do you actually do all
+[05:38:25.200 --> 05:38:36.080] day? These are, like, the top messages that I sent, saying continue a lot. Also, like, my laptop kept
+[05:38:36.080 --> 05:38:47.460] dying. And then, like, but more concretely, what you actually do is, like, a bunch of
+[05:38:47.460 --> 05:38:54.200] leading questions, like, why are we doing this? Can we do this? Also, I end up saying,
+[05:38:54.580 --> 05:38:59.520] can you do this faster? Or, like, what's taking so long? Because it kind of, like, talks itself
+[05:38:59.520 --> 05:39:00.500] into making up rules.
+[05:39:07.440 --> 05:39:09.540] And also, it tends to not be,
+[05:39:10.220 --> 05:39:13.120] it tends to like underestimate what it can do.
+[05:39:15.220 --> 05:39:17.880] So I often end up saying things like this to Claude
+[05:39:17.880 --> 05:39:22.480] to get it to like try harder.
+[05:39:27.400 --> 05:39:33.680] And the result is that Jetstream 3, which is one of the main benchmarks that JavaScript
+[05:39:33.680 --> 05:39:46.120] engines use, the BUN outperforms both JavaScript core's JIT and Node.js in V8's JIT in most
+[05:39:46.120 --> 05:39:46.440] of them.
+[05:39:52.880 --> 05:39:59.140] And the whole time, it's been using Cloud Code to build the Bun compile, to build Bun
+[05:39:59.140 --> 05:39:59.720] compile itself.
+[05:40:00.000 --> 05:40:01.940] and then using the build of Cloud code that
+[05:40:01.940 --> 05:40:03.580] was compiled with one compile.
+[05:40:09.280 --> 05:40:11.440] So sort of how I think about this is,
+[05:40:13.200 --> 05:40:15.660] the testability thing is super important when you're
+[05:40:15.660 --> 05:40:17.340] working on a large project with Cloud,
+[05:40:19.040 --> 05:40:21.360] and to make sure that the tests actually test things.
+[05:40:23.980 --> 05:40:26.120] And if you're not actively remeasuring,
+[05:40:26.360 --> 05:40:28.300] then it's going to get worse.
+[05:40:30.000 --> 05:40:39.020] going on, it's really easy to lose track. And it's easier for large projects like this
+[05:40:39.020 --> 05:40:47.980] that haven't shipped yet to rewrite than it is to refactor. And if you don't act ambitiously,
+[05:40:48.060 --> 05:40:54.900] then the models will start having 0.1% improvements instead of 10% improvements.
+[05:40:54.900 --> 05:40:58.060] So you kind of have to constantly nudge it to like,
+[05:40:58.520 --> 05:41:01.100] hey, you can do really cool things if you try harder.
+[05:41:06.800 --> 05:41:08.240] You can try this now if you want,
+[05:41:08.420 --> 05:41:11.300] by running bun upgrade dash dash canary if you have bun installed,
+[05:41:12.900 --> 05:41:14.460] and then just bun compile.
+[05:41:21.820 --> 05:41:22.520] Thanks, everyone.

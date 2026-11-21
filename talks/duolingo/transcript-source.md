@@ -1,0 +1,321 @@
+# Duolingo 怎样让 Agent 写的 iOS 测试走到合并？
+
+Kush Agrawal
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据大会主回放第 15 场整理 49 段中英资料。英文为机器转写，中文沿用现有校译及缺漏标记。最后一条时间范围沿用原转写块，正文截到 Kush 的道别句。覆盖率、测试行数和 PR 数由讲者报告，尚无独立复测。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 发布规模、代码架构与测试覆盖率 / Release scale, architecture, and coverage
+
+[04:42:54.040—04:43:15.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=16974s)
+
+大家好，谢谢收看。今天我会讲讲，我们在 Duolingo 怎么用 AI Agent 给 iOS 代码库编写并合入超过 20 万行单元测试，也会分享我们搭了什么、过程中学到了什么。我叫 Kush，是 Duolingo 平台团队的 Staff 工程师。我负责给参与客户端应用开发的 100 多位工程师做开发工具和 AI 工作流。来 Duolingo 之前，我在 Stripe 和 Uber 的几个团队加起来工作了将近十年。
+
+hey everyone thanks for tuning in today i'm going to walk you through how we use AI agents at Duolingo to write and ship more than 200 000 lines of unit tests on iOS code base i'll share what we build and what we learned along the way i'm Kush i'm a staff engineer on the platform team here at Duolingo my job is to build developer tooling and AI workflows for the 100 plus engineers who contribute to our client apps. Before Duolingo, I spent close to a decade at Stripe and Uber working across a few teams there.
+
+[04:43:17.060—04:43:42.220](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=16997s)
+
+先介绍一下 Duolingo 移动端的规模。我们每周都会向 App Store 发布应用。我们也非常依赖实验，任何时候都有 600 多项 A/B 测试在线运行。代码库已经相当成熟，iOS 和 Android 应用都做了十多年。这张图还展示了 iOS 代码库里可执行的应用代码行数。你可以看到，2019 年大约是 20 万行，现在已经
+
+Let's start with some background on the scale of mobile at Duolingo. We ship our apps to the App Store every week. We're also a very experiment-driven company, so at any given point of time, we have more than 600 AB tests running live, and our code bases are pretty mature. Both the iOS and Android apps have been around for more than 10 years at this point. Here's also the number of executable lines of app code in our iOS repository. So as you can see, back in 2019, we were at about 200,000 lines and today we're
+
+[04:43:42.220—04:44:06.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17022s)
+
+接近 200 万行。随着 AI 辅助编程普及，曲线已经开始往上弯。除了代码量在变，写代码的人也在变。去年大约 200 人为 iOS 仓库贡献了代码，今年已经超过 250 人（据大会独立字幕）。很多人并非 iOS 工程师，后端工程师、Android 工程师，甚至产品经理和设计师也都在向 iOS 应用交付代码。这主要得益于 Cursor、Claude Code 这样的 AI 编程工具。
+
+hit close to 2 million. And as AI-assisted coding picks up, you can see that curve starting to bend upward. And it's not just the amount of code that's changing, it's also who's writing it. So last year, about 200 people contributed to the iOS repository, and this year we've already crossed to 50. And a lot of these folks aren't even iOS engineers. We have backend engineers, Android engineers, even PMs and designers all shipping code to the iOS app. And that's mostly been unlocked by AI coding tools like Cursor and Cloud Code.
+
+转写校注。The conference captions report over 250 contributors to the iOS repository this year.
+
+[04:44:07.300—04:44:18.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17047s)
+
+还有一点，我们的代码库正处在迁移过程中。几年前，我们把 MVVM 定为标准架构。现在库里大约一半代码采用这种架构，另一半仍是正在迁移的遗留代码。
+
+Another thing to note about our code base is that it's a code base in transition. So a few years ago, we standardized on the MVVM architecture pattern. Today, about half the code in our repository follows that pattern, and the other half is still legacy code that we're in the process of migrating.
+
+[04:44:19.060—04:44:30.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17059s)
+
+采用 MVVM 的那一半最容易测试，所以项目就先做这一块。这是今年 3 月开始时的情况。总体单元测试覆盖率是 11%，MVVM 各层的覆盖率还要低一点。
+
+Since the MVVM half is the easiest to test, that's where we focused on this project. Here's where we started back in March of this year. We were at overall unit test coverage of 11%. The MVVM layers were a bit lower.
+
+[04:44:31.400—04:44:58.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17071s)
+
+仓库层是 11%，ViewModel 是 9%，数据源是 5%。MVVM 部分合起来大约是 9%。为什么现在这比以前更重要？Agent 和人都能写更多代码，也写得更快，难点转到了验证。有人提了一个 PR，你怎么知道它可以安全发布？瓶颈正从编写转向验证。这就是单元测试能派上用场的地方。它们是测试金字塔的基础，写起来成本低，运行也
+
+Repositories were at 11%. ViewModels at 9%. at five and combined we are about 9% for the MVVM slice of the app. So why does this matter now more than it used to? As agents and humans write more code and write it faster, writing code isn't the hard part anymore, verifying it is. So when someone puts up a PR, how do you know that it's actually safe to ship? The bottleneck is really shifting from writing to verifying. And that's where unit tests come in. They make up the base of the testing pyramid, they're pretty cheap to write and pass to
+
+[04:44:58.140—04:45:09.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17098s)
+
+快，还能给 Agent 加上约束。如果 Agent 的改动让 CI 里的测试失败……[此处转写有缺漏] 测试也是随代码更新的文档，说明代码应该怎么表现。接下来是八个月后的结果。
+
+run, and they also act as guardrails for agents. So when an agent's change breaks a test in CI, They also act as living documentation on what the code is supposed to do. And here's where we ended up eight months later.
+
+[04:45:09.420—04:45:20.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17109s)
+
+总体单元测试覆盖率从 11% 到 24%。仓库层从 11% 到 72%，ViewModel 从 9% 到 58%，数据源从 5% 到 41%。整个应用的 MVVM 部分从 9% 到 59%。
+
+Overall unit test coverage went from 11% to 24%. Repositories went from 11% to 72%. View models from 9% to 58%. Data sources from 5% to 41%. And the combined MVVM slice of the app went from 9% to 59%.
+
+## 五步循环与工作流基础设施 / The five-step loop and its infrastructure
+
+[04:45:20.980—04:45:30.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17120s)
+
+我们具体做了什么？写在纸上是个相当简单的循环。先找出需要测试的文件，再让 Agent 写测试，接着验证测试的质量，以及它能不能通过 CI。
+
+So what did we actually end up building? On paper, it's a pretty simple loop. First, you identify the files that need tests. Then you write those tests with an agent. You verify that the tests are good quality and they pass CI.
+
+[04:45:30.560—04:45:41.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17130s)
+
+然后处理这份 PR，也就是请工程师审查，把它合入。[此处转写有缺漏] 最后根据反馈迭代，让下一批 PR 比上一批好。生产环境里要复杂一些，我们最后搭出来的系统是这样的。
+
+Then you resolve the PR, which means getting interviewed by an engineer and watched. And finally, you iterate on the feedback so that the next batch of PRs is better than the last one. When production is a little messier, this is what our system ended up looking like.
+
+[04:45:41.580—04:45:50.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17141s)
+
+我这里不逐个讲图上的方框。大体上，它由几条 Temporal 工作流组成，通过存储在 S3 的共享状态互相协调。图上每个方框都对应我刚才说的五个步骤之一。
+
+I won't go through every box right now, but at a high level, it's a few temporal workflows that coordinate through shared state stored in S3. And every box you see here maps back to one of the five steps I just talked about.
+
+[04:45:51.500—04:46:03.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17151s)
+
+这是我们最后用到的组件。Temporal 负责工作流的编排和执行，Claude Code 充当编程 Agent，S3 保存共享状态，让各个工作流保持同步。GitHub 负责 Actions、标签和 PR。
+
+Here are the building blocks that we ended up using. Temporal handles workflow orchestration and execution. Cloud code acts as the coding agent. S3 holds the shared state that keeps our workflows in sync. And we use GitHub for actions, labels, and PRs.
+
+[04:46:04.060—04:46:28.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17164s)
+
+Datadog（据大会阅读版） 提供可观测层，让我们能关注各条流水线是否健康。如果你没用过 Temporal，可以把它理解成能持久运行的工作流执行引擎。你用普通 Python 代码写工作流，执行进程崩溃了，工作流就从中断的地方继续。这很适合 Agent。一次 Agent 会话短则几秒、长则几小时，可以调用 GitHub、CI、S3、Claude 等工具。我们还用了 Temporal 的一些内置功能，比如类似 cron 的定时调度，
+
+acts as an observability layer where we keep an eye on the health of our pipelines. If you haven't used Temporal before, it's basically a durable workflow execution engine. You write your workflows as normal Python code and if a worker crashes, the workflow just picks up right where it left off. This fits agents really well. An agent session can run for seconds to hours and it can call out to tools like GitHub, CI, S3 and Claude. We also lean on a few built-in features of Temporal. There are schedules, which are basically cron-like schedules
+
+转写校注。The conference reading edition identifies Datadog as the observability layer.
+
+[04:46:28.760—04:46:37.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17188s)
+
+用来安排我们的作业。工作流可以组合，从而把工作分发出去并行处理。它还原生支持重试、超时和幂等性，避免同一个文件启动重复执行。
+
+for our jobs. There are composable workflows so that we can fan out work in parallel. Then there's first class support for retries and timeouts and item potency so that we never kick off duplicate runs of the same file.
+
+## 从本地验证走到定时补测 / From local proof to production backfills
+
+[04:46:38.660—04:46:51.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17198s)
+
+我们把项目拆成四个里程碑。第一是本地验证，先看项目到底可不可行。第二是定时补测，用工作流给现有代码写测试。第三是 PR 生命周期工作流，确保这些 PR 真能走到合并。
+
+To split up this work, we split this project into four milestones. The first was local validation. Basically, is this project even viable? The second was a scheduled backfill workflow to write tests for existing code. The third was a PR lifecycle workflow to actually get those PRs merged.
+
+[04:46:52.080—04:47:03.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17212s)
+
+第四是用标签触发，让工程师也能给正在写的新代码配上测试。下面按顺序讲。真正动手搭系统前，我们希望先用尽可能少的工作，搞清楚 Agent 能不能把这个活儿做好，能不能规模化做。
+
+And the fourth was a label trigger so engineers can get tests for the new code that they're writing. Now we'll go through each of these in order. Before building anything real, we wanted to do the least amount of work possible that would tell us whether an agent could actually do this job well and do it at scale.
+
+[04:47:04.320—04:47:15.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17224s)
+
+我们一开始只在本地简单配置了 Claude Code，让一条 Claude Code 命令充当编排器。它运行 Xcode 构建脚本，在本地生成覆盖率报告，再把报告送给我们写的文件选择脚本。
+
+We started with a very simple local cloud code setup where we had one cloud code command that acted as an orchestrator. It ran an Xcode build script to generate a code coverage report locally. Then it fed that report through a file selection script that we wrote.
+
+[04:47:16.060—04:47:28.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17236s)
+
+接着，每个选中的文件交给两个子 Agent，一个写测试，另一个开 PR。我们循环运行，生成了一批 PR。具体来说我们跑了两批，第一批 17 份 PR，合了 8 份。
+
+And then it handed each selected file off of two sub agents. One wrote the tests and the other one opened the PR. We ran this in a loop and generated a bunch of PRs. We basically ran this in two batches. The first batch had 17 PRs and we merged 8 of them.
+
+[04:47:28.960—04:47:47.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17248s)
+
+第二批 40 份，合了 19 份，所以合并率大约 50%。这一步的目标是摸清 Agent 会在哪些地方出错，在投入生产前解决那些细小但碍事的问题。我们用的是一个规模很大的老代码库，XCTest 和 Swift Testing 都有。Agent 有时会弄混，把两套框架写进同一个文件。我们明确告诉它什么时候该用哪套，就解决了这个问题。
+
+The second had 40 PRs and we merged 19. So that's roughly a 50% merge rate. But the goal here wasn't to merge a lot of PRs, it was to learn how the agents fail and to fix those paper cuts before productionizing anything. Here are some of the failure modes that we saw. Since we're a large legacy codebase with both XCTest and Swift testing, the agents would sometimes get confused and mix the two in one file. We fixed that by giving the agents clear rules on when to use each.
+
+[04:47:48.200—04:47:59.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17268s)
+
+我们还有一个很大的用户客户端单例类。有些代码传的是具体类型，有些传的是协议类型。[此处转写有缺漏] 我们把整个代码库迁到基于协议的版本，再加一条 lint 规则来约束。
+
+We also had a giant user-client singleton class. Some code passed around the concrete version of around the protocolized version. So we migrated the entire code base over to the protocolized version and added a lint rule to enforce it.
+
+[04:47:59.600—04:48:12.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17279s)
+
+这样一大批文件都变得更容易测试，对 Agent 和工程师都一样。我们还遇到 Swift 6 的并发问题，以及 Agent 写了依赖计时的测试，这类测试很容易在 CI 里时好时坏。我们改进了测试 Skills 里的规则和示例，来处理这两个问题。
+
+This made the whole host of files easier to test for agents and for humans. We also ran into Swift 6 concurrency-related issues and agents writing timing-based tests, which are a big source of flakiness in CI. So we improved the state for both of these with better rules and examples in our testing skills.
+
+[04:48:14.180—04:48:23.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17294s)
+
+接下来是第二个里程碑。我们的覆盖率落后很多，最能见效的是给已经合并的代码补测试。这就是定时补测工作流发挥作用的地方。
+
+Now this brings us to Milestone 2. Since we were so far behind on code coverage, the biggest leverage that we saw was backfilling tests for code that was already merged in. That's where the scheduled backfill workflow comes in.
+
+[04:48:24.040—04:48:46.120](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17304s)
+
+这是生产里实际运行的工作流设计图。它基本上做两件事，左半边负责找出哪些文件需要测试，右半边让 Agent 动手写测试。先讲左边。iOS 仓库每次有 PR 合进主分支，就触发一项 GitHub Actions 作业，生成 Xcode 覆盖率报告并上传到 S3。这个报告就是最新代码覆盖率的权威来源。
+
+system design diagram for that workflow as it runs in production and it essentially does two jobs the left half is to identify which is picking the files that need tests and the right half is right which is having the agents actually write those tests let's start with identify every time a pr merges to the main branch in the ios repo we kick off a github access job that generates an xcode coverage report and uploads it to s3 that becomes a source of truth for the latest code coverage
+
+[04:48:46.500—04:49:12.960](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17326s)
+
+补测工作流会取回这份报告，交给选择脚本选出下一批待测文件。细说一下这个脚本。它会给每个 Swift 文件打分，衡量我们有多大把握让 Agent 写出好测试。最强的信号是文件类型。ViewModel、仓库层和数据源的得分会乘以 2.5，遗留代码的优先级会降低。UI 代码暂时完全跳过，因为那里更适合快照测试。较大的文件也会扣分，这样优先处理的是我们
+
+the backfill workflow then fetches that report and runs it through a selector script which picks the next set of files to test. Let's get a little deeper into the selector script. Its job is essentially to score every switch file based on how confident we are that an agent can write a good test for it. The strongest signal is file type, so view models, repositories, and data sources get a 2.5x boost, while legacy files get pushed down. We skipped UI code completely for now since snapshot tests are better fit there. And larger files also get a penalty, so we prioritize code that we're
+
+[04:49:12.960—04:49:38.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17352s)
+
+有把握测好的代码。接下来才真正开始写测试。我们会启动子工作流并行处理。[此处转写有缺漏] 每一次运行中，Agent 都先克隆 iOS 仓库，再读我们放在仓库里的测试 Skill，那里说明了怎么写好一个测试。之后它编写测试，加上需要的 mock 和 fake，再创建一份 PR，打上生成测试的标签，方便之后识别。这些 Agent 都跑在 Duolingo 的 Cloud Coding Agent 平台上，这个平台也
+
+confident that we can test well. The next step is to actually write the tests. We kick off one child parallel. In each one of these runs, the agent clones the iOS repository, reads the testing scale that we keep in the repo, which spells out how to write a good test. Then it writes the test, plus any mocks and fakes it needs, and opens a PR with a generated test label so we can identify it easily later. These agents run on Duolingo's Cloud Coding Agent, which is a platform that also
+
+[04:49:38.420—04:50:00.480](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17378s)
+
+跑在 Temporal 上。最容易理解的方式，就是把它看作云端 Claude Code 和 Codex 上面的一层封装。我们可以从 Slack、Temporal 或 GitHub 调用它。它通过 MCP 接入不少内部工具，还会记录一系列事件，这样我们知道每次 Agent 运行在做什么、花了多少钱。我们最初在 Linux 机器上跑，后来迁到了 Mac 运行器。等一下会讲到为什么这一点重要。图上是生成的测试 PR。每份
+
+runs on Temporal. The simplest way to think about it is as an abstraction on top of Cloud Code and Codex running in the cloud. We can invoke it from Slack, Temporal, or GitHub. It talks to a bunch of internal tools for MCP and it logs a bunch of events so we can see what each agent run is doing and how much it costs. We started running these on Linux machines and then later moved them to MacRunners which will become important in a minute. Here's what a generated test PR looks like. Every
+
+[04:50:00.480—04:50:13.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17400s)
+
+PR 的说明都用同一个模板，明确写着由 AI 生成。审查人有四个选项。可以批准，让 PR 自动合并；可以直接推送修改；可以改派给更合适的人；也可以关掉 PR，并说明为什么无法合并。
+
+PR description follows the same template and it says explicitly that the PR is AI generated. The reviewer has four options. They can approve it in the PR auto merges. They can push changes to it directly. They can reassign it to someone better suited or they can close it out with feedback on why it isn't mergeable.
+
+## PR 生命周期与标签触发 / The PR lifecycle and label-triggered tests
+
+[04:50:14.620—04:50:24.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17414s)
+
+补测进入生产后，我们碰到了一个新的问题。一下子多出几十到几百份未关闭的 PR，没人能手动管得过来。怎么把它们都推进到可以合并的状态，并交到合适的审查人手里？
+
+Now, once we had the backfill running in production, we had a slightly new problem. We suddenly had tens to hundreds of open PRs that nobody could manage by hand. So how do we get all of these to a mergeable state and in front of the right reviewer?
+
+[04:50:25.940—04:50:45.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17425s)
+
+这就是 PR 生命周期工作流的用处。可以把它想成一个状态机。每隔几个小时跑一次，看一遍每份仍然开放的生成测试 PR，每份只执行一个动作。它覆盖循环里的接下来两步。先验证 PR 能否通过 CI、质量是否达标，再请人处理。[此处转写有缺漏] 这个工作流的逻辑是一棵简单的决策树。
+
+That's where the PR lifecycle workflow comes in. You can think of it as a state machine. It runs every couple of hours, looks through every open generated test PR, and takes exactly one action on each. It covers the next two steps of our loop, verify, which is does this PR pass CI and is it high quality, and resolve, which is getting a human The logic for this workflow is a simple decision tree.
+
+[04:50:45.760—04:50:52.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17445s)
+
+如果有合并冲突，或者 PR 已经挂了大约三个星期，就关闭并标记为过期。如果 CI 还在跑，或已经有审查人在处理，就跳过。
+
+If there are any merge conflicts or the PR has been open for about three weeks, we close it out and mark it as stale. If CI is still running or a reviewer is already on it, we skip it.
+
+[04:50:52.400—04:51:02.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17452s)
+
+如果 CI 绿了，还没人审查，就找一个人并把 PR 指派给他。CI 红了就尝试修复。审查人拒绝了 PR，对应的文件就进入 30 天的冷却期，避免同一份 PR 反复去打扰工程师。
+
+If CI is green and there's no reviewers, we find one and sign them. If CI is red, we try to fix it. And if the reviewer rejects the PR, the file goes into a 30-day cooldown, so we're not spamming engineers with the same PR again and again.
+
+[04:51:03.560—04:51:25.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17463s)
+
+CI 失败时，我们先看是哪项作业失败。如果是 pre-commit，就用 GitHub Actions 自动修复，便宜、确定，也不需要 Agent。其他失败可以让另一个 Agent 读 CI 日志，把修复推到 PR。这个循环最多试五次，第五次仍失败就关闭 PR，免得无限修下去。CI 绿了以后，我们要找合适的审查人。做法是对被测试的源文件运行 git blame，找到
+
+When CI fails, the first thing we check is which job failed. If it's pre-commit, a GitHub action applies the fix. It's cheap, it's deterministic, and there's no agent needed. another agent that reads the CI logs and pushes a fix to the PR. We cap that whole loop at five attempts, past that we close the PR rather than trying to fix it forever. Once CI is green, we need to find the right reviewer. What we do is we run git blame on the source file being tested, find the
+
+[04:51:25.720—04:51:40.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17485s)
+
+主要贡献者，把 PR 分给他，再开启自动合并。他批准就合并，他拒绝，对应文件就进入我刚才讲的 30 天冷却期。这就到了第四个里程碑。有了给现有代码补测试的办法，我们想让工程师给刚写的新代码配测试时也同样省事。
+
+top contributor and assign it to them and turn on auto merge. If they approve it, the PR gets merged. If they reject it, the file goes into the 30 day cooldown, which I previously mentioned. This brings us to milestone four. Once all of this was backfilling tests for existing code, we wanted to make it just as easy to get tests for the new code engineers were writing.
+
+[04:51:42.540—04:51:51.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17502s)
+
+工程师在自己的 PR 上加一个「写测试」标签即可。它接入的就是刚讲过的 Temporal 基础设施。真正的区别只有文件选择。这里不用选择脚本，直接从工程师的 PR 取文件。
+
+add a right test label to their own PR. It hooks into the same temporal infrastructure we just walked through. The only real difference is selection. Instead of the selection script, we take the file straight from the engineer's PR.
+
+[04:51:51.740—04:52:01.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17511s)
+
+Agent 写好测试，你会收到一份草稿测试 PR，里面链接回原来的 PR。接下来讲讲我们遇到的一些困难。一开始 Agent 跑在 Linux 机器上，没有装 Xcode 或 SwiftLint。
+
+The agent writes the tests and you get a draft test PR link back to your original one. Now let's talk about some of the challenges that we ran into. Our agents originally ran on Linux machines which don't have Xcode or SwiftLint installed.
+
+## 运行环境与三层质量控制 / Execution environment and three layers of quality checks
+
+[04:52:01.400—04:52:25.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17521s)
+
+结果 Agent 开完 PR 后，大约 20 到 30 分钟，CI 经常会在 lint 上失败。这样既浪费 Agent 时间，也浪费越来越紧缺的 CI 时间。有一阵子，13.6% 的 PR 因 lint 出问题。我们查下去，发现其中 62 次失败都来自同两条 lint 规则。我们分层解决。先在提示里给更好的示例，说明哪些坑要避开，再加一个 GitHub Actions 作业，在 CI 里自动修 lint 错误，然后审查
+
+So when an agent would open a PR, after about 20 or 30 minutes, CI would fail frequently on Lint. This wastes the agent's time and CI time as well, which is an increasingly scarce resource. For a while, 13.6% of our PRs due to lint and then when we dug into it 62 of those failures came from just two lint rules we fixed this in layers the first was better examples in the prompt along with pitfalls to avoid the second was a github action that auto fixes lint errors in ci the third was an audit
+
+[04:52:25.380—04:52:44.400](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17545s)
+
+无法自动修复的规则，把实际价值不高的规则删掉，Agent 和工程师都能轻松一点。最后，真正解决问题的是把 Agent 移到 Mac 运行器上。现在它们在开 PR 之前，就能本地构建和检查 lint。第二个难题是 PR 质量。把 PR 指派给工程师时，我们希望那是一份他审完后能放心批准的改动。
+
+of the rules that couldn't be auto fixed we essentially removed the ones that weren't high signal and this made life easier for both agents and human engineers and finally the real fix came when we moved the agents to turn on mac runners so now the agents could build and lint the code locally before ever opening a pr the second challenge was pr quality when we assign a pr to we want it to be something they'd actually feel comfortable proving.
+
+[04:52:44.960—04:52:55.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17564s)
+
+可 Agent 有时会走最短的路，只求把 CI 变绿。我们见过它们改生产代码，让本来失败的测试通过。也见过它们修改、删除或屏蔽现有测试。还有的会往测试里塞一段很长的等待，让 CI 时好时坏。
+
+But agents sometimes take the shortest path to green CI. We saw agents editing production code to make a failing test pass. We also saw them modifying, deleting, or silencing existing tests. And then we saw them adding long wait to tests, which can make CI flaky.
+
+[04:52:56.880—04:53:05.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17576s)
+
+这次也没有一个招数能解决所有问题，于是我们加了三层。第一层是确定性的规则。如果一份 PR 碰了测试文件、mock、fake、stub 以外的任何文件，就把它关掉。
+
+Again, there was no single fix here, so we built three layers. The first is the deterministic rule. If a PR touches any file that isn't a test, a mock, a fake, or a stub, we close it out.
+
+[04:53:05.780—04:53:16.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17585s)
+
+第二层建立在已有的 AI 代码审查上。在 Duolingo，我们用 Claude 和 Codex 审查每份 PR，这些机器人经常会留评论。所以我们做了一个 Agent，在人看 PR 之前，先处理掉所有 P0 优先级的审查意见。
+
+The second builds on our AI code review. At Duolingo, we use Claude and Codex to review every PR, and those bots often leave comments. So we built an agent that resolves any P0 comments before a human ever looks at the PR.
+
+[04:53:17.040—04:53:28.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17597s)
+
+第三层是用 LLM 当裁判。这是专门给这些测试 PR 做的审查 Agent。它读 PR 的差异，拒绝修改生产代码、改动或删除现有测试、禁用测试，以及加入长等待的 PR。随着我们发现更多问题，也会不断给它加检查。
+
+And the third is an LLM as a judge. It's a reviewer agent built just for these test PRs. It reads the PR diff and rejects production edits, changed or deleted tests, disabled tests, and long waits. And as we learn more, we keep adding additional checks to it.
+
+[04:53:29.860—04:53:45.400](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17609s)
+
+到目前为止，这个 LLM 裁判审过大约 1,200 份 PR，拒绝了 73 份。每次拒绝都会像图里这样留一条评论，明确说明拒绝理由。我们再读这些反馈，更新提示和 Skills。接下来看看最后的结果。
+
+So far, the LLM as a judge has reviewed about 1,200 PRs and rejected 73 of them. Every rejection comes with a comment like this one saying exactly why the PR was rejected. We then read that feedback and fold it back into our prompts and skills So let's talk about what all of this added up to.
+
+## 生产结果、趋势与后续应用 / Results, trends, and wider applications
+
+[04:53:45.820—04:53:59.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17625s)
+
+从项目启动以来，流水线已经合入 700 多份测试 PR，增加大约 22.5 万行测试代码。每份 PR 都由人审查并批准。MVVM 的测试覆盖率从 9% 到 59%，总体覆盖率从 11% 到 24%。
+
+Since we started, the pipeline has merged more than 700 test PRs, adding about 225,000 lines of test code. Every one of those PRs was reviewed and approved by a human. MVVM test coverage went from 9% to 59%, and overall coverage went from 11% to 24%.
+
+[04:53:59.700—04:54:12.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17639s)
+
+最重要的是，现在工程师和 Agent 都可以更快、更放心地向这个代码库交付改动。还有几组有意思的数据。从 3 月起，仓库里新增的测试文件有 34% 是这条流水线写的，新增测试用例有 44%，新增 Swift 代码行数有 10%。
+
+Most importantly, we now have a code base where engineers and agents can ship faster and with more confidence. Here's a few more interesting stats. Since March, the pipeline has written 34% of all new test files in the repo, 44% of all new test cases and 10% of every Swift line added to the code base.
+
+[04:54:13.320—04:54:24.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17653s)
+
+有意思的是，过去几个星期，这个占比反而下降了，因为工程师自己开始写更多测试了。说实话，这正是我们的最终目标。这张图是 4 月份开始定时补测以来的覆盖率曲线。
+
+And interestingly, that share has actually dripped in the last few weeks because engineers are now writing a lot more tests themselves, which is honestly their end goal. And here's the coverage curve since April when the backfill started running on a schedule.
+
+[04:54:24.580—04:54:37.800](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17664s)
+
+可以看到，6 月和 7 月前后，曲线略微向上弯。当时我们把这条流水线的运行规模提上去了。这个项目让我们学到了什么？第一，这套做法可以用到其他场景。刚才讲的识别、编写、验证、处理和迭代，
+
+You can see it bent slightly upward around June and July, which is when we really ramped up the pipeline. So what have we learned while doing this project? The first thing is that this pattern generalizes. The loop we talked about, identify, write, verify, resolve, intrate, it isn't specific to testing.
+
+[04:54:39.140—04:54:59.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17679s)
+
+也能用来处理那些容易见效的任务。凡是流程形态符合的工作，都能用同一套基础设施。[此处转写有缺漏] 我们公司已经在这么做了。同一个循环用来升级现有代码，比如把页面迁到 MVVM 和 SwiftUI、把 Android 代码迁到协程，以及生成快照测试。结束前想留给大家一个思考题。现在有一类速度很快的通用分类器，比如 Jev。
+
+hanging fruit and any job that fits the shape can run on the same infrastructure. And that's exactly what we're starting to do at the company. We're applying the same loop to modernization, to modernizing screens to MVVM and SwiftUI, migrating code on Android to coroutines and generating snapshot tests. So before I wrap up, I want to leave you with a thought experiment. There's a new class of fast general purpose classifiers like Jev.
+
+[04:54:59.400—04:55:22.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17699s)
+
+它们接收一份状态，在毫秒内输出一个动作。如果用这样的分类器替换 PR 生命周期工作流里手写的决策树，会怎样？输入 PR 状态，它几毫秒就能选出动作。我还要谢谢一起做这个项目的 Jesse、Guadalupe、Hunter 和 Zhihau。[末位姓名拼写来自转写] 他们搭了项目依赖的很多平台组件，也帮忙审查了很多代码。我就讲到这里。非常感谢各位听到现在。如果
+
+They take in some state and output an action in milliseconds. So what if we replace a handwritten decision tree in the PR lifecycle workflow with one of these? PR state goes in, the classifier picks it all in milliseconds. I also want to thank a few folks who worked on this with me, Jesse, Guadalupe, Hunter, and Zhihau. They built a lot of the platform pieces this project stands on and helped review a lot of this code. That's it for me. Thank you so much for making it this far. If
+
+[04:55:22.540—04:55:36.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17722s)
+
+你想深入了解，我们在 Duolingo 的工程博客写过这条流水线。如果你也在做类似的事，我也很想听听。你可以在 LinkedIn 或 X 上找到我。
+
+you want to go deeper, we've written about this pipeline on the Duolingo Engineering blog, and I'd also love to hear from you if you're building something similar. You can find me on LinkedIn or on X.

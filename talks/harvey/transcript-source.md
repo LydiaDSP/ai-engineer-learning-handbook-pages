@@ -1,0 +1,237 @@
+# Agent 写完代码以后，Harvey 怎样把 PR 送进主分支？
+
+Joey Wang
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 06 场的 35 段中英对照资料整理，时间戳均为主回放的绝对时间。英文保留机器转写，中文标注缺漏和可疑识别。运营数字来自 Joey Wang 的分享。高峰日的任务量和完成率见原图，英文转写保留缺漏标记。讲者同时调整了多项平台措施，无法据此单独归因。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 一万份 PR 后，Harvey 把精力放到了哪里？ / Lessons from 10,000 agent-written PRs
+
+[01:37:53.360—01:38:18.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5873s)
+
+无论白天还是晚上，我们平台上平均每分钟都有不止一个 Agent 启动。老实说，Agent 反倒是容易的部分。大家好，我是 Joey。我在 Harvey 做 Spectre，这是我们在公司内部搭的云端 Agent 平台。跑过一万份 PR 后，我能分享的最大教训是，难点不在 Agent。
+
+on average more than one agent has started on our platform every single minute day and night and honestly the agents were the easy part hi i'm joey i build spectre the cloud agent platform we built inside harvey after 10 000 prs the biggest lesson i can share is this It wasn't an agent.
+
+[01:38:19.720—01:38:39.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5899s)
+
+难点在它们周围的所有东西。平均每分钟启动一个多 Agent，最后积累了多少成果？Agent 写了一万份 PR。也不只是技术团队在玩新东西。[此处转写有缺漏] 上个月，Harvey 大约有 460 人用过它。
+
+It was everything around them. So what does one submit add up to? 10,000 PRs that an agent wrote. And it isn't just a tech vaccine playing with a toy. Last month, about 460 different people at Harvey use it.
+
+[01:38:40.820—01:39:25.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5920s)
+
+到了夏天，大家拿它做的也不光是写代码。有人在 Slack 里问数据方面的问题，等答案回来。我最喜欢的一个例子是，最近有位市场同事把原型和讲解提纲发到 Slack，请它给产品视频做一份分镜脚本。[此处「storybook」可能有误识别] 一旦有了运行框架，大家就会把你从未规划过的工作交过来。先说一下，今天不讲模型、评测或排行榜，讲的是运行框架，也就是模型周围的事情，检出代码库、管理密钥、开 PR、完成合并。4 月份，我们第一次写文章介绍
+
+And over the summer, it stopped being only a by code. People started asking a data question in Slack answers back. My favorite, recently someone on our marketing team dropped a prototype and a talk track into Slack and asked for a storybook for a product video. Once the hardness exists, people bring the work that you never planned for. So a promise upfront, this is not a talk about models evals or leaderboard this is talk about hardness odd things around the model checking out the ripple holding the key opening the PR getting the merge when we first wrote about
+
+[01:39:25.320—01:39:59.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5965s)
+
+Spectre 时是这样说的，到了某个阶段，运行框架本身就成了产品。每次我这样说，都会有人问我，已经有 Claude Code 或 Cursor 了，你们到底为什么还要做这个？我的回答是，我们让这些工具在自己的平台上运行。就我个人看法，笔记本电脑上的 Agent 很强，但规模上不去。实际能同时跑五到十个左右，再多就需要云端。
+
+specter back in April we put it like this at some point a harness become the product now whenever I tell people this I get the same question why on earth would you build this when code or cursor already exist? My answer, we don't compete with them, we run them. And here's how I see it, as my own view. Agents on your laptop are powerful, but they don't scale. You can realistically run 5 to 10 of them. Plus that, you need a cloud.
+
+[01:40:00.000—01:40:17.520](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6000s)
+
+而云端要有我们的密钥、真实技术栈、告警和工单，需要一套统一的规则，也得有足够的容量，让每个人都有资源可用。没有哪一种工具替我们把这些全包下来，所以我们自己加了一层。而出故障的正是这一层。
+
+And Cloud needs our secrets, our real stack, our alerts and tickets, one set of rules, and enough capacity that nobody gets starved. No single tool owns that for us, so we built layer, and that layer is exactly what broke.
+
+[01:40:17.920—01:40:43.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6017s)
+
+所以，今天我想讲三个故事。我们怎么把重点从写代码本身移开，怎么让任意 Agent 都能发起工作，还有出了什么故障、我们怎么处理。[此处转写有缺漏] 第一个故事从我们反复听到的问题讲起。用 Cursor 的工程师越来越多，他们会问，怎么让它用上我们的密钥？怎么在真实技术栈上测试？
+
+So I want to tell you three stories today. How we stopped competing on writing code, how we let any agent drive, and we're broke. what they did. The first story starts with the question we keep hearing. More of our engineers were using cursor and they asked, how do I get our secret there? How do I test against our real stack?
+
+[01:40:43.400—01:41:02.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6043s)
+
+我们可以在 Cursor 里把这些能力全部重做一遍，等接下来两款工具出来再重做，以后每多一款还得再做。最后，我们的答案就一句话，请 Cursor 使用 Spectre。基本思路就是这样。每个人总会有自己最喜欢的 Agent。
+
+We could have rebuilt all that inside cursor and then again for the next two and the one after that. Instead, answer became one sentence. Just ask Cursor to use Spectre. And that's really the whole idea. People will always have a favorite agent.
+
+[01:41:02.480—01:41:18.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6062s)
+
+最喜欢的工具还总在变。所以选你喜欢的吧。Claude Code、Codex、Cursor、ChatGPT、Slack，或者自己动手。你可以在笔记本电脑上开始，把会话转到云端，再拉回本地。Spectre 就在这些工具下面提供支持。
+
+And the favorite keeps changing. So pick yours. Cloud Code, Codex, Cursor, ChatGPT. Slack, or your own hands. Start on your laptop. Push the session to the cloud. Pull it back. That's how Spectre sits underneath all of that.
+
+## 从凌晨告警到获批合并 / From an overnight alert to an approved merge
+
+[01:41:20.440—01:41:39.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6080s)
+
+代码写完之后，真正的工作才开始。想象一个 PR 是怎么来的。凌晨两点，Slack 收到告警，Agent 接手，没人敲过一个字。它写好修复，启动一套真实技术栈的副本，再把验证证据贴到 PR 上。
+
+Once the code was written, the real work starts. Picture a PR state. Alert finds in Slack at 2 in the morning. An agent picks up. Nobody type a thing. It writes a fix, spins up real copy of our stack, and posts the proof on the PR.
+
+[01:41:40.040—01:42:00.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6100s)
+
+CI 失败时，自动跟进流程会读取失败信息，再推一份修复，这时候大家还在睡觉。到了早上，PR 和其他 PR 一起进同一个审查队列，遵循同样的规则，哪种 Agent 写的都一样。负责人会收到提醒，而且要等他开始上班才通知。
+
+When CI fails, the follow-up loop reads the failure and puts another fix while everyone still sleeps. By morning, the PR sits in one review queue under the same rule as other PR, whichever agent wrote it. The owner gets a notch, and only once their working day starts.
+
+[01:42:01.640—01:42:23.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6121s)
+
+批准之后，Agent 可以启用自动合并，实际合并由平台按规则执行（按 01:41:50 原图）。如果我刚才讲的几个阶段你只能做一个，就做这个自动跟进流程。10 月初我们把它开放给所有人。那个月，合进后端代码库的 Agent PR 中，有一部分走过这个流程。[比例处转写有缺漏]
+
+And once approved, an agent can auto-merge it. If you only build one of those stages that I described, build the follow-up loop. We switched on for everyone in early October and that month for all of five agent PRs merged into our backend PR had been through it.
+
+转写校注。The slide at 01:41:50 shows the agent enabling auto-merge. The platform performs the merge when its rules are met. The spoken proportion is unclear in the transcript.
+
+## 共享项目知识和统一调用入口 / Shared project knowledge and a common interface
+
+[01:42:24.580—01:42:39.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6144s)
+
+这就是 Agent 能写代码和能把一件事做完的差别。然后还有知识的问题。每个团队都有人很清楚，那个麻烦的服务到底怎么测，哪个开关绝对不能动。
+
+That's the difference between an agent that write code and an agent that finished the job. And then there's the knowledge. Every team has that one person who knows exactly how to test the tricky service, which flag you never touch.
+
+[01:42:40.360—01:42:57.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6160s)
+
+这些知识存在他们脑子里，或者他们的笔记本电脑上。所以我们把它放进项目里，让大家写下重要的东西，也让 Agent 记下学到的东西。团队固定使用自己信任的 Skills，谁跑过什么也有记录。
+
+and that knowledge lives in their head or their laptop. So we gave it a whole projects. People write down what matters. Adrian write down what they learn. Team pings the skills they trust and there's a record of who ran what.
+
+[01:42:59.040—01:43:19.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6179s)
+
+在同一个项目里工作的 Agent 都读同一份页面。我个人认为，不管选哪种 Agent，审计记录和执行轨迹应该一致。第二个故事讲一条规则。回到 5 月，你想让 Spectre 做事，要么打开一个网页标签，要么在 Slack 里 @ 它。
+
+Any agent working in the project reads the same page. My personal view, whichever agent you pick, the audio trail and the tracks should be the same. The second story is about rule. Back in May, if you want Spectre to do something, you open a browser tab or tagging Slack.
+
+[01:43:20.480—01:43:38.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6200s)
+
+整整一个月，从终端发起的任务只有一个。于是我们定了一条规则，人能在界面上点的，Agent 就能调用。启动任务、打开自动跟进、启用自动合并、发布页面，都可以从命令行做。
+
+The whole month, exactly one task came out from terminal. So we made a rule, if a person can click it, an agent can call it. Start a task, turn on the follow-up loop, arm auto-merge, publish a page, or from CLI.
+
+[01:43:39.640—01:43:55.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6219s)
+
+你笔记本电脑上的 Agent 能调用，沙箱里的 Agent 也能调用，连 CI 都能调用。后来大家就自己用起来了。到 10 月，从命令行发起的任务每月大约有 6,500 个。
+
+Your laptop agent can call it. Agent inside the sandbox can also call it. Even CI can call it too. And then people ran with it. By October, the command line was starting about 6,500 tasks a month.
+
+[01:43:55.840—01:44:35.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6235s)
+
+Web 应用的使用量没有减少，是其他入口都在增长。从终端发起的任务合并的 PR 比浏览器发起的还多。也出现了新一类用户，每月发起数百个任务，一次都不打开应用。更有意思的是，10 月我有个大任务，就开了个 Claude Code 会话，请它做协调。它把工单拆成十个里程碑，给我留了一个，把其余的交给 Spectre。里面有数百个任务，每个任务都用自己的沙箱来
+
+The web app didn't shrink. Everyone else just grew around it. Tasks started from the terminal or merging more peers than tasks started in browser. And the new kind of users showed up. start hundreds of tasks a month and never open the app at all and this is where it gets fun in october i had a big task so i bought a call code session and asked to be the coordinator it split the tickets into 10 different milestones hit one for me and the rest two spectre with hundreds of tasks each has its own sandbox to
+
+[01:44:35.680—01:45:03.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6275s)
+
+做端到端验证。到 10 月底，IT 给所有人开通了 ChatGPT Dots（按 01:44:19 幻灯片）。 我的那个现在会替我盯着 Spectre，把它在等我回答的问题列出来，起草答案，我说可以了就发回去。我给朋友发私信时也会这样讲。我现在就用 Cursor、Claude Code，或别的什么工具，一股脑儿给 Spectre 派任务。这本来就是理想状态，但问题也从这里来了。
+
+validate end to end. Then at the end of the October our IT give everyone TragGPT dot. Mine now watch Spectre for me. It lists the questions Spectre is waiting on, draft my answers, and once I say yes send them back. I actually DM to my friends like that. I just use cursor, cloud code or whatever to spam Spectre now. Well that's the dream but it's also the problem.
+
+## 两次任务激增与公平启动队列 / Two task surges and a fair launch queue
+
+[01:45:04.560—01:45:26.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6304s)
+
+先岔开一下。我们看任务时间都花在哪儿时，发现最慢的一步其实是 Git。光把我们所有代码库检出一次，平均就要一分钟以上。修复办法是每台机器都保留每个代码库的一份副本，让各个任务按需借用。
+
+A quick detour. When we look at where our task time actually went, the slowest step wasn't model thinking, it was good. Just checking out every repo we own took over a minute on average. The fix would keep a copy of every repo on every machine and let each task borrow it.
+
+[01:45:27.440—01:45:44.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6327s)
+
+第三个故事讲平台出故障的那次。8 月中旬，我们发了一个带 bug 的版本。那个 bug 会触发告警，每个工作区各报一次。于是一个 bug 变成几百条告警，全都发进同一个 Slack 频道。
+
+The third story is the one where it broke. In mid-August, a release goes out with a bug. That bug triggers an alert that files once per workspace. So one bug becomes hundreds of alerts, all landing in one single Slack channel.
+
+[01:45:45.340—01:46:00.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6345s)
+
+有人配置了一条工作流，每收到一条告警就 @ 我们的 Agent，每 @ 一次就启动一个任务。平常一天大约发起 50 个这类任务。那天大约四小时就发起了 900 个。
+
+Someone has set up a workflow that tags our agent on every alert, and every tag started a task. On a normal day, those tasks started about 50 tasks. That day, in about four hours, they started around 900.
+
+[01:46:01.640—01:46:19.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6361s)
+
+900 个 Agent 在查同一个 bug，最后连再启动一个 Agent 的容量都没有。解决办法很简单。同一条重复告警现在会并入已启动的调查。两个月后，又发生了一次，这回触发它的不是机器人。
+
+900 agents are chasing the same bug until there wasn't room left for a single note. The fix was almost boring. A repeat alert now joins the investigation that's already open. Two months later, it happened again. And this time, it wasn't a bot.
+
+[01:46:19.940—01:46:44.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6379s)
+
+到了 10 月，有位工程师做了我们一直请大家做的事，把工作交给 Spectre。他大约三小时里从命令行发起了 950 个任务。平台上的工作都跑不动了。集群被占满，其他所有人的任务都排在这一台笔记本电脑发来的任务后面。
+
+But on October, the engineer did exactly what we've been asking everyone to do, hand work to Spectre, about 950 tasks from the command line in about three hours. Nothing in our platform can work. The cluster filled up and everyone else work sat in line behind one laptop.
+
+[01:46:45.100—01:47:03.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6405s)
+
+这是我们平台的问题。四天后，我们拿出了正式的解决办法，一个公平调度的启动队列。现在发起任务会先得到一个排队位置，有空余容量时调度器才启动它。坐在电脑前等结果的人优先。
+
+That's not a user problem, that's our problem. Four days later, we had a real fix, a fair launch queue. Now starting a task gives you a place in line, and the dispatcher started when there's room. People sitting at the keyboard goes first.
+
+[01:47:04.360—01:47:21.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6424s)
+
+每个人都分到公平的份额，集群空闲时还可以多用一些。每次提交任务，你都能看到自己排在哪儿。我们一次突发提交了 300 个任务，演讲所举的一项任务延迟指标从接近 2 秒降到 70 毫秒。[测试条件及指标名称转写不清]
+
+Everyone gets a fair share and can borrow more than the cluster is quiet. And whenever you start a task, you can see a place in line. When we hit it with a 300 task burst in low task, the task lead went from almost 2 seconds to 70 milliseconds.
+
+[01:47:22.800—01:47:54.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6442s)
+
+有效果吗？按 01:47:35 原图，这是各月启动任务最多的一天。8 月 14 日约启动 2,000 项，完成率为 89%。11 月 4 日约启动 4,400 项，完成率为 94%。老实说，我们同时改了好几个地方，我说不准哪项改动最管用。但突发任务越来越多，平台也跟上了。
+
+So did it work? When it's the best day of every week, back in August, two certain tasks and about one in 10 didn't finish. Then in November 4th, more than twice that and much better in the finish line, but we I will be honest, we changed several things at once, so I cannot tell you which fix mattered the most, but the burst kept getting bigger and the platform kept up.
+
+转写校注。The slide at 01:47:35 reports the busiest day in each month by tasks started, and the share completed. August 14: about 2,000 starts, 89% completed. November 4: about 4,400 starts, 94% completed.
+
+## 合并队列与自动化预算 / Merge pressure and automation budgets
+
+[01:47:55.860—01:48:19.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6475s)
+
+这个问题刚控制住，瓶颈就转移了。10 月底，我们的开发平台团队发出提醒，全公司 PR 数一个月里大约增加了 60%。之前一次合并要 15 到 30 分钟，现在要一个多小时。合并队列还经常得关掉。
+
+And just when that was under control, the model neck moves. At the end of October, our dev platform team raised the alarm. PRs across the company had jumped around 60% in a single month. A merge that used to take 15 to 30 minutes was taking over an hour now, and the merge queue kept having to be switched off.
+
+[01:48:20.420—01:48:43.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6500s)
+
+现在的做法是，先把 PR 变基到主分支，再跑一遍 CI，绿了就合并。如果主分支坏了，所有人的 CI 也跟着坏。这个问题我们还没解决。结束前还有一件事。就在我们忙着修前面那些问题时，另一个变化也在悄悄发生。
+
+So now, a PR rebates onto main, reruns CI, and merges if it's green. If main breaks, everyone's CI breaks with it. Ultimately, we haven't cracked this one yet. But before I go, there's one more thing. While we were busy fixing off it, something else was quietly growing.
+
+[01:48:44.400—01:49:00.800](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6524s)
+
+我刚才展示的多数任务，是人开口之后才发起的。Spectre 上增长最快的工作来源却不需要人开口。这就是自动化，Agent 到了时间或收到事件就启动，自己把工作做了。
+
+Most of what I've been showing you start with a person asking. The fastest growing source of the work on Spectre doesn't. These are automations. agents that wake up on schedule or an event and just do the work.
+
+[01:49:01.520—01:49:26.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6541s)
+
+它们可以初步排查告警、审查 PR、写帖子。上个月大约有 110 人在跑自动化。我们的经验是，从第一天就得设好限制。一条自动化连续失败五次，就会自行关闭。它还可以设预算或到期日，因为没人盯着时，Agent 也能启动数千个任务。
+
+Trudget alert, review the PR, write the post. Last month, about 110 people had automation running and we learned to give them a guardrail on day one. If one fails five times in a row, it switches itself off and it can carry a budget or expiry date because when no one's watching, an agent can start thousands of tasks too.
+
+## 待解的问题与三条经验 / Open questions and three lessons
+
+[01:49:27.900—01:49:41.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6567s)
+
+所以，接下来我在琢磨这个问题。说实话，我还没有答案。如果每个 Slack 频道都有一个始终在线的 Agent，能跟上对话，主动开始工作，会怎么样？
+
+So here's what I'm chasing next. And I don't have an answer yet, honestly. What if every Slack channel had its own agent that never locks off, one that follows the computation and start working on its own?
+
+[01:49:42.720—01:50:01.960](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6582s)
+
+如果每份 PR 都能在人看到之前，先证明改动确实有效，又会怎么样？今天，每 20 次合并大约只有一次带有这种证明。[证明形式转写不清] Agent 如果一直在开 PR，合并该怎么办？六个月后再来问我，我会告诉你到时又出了什么问题。
+
+What if every peer approved it works before a human even looked at it? Today, only one merge in 20 carries that cannot prove. And how do you merge when agents never stop opening PRs? Ask me again in 6 months, I will tell you what broke.
+
+[01:50:02.820—01:50:21.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6602s)
+
+如果你也在工作中搭类似的系统，有三件事我会再做一遍。把代码写完之后的流程管起来。让每一个操作都能被 Agent 调用。还要在 Agent、人或告警发现自己究竟能发起多少任务之前，就给它们设上限。
+
+If you're building something like this when you work, here's 3 things I'd do again. Own what happens after the code is written. Make every action something an agent can call. And cap what an agent, human, or alert can start before they find out what they can do with it.
+
+[01:50:23.000—01:50:40.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6623s)
+
+最后再说一点，这是我的个人看法。工程师可以用自己喜欢的 Agent 写代码。真正需要投入的是能运行 Agent、检查它们的产出并把改动合进去的框架。[此处转写有缺漏] 非常感谢你们收看。
+
+And one last thought. That's my own view. Engineers can write code with whichever agent they like. The work that's lost is the harness that runs it, checks it, and gets it merged. Thank you so much for watching.
+
+[01:50:41.180—01:50:44.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6641s)
+
+如果你也在做类似的事，可以来 LinkedIn 找我。
+
+Come find me on LinkedIn if you're building similar things.

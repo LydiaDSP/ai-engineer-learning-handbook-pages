@@ -1,0 +1,35 @@
+[
+  {
+    "id": "workflow",
+    "after": "p09",
+    "title": "从选文件到利用反馈改进下一轮",
+    "time": "04:45:29",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17129s",
+    "en": "assets/workflow-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从选文件到利用反馈改进下一轮</h3><dl><div><dt>输入与产出</dt><dd>选出待测文件，生成并验证测试。</dd></div><div><dt>闭环</dt><dd>处理 PR 和审查意见，再把反馈用到下一轮。</dd></div></dl></div>",
+    "note": "图中用五个步骤概括流程。",
+    "sourceSeconds": 17129
+  },
+  {
+    "id": "lifecycle",
+    "after": "p30",
+    "title": "按状态处理开放的测试 PR",
+    "time": "04:50:47",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17447s",
+    "en": "assets/lifecycle-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>按状态处理开放的测试 PR</h3><dl><div><dt>关闭或等待</dt><dd>冲突或过期就关闭。CI 正在运行或已有审查人时跳过。</dd></div><div><dt>继续处理</dt><dd>CI 通过且无人审查就指派。CI 失败时尝试修复。人工拒绝后进入 30 天冷却期。</dd></div></dl></div>",
+    "note": "状态判断决定本轮的下一步。",
+    "sourceSeconds": 17447
+  },
+  {
+    "id": "quality",
+    "after": "p42",
+    "title": "删除已有测试触发拒绝",
+    "time": "04:53:36",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=17616s",
+    "en": "assets/quality-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>删除已有测试触发拒绝</h3><dl><div><dt>演讲所报数据</dt><dd>专门的 AI 裁判审过约 1,200 份 PR，拒绝 73 份。</dd></div><div><dt>图中例子</dt><dd>即使测试可能已移到其他文件，删除已有测试文件也会触发硬性拒绝。</dd></div></dl></div>",
+    "note": "数字是该团队报告的审查数量和拒绝数量。",
+    "sourceSeconds": 17616
+  }
+]

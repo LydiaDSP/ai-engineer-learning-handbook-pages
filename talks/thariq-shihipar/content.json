@@ -1,0 +1,146 @@
+[
+  {
+    "id": "p01",
+    "start": 31089.0,
+    "time": "08:38:09 至 08:39:19",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31089s",
+    "zh": "Shihipar 回顾离开 Anthropic 后的一些判断。他看见模型能参与视频生成和编辑，用 HTML 检查工作，还能帮人梳理自己不知道什么。这些能力影响了他实际怎么做项目。",
+    "en": "Shihipar reviews some of his judgments after leaving Anthropic. He has seen models help with video production and editing, use HTML to inspect work, and help people locate what they do not yet understand. These capabilities changed how he approached projects.",
+    "end": "08:39:19"
+  },
+  {
+    "id": "p02",
+    "start": 31159.0,
+    "time": "08:39:19 至 08:40:05",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31159s",
+    "zh": "他早先以为 Agent 会主要通过 Bash 和命令行与世界互动。实际使用后来纳入 MCP、代码执行和按需加载的技能。他自己也开始在一些场景里偏好 MCP。",
+    "en": "He once expected agents to interact with the world chiefly through Bash and command-line tools. Actual use expanded to MCP, code execution and skills loaded as needed. In some situations he came to prefer MCP himself.",
+    "end": "08:40:05"
+  },
+  {
+    "id": "p03",
+    "start": 31205.0,
+    "time": "08:40:05 至 08:41:12",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31205s",
+    "zh": "类似的预期还发生在 React 上。模型熟悉 React，却也能用 HTML、Swift 或设计工具表达同一个界面。实现路径变多让团队有机会回头考虑用户真正适合用哪种软件。",
+    "en": "He had a similar expectation about React. Models know React well but can express an interface in HTML, Swift or design tools too. More implementation paths make it possible to revisit which software fits the user.",
+    "end": "08:41:12"
+  },
+  {
+    "id": "p04",
+    "start": 31272.0,
+    "time": "08:41:12 至 08:42:10",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31272s",
+    "zh": "他用绘画创作说明同样的变化。图像生成是一条路，模型也能用代码或已有画图工具参与作品。创作者于是有机会沿用自己理解的方法进入制作过程。",
+    "en": "He uses visual art to make the same point. Image generation is one path, and models can also contribute through code or existing creative tools. The creator can enter the process through an approach they understand.",
+    "end": "08:42:10"
+  },
+  {
+    "id": "p05",
+    "start": 31330.0,
+    "time": "08:42:10 至 08:44:14",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31330s",
+    "zh": "他把软件产量增长和对创作品质的追求并置。生产变得更规律、成本更低，创作者也可以把精力投到体验、审美和那些细小但实际影响使用的决定上。",
+    "en": "He places rising software output alongside the pursuit of craft. As production becomes more repeatable and cheaper, creators can pay attention to experience, aesthetics and the small decisions that affect use.",
+    "end": "08:44:14"
+  },
+  {
+    "id": "p06",
+    "start": 31454.0,
+    "time": "08:44:14 至 08:46:20",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31454s",
+    "zh": "他用参差不齐的外沿和相对平坦的内部，区分能力之所及。在极限任务上，一种工具可能是成败关键。在模型已经擅长的范围内，做出同一结果往往有多种方法。",
+    "en": "He distinguishes a jagged outer frontier from a flatter interior. On a task at the limit, a particular technique may be necessary. Within an area the model already handles well, several methods can lead to the same result.",
+    "end": "08:46:20"
+  },
+  {
+    "id": "p07",
+    "start": 31580.0,
+    "time": "08:46:20 至 08:48:22",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31580s",
+    "zh": "他想象如果某项任务有完美的模型，现有的一些核对成本会怎么变化。这个假设用来讨论未来界面可以怎样设计。当前项目仍然需要与能力和风险相符的检查。",
+    "en": "He considers how verification costs might change if a model could perform a given task perfectly. He uses that assumption to discuss possible future interfaces. Present projects still need checks appropriate to the capability and stakes.",
+    "end": "08:48:22"
+  },
+  {
+    "id": "p08",
+    "start": 31702.0,
+    "time": "08:48:22 至 08:49:02",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31702s",
+    "zh": "Shihipar 介绍自己正在做的二维等距格斗游戏，灵感来自《降世神通》和《任天堂明星大乱斗》。他尝试让 Agent 实现角色技能，却发现自己有时说不清角色到底会做什么。",
+    "en": "Shihipar introduces his isometric 2D fighting game, inspired by Avatar and Super Smash Bros. He is trying to build it with an agent and sometimes finds that he cannot readily explain what each character does.",
+    "end": "08:49:02"
+  },
+  {
+    "id": "p09",
+    "start": 31742.0,
+    "time": "08:49:02 至 08:49:24",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31742s",
+    "zh": "速度、大小、蓄力和碰撞都会改变这个动作。角色还能召出一堵墙，石头要不要穿过去，也会影响玩家的策略。原来的提示只说实现动作，把这些决定一起交给了 Agent。",
+    "en": "Speed, size, charging and collisions each change the move. The character can also summon a wall, and whether the rock passes through it affects play. The original request delegated these choices along with the implementation.",
+    "end": "08:49:24"
+  },
+  {
+    "id": "p10",
+    "start": 31764.0,
+    "time": "08:49:24 至 08:50:27",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31764s",
+    "zh": "由于发完提示要等一段时间，他容易中途转做别的事，回来看到结果还要重新摸清角色行为。对这种想一边试一边改的创作，他更希望保持连续的注意力。",
+    "en": "Waiting after a prompt often sends him off to do something else. When he returns, he has to understand the character's behavior again. For creative work that depends on adjusting as he tries it, he wants to stay engaged continuously.",
+    "end": "08:50:27"
+  },
+  {
+    "id": "p11",
+    "start": 31827.0,
+    "time": "08:50:27 至 08:51:32",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31827s",
+    "zh": "他把代码分成引擎和人能直接看的一层。摄像机等底层部件可以主要由 Agent 编写，角色和技能这层用规则约束，尽量保持像英语一样容易阅读。",
+    "en": "He splits the project into an engine and a layer a person can read directly. Pieces such as the camera can be largely written by the agent. Rules keep the code for characters and abilities close to readable language.",
+    "end": "08:51:32"
+  },
+  {
+    "id": "p12",
+    "start": 31892.0,
+    "time": "08:51:32 至 08:52:34",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31892s",
+    "zh": "演示里，他在编辑器里打开角色的投石动作，指给观众看注释和单位。用米等明确的单位，让创作者能从代码看懂数值对应的游戏行为。",
+    "en": "In the demo, he opens the rock move in his editor and points to its comments and units. Units such as meters help the creator read how a value relates to the behavior on screen.",
+    "end": "08:52:34"
+  },
+  {
+    "id": "p13",
+    "start": 31954.0,
+    "time": "08:52:34 至 08:53:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31954s",
+    "zh": "可读脚本把地面、碎石和遇到墙时的处理写成不同分支。他直接在这层脚本把石头改大，再回到游戏里查看效果，修改的是实际运行的定义。",
+    "en": "The readable script has distinct branches for rubble, the ground and the through-wall case. He changes the rock size in that script and checks the result in the game. The edit changes the definition that actually runs.",
+    "end": "08:53:35"
+  },
+  {
+    "id": "p14",
+    "start": 32015.0,
+    "time": "08:53:35 至 08:54:37",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=32015s",
+    "zh": "他开始更多使用 Cursor 的 Tab 补全来做小调整，复杂需求仍请 Claude 添加原语。Claude 工作时，他可以审阅进展，也能一起修改。他说自己还在试这套做法。",
+    "en": "He uses Cursor Tab more often for small changes and still asks Claude to build primitives for harder work. While Claude is working, he can review what it does and work alongside it. He says he is still experimenting with this approach.",
+    "end": "08:54:37"
+  },
+  {
+    "id": "p15",
+    "start": 32077.0,
+    "time": "08:54:37 至 08:55:39",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=32077s",
+    "zh": "他从游戏转向更广的产品机会。模型能适应的实现形式越多，就越能重新考虑语言是否可读、部件能否替换，以及试验能不能很快看到结果。",
+    "en": "He moves from the game to a broader product opportunity. As the model can work across more implementation formats, teams have room to reconsider readability, modular parts and how quickly an experiment becomes visible.",
+    "end": "08:55:39"
+  },
+  {
+    "id": "p16",
+    "start": 32139.0,
+    "time": "08:55:39 至 08:56:43",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=32139s",
+    "zh": "他最后把问题留给做工具的人。未来的工作体验应由人选择，模型可以帮助实现多种交互。底层能力越多，越有必要说清楚哪些决定希望直接握在使用者手里。",
+    "en": "He closes with a question for tool builders. People should decide how they want future work to feel, while models can help implement different forms of interaction. Broader capability makes it more important to name the decisions a user should control directly.",
+    "end": "08:56:43"
+  }
+]

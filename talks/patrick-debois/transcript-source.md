@@ -1,0 +1,285 @@
+# Patrick Debois · 多个 Agent 同时往同一代码库提交｜逐段中英对照
+
+这份稿件根据英文转写逐段校译，保留讲者视角、例子、数字和现场对话。英文仍为 Whisper 自动转写，听写疑点在译文中标出。
+
+[原视频](https://www.youtube.com/watch?v=fTUinMqA1XQ) · [全部分享](../../catalog.html)
+
+**[00:00:00.000](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=0s) 至 00:00:37.000**
+
+欢迎来听我们关于多人协作软件工厂的分享。当多个人和多个 Agent 在同一条软件交付流水线上工作时，会遇到什么冲突，有哪些解决办法？我会带大家逐一看看。软件交付流水线当然早在 AI 出现前就有了。常见的流程是先构建、再测试，然后等着合并进主分支、发布。这基本上是一条串行流程，帮我们把交付自动化，也让交付更稳健。与此同时，
+
+> Welcome to our session on multiplayer software factories, where I'll walk you through what the tensions are, what the solutions are, when multiple people and multiple agents are working on the same software delivery pipeline. Software delivery pipelines are of course not new and existed before AI. And you know, we have the typical build, test, and then kind of wait for the release and the merge to go out into main. This is pretty much a serial flow and it has helped us automate and be more robust in the delivery. At the same time people are
+
+**[00:00:37.000](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=37s) 至 00:01:11.460**
+
+人们也在搭自己的工厂。我把它们叫作「单人工厂」：就在自己的笔记本电脑、自己的系统和编程 Agent 里搭起来。现在大家越来越多地用多个 Agent 做交付，不过很多决定还得自己拿，合并也得自己做。人多少还是整个流程的中心，几乎得靠自己记住正在做什么，诸如此类。我今天要讲的是多人协作。单人与多人之间，应该还有一些中间形态。
+
+> building factories and I call them solo factories on their laptops on their kind of systems within their coding agents and increasingly they're using multiple agents and doing kind of delivery with agents. Now they often have to still make the decisions and they also have to do the merges and they kind of are a little bit of this central piece or almost like they have to keep the memory what they're doing and so on. I'm talking not single player of not solo player but multiplayer and there's probably a gradation in between.
+
+**[00:01:11.860](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=71s) 至 00:01:48.000**
+
+现在，有人在自己的笔记本电脑上做这些事，有人会共享自己的配置，比如工厂里的上下文、Skills 和工作循环。市面上的工厂大致有这些形态，再往下就是多人协作工厂，大家同时在同一块工单看板、同一个代码库里协作。这就是我今天要带大家看的。看图左边，矛盾在于每个人都想把改动合并进主分支。右边是看板上有多个人，大家得一起协作。这大致就是
+
+> Currently people doing it on our laptops then people sharing their setups like their context, their skills, their loops within their factories. Pretty much the factories out there and then the multiplayer factories of people collaborating at the same time in the same kind of ticket board on their same code base. And that's what I'll work you through today. Now on the left the tension is everybody wants to merge into main. On the right there's multiple people on the board and they have to collaborate and work together. So that's kind of
+
+**[00:01:48.000](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=108s) 至 00:02:19.800**
+
+今天分享的两部分。先讲第一部分，也就是代码。我们怎么以代码为中心，让 Agent 一起工作？启用软件工厂，尤其是多人协作工厂之后，最先看到的变化之一就是拉取请求（PR）明显增多，落地的 PR 数量几乎会到原来的十倍。这是好事，大家效率更高，能做完更多改动，随之而来的压力也会增加。
+
+> the two parts of this talk. Let's start with the first part, the code, and how to make that like a central piece of agents being able to work together. You know, one of the first things when you turn on a factory or a multiplayer factory, you'll see that there's definitely an increase in pull requests. You know, it's almost like a factor 10 of more and more pull requests landing. That's good because we're being more productive, we get more changes done, but that also builds up some of the tension.
+
+**[00:02:20.800](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=140s) 至 00:02:57.240**
+
+比如要合并的改动多了，就得确认它们互不冲突。运气不好时，Agent 还会反复做无用功。一个 Agent 刚改了点东西，另一个又把它改回去。启用多人协作工厂之后，这些冲突是会真实发生的。最明显的变化之一是，等发布的时间变长了。每合并一项改动，其他 PR 都要变基（rebase），通常还要重跑测试，你就得继续等。与此同时，
+
+> For example, we have a lot more mergers and they have to make sure that they're not conflicting and if we're unlucky the agents also spend time of going rounds around us. You know, one agent changing something, then the other agent changing it back. These conflicts are real when you turn on a multiplayer factory. And one of the most noticeable things is we start to wait more for releases because when we merge a change all the other PRs need to rebase and they typically rerun their tests and you will have to wait. And at
+
+**[00:02:57.240](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=177s) 至 00:03:35.140**
+
+这种并发也会让持续集成和持续交付（CI/CD）系统慢很多，成本也会上升，这是一个副作用。现在 PR 队列越积越长，里面除了功能，还包括我刚才说的 Agent 运行中要处理的问题，以及工厂本身的维护，比如改进 Skills 和我们一直在用的工作循环。越来越多的工作等着我们批准。那么，为什么不能让并发从
+
+> the same time that means actually your CI CD system is becoming a lot lot slower because of that multi thing and also more costly but that's a side effect. Now the PRQ is kind of building up not just with features, there's also the agent incidents that we have to solve as I mentioned, and then there's factory maintenance on their own, like the improvement of the skills, the improvement of the loops that we've been using, all more and more and more work that needs to get approved by us. So why can't we flip this from being this concurrency and
+
+**[00:03:35.140](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=215s) 至 00:04:09.500**
+
+偶尔发生的例外变成常态呢？我把这叫作「并发交付」：从持续交付走向并发交付，让人和 Agent 能在同一个代码库里一起工作。我们可以从一件简单的事做起：更有计划地安排并行运行的 Agent，像给人分工一样，你做这个任务，他做那个任务。工作有好几种拆法，
+
+> being an exception to becoming the routine. And this is what I call concurrent delivery, and going from continuous delivery to concurrent delivery, and designed for people to work and agents to work together on the same code base. Now one of the simple things that we can do is instead of just running and running agents just in parallel, we can get smarter about this, almost like splitting up the work like we would do with humans. Like you get to do this task, you get to do that task. And there's different ways of splitting this
+
+**[00:04:09.500](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=249s) 至 00:04:32.560**
+
+比如你负责身份认证，我负责支付，其他部分再另行分配。我们甚至可以用抽象语法树（AST）图判断哪些部分容易拆开。还可以让 Agent 在更细的粒度上分工，比如分到某个文件、某个函数，甚至细到按键操作，在同一个文件里配合修改。
+
+> in a way that we can say well you work on authentication, I work on payment, I work on other parts, and we can use even the ASD graph to determine which pieces are able to split quite well. And then we can go have the agents go on more granular level and they would do like hey this file, this function, and even they on certain keystrokes, like in certain files doing together.
+
+**[00:04:32.800](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=272s) 至 00:04:56.080**
+
+这样就能在真正动手写代码之前先把工作分开，也能更好地规划改动。一旦规划好，开始执行，就跟在 Scrum 看板上领活一样，你会说，我来处理这一项。
+
+> So this is a way of kind of dealing with kind of more splitting up the work before you actually do the actual coding. This is a better way of planning the changes. And then once you start planning and you start actually executing the plan, much like you would do on your Scrum board, you would say, I'm going to take care of this.
+
+**[00:04:56.200](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=296s) 至 00:05:16.160**
+
+Agent 会在看板上写明自己认领了这张工单，这样其他 Agent 就不会同时接手。它还会说明将改哪些文件、做哪些改动。其他 Agent 在规划和执行时都能看到这些信息，避免工作的范围开始重叠。
+
+> The agent writes and says it claims the ticket. to do that tick and so no other agent can actually step in at the same time. And it also announces which files and which changes it's going to make. So this is something that is helpful for other agents to see that they're not starting to overlap during the planning and the execution.
+
+**[00:05:17.580](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=317s) 至 00:05:28.800**
+
+为了让它们各自继续执行，很多人会用 Git 工作树（worktree）把环境分开。把范围放宽来看，其实还可以隔离更多东西。
+
+> Now to make sure that they can keep executing a lot of people use work trees to kind of separate them. When you kind of think about this broader there is a lot more splitting that you could do.
+
+**[00:05:29.820](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=329s) 至 00:06:05.760**
+
+你相当于把每个 Agent 工作时所处的环境冻结下来。给它自己的机器和固定的一份上下文，把它用的 API 版本锁定，数据库也给它一份快照和自己的测试数据。连外部系统也可以用数字孪生等方式模拟，尽量把相关依赖替换成模拟对象，让 Agent 工作时不用应对外部环境的变化。两个 Agent 在工作中碰上了，有几种处理办法。可以先等对方，按先后顺序来，
+
+> are freezing the world of an agent. You give them their own kind of machine, you give their their own freeze of the context, you give them their own version of the API that's being locked, and even the database gets their snapshot, their test data, and even outside world like digital twins and kind of making sure that everything's mocked and that they can do these things without having to deal with any impact of the outside world. Now when two agents do collide during the work, there's a couple of strategies. They can either start waiting for each other one after the other,
+
+**[00:06:06.040](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=366s) 至 00:06:27.480**
+
+也可以等一会儿再试，或者说，我先把任务重新排进队列，等对方做完再来。它们还可以开始调整和优化计划，比如你做这项，我做那项，说到底就是重新协商分工。它们是在执行过程中修改计划，避免互相干扰。
+
+> they can retry after the wait, they can say like okay I'm gonna wait but I'll requeue and I'll wait until it's done, or they can start changing and optimizing the plan. Like you do this, I do that, and that's renegotiation in the end. So they're changing actually the planning while they're doing the execution to make sure that they don't interfere with each other.
+
+**[00:06:28.760](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=388s) 至 00:07:04.100**
+
+碰到冲突时，你可以重试。现在用 Git 合并，遇到冲突就得决定怎么办，通常会把 PR 的检查重跑一遍，看看能不能合进去。也可以让 Agent 替你处理。它可以按函数来判断改动能不能合到一起，判断时不用只看一行行的代码。它也许能直接修好合并冲突，你就不用再处理一遍。到最后，它甚至可以
+
+> Now on a conflict you could rerun it and within get your merging today and you say okay there's a conflict what do I do? You rerun and see if it merges on the rerun which was typically our PR change or you could just kind of make sure that the agents do that for you instead so they can see whether they can merge instead of just by code lines they can merge by function and it becomes smarter and then the agent maybe can fix the merge so you don't have to do that again and ultimately it can even
+
+**[00:07:04.100](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=424s) 至 00:07:19.500**
+
+预判快要发生的改动，比如，那个 Agent 可能要改这里，我既然已经预见到了，就同时调整自己的代码。这样一来，你考虑改动时就会把并发算进去。
+
+> start seeing changes coming so hey this agent is probably gonna change this I'm I'm going to see this coming and I'm already kind of adapting my code at the same time. So this is thinking in concurrency instead of being kind of serial in the changes.
+
+**[00:07:20.780](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=440s) 至 00:07:33.400**
+
+你会看到，Agent 已经针对合并做了优化，代码层面的合并比较清楚。但如果两项改动同时落地，会怎么样？
+
+> Now, one of the things you can see is that, you know, agents have been optimized to merge stuff, right? Like with the merging of code, this is clear. But what if two changes land at the same time?
+
+**[00:07:33.400](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=453s) 至 00:07:48.960**
+
+举个例子，你在改计算发票总额的函数，要把金额的单位从美元改成美分。与此同时，另一个 PR 在改报表的输出。
+
+> In this case you're calculating and changing the function of calculating the total for an invoice and say it's not just in dollars but in dollar cents. Now at the same time there is another PR that changes the fact of reporting out.
+
+**[00:07:49.520](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=469s) 至 00:08:34.980**
+
+两项改动可能都能顺利合并，测试也都能通过，但意图并不相同。报表需要的单位可能既不是欧分，也不是美分，对吧？代码层面没有冲突，意图却有冲突。我们可以让 Agent 检查这几项合并的意图是否还一致，有问题就提醒我们，或者相应地调整 PR。假设这些 PR 已经准备好合并了，其中一项如果合得不顺，你通常就得
+
+> Now two mergers that consistently could merge with the test succeeding but at the same time it was a different intent. the report don't want to have it in euro cents or in dollar cents right so they're not conflicting in code but they're conflicting on intent so we could have agents actually look at the intent whether they're still consistent across the multiple merges and warn us or change the PR accordingly now if you want to kind start merging the PRs are able to merge they're good to merge But what if one of those merges doesn't merge well? Then you'll typically
+
+**[00:08:34.980](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=514s) 至 00:09:05.040**
+
+把其他 PR 全部变基，让它们返工，诸如此类。处理这种合并列车（merge train），有一种更好的办法叫「推测式合并列车」（speculative merge train）。它把进来的 PR 都看一遍，判断哪些彼此兼容，提前做成对检查。这样，其中一项没法落地时，其他可以落地的仍能先通过合并队列，速度就会更快。
+
+> rebase all the others, they'll have to do rework and so on. Now there's a better way of dealing with these merge strains is by looking in a concept called speculative merge strains. It looks at all the PRs coming in and it sees which ones are compatible with each other and it kind already checks them in pairs. And then it says like one that is landing and this one isn't landing but you could still do the others it goes faster because all the others that can go through already go through in the merge queue.
+
+**[00:09:06.980](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=546s) 至 00:09:35.780**
+
+这些是应对合并、冲突和审查，以及改进规划的一些新方法。我觉得，一层新的开发基础设施正在出现，从供应商推出的东西里也能看出来。合并会有新的处理方式，也开始有分析、改进规划的工具，各环节都在出现更合适的工具。我们正在搭建的就是这样的东西。现在很多所谓的工厂，说到底还是把传统的
+
+> These are just some examples of kind of new strategies of dealing with mergers and conflicts and reviews and better planning. I think in general there's a new kind of infralayer coming and you see that almost from the vendors you know it's a new developer infrastructure, mergers are going to be handled differently, there's now an analytics, there's now a better planning, there's no a better tool for anything. And that's kind of what we're building up. Right now a lot of the factories are just glorified loops as we would
+
+**[00:09:35.780](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=575s) 至 00:10:06.580**
+
+CI/CD 循环包装了一下，但并发只会继续增加。我刚才说了，这件事还有另一面。除了 Agent 之间配合，人也得一起工作。通常的变化是，大家会用同一块任务看板。每个人都能看到接下来有什么改动、哪些任务正在做，工作也就透明了。在自己的单人工厂里，你也会独自做这些事，但没有这样一块大家一起
+
+> do with the CIOCD, but the concurrency will only increase. Now I told you there was a flip side to this. There's also the humans working together, not just the agents. And typically the change is that you're working together in one kind of task board. All the humans are being able to see what changes are coming, what tasks are being done, and this creates the visibility. Where in your solo factory you would have that doing that all alone, but it wouldn't be a central kind of board that you're
+
+**[00:10:06.580](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=606s) 至 00:10:39.340**
+
+工作的公共看板。现在这些 Agent 都需要你留意，而留意它们可能还是容易的部分。我们还想减少 Agent 动不动就来找你、占用你注意力的情况。这也是多个 Agent 同时工作带来的副作用。有一个挺有意思的功能：Agent 可以加入你们的聊天。这样写代码的方式变了。你可以把 Agent 拉进已有的对话。
+
+> working on. Now they all need your attention and that's probably the easy part. We want to reduce also that attention from the agents having to call you all the time. So this is a side effect of having multiple agents working at the same time. Now one of the nice features is, and it's been kind of interesting to see, that agents can join your chat. And this is a different way of coding. It is not you prompting, but it's you kind of pulling an agent into a conversation. And that's
+
+**[00:10:39.340](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=639s) 至 00:11:14.100**
+
+这种方式很有用。Agent 同时从你和队友的发言里获取线索，汇总大家的意见，把工单细化。除了让 Agent 互相挑错，同一张工单还能在讨论过程中吸收多个人的意见。它很擅长主动提问，你也就不用一遍遍把所有要求重新问清楚。它能帮忙的一件事是
+
+> really powerful because the agent is picking up clues not just from you from your team members at the same time and what it's actually doing it is refining the ticket from all the input and that is really powerful because you actually not only had like adversarial review by agents but you also get multiple input by humans on the same ticket while during the conversation and what it's really good at is prompting you with questions instead of having to ask everything over and over again. So one thing that's helpful is that it
+
+**[00:11:14.100](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=674s) 至 00:11:52.860**
+
+弄清楚该怎么测、要做出什么、有哪些要求。这样一来，工单几乎就成了一份计划，有点像编程 Agent 的计划模式，只是现在大家都能在共享看板上看到完整的要求。参与的还可以有工程师以外的人。以前销售、市场、支持会给工程团队提工单，工单进了某块看板，他们就只能等工程师来处理。
+
+> clarifies what is the test, what should it do, what are the requirements that it needs to do, and the ticket actually becomes almost like a plan, the plan mode in your coding agent, but now as a shared feature within your board of looking at all the requirements. Now what's even more powerful is that it doesn't only have to be engineers. Think of this as in the past sales marketing support there were kind of filing tickets to the engineering that would get somewhere on a board and they'll have to wait until an engineering comes.
+
+**[00:11:53.060](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=713s) 至 00:12:34.780**
+
+有时一等就是几个星期。现在我们在 Tessl 自己的工厂看到的是，大家直接在组织内部的聊天里分享和讨论，Agent 也在场。他们用不着每次都自己把代码写出来。以前他们或许会用 vibe coding（凭感觉让 AI 写代码），问题之一是做出来的东西接不上团队的工程规范。有了多人协作工厂，大家就能用同一条流水线，使用同一套知识、Skills 和工作循环，从一开始就接进工程流程。这样，他们就能
+
+> That could have taken weeks. Right now what we see in our factory at TESOL is that people are just sharing and doing a chat within kind of the organization and the agent is there. Now they don't need to build the code all the time and before they were maybe doing vibe coding but one of the problems with the vibe coding is it didn't fit according to engineering practices. Now with a multiplayer factory people are using the same pipeline, the same knowledge, the skills, the same loops, to actually already fit into that flow of engineering itself. So they can
+
+**[00:12:34.780](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=754s) 至 00:12:52.180**
+
+做实验、细化功能，甚至做出功能。以前得先等着，现在他们自己就能启动，工程师再接手把关。[转写有缺漏] 这样一来，大家都能参与，也都在同一个多人协作工厂的流程里工作。
+
+> experiment, they can refine the feature, and they can also even build a feature where before we would wait they can just kick start it and engineer and refuse that. That's a very powerful flow of giving everybody on board and being in the flow of that one multiplayer factory.
+
+**[00:12:53.480](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=773s) 至 00:13:11.940**
+
+有时 Agent 执行到一半也拿不准。你自己可能也有类似感受：工厂里按工单推进有时比较慢，而你想快速试几轮。可以把两种方式结合起来。比如，Agent 卡住的时候，
+
+> Now sometimes the agent while executing is unsure and you might have the same feeling that sometimes the ticket mode within a factory is slow and you want to do fast iteration. Now there's a way to do this hybridly when for example your agent is stuck.
+
+**[00:13:12.280](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=792s) 至 00:13:43.120**
+
+HelixML 有个很有意思的点子。Agent 卡住时，它会打开一个编程用的集成开发环境（IDE），里面就是 Agent 当时在用的那份上下文。你可以直接接进来，有现成的上下文和相关文件，帮它把问题弄明白。等你做完选择、试出合适的办法，再交还给 Agent 和工厂接着跑。这样就能
+
+> There was a very interesting idea from HelixML where when your agent is stuck it actually starts a new kind of coding IDE with the exact context that the agent was working on. You as a human almost jump in to help the agent figure out like with all the context available, with all kind of the files available, and then when you made the right choices, when you did the right experiments, you hand it actually back to the agent and the factory to continue. So this is a nice way of
+
+**[00:13:43.120](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=823s) 至 00:14:15.840**
+
+兼顾个人编程 Agent、快速迭代和工厂式流程。Agent 自己也可以借此澄清问题、请人帮忙。我们想做的是减少它不得不自己拿的主意。更有用的是，它会把需要决定的问题摆出来，供我们选择。它可以把问题具体化，避免只问一句「我该怎么办？」[转写有缺漏] 你在编程 Agent 里也能看到这种方式。
+
+> finding the middle ground between a personal coding agent, fast iterations, and still doing the factory. And the agent can use it as well to kind of clarify and help and ask for help. Now what we really want to do is reduce kind of the choices that it has to make. And what is really powerful is that it represents actually questions to us for decisions. Not just what should I do, an You see that in coding agents as well.
+
+**[00:14:15.980](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=855s) 至 00:14:31.460**
+
+它给你几个选项，你选一个，它就接着做。把选项摆出来很有用，你不必一直告诉 Agent 下一步该做什么。
+
+> It gives you a couple of options that you can choose for and then it goes off. This is really powerful and it is less trained on having to tell the agent all the time what to do by presenting options there as well.
+
+**[00:14:31.660](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=871s) 至 00:14:45.000**
+
+当然，你可以推翻它给的选项。这个功能在多人协作时尤其有用。现在，每个人做的决定都会记进一份台账。你可以把它想成编程 Agent 里可能已经有的一份本地上下文。
+
+> Of course you can override, but this is really a powerful multiplayer thing. Now every decision that people make actually goes onto a ledger. This is like your context locally, maybe that you have in your coding agent.
+
+**[00:14:45.220](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=885s) 至 00:14:57.240**
+
+在多人协作工厂里，这份信息会共享在决策日志中。Agent 可以查，人也可以查，而且可以追溯。
+
+> But if you are in a multiplayer factory, this is shared somewhere on the decision log. And that can be used either by agents, it could be used by humans to find, and you can trace things back.
+
+**[00:14:57.500](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=897s) 至 00:15:31.120**
+
+比如，谁在什么时候做了什么决定。到了下一次会话要用这部分上下文，也可以直接查询。我们还希望把每次改动控制得小一些，因为改动太大不容易读。我一开始讲的是通过自动化避免 Agent 互相冲突。还得考虑另一个因素，就是人一次能审多少改动。你可以拆成独立的 PR，放到多条合并列车上，这样人就能更快地审完
+
+> Like who made what decision and when that context is being used in the next session, you can also query that as well. Now we want that to be small because big changes they are not very readable so while I said in the beginning you could automize for agent not being conflicting there is also another kind of thing you have to think about which is the human review. How much change can a human review but you can build like separate PRs in multiple main merge trains for people to do fast reviewing of those
+
+**[00:15:31.120](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=931s) 至 00:16:14.200**
+
+这些改动。很多人想到减少需要人做的 PR 审查，就会做一些自动审查。第一步通常是减少失败，这很好。比如提供更充分的上下文和更合适的工具，安排负责挑错的 Agent 在代码交到人手上之前先审一遍。质量提高了，需要人介入的次数就能减少。同时，我们也在想办法让人清楚看到 Agent 做了什么。我们会要求截图、视频、验证证据，
+
+> things. Now a lot of people are focused on when the PR and we want to reduce the number of PR reviews is that there is some kind of automated review. Now the first part is typically to reduce the failures which is great right like we want to provide better context, better tools, we have adversarial agents looking at the code before it comes to us. That is a good way of reducing by it being better quality. Now at the same time we're optimizing that we can actually see what it did. We are asking for screen shots, for videos, for proof,
+
+**[00:16:14.500](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=974s) 至 00:16:36.100**
+
+还有测试，凡是能帮到审查人的都要考虑。最后，你愿意把这件事做到哪一步？有几个人告诉我，他们已经不看代码了。我就问他们，这项改动会带来什么影响？有些只是文档，影响可能有限。
+
+> for testing, all the things that could help a reviewer. And then ultimately how far do you go? Several people tell me like hey I'm not looking at the code anymore and I ask them okay you know but what is the impact of this going to Some is documentation that is limited impact maybe.
+
+**[00:16:37.440](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=997s) 至 00:16:56.580**
+
+有些项目还没有真实客户，这也挺好，影响面不大。仔细想想，你其实是在根据自己能承担的风险做选择。有些检查可以这样判定：如果改的是文档，就可以继续。
+
+> Some don't have real customers, which is also great, right? Like the impact is not a lot. But if you really start thinking about what you're doing is you're selecting by what risk you can take. So some of the tests will kind of say, well, if it's maybe in the documentation part, you can go ahead.
+
+**[00:16:56.580](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1016s) 至 00:17:38.140**
+
+影响更大的改动，比如涉及身份认证的，就多安排一些人工审查。有时也有折中的办法：先逐步发布功能，观察结果和有没有报错。除了提高质量、降低出错的概率，还可以直接按风险来考虑。发布到生产环境后，也可以看有哪些办法减轻影响。比如最坏的后果是丢数据，你能不能很快恢复？
+
+> if it's like a more impactful change like within authentication you kind of do more kind of review by a human and sometimes there's a middle ground hey this feature can just roll out we'll check what the output is whether there's any errors like gradual releases so instead of only optimizing for quality and reducing of the likelihood you're also kind of have a way of looking at it from a risk perspective. And when it moves out of production, you can also see how you can mitigate the risk. Because if the impact is that you lose data, do you have a fast restore strategy?
+
+**[00:17:38.600](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1058s) 至 00:18:01.460**
+
+你也可以问，如果一个节点故障了怎么办？能不能快速回滚？这些同样是架构上的决定。真出了问题，恢复或修复的成本应该尽量低。这一点很重要。PR 审查中的风险，可以从几个方面一起处理。
+
+> Or you can think about this like what if one node fails? Or can I fast roll back? Those are architectural decisions as well. So what you want to do is when things go wrong, you want to have it being cheap to restore or to fix. And that is important in not only optimizing, but there is multiple ways of kind of dealing with the risk on the PR review.
+
+**[00:18:02.960](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1082s) 至 00:18:38.260**
+
+在多人协作工厂里工作，有一件事挺有意思。以前大家也会聊天。比如我自己远程办公，而团队大部分人都集中在伦敦。他们会聚在一起，聊很多事情。我在远程有时很难跟上发生了哪些变化。启用多人协作工厂后，每个人都得跟上。代码产出太多，市场、支持和其他部门可能会跟不上。他们需要有人把
+
+> Now one of the funny things when you work in a multiplayer factory is that, you know, before people were chatting and I personally, for example, work remote where most of the team is in a central place in London. Now they get together, they do a lot of chats and so on. And me sometimes from remote I had a hard time catching up what has changed. Now when you turn on the multiplayer factory everybody needs to keep up. There's so much code being produced that maybe marketing, support and other places can't keep up. They need to have a
+
+**[00:18:38.260](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1118s) 至 00:19:14.720**
+
+已经发生的改动翻译成他们能理解的业务语言。所以，在多人协作工厂里，让变更消息传达到相关的人很重要。你怎样才能在自己的领域里，以自己能理解的方式，跟上和本职工作有关的变化？简单说，很多事可以自动化，可以用上很多 Skills，也可以持续改进上下文和这些环节，把例外留给人处理。我希望你们这样想：能自动化的就自动化，
+
+> translation in their changes that have happened in their language. So communication and radiating change is actually a very important feature in a multiplayer factory. How do you keep up within your domain, within your understanding, for your part of the job? Now in a nutshell you can do a lot of automation and you will use a lot of skills and that like context and better improvement on those pieces and you kind of reserve the people for the exceptions. And that's the way that I want you to think about is automate what you can,
+
+**[00:19:15.060](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1155s) 至 00:19:46.100**
+
+同时要确保需要作决定时，可以把问题转给合适的人。有了这些基础设施和协作方式，就会形成一种新的团队，差不多可以叫作工厂团队。以前的平台团队会管 Kubernetes、集群或云。现在这个团队管的是编程 Agent，以及让它们能一起工作的整套开发基础设施。
+
+> but make sure you are able to route to a human to make the right decision. With all that infrastructure, with all those kind of ways of working together, there is kind of a new team that is forming, which is almost like the factory team, similar to a platform team that was dealing with a Kubernetes or with a cluster or with the cloud. But right now, this is they are dealing with the coding agents and the coding fabric of working all together.
+
+**[00:19:46.320](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1186s) 至 00:20:19.900**
+
+他们确保每个 Skill 有负责人，上下文保持更新，各部分都接在合适的位置，也维护并监控整个工厂。今天只讲了个大概，里面还有很多可以展开的内容。归纳起来有两件事：越来越多的 Agent 要在同一个代码库里协作，压力会随之增加。人和 Agent 也越来越多地并发工作，同时交付更多
+
+> They make sure that who owns the skills, the context is up to date, they make sure that things are connected to the right pieces and that the whole factory also itself is being maintained and being monitored as well. So this is a nutshell, there's a lot more to it, but this was in a nutshell two things like the pressure is building up on agents working more together in the code base and then the humans also kind of working with the agents more and more together in a concurrent way and delivering more
+
+**[00:20:19.900](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1219s) 至 00:20:51.200**
+
+成果。要做到这一点，很多地方需要调整。我们现在试的一件事，是让个人 Agent 也参与进来。看板上既有编程 Agent，也有人，现在还有个人 Agent。它们会在看板上工作，替你作决定，也会回答其他 Agent 的问题。这是一种新的开发方式，也给你一种新的方式来委派你在
+
+> output at the same time and for that there needs to be a lot of change now one of the things that we're playing now with is they're not just the coding agents they're not just the people that do things in the board now they're being those personal agents and they will work in the board. They will make decisions for you. They will provide answers to other agents as well. This is a new way of building. This is a new way of kind of delegating some of the tasks that you
+
+**[00:20:51.200](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1251s) 至 00:21:08.480**
+
+工厂里负责的部分任务。我的建议是，提前做好准备。我们还没走到那一步。编程 Agent 对单人工厂来说，已经是很大的一步。多人协作工厂会给 Agent 怎么写代码、组织里的人怎么一起工作，都带来新的变化。
+
+> are doing in the factory. So my advice is brace yourself. We're not there yet. Like the coding agent were a good step on your solo factories. Multiplayer factories will bring new dynamics both to the agents coding and both to the organizational working together.
+
+**[00:21:09.240](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1269s) 至 00:21:50.360**
+
+我就讲到这里。非常感谢大家听我分享。你可以在 LinkedIn 私信我来要幻灯片，我很乐意发给你，也希望听听你的反馈。你当然也可以试试 Tessl 的工厂。我们在那里实现和改进工作循环、工厂功能和 Skills，支持多人协作。我也会在 concurrent.cd 分享这方面的研究，整理正在解决并发问题的人、工具和做法。非常感谢大家，希望你们今天
+
+> And that's it. And thank you very much for listening. You can kind of find the slides by asking to me in DM on LinkedIn. I happily send you in exchange for some feedback. And you know you can of course try the Tesla factory where we implement and are working on kind of loops factories and skills for you being in a multiplayer mode and I'd also share the research at a site on concurrent.cd where I find like people and tools and techniques that people are solving this concurrency all together thank you very much for listening and I hope you learned
+
+**[00:21:50.360](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1310s) 至 00:21:58.480**
+
+了解了一些新东西。欢迎留言，我很乐意看。谢谢。
+
+> some of the new things today and feel free to leave some comments and I'll happily have a look very much.
+
+**[00:22:28.420](https://www.youtube.com/watch?v=fTUinMqA1XQ&t=1348s) 至 00:22:29.780**
+
+[静音段，原转写疑似误识别。]

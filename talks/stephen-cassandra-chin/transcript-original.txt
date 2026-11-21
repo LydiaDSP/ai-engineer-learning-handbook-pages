@@ -1,0 +1,314 @@
+PR 写着“测试通过”，怎样证明它说的是真的？
+Stephen Chin · Cassandra Chin
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜官方单场录像 · https://www.youtube.com/watch?v=gbeuC0ud1p4
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[00:00:00.000 --> 00:00:04.220] Hello and welcome to our AI Engineer San Francisco talk.
+[00:00:04.380 --> 00:00:05.080] My name is Steven Chin.
+[00:00:05.260 --> 00:00:06.820] I'm joined by Cassandra Chin,
+[00:00:07.040 --> 00:00:09.440] who's the creator of Tracetune framework.
+[00:00:11.780 --> 00:00:13.280] Hi, I'm Cassandra Chin.
+[00:00:13.560 --> 00:00:17.380] I built Tracetune because I wanted to improve PRs.
+[00:00:17.520 --> 00:00:20.400] I see a lot of developers doing great things.
+[00:00:20.620 --> 00:00:22.760] The speed of innovation is as fast
+[00:00:22.760 --> 00:00:24.820] as it has ever been with AI technologies,
+[00:00:25.640 --> 00:00:27.820] but a lot of pull requests are getting rejected.
+[00:00:27.820 --> 00:00:34.480] And it's not because the code is bad, it's because the PRs often contain incorrect information
+[00:00:34.480 --> 00:00:35.960] or are written poorly.
+[00:00:37.340 --> 00:00:39.860] So hopefully with TraceTune we can improve that.
+[00:00:40.060 --> 00:00:45.460] It also has the option to add a fun comic to help explain your pull requests in a funny
+[00:00:45.460 --> 00:00:45.760] way.
+[00:00:47.020 --> 00:00:47.540] Cool.
+[00:00:47.760 --> 00:00:52.620] And what we're going to do today is we're going to go through a little bit about the
+[00:00:52.620 --> 00:00:57.380] common issues of PRs, how to improve the quality, how to improve token efficiency on this.
+[00:00:57.820 --> 00:01:03.100] and hopefully help everyone to be a better AI engineer for your organization,
+[00:01:03.120 --> 00:01:11.480] like our main character, Alex, who all he wants in life is to get an AI engineer hoodie.
+[00:01:12.880 --> 00:01:14.260] That's a really neat hoodie.
+[00:01:14.600 --> 00:01:18.900] I have a lot of AI engineer t-shirts, but I don't have the hoodie yet.
+[00:01:20.740 --> 00:01:23.020] Get Swix to make this AI engineer hoodie.
+[00:01:23.260 --> 00:01:25.240] Everyone needs an AI engineer hoodie.
+[00:01:26.560 --> 00:01:37.600] And this is enough motivation that hopefully he's going to do an amazing talk at the conference about his use case study on what he's doing in his company to improve the quality of PRs.
+[00:01:40.340 --> 00:01:44.860] Here's a picture of the token factory where Alex works.
+[00:01:45.340 --> 00:01:50.100] So Alex works together with a bunch of agents.
+[00:01:50.660 --> 00:01:55.120] He has, of course, finance looking over his shoulder because we all spend too much tokens.
+[00:01:55.240 --> 00:01:57.540] and they want to make sure we're keeping up with costs.
+[00:01:58.640 --> 00:02:00.740] His buddy there, Pip, he's walking with,
+[00:02:01.060 --> 00:02:04.440] carries all the evidence and looks into the archives
+[00:02:04.440 --> 00:02:05.480] and what's actually happening.
+[00:02:05.980 --> 00:02:08.020] And then Mira does all the reviews,
+[00:02:08.040 --> 00:02:10.020] so she's keeping track of things.
+[00:02:11.040 --> 00:02:13.360] It looks like Pip left his station empty.
+[00:02:18.800 --> 00:02:19.840] Part of the factory.
+[00:02:22.320 --> 00:02:24.960] until he sees what Alex produced for a PR.
+[00:02:25.200 --> 00:02:25.380] Oh, no.
+[00:02:27.160 --> 00:02:29.140] That's a very long ledger.
+[00:02:29.920 --> 00:02:31.060] A lot to review.
+[00:02:32.720 --> 00:02:35.340] I just said I want to code, so it's hard.
+[00:02:36.020 --> 00:02:39.320] And Mira's gone through everything for a fine-tuned comb.
+[00:02:39.460 --> 00:02:44.320] She actually was red lines, found some issues with the PR.
+[00:02:45.980 --> 00:02:48.000] And this is a real PR.
+[00:02:48.160 --> 00:02:49.820] I think it's actually one of your trace-tuned PRs.
+[00:02:49.840 --> 00:02:55.900] where it needs to have exact preview links for the URLs, command attribution,
+[00:02:56.640 --> 00:03:00.480] make sure the earlier work is qualified as well,
+[00:03:00.620 --> 00:03:06.880] and explain all of this in detail in the PR record to be accepted by Mira's very critical review.
+[00:03:07.120 --> 00:03:10.040] This was interesting because as I was building Tracetune,
+[00:03:10.280 --> 00:03:15.460] I was actually, like, as I was building it, I was using Tracetune to test it.
+[00:03:15.760 --> 00:03:18.220] So I would have Tracetune build the PRs.
+[00:03:19.840 --> 00:03:27.780] it would like get better you got amazing comics along the way too just to have fun while you were
+[00:03:27.780 --> 00:03:40.680] building stuff active so um you can see that the repeated prs which alex is doing to try to get
+[00:03:40.680 --> 00:03:45.860] good quality results are not working out well it's working out for his token billionaire
+[00:03:45.860 --> 00:03:48.560] Do you know anything about the token billionaire program?
+[00:03:49.100 --> 00:03:51.580] Yeah, so actually I am a token billionaire.
+[00:03:52.040 --> 00:03:56.520] I spent lots and lots of tokens to build Tracetune.
+[00:03:59.060 --> 00:04:00.240] That's kind of unfortunate.
+[00:04:00.400 --> 00:04:02.580] Was that all my money?
+[00:04:03.800 --> 00:04:05.160] Don't sweat the details.
+[00:04:05.920 --> 00:04:06.100] Okay.
+[00:04:08.440 --> 00:04:12.040] So I think there's a lot of good uses for tokens
+[00:04:12.040 --> 00:04:13.600] and for spending more AI work.
+[00:04:13.600 --> 00:04:17.440] maybe doing repeated PRs is not where you want to spend your token.
+[00:04:18.640 --> 00:04:21.480] And definitely the finance department is not happy with this.
+[00:04:21.560 --> 00:04:25.980] So he wants results and he wants to make sure that the PRs are accurate,
+[00:04:25.980 --> 00:04:30.820] are working, and they don't have to keep getting repeated again and again
+[00:04:30.820 --> 00:04:34.780] by reviewing the logs and reconstructing the evidence repeatedly.
+[00:04:35.540 --> 00:04:42.120] And it's interesting because normally when you're just coding on your agent,
+[00:04:43.600 --> 00:04:52.100] and you ask it to write a PR, it just reads your session log to try to figure out what it should
+[00:04:52.100 --> 00:04:59.720] have done using its inflated context window. It actually often, like, as it's churning, it compresses
+[00:04:59.720 --> 00:05:05.880] its context window, so it gets more and more inaccurate as it goes along. So instead, what
+[00:05:05.880 --> 00:05:12.600] we're doing here is with Tracetune, we're having it read through different sessions on your computer
+[00:05:13.600 --> 00:05:15.940] really figure out what you built and what happened.
+[00:05:18.220 --> 00:05:23.260] Yeah, and I think that concept of looking through the audit trails, looking through
+[00:05:23.260 --> 00:05:27.640] what the agents have actually done, is a lot of what you were doing with the
+[00:05:27.640 --> 00:05:29.680] Showtale project you were doing for education.
+[00:05:30.900 --> 00:05:37.300] Yeah, I actually started this project with the Showtale project because there was
+[00:05:37.300 --> 00:05:42.800] this academic research study I was supporting, but basically the issue they hit is
+[00:05:43.600 --> 00:05:49.540] were creating programs, but there was no way to trace back the actual work and effort they did.
+[00:05:49.800 --> 00:05:56.780] Because with AI coding, what you submit is the final work, the program, but most of the work
+[00:05:56.780 --> 00:06:02.520] is the prompting and everything that came before and that doesn't get submitted with the program.
+[00:06:03.240 --> 00:06:10.200] And I use the technology and theory behind that to be like, well, I can also improve pull requests
+[00:06:10.200 --> 00:06:12.020] with all this data collection.
+[00:06:14.200 --> 00:06:14.800] Cool.
+[00:06:15.100 --> 00:06:17.460] And I think that improvement in pull requests
+[00:06:17.460 --> 00:06:18.960] is something that benefits everybody
+[00:06:18.960 --> 00:06:21.760] because now you can find the evidence,
+[00:06:22.000 --> 00:06:24.320] like logging the change directory
+[00:06:24.320 --> 00:06:27.140] or the CWD before the CD runs,
+[00:06:27.900 --> 00:06:30.160] explaining why maybe other test data
+[00:06:30.160 --> 00:06:31.580] is leaking into other repos,
+[00:06:32.280 --> 00:06:34.480] and explaining what's happening
+[00:06:34.480 --> 00:06:36.020] behind the scenes on the PR
+[00:06:36.020 --> 00:06:39.360] rather than what most AI PRs read like,
+[00:06:40.200 --> 00:06:44.200] line explanation of the diffs since that's what they build the PRs off of.
+[00:06:48.860 --> 00:06:54.980] But incorrect facts can still pollute the information, can cause a problem with conflicting
+[00:06:54.980 --> 00:07:02.640] PRs and then still give you back inaccurate results. So maybe we have a solution for this.
+[00:07:02.820 --> 00:07:07.880] What do you think? Do you have a solution Cassandra? Yeah, everyone should use TraceTune
+[00:07:07.880 --> 00:07:09.380] because of the comics.
+[00:07:11.160 --> 00:07:14.120] Because of the comics, not because it gives you better PRs, right?
+[00:07:14.780 --> 00:07:19.020] Well, I started with the comics and I kind of went backwards
+[00:07:19.020 --> 00:07:21.820] and like, oh, I need to actually make the PRs better.
+[00:07:23.500 --> 00:07:26.640] Well, hopefully better PRs, better comics,
+[00:07:28.260 --> 00:07:31.900] and maybe better token savings by the end of this.
+[00:07:32.160 --> 00:07:32.520] Maybe.
+[00:07:33.140 --> 00:07:33.780] It should be.
+[00:07:35.440 --> 00:07:41.520] so um trace students an open source project it lets you improve the quality of your prs by
+[00:07:41.520 --> 00:07:48.120] pulling in agent context by pulling in information about the the code and then having an independent
+[00:07:48.120 --> 00:07:55.100] writer independent reviewer build better quality prs plus optionally giving you an amazing comic
+[00:07:55.100 --> 00:08:01.460] which what do you think the best feature is here cassandra i think it's obviously the comics
+[00:08:02.020 --> 00:08:07.180] This is one of the earlier comics from when I was using TraceTune to build it.
+[00:08:10.220 --> 00:08:15.440] That's good. And then you made sure that there's new characters every episode, none of those repeating characters.
+[00:08:16.060 --> 00:08:18.620] Yeah, that's what this PR was about.
+[00:08:21.540 --> 00:08:26.200] okay and then this is a description of the original trace student flow so it
+[00:08:26.940 --> 00:08:32.440] finds all the traces for a particular branch it researches them reviews the description adds more
+[00:08:32.440 --> 00:08:38.960] context and kind of goes in a loop until it gets all of the evidence it needs to make a quality pr
+[00:08:38.960 --> 00:08:45.160] and subjectively but also through pr bench which is testing framework
+[00:08:46.460 --> 00:08:48.880] gives you better quality, better research,
+[00:08:49.140 --> 00:08:52.900] lower rate of inaccuracies in the PRs.
+[00:08:53.060 --> 00:08:56.220] I think at this point, the PRs were already better
+[00:08:56.220 --> 00:08:57.740] than if you don't use Tracedoon.
+[00:08:57.960 --> 00:09:01.360] But I found that it still makes some mistakes occasionally.
+[00:09:02.360 --> 00:09:05.420] You can see at the end that it tries to revise with more context.
+[00:09:05.820 --> 00:09:07.740] I think that's where the mistakes come in.
+[00:09:10.440 --> 00:09:12.640] Okay, well, Alex thinks it's good enough.
+[00:09:12.780 --> 00:09:14.700] He's going to try to solve the token crisis.
+[00:09:15.160 --> 00:09:17.900] with Trace2 and see if this will solve all of his problems.
+[00:09:18.820 --> 00:09:23.080] Polish checked. Alex looks very, very happy.
+[00:09:23.980 --> 00:09:26.000] But Mira doesn't look that happy.
+[00:09:26.360 --> 00:09:30.600] It looks like we still hit a mistake here, like I was saying earlier.
+[00:09:30.980 --> 00:09:34.960] So the original PR claim was no later passing run as recorded.
+[00:09:36.200 --> 00:09:40.280] And the problem here is the, in the actual trace,
+[00:09:40.280 --> 00:09:49.360] it shows it running a bun test at the same time as the bun X TSC and you can't
+[00:09:49.360 --> 00:09:53.720] run those two at the same time they have to be ran sequentially for the test to
+[00:09:53.720 --> 00:09:59.720] pass yeah exactly so he claims test passing and all the checks were run and
+[00:10:00.340 --> 00:10:07.900] actually that's not what the code did so poor Alex another failed PR very angry
+[00:10:07.900 --> 00:10:14.540] badger with all the token costs um kind of kind of makes me feel like monday morning with the
+[00:10:14.540 --> 00:10:19.460] neo4j finance department looking at my token spend each week but they're they're very forgiving
+[00:10:21.260 --> 00:10:28.760] especially when it's a important project like like this so maybe alex can save some costs by
+[00:10:28.760 --> 00:10:33.180] using cheaper writers is the number one thing finance has me to do they're like hey no more
+[00:10:33.180 --> 00:10:36.420] opus, sonnet, haiku, do something cheaper, please.
+[00:10:37.180 --> 00:10:41.020] Does this work? I feel like the quality
+[00:10:41.020 --> 00:10:44.960] is a bit lower when you do it like that. Just reducing the cost
+[00:10:44.960 --> 00:10:48.840] doesn't quite help. Yeah, so we were trying to get better quality and we
+[00:10:48.840 --> 00:10:52.040] ended up getting worse quality by just using cheaper writers.
+[00:10:54.640 --> 00:10:57.100] And obviously Alex is in a bind here, right?
+[00:10:57.220 --> 00:11:01.200] He's spent too much on revisions. He doesn't have a solution
+[00:11:03.180 --> 00:11:04.480] he wants out of his PRs.
+[00:11:05.360 --> 00:11:05.540] But
+[00:11:07.380 --> 00:11:08.380] maybe there's
+[00:11:08.380 --> 00:11:10.260] something Pip can help us with.
+[00:11:10.380 --> 00:11:11.360] Pip has a friend.
+[00:11:12.400 --> 00:11:14.660] I wonder who this friend could be.
+[00:11:15.260 --> 00:11:15.820] Oh.
+[00:11:16.440 --> 00:11:18.780] Well, I think you know from my
+[00:11:18.780 --> 00:11:20.780] previous talks that this friend is
+[00:11:20.780 --> 00:11:22.800] definitely going to be a
+[00:11:22.800 --> 00:11:22.980] graph.
+[00:11:24.460 --> 00:11:26.740] You're the graph guy. We're doing another
+[00:11:26.740 --> 00:11:27.360] graph again.
+[00:11:27.960 --> 00:11:29.640] Yeah, there's always a new graph.
+[00:11:29.820 --> 00:11:32.600] But this is not the same old graph.
+[00:11:33.180 --> 00:11:43.140] the the Neo4j database this is our new friend Archie who is a embedded database written in Rust
+[00:11:43.980 --> 00:11:51.140] called Relate that actually is being launched this week at the Nodes conference and also
+[00:11:51.140 --> 00:11:59.340] this talk at A Engineer San Francisco and it's an open source database which allows us to get a lot
+[00:11:59.340 --> 00:12:08.240] the benefits of more accuracy multi-hop queries more explainable traces without having the heavy
+[00:12:08.240 --> 00:12:13.660] weight approach so it's kind of an agent focused graph database specifically for these sort of
+[00:12:13.660 --> 00:12:23.300] embedded use cases okay so let's see how archie can help us out so before we were relying a lot
+[00:12:23.300 --> 00:12:30.240] on agents and loops of agents to resolve the problem but graph databases can store relationships
+[00:12:30.240 --> 00:12:37.240] can find like like different things which are clustered build a brief which connects all this
+[00:12:37.240 --> 00:12:43.100] information together and then give the agents even a cheaper agent better information and more context
+[00:12:43.100 --> 00:12:49.320] to give a good drafting decision and the good thing about archie is he has zero lm costs it's all
+[00:12:50.240 --> 00:12:53.660] compute costs and storage, and it's a fully in-memory database
+[00:12:53.660 --> 00:12:57.080] and REST, so it's highly optimized. So we get this
+[00:12:57.980 --> 00:13:01.360] providence about all these submitted changes and this evidence graph
+[00:13:01.360 --> 00:13:05.660] basically for free compared to all the LLM and token costs,
+[00:13:05.680 --> 00:13:09.400] which we were doing before. And this means our buddy Alex
+[00:13:09.400 --> 00:13:13.520] doesn't need to research. He doesn't need to go through and find all the facts again and go through the
+[00:13:13.520 --> 00:13:17.520] sources because Relate is going to do
+[00:13:19.320 --> 00:13:22.640] built-in evidence packet that you can use for TraceTune.
+[00:13:23.240 --> 00:13:24.520] It all sounds really great.
+[00:13:24.720 --> 00:13:26.240] Maybe we do need more graphs.
+[00:13:28.420 --> 00:13:31.000] I'm surprised to hear that from you after all the graph
+[00:13:31.000 --> 00:13:32.040] talks you've had to put up with.
+[00:13:32.680 --> 00:13:37.020] OK, but we can do this and make it even better
+[00:13:37.020 --> 00:13:38.020] with the neighborhood brief.
+[00:13:38.200 --> 00:13:41.460] So basically taking all of the why, the code, the checks,
+[00:13:41.920 --> 00:13:44.600] putting attributions and relationships between those,
+[00:13:44.740 --> 00:13:47.200] and then returning back a connected set of information
+[00:13:47.200 --> 00:13:47.820] as a packet.
+[00:13:49.320 --> 00:13:55.840] then when the agent is drafting up the PR, it has all the connected facts with their sources together
+[00:13:56.600 --> 00:14:04.700] in a single source and that makes the writer draft more accurate with fewer passes and also
+[00:14:04.700 --> 00:14:10.660] makes the reviewer's job much easier. So we don't need an expensive reviewer, we can save by using
+[00:14:11.160 --> 00:14:17.420] a few Haiku reviewers instead of a Sonnet reviewer or Luna in the case of Codex to
+[00:14:19.320 --> 00:14:24.720] check those against the draft, redo the writing, and then we retain the higher quality writer,
+[00:14:25.080 --> 00:14:30.940] a sonnet or tarot class writer to make sure we have a high quality brief that will pass human approval.
+[00:14:32.840 --> 00:14:39.000] When we were building this, it felt very counterintuitive to have the writer be higher quality than the reviewers.
+[00:14:40.700 --> 00:14:48.100] Actually, it's common that people always want to have the planner, the reviewer, the checker to be the highest quality model.
+[00:14:49.320 --> 00:14:56.520] If you're doing high-quality writing, a lower model, no matter how many iterations and how much feedback you give it, can't do it.
+[00:14:56.580 --> 00:14:59.360] It just turns things into a checklist and makes it very mechanical.
+[00:14:59.700 --> 00:15:04.200] So to give writing which feels human-like, you do need a higher-quality model.
+[00:15:04.420 --> 00:15:08.600] And it's actually the reviewing and the cross-checking step, which is more mechanical.
+[00:15:08.600 --> 00:15:12.200] So it's a little counterintuitive, but that works out quite well.
+[00:15:12.380 --> 00:15:19.020] It's also a little counterintuitive that our badger has a thumbs-up coming out of his chest.
+[00:15:19.320 --> 00:15:21.540] Let's ignore the high-quality AI artwork.
+[00:15:24.720 --> 00:15:27.820] Okay, so we've checked all the claims against the evidence.
+[00:15:27.820 --> 00:15:31.580] We've looked for missing findings with our cheaper reviewer.
+[00:15:31.740 --> 00:15:33.280] Did the focus work?
+[00:15:33.520 --> 00:15:37.720] And then found the things which were connected information
+[00:15:37.720 --> 00:15:42.060] to give a better draft and review for MIRA.
+[00:15:43.740 --> 00:15:45.020] And here's the output.
+[00:15:45.220 --> 00:15:46.700] So it has the Y.
+[00:15:47.660 --> 00:15:55.040] so log cwd and that describes the shell before the cd runs what's the exception so the cd targets in
+[00:15:55.040 --> 00:16:01.840] repo or the command mentions a root what passed it has type check plus 71 tests checked on submitted
+[00:16:01.840 --> 00:16:08.440] content not before and then it starts in correlate.ts inspecting the leading cd exception
+[00:16:09.520 --> 00:16:16.300] and mira looks pretty happy with these results right yeah this might be the first scene where
+[00:16:16.700 --> 00:16:46.620] genuinely happy. I think she was kind of happy with the AI engineer sweatshirt before she realized that Alex actually was a goof. Okay, so here are some of the actual data and results from the side-by-side analysis using PRBench, which is a pull request benchmark, which uses audit traces plus code and LM judges to review the quality of the work, of course, reviewed by human as
+[00:16:46.700 --> 00:16:53.100] for accuracy and you can see that on both quad and codex you get a significant quality improvements
+[00:16:53.100 --> 00:17:01.000] on a scale of one to 100 the judges by and large almost unilaterally liked the trace tune plus
+[00:17:01.000 --> 00:17:09.400] relate quality better um on a one to 100 scale it was like 74 to 76 82 to 86 so plus two plus four
+[00:17:09.400 --> 00:17:16.040] point these tests contributed to my token billionaire card because we were running lots and lots of
+[00:17:16.700 --> 00:17:19.980] we created this side project called PR Bench just for testing.
+[00:17:20.480 --> 00:17:24.680] And we would have different agents test over different pull requests
+[00:17:24.680 --> 00:17:26.140] and compare the results.
+[00:17:27.060 --> 00:17:31.320] Initially, I had it running sequentially.
+[00:17:31.640 --> 00:17:34.320] It'll do one test and finish it, then do the next.
+[00:17:34.560 --> 00:17:37.080] But then we decided to run them all in parallel.
+[00:17:37.620 --> 00:17:39.780] It's a very quick way to reach high spend.
+[00:17:40.600 --> 00:17:42.060] Yeah, that's kind of funny.
+[00:17:42.920 --> 00:17:46.540] At the current testing rate with the number of use cases and tests,
+[00:17:46.700 --> 00:17:54.960] the benchmark um we can fully saturate my my high-end gaming computer with as many threads
+[00:17:54.960 --> 00:18:01.700] as linux can handle simultaneously and and of course the token spend is is slight slightly
+[00:18:01.700 --> 00:18:06.220] higher than what we'd like but it's all for the good of improving the quality of pull requests
+[00:18:06.220 --> 00:18:11.020] for the world so you all get the benefit of all these test runs and having the highest quality
+[00:18:11.020 --> 00:18:17.740] improvements and you save on tokens so we've spent the tokens for you in advance because
+[00:18:19.560 --> 00:18:27.420] tracetune with the graph solution takes about half as many tokens as it did previously and which is
+[00:18:27.420 --> 00:18:31.020] an amazing result from the graph because now you're pre-computing you're getting all this
+[00:18:31.020 --> 00:18:37.580] evidence graph constructed in advance the writing's cheaper the reviewing's cheaper
+[00:18:37.580 --> 00:18:40.260] with a higher quality result.
+[00:18:40.940 --> 00:18:43.920] I wasn't sure about the whole graph thing initially,
+[00:18:43.960 --> 00:18:47.080] but after seeing the cost tank almost in half,
+[00:18:48.140 --> 00:18:51.400] it's not even a question to making this program work.
+[00:18:53.240 --> 00:18:55.840] And this is something we did for the TraceTune project,
+[00:18:55.880 --> 00:18:58.500] but you can do this for pretty much any project
+[00:18:58.500 --> 00:19:01.020] where you have data, you have relationships,
+[00:19:01.360 --> 00:19:02.580] you have evidence, you have things
+[00:19:02.580 --> 00:19:04.460] which you're trying to compare
+[00:19:04.460 --> 00:19:09.120] because agents are not that good at doing the data analysis,
+[00:19:09.140 --> 00:19:11.820] at doing all of the evaluation and the curation.
+[00:19:12.100 --> 00:19:14.680] So if you give them a help at the front end
+[00:19:14.680 --> 00:19:19.480] by creating a custom graph layer with an in-memory database like Relate,
+[00:19:20.200 --> 00:19:23.080] suddenly your costs go down, your quality goes up,
+[00:19:23.120 --> 00:19:28.560] and you too can be a token billionaire like our friend Alex.
+[00:19:28.980 --> 00:19:31.660] Well, I guess now he's using it as a bookmark.
+[00:19:32.640 --> 00:19:34.320] I think that's a good use for it.
+[00:19:34.460 --> 00:19:38.200] it's a really high quality bookmark it's heavier than a credit card
+[00:19:40.180 --> 00:19:44.440] it is it's a nice price for um spending all those tokens on pr bench
+[00:19:46.140 --> 00:19:50.920] so finance is happy lower drafting costs that they can reasonably fund
+[00:19:51.660 --> 00:19:55.880] alex is happy he has his new bookmark he is now has a great case study
+[00:19:57.400 --> 00:20:02.780] with the connections doing neighborhood retrievable facts so that it's a better brief
+[00:20:04.460 --> 00:20:06.660] review so the reviewers get the same compact brief.
+[00:20:06.980 --> 00:20:09.520] Mira gets exactly the evidence she needs.
+[00:20:09.760 --> 00:20:13.780] And then here's Alex on stage at AI Engineer.
+[00:20:14.020 --> 00:20:21.360] Somewhere in the world, better PRs, lower drafting cost with a graph plus open source
+[00:20:21.980 --> 00:20:25.740] Trace to build, which also gives you amazing comics.
+[00:20:30.060 --> 00:20:37.120] okay so big round of applause for our friend alex who's now earned the ai engineer hoodie
+[00:20:38.200 --> 00:20:44.480] i think that's definitely a wardrobe upgrade for him yeah i don't think the pocket protector look
+[00:20:44.480 --> 00:20:50.960] was that great for him so good for him i think we'll see swix on stage with one of these hoodies
+[00:20:50.960 --> 00:20:55.920] soon he can't he can't not do it now that we shamed into doing it at his own conference
+[00:20:56.640 --> 00:21:01.880] the token no billion program is amazing a big kudos to the team for coming up with ways to
+[00:21:01.880 --> 00:21:07.600] incentivize and reward people who are the bleeding edge of ai usage and learning how to
+[00:21:07.600 --> 00:21:16.740] make it really effective for the rest of us and um now you too can have better prs impress your
+[00:21:16.740 --> 00:21:23.060] co-workers by having well researched, effectively written, and lower cost PRs.
+[00:21:23.160 --> 00:21:23.920] With a comic.
+[00:21:24.940 --> 00:21:25.900] With a comic.
+[00:21:26.240 --> 00:21:28.740] So for more information, go to tracetune.com.
+[00:21:29.500 --> 00:21:30.820] Learn about Tracetune.
+[00:21:30.940 --> 00:21:31.440] Give it a try.
+[00:21:31.720 --> 00:21:32.400] It works with Quad.
+[00:21:32.480 --> 00:21:33.300] It works with Codex.
+[00:21:33.340 --> 00:21:34.880] It works with all your favorite AI tools.
+[00:21:35.540 --> 00:21:40.920] And if you want to do these same sort of amazing results on your own project, try out Relate,
+[00:21:40.920 --> 00:21:44.780] our new Rust-based embedded open source graph database,
+[00:21:44.780 --> 00:21:47.620] which brings context to your agents
+[00:21:47.620 --> 00:21:49.640] and helps you build more efficient applications
+[00:21:49.640 --> 00:21:52.640] that just work better or cheaper
+[00:21:52.640 --> 00:21:54.160] and give you better results.
+[00:21:54.500 --> 00:21:55.660] So thank you all for joining
+[00:21:55.660 --> 00:21:58.200] our AI Engineer San Francisco talk.
+[00:21:58.200 --> 00:22:01.180] And if you're watching this talk this week
+[00:22:01.180 --> 00:22:02.240] at San Francisco,
+[00:22:03.560 --> 00:22:05.540] what should you do this weekend
+[00:22:05.540 --> 00:22:07.420] with your kids on Saturday, Cassandra?
+[00:22:08.060 --> 00:22:10.760] We are running an AI Engineer Kids Day.
+[00:22:10.920 --> 00:22:14.480] So anyone who's available, just sign your kids up.
+[00:22:14.900 --> 00:22:16.060] We're teaching kids workshops.
+[00:22:16.440 --> 00:22:20.340] Kids will be learning how to do AI programming to make their own games.
+[00:22:20.620 --> 00:22:22.720] And I think we're also doing a...
+[00:22:23.320 --> 00:22:24.380] No, it's just the gaming one.
+[00:22:26.020 --> 00:22:27.660] No, we'll do the robots too.
+[00:22:28.020 --> 00:22:30.180] Okay. Yeah, we'll also be doing robots.
+[00:22:30.340 --> 00:22:34.480] So kids will get to control these little soda can robots using AI.
+[00:22:35.400 --> 00:22:36.860] Yeah, so a lot of fun.
+[00:22:37.180 --> 00:22:40.220] Physical AI, gaming AI, all in one place.
+[00:22:40.980 --> 00:22:50.740] Sign up at AI Engineer Kids Day and bring your kids, bring your nieces, bring your nephews, and let's train the next generation of AI engineers.
+[00:22:52.640 --> 00:22:55.260] All right. Thanks so much and enjoy the rest of the conference.

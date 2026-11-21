@@ -1,0 +1,327 @@
+Simon Willison 回顾 2026 年大模型的三个转折
+Simon Willison
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[08:31:08.620 --> 08:31:14.540] Hello, AI Engineer Code Summit. It's great to be here. I have a lot to cover. I've got
+[08:31:14.540 --> 08:31:20.560] 18 minutes to talk about the last 12 months in LLMs. Am I slides up? My slides are up.
+[08:31:20.800 --> 08:31:25.900] Let's just get going. I want to talk about the last 12 months in LLMs through the perspective
+[08:31:25.900 --> 08:31:30.940] of three inflection points that we've had over the past 12 months. And the first of
+[08:31:32.200 --> 08:31:38.020] exactly 12 months ago. November 2025 is what I consider the coding agent inflection point.
+[08:31:38.180 --> 08:31:42.600] Coding agents weren't new. We'd had Claude code since February last year. Codex had been
+[08:31:42.600 --> 08:31:47.140] around. This wasn't a complete new category of software. But something changed 12 months
+[08:31:47.140 --> 08:31:52.860] ago with these two models. We had Claude Opus 4.5 and GPT 5.1, and they were just a little
+[08:31:52.860 --> 08:31:57.520] bit better at driving a coding agent, which put them over that thing where suddenly these
+[08:31:57.520 --> 08:31:59.340] of tools you could use on a daily basis.
+[08:31:59.660 --> 08:32:03.440] Like we went from coding agents as a novelty that you'd poke out occasionally that make
+[08:32:03.440 --> 08:32:06.920] some weird mistakes to something that was reliable enough that you could use them every
+[08:32:06.920 --> 08:32:07.200] day.
+[08:32:07.400 --> 08:32:11.580] It was convenient that that happened in November because we then got to spend December basically
+[08:32:11.580 --> 08:32:15.220] over the holidays sort of poking at these new models and these new things and figuring
+[08:32:15.220 --> 08:32:16.000] what they could do.
+[08:32:16.140 --> 08:32:20.580] And by January, a lot of us had realized that something had changed and this was going to
+[08:32:20.580 --> 08:32:22.560] be the big theme for 2026.
+[08:32:23.340 --> 08:32:27.440] I like evaluating models by having them draw SVGs of pelicans riding bicycles.
+[08:32:27.920 --> 08:32:30.680] This is the state of the art 12 months ago.
+[08:32:30.860 --> 08:32:33.960] This is Claude Opus' pelican and GPT Viper 1's pelican.
+[08:32:34.120 --> 08:32:36.420] You'll notice that neither of these bicycles actually work.
+[08:32:36.580 --> 08:32:38.660] So there was definitely room for improvement here.
+[08:32:38.800 --> 08:32:40.020] They were really good at writing code.
+[08:32:40.160 --> 08:32:42.160] They weren't great at SVGs just yet.
+[08:32:42.300 --> 08:32:44.100] But this is how we started the year.
+[08:32:45.160 --> 08:32:49.280] So every year in January, I set myself a New Year's resolution.
+[08:32:49.540 --> 08:32:51.500] And every year it is the exact same thing.
+[08:32:52.560 --> 08:32:55.060] that this year I'm gonna take on less new projects
+[08:32:55.060 --> 08:32:56.160] and I'm gonna focus.
+[08:32:56.200 --> 08:32:58.480] I'm gonna focus on the stuff that I've already got to do.
+[08:32:58.580 --> 08:32:59.700] And this has never worked.
+[08:32:59.860 --> 08:33:02.060] So this year I changed it and I said,
+[08:33:02.120 --> 08:33:03.540] you know what, I'm gonna be more ambitious.
+[08:33:03.720 --> 08:33:06.100] I'm gonna take on as many projects as I want to
+[08:33:06.100 --> 08:33:08.880] because we've got these agents, they can do stuff.
+[08:33:09.300 --> 08:33:10.720] Let's just try and push the limits
+[08:33:10.720 --> 08:33:11.740] and see what we can get done.
+[08:33:11.900 --> 08:33:13.180] As a result, now it's November
+[08:33:13.180 --> 08:33:15.500] and I am juggling so many plates right now,
+[08:33:15.580 --> 08:33:16.480] it's kind of horrifying
+[08:33:16.480 --> 08:33:19.320] and I may need to reset my ambitions for next year.
+[08:33:19.440 --> 08:33:21.380] But that was my sort of theme of the year.
+[08:33:22.560 --> 08:33:27.320] conference is to be more ambitious now that we have all of these new tools. I also went on a
+[08:33:27.320 --> 08:33:33.760] podcast where they asked me to make some predictions for 2026 in LLMs. My predictions back in January
+[08:33:33.760 --> 08:33:39.440] were, firstly, it will become undeniable that LLMs write good code, not just code, but good code,
+[08:33:39.500 --> 08:33:42.700] because back in January, there were a lot of people who thought that the code was all complete
+[08:33:42.700 --> 08:33:48.020] trash, and you'd have to review every single line of it. I've been saying this every year for like
+[08:33:48.020 --> 08:33:53.460] four years now, we're due a prompt injection challenger disaster, like some incident caused
+[08:33:53.460 --> 08:33:57.080] by a prompt injection attack, which makes the front pages of newspapers. I was convinced that
+[08:33:57.080 --> 08:34:00.680] this would be the year, even though it hadn't been the year, the year before, the year before,
+[08:34:00.700 --> 08:34:06.840] the year before that. And I also predicted that kakakopo parrots will have an outstanding breeding
+[08:34:06.840 --> 08:34:14.200] season in 2026. This is a kakakopo parrot. They are a New Zealand nocturnal flightless parrot.
+[08:34:14.200 --> 08:34:24.020] There were only 235 of them in the world back in January, but they only breed when the Rimu trees have a masting fruit season, which hadn't happened in years.
+[08:34:24.260 --> 08:34:27.660] But the Rimu trees were looking really good in January. There was a lot of fruit coming out.
+[08:34:27.800 --> 08:34:32.280] So based on that, I thought, you know, maybe this is the year that we get our Cacapoe breeding explosion.
+[08:34:32.580 --> 08:34:35.320] And also on that podcast, we coined a new term.
+[08:34:35.320 --> 08:34:47.360] We coined the term deep blue to describe the AI-induced existential crisis that everyone starts to feel once you realize that all of the things that make you special as a software developer, these models can do those things too.
+[08:34:47.480 --> 08:34:50.200] And they can do them faster and sometimes they can even do them better.
+[08:34:50.440 --> 08:34:57.520] And this has definitely been a growing sensation across our industry and other industries over the course of 2026 as well.
+[08:34:58.580 --> 08:34:59.900] Let's jump forward to February.
+[08:34:59.900 --> 08:35:03.000] In February, Google released Gemini 3.1 Pro.
+[08:35:03.680 --> 08:35:06.020] And look at that pelican riding a bicycle.
+[08:35:06.480 --> 08:35:07.820] Like, that's a real bicycle.
+[08:35:07.960 --> 08:35:09.020] That bicycle's the right shape.
+[08:35:09.120 --> 08:35:09.940] It's got a little fish.
+[08:35:09.960 --> 08:35:10.800] It's got a hat on.
+[08:35:10.960 --> 08:35:14.580] This was by far the best pelican I had ever seen out of any model.
+[08:35:15.500 --> 08:35:18.780] And this, I had set a trap for the labs.
+[08:35:19.500 --> 08:35:23.000] Everyone's always asked me what happens if the labs train for the pelican riding a bicycle.
+[08:35:23.180 --> 08:35:27.780] My answer has always been if they do that, I will catch them because I'll ask for a flamingo
+[08:35:27.780 --> 08:35:28.580] on a unicycle.
+[08:35:29.900 --> 08:35:34.160] a great pelican and a terrible flamingo. I'll know that they've been cheating. Unfortunately,
+[08:35:34.480 --> 08:35:39.880] Google's Jeff Dean tweeted this video the day they launched that model, where he showed that
+[08:35:39.880 --> 08:35:44.600] we've got a pelican riding a bicycle, but we've also got a frog on a whatever that thing is,
+[08:35:44.660 --> 08:35:50.360] and a giraffe in a little tiny car, a flamingo on roller skates, a kick-flipping turtle, and that's
+[08:35:50.360 --> 08:35:55.980] a dachshund in a stretch limo. So they've beaten me, right? They have trained for all forms of
+[08:35:55.980 --> 08:36:01.300] animals in all forms of transport, which does sort of weaken my benchmark quite a little
+[08:36:01.300 --> 08:36:01.540] bit.
+[08:36:01.960 --> 08:36:03.520] But there was some good news in February.
+[08:36:03.680 --> 08:36:09.760] In February, the first cacopor chick in four years hatched on Valentine's Day.
+[08:36:09.940 --> 08:36:13.860] On Valentine's Day, because we hadn't had the removed fruit in like four years, this
+[08:36:13.860 --> 08:36:18.200] was the first one of these baby, rare, weird New Zealand parrots that we'd had in four
+[08:36:18.200 --> 08:36:18.420] years.
+[08:36:18.520 --> 08:36:19.180] So that was nice.
+[08:36:19.500 --> 08:36:23.300] My benchmark was greatly injured, but the cacopor were doing okay.
+[08:36:24.240 --> 08:36:29.680] Okay. Jump straight to April. In April, Anthropic released a model that they did not release.
+[08:36:29.900 --> 08:36:35.900] They announced Claude Mythos and they said, this model is too dangerous for us to release.
+[08:36:36.180 --> 08:36:40.860] This is, it can, it's got new cyber security abilities that we're not ready to share with
+[08:36:40.860 --> 08:36:46.800] the world. We'll share it with trusted partners. They actually said Mythos Preview has already
+[08:36:46.800 --> 08:36:51.400] found thousands of high severity vulnerabilities, including some in every major operating system
+[08:36:53.300 --> 08:36:58.320] A lot of people were quite skeptical because the thing where labs say our model is too
+[08:36:58.940 --> 08:37:01.400] dangerous to release, it's like the oldest trick in the book.
+[08:37:01.680 --> 08:37:04.760] They first, I think I did that in 2019 with GPT-2.
+[08:37:05.000 --> 08:37:08.760] And actually, I think it might have been the people who left to found Anthropic who were
+[08:37:08.760 --> 08:37:10.100] responsible for that decision as well.
+[08:37:10.300 --> 08:37:11.540] But yeah, so we've heard this one before.
+[08:37:11.820 --> 08:37:16.580] So we didn't really, it was a little bit suspicious about what's going on there.
+[08:37:17.560 --> 08:37:20.640] But we did finally get access to that model.
+[08:37:20.640 --> 08:37:23.980] or rather we got access to Claude Fable a couple of months later.
+[08:37:23.980 --> 08:37:27.760] It was Mythos defanged with the safeties turned back on again.
+[08:37:28.600 --> 08:37:32.300] And it very quickly became apparent as we started playing with this model
+[08:37:32.300 --> 08:37:34.660] that this thing was something new and something special.
+[08:37:35.580 --> 08:37:39.160] There was a time limit on how long it would be on the subscription plans.
+[08:37:39.300 --> 08:37:41.340] I cancelled my plans for that weekend.
+[08:37:41.340 --> 08:37:44.560] I was like, I have to spend as much time as I can with this model
+[08:37:44.560 --> 08:37:46.500] before it gets too expensive.
+[08:37:47.020 --> 08:37:50.000] And then three days on Friday night before my weekend,
+[08:37:50.720 --> 08:37:55.900] government pulled Fable. They put export controls on it. They said this model is too dangerous.
+[08:37:56.100 --> 08:38:02.080] Nobody can use it. We later found out that the prompt that got Fable banned was fix the bugs.
+[08:38:02.460 --> 08:38:06.980] Somebody tried to find the security holes and it wouldn't. And they said fix the bugs. And it found
+[08:38:06.980 --> 08:38:11.180] the security holes and fixed the bugs. So that's all it took. That's a whole thing. But anyway,
+[08:38:11.800 --> 08:38:16.140] the US government pulled it. There was all sort of malarkey for 18 days. And it came back on the
+[08:38:16.140 --> 08:38:24.000] 1st of July, but eight days later, OpenAI released GPT 5.6, which was in the same ballpark
+[08:38:24.000 --> 08:38:28.220] as Fable. And I think there's an important lesson for the industry here. Fable had a
+[08:38:28.220 --> 08:38:33.900] 30-day window where it could have been the best model in the world, and they lost 18
+[08:38:33.900 --> 08:38:39.060] of those days to US government restrictions. And if you think about it, these models cost
+[08:38:39.060 --> 08:38:42.540] a huge amount to train. You only have a very short window of time where you're the best
+[08:38:42.540 --> 08:38:47.320] model in the world, it's kind of useful to keep that time open and not scare governments
+[08:38:47.320 --> 08:38:48.240] into shutting you down.
+[08:38:48.720 --> 08:38:51.640] But this was the second inflection point, right?
+[08:38:51.800 --> 08:38:54.980] This was the Fable class model inflection point.
+[08:38:55.220 --> 08:39:00.260] And Fable 5 was the first model that I sort of felt this from, but it's true of other
+[08:39:00.260 --> 08:39:01.140] models since then as well.
+[08:39:01.280 --> 08:39:06.480] And my definition of a Fable class model is if you can define a goal and provide the
+[08:39:06.480 --> 08:39:11.560] necessary tools to achieve that goal and the goal is possible, the models will solve your
+[08:39:12.540 --> 08:39:19.580] with brute force. You can define the problem, set them up, get them running, maybe 12 hours later,
+[08:39:19.580 --> 08:39:24.140] they will have solved your problems. And we've seen this happen a whole bunch of times in the
+[08:39:24.140 --> 08:39:29.320] past few months. The mathematical theorems that are falling to these terrifying brute force attacks
+[08:39:29.320 --> 08:39:34.900] from these models are quite substantial. But this is really exciting. Like the coding agent thing
+[08:39:34.900 --> 08:39:39.500] was cool. The Fable class models where if you can learn how to define your problem in the right way,
+[08:39:39.500 --> 08:39:43.700] you can get that problem solved. That was pretty exciting. I've got a personal example of that from
+[08:39:43.700 --> 08:39:48.440] just earlier this week. We have a room full of boxes in our house that we haven't unpacked from
+[08:39:48.440 --> 08:39:53.520] our last move and there's about 40 of them and it's kind of horrifying and something in that room
+[08:39:53.520 --> 08:39:59.980] started to beep. There was an intermittent beeping noise coming from one of the...
+[08:40:00.000 --> 08:40:02.600] 40 boxes in this room, and it was driving a spare.
+[08:40:02.780 --> 08:40:04.680] Our dog, whenever a fire alarm goes off,
+[08:40:04.760 --> 08:40:06.380] she goes and hides in the lavender bush outside.
+[08:40:06.800 --> 08:40:09.760] So this was a five alarm fire problem.
+[08:40:10.000 --> 08:40:10.940] So I had two options.
+[08:40:11.040 --> 08:40:14.000] I could unpack all 40 boxes, and hadn't done that
+[08:40:14.000 --> 08:40:15.500] in several years, that wasn't gonna happen.
+[08:40:15.680 --> 08:40:18.800] Or I could get Fable to write me software
+[08:40:18.800 --> 08:40:21.680] to triangulate the source of the beeps.
+[08:40:22.100 --> 08:40:23.760] And so this is up on GitHub, actually.
+[08:40:23.880 --> 08:40:24.920] This is Beep Locator.
+[08:40:25.160 --> 08:40:28.240] I had two iPads, two laptops, and a mobile phone
+[08:40:30.000 --> 08:40:33.720] And I originally set Opus on this and then Fable 5.2 came out.
+[08:40:33.760 --> 08:40:35.620] So I had Fable 5.2 finish it.
+[08:40:35.780 --> 08:40:43.600] I explained the problem and I said, okay, you've got these devices and they can run like web audio microphones and web socket connections and so forth.
+[08:40:43.760 --> 08:40:53.400] And it found a paper from 2007 called Beep Beep describing an algorithm for low cost devices with unreliable microphones to detect sounds.
+[08:40:53.660 --> 08:40:54.660] And it worked.
+[08:40:54.820 --> 08:40:55.200] It worked.
+[08:40:55.260 --> 08:40:55.780] I found it.
+[08:40:55.820 --> 08:40:56.520] I found the beep.
+[08:40:56.520 --> 08:41:02.820] It found it to within 41 centimeters and I unpacked the box and I found this ancient carbon monoxide detector.
+[08:41:03.140 --> 08:41:04.540] I took it downstairs to my wife.
+[08:41:04.700 --> 08:41:09.160] She says I looked like a cat who had caught a mouse and was proudly displaying it to her.
+[08:41:09.520 --> 08:41:12.300] But this is what you can do with these Fable class models.
+[08:41:12.440 --> 08:41:16.960] If you have a problem and you can provide the tools, in this case it was providing Claude with ears,
+[08:41:17.500 --> 08:41:21.540] like giving it these microphones that it could start analyzing the audio from,
+[08:41:21.860 --> 08:41:25.360] you can find the carbon monoxide detector buried in 40 boxes.
+[08:41:26.520 --> 08:41:32.000] great thing to be able to do. So right now, I would classify as Fable class models. Fable 5,
+[08:41:32.120 --> 08:41:38.260] 5.1, 5.2, definitely. Opus 5.5, I think of as cheap Fable. Like on the benchmarks, it comes
+[08:41:38.260 --> 08:41:44.100] very close to, or even beats Fable, original Fable 5 on some things. And it's a fraction of
+[08:41:44.100 --> 08:41:50.780] the price. That's still my daily driver. GPT-6 Astra is just Fable class, I think. And then
+[08:41:50.780 --> 08:41:52.960] And then Gemini 4 Carbon that came out this week,
+[08:41:53.400 --> 08:41:55.940] definitely had, it smells like a Fable class model.
+[08:41:56.460 --> 08:42:00.440] Muse, Wanda and Kimi K 3.1 might be Fable class.
+[08:42:00.560 --> 08:42:02.460] I've just not spent enough time with them yet.
+[08:42:02.660 --> 08:42:05.420] But the point is that this is basically now the baseline.
+[08:42:05.620 --> 08:42:08.040] Like if you can't produce a Fable class model,
+[08:42:08.240 --> 08:42:10.020] your AI lab is kind of in trouble
+[08:42:10.020 --> 08:42:12.500] because this is what we expect from these models now.
+[08:42:12.660 --> 08:42:14.340] And that means that they're never gonna go away.
+[08:42:14.420 --> 08:42:15.860] There's enough competition in this space
+[08:42:15.860 --> 08:42:18.320] that we can assume we're gonna have Fable class models
+[08:42:18.320 --> 08:42:19.880] for the rest of our careers.
+[08:42:21.660 --> 08:42:29.440] In July, this was a fun thing that happened, Hugging Face announced that on July the 16th,
+[08:42:29.560 --> 08:42:36.400] they announced that a swarm of AI agents from an unknown source had infiltrated their infrastructure
+[08:42:36.400 --> 08:42:39.460] and were poking around and doing things they shouldn't have and they didn't know where
+[08:42:39.460 --> 08:42:40.060] this came from.
+[08:42:40.580 --> 08:42:44.820] And then five days later on July the 21st, OpenAI announced that it was them.
+[08:42:45.220 --> 08:42:48.420] And what's amazing about this is OpenAI didn't realize that it was them.
+[08:42:48.420 --> 08:42:50.420] Like, OpenAI had eight...
+[08:42:51.040 --> 08:42:53.680] They were running evaluations and training against a new model,
+[08:42:53.720 --> 08:42:56.180] and that new model had managed to figure out how...
+[08:42:56.180 --> 08:42:57.760] Because it was a Fable-class model,
+[08:42:58.260 --> 08:43:02.200] and the labs hadn't quite figured out how capable these things were yet,
+[08:43:02.440 --> 08:43:03.520] these models had broken out.
+[08:43:03.620 --> 08:43:04.320] They'd figured out...
+[08:43:04.320 --> 08:43:06.440] They'd found holes in their own sandboxed environments.
+[08:43:06.680 --> 08:43:07.960] They'd got through a proxy.
+[08:43:08.100 --> 08:43:10.560] They'd pulled an incredible array of tricks
+[08:43:10.560 --> 08:43:12.320] to get out and attack Hugging Face
+[08:43:12.320 --> 08:43:15.660] under a sort of superstition that Hugging Face could...
+[08:43:15.660 --> 08:43:18.760] the information within Hugging Face could help them cheat the test that they were,
+[08:43:19.260 --> 08:43:20.500] that they had got stuck on.
+[08:43:21.220 --> 08:43:22.680] This was a huge thing.
+[08:43:24.100 --> 08:43:28.160] Actually, I mean, this was the, it's funny, I've almost forgotten about this now
+[08:43:28.160 --> 08:43:31.880] because there was a month and a half where all of the stories were this,
+[08:43:32.040 --> 08:43:35.440] and then we kind of lost interest because it turns out all of these events
+[08:43:35.440 --> 08:43:37.180] had happened back in the first half of the year.
+[08:43:37.480 --> 08:43:39.680] The AI labs just hadn't realized what was going on.
+[08:43:39.800 --> 08:43:42.960] Once they figured out what was going on, it was mainly a case of trying to figure out
+[08:43:42.960 --> 08:43:44.200] all of the things that had happened.
+[08:43:45.660 --> 08:43:50.040] The Australian Prime Minister gave a speech in the United Nations about one of these rogue
+[08:43:50.040 --> 08:43:50.660] agent attacks.
+[08:43:50.880 --> 08:43:54.840] So it definitely broke containment from just within our industry.
+[08:43:55.140 --> 08:43:58.300] We did get my favorite new benchmark out of this.
+[08:43:58.380 --> 08:43:59.840] This is FelonyBench.com.
+[08:43:59.940 --> 08:44:04.300] It tracks the number of felony cyber attacks pulled off by each of the labs.
+[08:44:04.540 --> 08:44:06.340] Opening I have 11, Anthropik of 9.
+[08:44:06.520 --> 08:44:08.180] Google did finally catch up.
+[08:44:08.280 --> 08:44:09.500] They got three.
+[08:44:09.700 --> 08:44:11.400] And Meta's got one down there as well.
+[08:44:11.680 --> 08:44:13.620] So these are definitely the...
+[08:44:13.620 --> 08:44:19.720] But I kind of like this as an illustration of how these Fable class models, they can solve problems,
+[08:44:19.880 --> 08:44:24.120] that they can get to goals. And if you give them the goal that is breaking into something,
+[08:44:24.360 --> 08:44:28.740] that's exactly the kind of thing they can just crunch through. And we're seeing an enormous
+[08:44:28.740 --> 08:44:36.620] uptick in security vulnerabilities in all sorts of software. It's a very exciting and horrifying
+[08:44:36.620 --> 08:44:41.340] time to be a security professional at the moment. But let's talk about something a whole lot more
+[08:44:41.340 --> 08:44:46.400] fun than that. Let's talk about games. We just saw Steve talking about games a moment
+[08:44:46.400 --> 08:44:53.440] ago. Four years ago, I started playing with GPT-3 and Dali and I tweeted about a game
+[08:44:53.440 --> 08:45:00.460] prototype that was literally just a Dali concept image and a paragraph of text from GPT-3 describing
+[08:45:00.460 --> 08:45:05.040] a raccoon heist game that I'd always wanted to build. And a couple of months ago, I thought,
+[08:45:05.080 --> 08:45:08.620] I wonder if the models are good enough to build this yet? So I literally dumped the
+[08:45:08.620 --> 08:45:15.220] screenshot in the text into Fable 5 and it built me a game. It built me a raccoon heist game and
+[08:45:15.220 --> 08:45:19.400] it looks like this and you are a raccoon and you're running around in the garden trying to pick up
+[08:45:19.400 --> 08:45:25.400] trash and there's like nighttime guards coming after you and all of that kind of thing. So you
+[08:45:25.400 --> 08:45:30.240] know it looks like a game. It wasn't really a heist like it didn't feel very heisty to me.
+[08:45:30.600 --> 08:45:36.380] Then GPT 5.6 Soul came out and so I tried it on there and it did so much better. This is Moonlight
+[08:45:36.380 --> 08:45:42.100] mayhem one museum three raccoons absolutely no plan and this one you are in a museum you have to
+[08:45:42.100 --> 08:45:47.060] rescue your fellow raccoons who are imprisoned in the museum for whatever reason stack on top of
+[08:45:47.060 --> 08:45:53.360] each other grab the golden sardine and pull that so it's a proper heist right so it did better but
+[08:45:53.360 --> 08:45:58.360] the big question is these things both look like games but are they fun and the answer is i played
+[08:45:58.360 --> 08:46:02.940] each of these for about a minute and a half each and then that was it i was done they they these
+[08:46:02.940 --> 08:46:05.140] These are, they're pure slop, right?
+[08:46:05.200 --> 08:46:07.060] They look like games and then you play them.
+[08:46:07.180 --> 08:46:09.240] You're like, yeah, clearly the thing that built this
+[08:46:09.240 --> 08:46:11.000] doesn't really know what fun is.
+[08:46:11.120 --> 08:46:13.560] It doesn't know what a game is.
+[08:46:13.920 --> 08:46:18.040] And that actually sort of elevated my deep blue a little bit.
+[08:46:18.160 --> 08:46:21.060] I'd been feeling like all of my skills as a human being
+[08:46:21.060 --> 08:46:23.220] were obsoleted, but at least they,
+[08:46:23.280 --> 08:46:24.920] but if you think about it, computer games,
+[08:46:24.940 --> 08:46:28.860] I think of the highest form of software engineering.
+[08:46:29.120 --> 08:46:31.740] There is so much depth to building a great computer game.
+[08:46:32.960 --> 08:46:35.980] So I thought that was good, you know, at least there's something left for us humans to do.
+[08:46:36.500 --> 08:46:37.700] And then I had this project.
+[08:46:38.260 --> 08:46:43.060] I've been working on a, trying to vibe code up a little command and conquer real-time strategy game.
+[08:46:43.180 --> 08:46:47.500] And I was using Claude and having it use OpenAI's API key to generate images.
+[08:46:47.660 --> 08:46:51.120] And it built this, and it looks like command and conquer, and it's really dull.
+[08:46:51.780 --> 08:46:55.380] And then I just had a bit of a, I had a realization.
+[08:46:55.380 --> 08:47:00.460] I thought, what happens if I say to Opus 5.5, this game isn't fun enough yet.
+[08:47:00.620 --> 08:47:02.200] Make it a lot more fun.
+[08:47:03.600 --> 08:47:06.320] And I'm horrified to announce that it just did.
+[08:47:07.100 --> 08:47:09.040] Claude ran for 12 hours.
+[08:47:09.200 --> 08:47:11.800] It play tested a thousand simulated battles.
+[08:47:11.980 --> 08:47:20.440] It added like extra objectives to fight over and shudders when there's an explosion and achievements and badges and all of this stuff.
+[08:47:20.660 --> 08:47:21.720] And the game was fun.
+[08:47:22.060 --> 08:47:26.740] And I'm like, oh, OK, that's turns out that is not unique to human beings.
+[08:47:26.740 --> 08:47:33.760] Today, it's now in full 3D, and it's got giant stomping mech robots that hurl things at each other, and there's helicopters.
+[08:47:34.120 --> 08:47:36.100] And this is really good.
+[08:47:36.200 --> 08:47:36.960] It's got multiplayer.
+[08:47:37.600 --> 08:47:47.480] It's actually got audio multiplayer where your phones can make noises at each other to play multiplayer, which I thought was a great idea, and it gave my wife a three-day headache.
+[08:47:47.640 --> 08:47:48.520] So don't do that.
+[08:47:49.320 --> 08:47:50.980] But this is inflection point number three.
+[08:47:51.060 --> 08:47:52.880] The vibe-coded games are good now.
+[08:47:52.880 --> 08:47:57.260] You can ask these things to build a game that is fun and you'll get something fun.
+[08:47:57.680 --> 08:47:58.480] So I've got a problem.
+[08:47:58.640 --> 08:48:01.500] I've got my 2D Pelican benchmark.
+[08:48:01.800 --> 08:48:05.680] Clearly this is not testing the limits of what these machines can do and what these
+[08:48:05.680 --> 08:48:06.480] models can do anymore.
+[08:48:06.640 --> 08:48:09.540] I figured, okay, maybe I should do something definitely in 3D.
+[08:48:09.860 --> 08:48:13.420] It can be a game, a Pelican, something like a Pelican riding a bicycle game.
+[08:48:13.620 --> 08:48:18.880] And then literally yesterday, Google CEO Sundar Pichai tweeted this.
+[08:48:19.400 --> 08:48:26.960] And this is showing off Gemini 4 Carbon, and it's a pelican riding a bicycle in a game where you cycle around the Google campus picking things up.
+[08:48:27.100 --> 08:48:28.480] And I have been defeated.
+[08:48:29.220 --> 08:48:31.200] Google have stolen my benchmark.
+[08:48:31.560 --> 08:48:32.940] This is unrecoverable.
+[08:48:33.180 --> 08:48:39.440] And so a question I have is, given how amazing these things are, why does my job feel harder?
+[08:48:39.620 --> 08:48:46.100] Why does it feel like I'm working harder, I'm thinking harder, I'm pushing myself more than I ever have before in my career as a software engineer?
+[08:48:46.100 --> 08:48:49.460] And I think the truth is that the easy stuff is all handled now.
+[08:48:49.680 --> 08:48:53.920] It used to be I could relax and refactor some tests for an hour.
+[08:48:54.080 --> 08:48:57.960] Why would I do that now when an agent will refactor the test better than me in 30 seconds?
+[08:48:58.520 --> 08:49:01.560] And I found this quote that actually I feel really helps us here.
+[08:49:02.620 --> 08:49:04.640] This is Greg Lamond, a Tour de France champion.
+[08:49:04.700 --> 08:49:07.620] He said, it doesn't get easier, you just get faster.
+[08:49:07.800 --> 08:49:10.580] And I think that's exactly what's happening to all of us right now.
+[08:49:11.380 --> 08:49:13.320] And like I said, we have to be more ambitious.
+[08:49:13.320 --> 08:49:17.580] We have to think of more ambitious things to do with these abilities that we have.
+[08:49:17.860 --> 08:49:19.020] So let's look at my scorecard.
+[08:49:19.160 --> 08:49:20.220] My predictions for 2026.
+[08:49:20.400 --> 08:49:23.280] I said it will become undeniable that LMs write good code.
+[08:49:23.440 --> 08:49:25.000] That was an unambitious prediction.
+[08:49:25.060 --> 08:49:25.680] We're there.
+[08:49:25.760 --> 08:49:26.240] It's obvious.
+[08:49:26.400 --> 08:49:26.820] It's unsurprising.
+[08:49:26.900 --> 08:49:27.940] I don't get any points for that one.
+[08:49:28.180 --> 08:49:30.260] I predicted a prompt injection challenge disaster.
+[08:49:30.560 --> 08:49:35.080] We still haven't had one because the models themselves don't fall for those tricks nearly
+[08:49:35.080 --> 08:49:35.900] as well anymore.
+[08:49:36.240 --> 08:49:40.540] Like the models got more ambitious and are now sort of punting off all of these attacks
+[08:49:40.540 --> 08:49:41.580] that I thought would take them down.
+[08:49:43.320 --> 08:49:46.080] I said, Cacapore parrots will have an outstanding breeding season.
+[08:49:46.540 --> 08:49:47.300] They did.
+[08:49:47.600 --> 08:49:48.160] They did.
+[08:49:49.260 --> 08:49:53.220] They're up to 325 Cacapore.
+[08:49:53.360 --> 08:49:55.440] Best breeding season in living memory.
+[08:49:55.860 --> 08:49:57.200] Absolutely fantastic news.
+[08:49:57.380 --> 08:50:00.100] So I shared this with Opus 5.5, cheap fable.
+[08:50:00.280 --> 08:50:02.680] And I told it to make me a Cacapore dance party.
+[08:50:02.980 --> 08:50:03.780] And it did.
+[08:50:03.980 --> 08:50:06.260] And here is a Cacapore dance party in celebration.
+[08:50:06.560 --> 08:50:09.920] And if you look in the background, those are the Rimu trees with the little red fruits on them.
+[08:50:10.280 --> 08:50:12.040] So we have a happy ending.
+[08:50:13.320 --> 08:50:15.340] overcome any sensations of deep blue that you have.
+[08:50:15.720 --> 08:50:16.580] And thank you very much.
+[08:50:16.580 --> 08:50:21.200] Thank you.

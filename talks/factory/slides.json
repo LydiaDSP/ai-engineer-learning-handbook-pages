@@ -1,0 +1,35 @@
+[
+  {
+    "id": "workstream",
+    "after": "p19",
+    "title": "Workstream 围绕长期目标组织工作",
+    "time": "03:50:04",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13804s",
+    "en": "assets/workstream-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Workstream 围绕长期目标组织工作</h3><dl><div><dt>持续状态</dt><dd>目标、身份、运行环境和记忆随工作保留。</dd></div><div><dt>编排与分工</dt><dd>编排器先委派，再按责任范围复用已有 Agent。</dd></div></dl></div>",
+    "note": "图中的长期目标是维持结账可靠性。",
+    "sourceSeconds": 13804
+  },
+  {
+    "id": "checkpoints",
+    "after": "p27",
+    "title": "一次只调整一个人工检查点",
+    "time": "03:52:10",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13930s",
+    "en": "assets/checkpoints-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>一次只调整一个人工检查点</h3><dl><div><dt>图示等级 L2</dt><dd>规格可直接继续，PR 仍由人工审查和合并。L1 的规格阶段也要等人工确认。</dd></div><div><dt>逐步放权</dt><dd>观察阶段产出质量，再判断是否移除下一个人工检查点。</dd></div></dl></div>",
+    "note": "讲者把自主等级作为负责人可以调整的设置。",
+    "sourceSeconds": 13930
+  },
+  {
+    "id": "merge-quality",
+    "after": "p37",
+    "title": "用无需补救的合并率衡量质量",
+    "time": "03:55:16",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14116s",
+    "en": "assets/merge-quality-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用无需补救的合并率衡量质量</h3><dl><div><dt>统计口径</dt><dd>比较合并后无需回退或追加修复的改动占比。</dd></div><div><dt>对照组</dt><dd>团队并排观察 Droid 和人编写的 PR。原图是 L4 放权门槛的示意曲线。</dd></div></dl></div>",
+    "note": "图中曲线用于解释放权思路，演讲未在此图给出可复算的样本数据。",
+    "sourceSeconds": 14116
+  }
+]

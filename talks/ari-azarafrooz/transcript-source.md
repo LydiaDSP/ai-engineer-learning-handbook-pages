@@ -1,0 +1,121 @@
+# 怎样用 KV Cache 观察 Agent 的异常行为？
+
+Ari Azarafrooz
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 05 场（01:30:39–01:37:52）的 15 段中英资料。英文为第一日机器转写，中文与第二日 07:20:39 起的重播转写和原图交叉核对。人名和公司名以大会资料为准。末段保留至讲者致谢，末端时间沿用原转写段。语音和文本结果来自讲者展示的案例。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 把 KV Cache 用作额外的安全信号 / KV Cache as an additional security signal
+
+[01:30:39.840—01:30:58.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5439s)
+
+大家好，我是 Ari Azarafrooz，Intrinsec AI 的创始人。这场演讲面向开发 Agent、已经在运行自己的推理栈或准备这么做的人。如果你也是其中一员，通常会把 KV Cache 看作提高吞吐量的手段。它是现代推理引擎里的基本组件。
+
+Hi, I'm Ari Azarfuz, founder of Interensec AI. This talk is for people who build agents and run their own inference stack or plan to. And if that's you, you associate typically the KVCache, the bird and butter of modern inference engines, usually as a throughput optimization.
+
+转写校注。p01 · 听写校订：大会资料注明讲者为 Ari Azarafrooz，机构为 Intrinsec AI。英文中的 Ari Azarfuz、Interensec AI 保留机器转写。
+
+[01:30:58.780—01:31:19.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5458s)
+
+每个 token 都会计算出键和值。把它们留着，模型就不用再算一遍。今天我想从另一个角度来讲 KV Cache。Agent 应用出问题的方式越来越多，包括提示注入、越狱、工具调用出错、调用敏感工具、泄露敏感信息、隐藏的后门、行为漂移等等。
+
+The keys and values computed per token, kept so the model doesn't compute them again. Today, I like to show KVCache in a different light. The way agents, AI agent application group go wrong, keep growing, right? Problem injection, jailbreaks, broken tool calls, sensitive tool calls, sensitive exposures, hidden backdoors, drifts, and so forth, right?
+
+[01:31:20.900—01:31:36.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5480s)
+
+遇到这么多种问题，我们通常从应用的边界着手防护，比如用一个裁判模型，按照你的策略检查提示词、其他输入和返回的结果。
+
+Now, we typically guard against these numerous ways that an AI agent application could go wrong is by guarding the edge, by perhaps passing a judge model that checks the prompts, the inputs, and the response outputs against your policy.
+
+[01:31:36.640—01:32:14.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5496s)
+
+也可以针对每种情况训练一个分类器。换个角度看，在模型采取行动、解码、生成回应或者再次调用工具之前，每份输入都会转成计算。KV Cache 就是引擎留下的计算记录。现代推理引擎本来就在读取和使用它。我想建议大家把这些数据也利用起来，把检测接到 KV Cache 基础设施上，补充已有的防护。我把它叫作「以 KV 为起点的……
+
+Or you build a classifier for each case. But here is a different light. The model turns every input into a computation before it acts, before it decodes, before it generates the response, another tool call the kv cache is your engine's record of that computation that modern inference engine for free are using it and reading it and therefore on this talk i would like to suggest as a complement to the way you're already using your own guardrails to use this data and integrate it with your kv cache infrastructure i refer to this as a kv first
+
+## 学习基线，寻找并解释异常 / Baselines, detection and explanation
+
+[01:32:14.900—01:32:51.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5534s)
+
+……安全信号」。它有三点价值。第一，数据已经在那里了，可以从推理栈本会丢弃的内容中提取线索。第二，可以补上防护的盲区，绕过防护的输入仍会参与计算，并留下缓存记录。第三，在保护数据隐私、没法直接看输入和输出的场景里，这种信号也能派上用场。做法很直接，分三步。先为 AI 工作负载或推理流量学习一个基线，弄清你的……
+
+security signals and basically three reasons that matters right so the data is already there you pick the gems from the pile your inference stack were already throwing away it covers the guardrails blind spots because whatever slips past those guardrails it still becomes computation and it stays in plate so it's perfect for data privacy application for cases where you do not have the luxury to read the inputs and outputs and the recipe is pretty straightforward right has three steps you learn a baseline for your ai workload for your ai inference traffic how your
+
+[01:32:51.940—01:33:08.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5571s)
+
+……KV 页一般是什么样的。然后找出相对基线很罕见的 KV 页，这些通常就是异常。最后还可以给异常分类、解释。先看看检测能接到推理栈的哪里。
+
+kb page typically look like and then find the kb pages that are rare against your baseline typically your anomalies and then you can even classify and explain those so first let's start with where in this stack this integration could happen.
+
+转写校注。p06 · 听写校订：本段及后续部分段落把 KV pages 转成了 KB pages。中文按上下文写作 KV 页。
+
+## 推理和缓存基础设施的接入位置 / Integration points across inference and caching
+
+[01:33:10.180—01:33:35.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5590s)
+
+KV Cache 有趣的一点在于，有了它，推理在某种意义上就带了状态。例如，LMCache 之类的缓存管理层会把数据从 GPU 存到远程存储。llm-d 和 NVIDIA Dynamo 这类系统会把新请求路由到可能已经持有相应 KV 缓存页的 Worker。
+
+The interesting thing about the KV cache is that in a way, existence of those has made the inference in a way stateful. So for example, things like KV cache management layers such as LMCache stores them from GPU down to remote storage, or LLMD and NVIDIA Dynamo route, each new request towards the worker that already holds perhaps that cached KV page.
+
+[01:33:36.100—01:34:15.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5616s)
+
+这些都是可以集成异常检测或分类器的位置。也可以直接把检测加到 vLLM、SGLang 等推理引擎里。这样做的好处是能实时处理。生成的告警可以带到后续工具调用或策略判断中。基本上，可以把推理引擎里观察到的计算异常用来加强策略和护栏。也可以把它用在威胁发现上……
+
+integration points you you you can integrate those anomaly detection or those classifiers into either you can implement it directly inside of your inference engine vllmsg line and so forth the beauty of this approach is that it's real time and and the the alert that it would perhaps generate could ride along your future tool calls or your future policies so you can harden basically your policies or guardrails but just generating the computational anomalies that you observe within your inference engines and you'll perhaps you can integrate it with as a way of threat discovery
+
+## 语音和文本 Agent 的初步案例 / Preliminary examples in voice and text agents
+
+[01:34:15.880—01:34:49.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5655s)
+
+……比如接到 LMCache，读取存下来的 KV 页，找出跟其余页面不太一样的记录。现在我想给大家看几个数字，再用一个最简单的示例看看这条路走不走得通。选的是一个完全没有文本可供过滤的场景，也就是语音 Agent。这个例子用的是 Gemma 4 E4B。基线包含 72 段普通音频……
+
+in a sense so you can integrate with your lm cache so it reads the stored kb pages and find things that don't belong with the rest right so now i want to show you some numbers and just a very simple hello world use case if this is actually working and this is a valid approach and for that let me use video use case that has no text to filter at all a voice agent so here's a case study of a voice agent in this case it was a gemma for e4b our baseline was 72 ordinary clips and
+
+[01:34:49.640—01:35:33.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5689s)
+
+……由四种声音说出。我们看的是每页 16 个 token。这个粒度当然可以调整。这里把每页设短一点，好让基线里有更多样本。测试用了不同的声音，一个样本正常，另一个含有隐藏指令。图里可以看到，简单的异常检测就能把它找出来，还能知道异常在哪一页、哪个部分。[转写有缺漏] 我们还往前走了一步，训练了一个用 KV 页作为特征的模型……
+
+spoken four voices we're looking at 16 talking pages obviously this grand granularity could change but here we just use this shorter pages so we can have more data in the baseline and then on the test we have different voices and one clean voice and the other one has a hidden instruction within it and as you can as it's shown here not only you can detect in these cases just using simple anomaly detection but also you would know which part of um which page which part of your We even went further and we trained a model that uses the KB pages as features and we
+
+[01:35:33.460—01:35:45.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5733s)
+
+……试着让它解释异常，或者打上有用的标签。这个例子里，模型甚至没用音频训练过，却能给出正确的类别信息，比如个人信息、家庭住址、位置、行程或目的地。
+
+didn't be trying to explain it or tag it with things that are useful. In this case, although it wasn't even trained on audio, it was able to generate correct information about personal information, home address, location data, travel information, destination.
+
+[01:35:49.120—01:36:25.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5749s)
+
+回到文本 Agent。这个例子用了 Qwen3 14B，[缓存设置转写有缺漏]。左边的图展示攻击流量和正常流量通常怎样分开。右边的结果可能更有意义。我们用的是 Hugging Face 上一个基准测试，[基准名称转写不清]，它有正常 Agent 执行轨迹的基线，还包含工具描述遭注入、误导性信息等几种 Agent 失效情形。我们看了异常检测生成的前 10 条告警……
+
+So now back to text agents. in this case it was a coin 3 14 billion live and billable cash the one on the left shows you an idea for how attacks and normal traffic would typically separate from each other and then the one on the right which is perhaps more meaningful it was using the at bench and hugging face it has its own baseline of benign agent races and aids kind of agent failure from injected tools description to misinformation and so forth. We look at the top 10 alerts that anomalous detection would generate
+
+转写校注。p12 · 听写说明：两天的英文转写都未清楚识别文本案例的基准名称，暂待核实。
+
+## 复核告警并考虑生产部署成本 / Alert review and production constraints
+
+[01:36:25.020—01:37:17.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5785s)
+
+……其中大约七八条确实对应有意义、值得处理的异常活动。我们还进一步看了有没有特别突出的异常事件。真到生产环境里，首先，模型会变，有微调和新版本，也有不同 Agent 分别使用不同模型，或者路由器按每个请求挑选专用模型。每个模型都在自己的表示空间里写 KV 页。你可以给每个模型单独学习基线、训练分类器和解释器，但计算成本高得难以承受。另一条路是想办法把这些模型的表示映射到同一个空间。
+
+and about seven to eight times out of 10 of these alerts are actually anomalous, meaningful, and useful anomalous activities. We even went further and we looked at whether there's any kind of anomalous event that stands out more than the rest. To make things hard in production, first Models change. Fine-tunes and new releases, but also agents that each run on a different model, and routers that pick a specialist model per request. That means each model writes its pages its own coordinates, so either you learn every baseline, classifier, and explainer, which is computationally prohibitive, or you have to find a way to map them all into one shared representation space.
+
+[01:37:18.140—01:37:38.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5838s)
+
+第二，实时分析得搬运很大的数据块。例如，原图给出的 Qwen3-14B 一个 256 token 的块约有 40 MB KV 数据。CacheGen 一类的压缩和流式传输技术可以降低开销，但搬运这些数据做安全分析并实时采取行动仍然很慢。
+
+Second, real-time means moving big objects. For example, a 1.256 token chunk of Qn3 14 billion is about 40 MB of KV. Compression and streaming like hash gen could help, but moving that for security analysis and acting in real-time is still slow.
+
+转写校注。p14 · 原图校订：第一日 01:37:26 画面注明 Qwen3-14B 的一个 256 token 块约含 40 MB KV 数据，压缩和流式传输技术名为 CacheGen。英文保留原始机器转写的块大小和技术名拼写。
+
+[01:37:38.800—01:37:52.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=5858s)
+
+这就是我们在 Intrinsec AI 看到的情况。我们想认识正在搭建自己的推理栈、把安全视为基础设计决定的团队。希望这对大家有帮助，非常感谢各位听我讲。
+
+And that's what we saw at Inferencing AI. We are looking for teams building their own inference stacks who treat security as a foundational design decision. was helpful for you thank you so much for listening
+
+转写校注。p15 · 听写校订：结尾所指机构为 Intrinsec AI。英文保留机器转写中的 Inferencing AI。

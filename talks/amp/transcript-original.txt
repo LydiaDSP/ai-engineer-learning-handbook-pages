@@ -1,0 +1,376 @@
+把任务、交付和用户反馈放进同一条会话
+Quinn Slack
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[07:55:24.140 --> 07:55:24.740] Hey, y'all.
+[07:55:24.900 --> 07:55:25.300] I'm Quinn.
+[07:55:25.760 --> 07:55:26.500] Great to see you.
+[07:55:26.580 --> 07:55:30.060] You might want to come up in front a little more, because I do, it's like an NBA game,
+[07:55:30.160 --> 07:55:32.260] have some swag and hats to give out.
+[07:55:32.360 --> 07:55:34.680] So if you're in the back, and if you like hats, come on up.
+[07:55:35.900 --> 07:55:36.100] All right.
+[07:55:36.220 --> 07:55:39.240] As whatever, that said, my name is Quinn Slack.
+[07:55:39.400 --> 07:55:42.020] I am one of the founders of AMP and had been at Sourcegraph before.
+[07:55:42.380 --> 07:55:44.480] I don't want to talk about AMP, though.
+[07:55:44.480 --> 07:55:51.960] I want to talk about really a personal story of how agents blew my mind and changed my life.
+[07:55:52.120 --> 07:55:56.120] There was a day when I walked outside and the birds were chirping more and the sky was bluer
+[07:55:56.120 --> 07:56:00.180] and how they changed my company and how I think they're going to change every company.
+[07:56:00.360 --> 07:56:04.540] And it's kind of frustrating sometimes to see friends and people I care about,
+[07:56:04.620 --> 07:56:06.740] companies I care about, really struggle with this.
+[07:56:06.840 --> 07:56:08.520] So we're going to go on a little bit of a roller coaster.
+[07:56:08.880 --> 07:56:10.420] But why don't we get started?
+[07:56:10.420 --> 07:56:12.080] I know it's almost dinner time.
+[07:56:13.180 --> 07:56:14.200] Anyone want some hats?
+[07:56:14.480 --> 07:56:15.360] Some amp hats.
+[07:56:15.620 --> 07:56:16.200] All right.
+[07:56:16.600 --> 07:56:17.360] Here we go.
+[07:56:17.460 --> 07:56:18.740] I see people getting closer.
+[07:56:19.700 --> 07:56:20.580] There we go.
+[07:56:21.000 --> 07:56:21.720] All right.
+[07:56:22.760 --> 07:56:24.020] Hope I don't hit anyone.
+[07:56:25.400 --> 07:56:26.280] There we go.
+[07:56:28.060 --> 07:56:29.020] And over there.
+[07:56:30.300 --> 07:56:31.040] All right.
+[07:56:32.700 --> 07:56:34.340] Yeah, everybody gets a hat.
+[07:56:34.420 --> 07:56:35.240] Everybody gets a hat.
+[07:56:35.360 --> 07:56:36.440] Come up and find me after.
+[07:56:37.240 --> 07:56:37.940] All right.
+[07:56:38.820 --> 07:56:41.780] There was a moment in January of 2025
+[07:56:42.740 --> 07:56:47.420] when I was just coding and I wanted to see what if you just make an agent.
+[07:56:47.540 --> 07:56:51.340] This was before Claude code and it was like the dumbest stuff ever.
+[07:56:51.460 --> 07:56:54.180] It was like change its background color, but it just blew my mind.
+[07:56:54.400 --> 07:57:00.320] When I saw an agent actually work for the first time, it ran commands,
+[07:57:00.520 --> 07:57:04.040] it looked at itself, it gave itself its own feedback loops, that blew my mind.
+[07:57:04.220 --> 07:57:08.060] And I had this sense, I think that everyone has when they first see an agent,
+[07:57:08.440 --> 07:57:11.380] that everything is going to change after that.
+[07:57:12.780 --> 07:57:17.780] software. I think we've all felt that. Everything is going to change about how you form companies
+[07:57:17.780 --> 07:57:22.680] to work on software and how you sell software, how you distribute software. All other work
+[07:57:22.680 --> 07:57:29.000] is going to change. And it was just an absolutely crazy, crazy moment. I was actually at the
+[07:57:29.000 --> 07:57:33.400] Frankfurt Airport with Thorsten Ball on our team. He wrote that compiler book. Anyone
+[07:57:33.400 --> 07:57:40.460] who knows Thorsten on our team? Yeah, he's a cool guy. We were just like minds blowing
+[07:57:40.460 --> 07:57:42.820] at the Frankfurt airport and we knew that everything was going to change.
+[07:57:43.100 --> 07:57:46.320] We didn't know where this was all going to go, but we just wanted to go.
+[07:57:46.480 --> 07:57:47.900] We just wanted to go run at it.
+[07:57:48.460 --> 07:57:53.740] So inside of Sourcegraph, which was a 200-person enterprise software company,
+[07:57:53.740 --> 07:57:58.380] I was the CEO and we made code search, we decided to just start building this,
+[07:57:58.480 --> 07:58:02.620] to tune out everything else and just start building this thing,
+[07:58:03.240 --> 07:58:06.580] not go to sales calls, not go to like exec meeting, none of that stuff,
+[07:58:06.780 --> 07:58:07.880] just tune out all the distractions.
+[07:58:09.780 --> 07:58:13.100] And I was in this position that I think a lot of people say,
+[07:58:13.360 --> 07:58:15.400] you know, wow, I'm a software developer at a company,
+[07:58:15.460 --> 07:58:16.000] and I want to change.
+[07:58:16.060 --> 07:58:18.200] I want my company to be more AI forward, and I can't.
+[07:58:18.600 --> 07:58:21.360] You know, I was a CEO, and in theory, I could change anything.
+[07:58:21.520 --> 07:58:22.420] I could change teams.
+[07:58:22.520 --> 07:58:25.260] I could say, you don't need to get pull request code review.
+[07:58:26.080 --> 07:58:29.740] You don't need to do any of the other processes we used to do.
+[07:58:29.880 --> 07:58:32.040] And yet, it was very hard.
+[07:58:32.160 --> 07:58:35.660] What we did is we ended up taking 20 people from the company,
+[07:58:35.660 --> 07:58:39.860] and inside of Sourcegraph still, we made a little team, the AMP team.
+[07:58:40.600 --> 07:58:41.820] And that's what we tried.
+[07:58:42.000 --> 07:58:44.480] So for those of you who are trying to push back against your company
+[07:58:44.480 --> 07:58:48.720] to try to make it more agent-friendly, I have a lot of sympathy for you,
+[07:58:48.740 --> 07:58:50.440] and I hope that you can take away some things from here.
+[07:58:51.040 --> 07:58:52.800] I know how hard it is.
+[07:58:52.840 --> 07:58:55.520] And also, have some empathy for your CEO, too.
+[07:58:55.600 --> 07:58:56.460] It's hard for them, too.
+[07:58:56.580 --> 07:58:59.160] This is a really hard kind of change and transformation.
+[07:58:59.760 --> 07:59:02.020] But we knew that there were some things that were going to change,
+[07:59:02.100 --> 07:59:03.700] and this all seems kind of obvious now,
+[07:59:05.660 --> 07:59:10.120] early 2025, with this idea of enterprise ready, you do this thing and then you can build a
+[07:59:10.120 --> 07:59:15.360] sales team and go sell it, we knew that that was just going to totally die off. You had to be on
+[07:59:15.360 --> 07:59:21.400] the frontier. If you had a taste of success and then you started doing all the enterprise checklist
+[07:59:21.400 --> 07:59:26.380] bullshit to make the median enterprise buyer happy, your product was going to go obsolete in
+[07:59:26.380 --> 07:59:32.960] like three months. And the whole game had to change. Nothing mattered other than making it so
+[07:59:32.960 --> 07:59:37.440] that the people at these other companies love your product and the CEO, the budget was infinite
+[07:59:37.960 --> 07:59:44.360] and all bets were off. So we knew that. We didn't quite know all the challenges we run into.
+[07:59:45.240 --> 07:59:50.720] Also, you know, in this world where agents can build a product or build a feature, how do you even think about differentiation?
+[07:59:51.140 --> 07:59:57.540] I mean, to this day, there's people who say, well, why is AMP better? Why is, you know, Claude Code better than Codex or whatever?
+[07:59:57.540 --> 07:59:59.820] And so many people are begging.
+[08:00:00.000 --> 08:00:02.540] to have the answer in the form of, well, it's these three features.
+[08:00:02.760 --> 08:00:05.900] You know, AMP has orbs, which are really good cloud agents,
+[08:00:05.960 --> 08:00:06.780] and we have multiplayer.
+[08:00:07.060 --> 08:00:10.060] But the crazy thing is you all know that if we can do that
+[08:00:10.060 --> 08:00:12.420] and if we prove it, then any of our competitors could as well.
+[08:00:13.120 --> 08:00:15.840] So, you know, why even play that game?
+[08:00:16.040 --> 08:00:18.300] Like, what does it even mean to build and sell software?
+[08:00:18.400 --> 08:00:20.040] Why would you go and hire a sales team?
+[08:00:20.380 --> 08:00:23.060] Why would you go and do anything in the traditional way
+[08:00:23.060 --> 08:00:24.640] if you don't even know what it's going to look like in a month
+[08:00:24.640 --> 08:00:26.620] and if you don't even know how to describe differentiation?
+[08:00:26.700 --> 08:00:28.180] There's no sustainable differentiation.
+[08:00:30.060 --> 08:00:37.280] People end up loving it, but you can even see Adam Wathen, who's the Tailwind guy.
+[08:00:37.460 --> 08:00:40.960] He loves AMP, but he's like, it's one of those things where you can't understand it.
+[08:00:42.020 --> 08:00:43.840] You can't understand why it's good until you use it.
+[08:00:44.060 --> 08:00:49.340] Can you imagine having a whole product management team, a design team, an engineering team
+[08:00:49.340 --> 08:00:52.780] that's so disconnected from the actual customers, a whole company apparatus,
+[08:00:53.020 --> 08:00:55.880] if that's the best way that you can market a product?
+[08:00:55.900 --> 08:00:56.740] It's really tough.
+[08:00:57.800 --> 08:00:59.800] So we knew that we just had to change everything,
+[08:01:00.000 --> 08:01:04.400] And we rethought so many things because kind of unintentionally,
+[08:01:04.620 --> 08:01:06.720] we were under some weird constraints.
+[08:01:07.160 --> 08:01:09.140] We decided to spin out AMP.
+[08:01:09.340 --> 08:01:11.020] So for those of you who have been at a company,
+[08:01:11.280 --> 08:01:14.820] like a small team in a company, you're
+[08:01:14.820 --> 08:01:15.660] trying to do things different, you're
+[08:01:15.660 --> 08:01:16.960] trying to be the startup within a startup,
+[08:01:17.000 --> 08:01:19.260] you probably have these fantasies of, let's just go off
+[08:01:19.260 --> 08:01:20.060] and start a new company.
+[08:01:20.340 --> 08:01:21.320] Well, we actually did that.
+[08:01:21.540 --> 08:01:24.100] We did the right thing by investors and employees,
+[08:01:24.180 --> 08:01:25.740] and everyone has ownership in both.
+[08:01:25.920 --> 08:01:27.160] But we actually spun out.
+[08:01:27.160 --> 08:01:31.200] and for a year until last Friday, we couldn't hire anyone.
+[08:01:31.300 --> 08:01:32.280] We couldn't grant options.
+[08:01:32.740 --> 08:01:34.980] The legal spinoff process was a huge pain,
+[08:01:34.980 --> 08:01:38.620] and we were forced to make do with the 21 people that we brought over.
+[08:01:38.980 --> 08:01:43.060] We didn't have time in this crazy competitive environment to do...
+[08:01:43.840 --> 08:01:48.200] We couldn't move as slowly in order to do mandatory pull requests.
+[08:01:48.480 --> 08:01:50.000] We couldn't have meetings.
+[08:01:50.380 --> 08:01:53.220] We couldn't have our time be sucked up by enterprises
+[08:01:53.220 --> 08:01:55.700] that would need to take many months to decide on something,
+[08:01:57.160 --> 08:01:58.960] to this radically different way of working.
+[08:01:59.260 --> 08:02:01.860] And we also had this environment where every single person
+[08:02:01.860 --> 08:02:03.880] on the team has a huge stake in the company.
+[08:02:04.120 --> 08:02:06.520] And that skin in the game that you get,
+[08:02:06.660 --> 08:02:09.380] when AI makes it so you can operate with way less people,
+[08:02:09.680 --> 08:02:12.280] skin in the game, it's like this spiritual thing
+[08:02:12.280 --> 08:02:14.380] for the soul of great people.
+[08:02:14.440 --> 08:02:15.900] It makes them better at everything they do.
+[08:02:15.980 --> 08:02:17.000] It makes them grow faster.
+[08:02:17.220 --> 08:02:19.320] And so this is what we have seen.
+[08:02:19.620 --> 08:02:21.800] This, I think, when you've seen a company that
+[08:02:21.800 --> 08:02:23.680] operates like this without any of that bullshit,
+[08:02:24.420 --> 08:02:26.080] it's obvious how companies like this are going
+[08:02:27.160 --> 08:02:29.860] how every company in the future is going to look a lot more like that.
+[08:02:31.440 --> 08:02:38.140] So yeah, we spun AMP out, and we had to figure out a lot of new ways of working with these
+[08:02:38.140 --> 08:02:40.100] constraints that we had no idea that we were going to be under.
+[08:02:40.740 --> 08:02:43.040] And we couldn't hire, as I said.
+[08:02:43.360 --> 08:02:47.900] So as a result, while our, this is a log chart by the way, while all the other big competitors
+[08:02:47.900 --> 08:02:53.480] in the space were growing and building old-fashioned companies in order to go and exploit this
+[08:02:53.480 --> 08:02:55.960] amazing technology of AI, we had to stay at 21 people.
+[08:02:57.160 --> 08:02:58.900] It was a forcing function for us to work differently
+[08:02:58.900 --> 08:03:01.560] and to figure out how can you do so much more with an agent
+[08:03:01.560 --> 08:03:03.940] where we couldn't hire people.
+[08:03:04.140 --> 08:03:05.840] There's actually one guy who is like,
+[08:03:05.920 --> 08:03:07.960] I don't care that I can't get options for like eight months
+[08:03:07.960 --> 08:03:08.720] and I'm going to come join.
+[08:03:08.880 --> 08:03:10.740] And Hamish is pretty awesome.
+[08:03:11.960 --> 08:03:15.120] So I want to talk about the ways in which we built AMP, which
+[08:03:15.120 --> 08:03:18.320] is our agent product, around the way
+[08:03:18.320 --> 08:03:20.420] that these constraints forced us to work
+[08:03:20.420 --> 08:03:22.960] and how we grew up around the agent here.
+[08:03:25.180 --> 08:03:27.200] We got rid of all of the other tools.
+[08:03:27.440 --> 08:03:29.580] We got rid of all of the other things you got to check.
+[08:03:29.680 --> 08:03:30.620] Obviously not JIRA.
+[08:03:30.940 --> 08:03:32.140] No task tracking.
+[08:03:32.480 --> 08:03:33.680] We don't have a support system.
+[08:03:33.880 --> 08:03:35.220] Everything we do in the agent.
+[08:03:35.660 --> 08:03:36.960] In AMP, they're called threads.
+[08:03:37.300 --> 08:03:38.760] We even communicate in the agent.
+[08:03:39.120 --> 08:03:42.440] You can say, you know, I made a, something's bad in the product.
+[08:03:42.700 --> 08:03:43.280] Let's do it.
+[08:03:43.340 --> 08:03:45.320] The agent can listen to everything and then go fix it.
+[08:03:46.100 --> 08:03:49.920] If you're in like a local agent that runs on your laptop,
+[08:03:50.100 --> 08:03:52.280] you can't bring someone else in if you realize you're in over your head.
+[08:03:53.180 --> 08:03:59.980] really valuable. We push way too often. And I want to show how we actually reduce the risk here.
+[08:04:00.080 --> 08:04:04.820] Because you might say, let me start that again. You might say, well, if you're pushing constantly,
+[08:04:04.820 --> 08:04:10.300] then how do you not take down the site all the time? And the difference is when you can push,
+[08:04:10.420 --> 08:04:15.660] and you can do it any time of day, just by yourself, you can chunk up your work into way
+[08:04:15.660 --> 08:04:20.160] smaller pieces. Before you're going and doing a big change, you can go and say, let me add the
+[08:04:20.160 --> 08:04:23.080] logging to make sure that my understanding, the agent's understanding of the system is
+[08:04:23.080 --> 08:04:26.580] correct. Let me push a little change, a little change, you know, and then the agent can monitor
+[08:04:26.580 --> 08:04:31.260] it for an hour, then push the next change. You can run a whole shadow system side by side with
+[08:04:31.260 --> 08:04:36.760] the old system to see does it compute the exact same results in every single case. And that way
+[08:04:36.760 --> 08:04:42.540] of working actually reduces the risk because by the time, you know, you finish the old way of
+[08:04:42.540 --> 08:04:46.560] doing it and the pace that things have to move these days and what your customers expect, you've
+[08:04:46.560 --> 08:04:48.820] probably forgotten what you're building, and it just totally sucks.
+[08:04:50.060 --> 08:04:51.360] Let me give us some more hats.
+[08:04:51.620 --> 08:04:52.440] Who wants some more hats?
+[08:04:53.200 --> 08:04:53.760] All right.
+[08:04:54.120 --> 08:04:54.820] There we go.
+[08:04:55.820 --> 08:04:56.220] Sorry.
+[08:04:56.480 --> 08:04:57.820] The one guy who was on his laptop.
+[08:04:57.920 --> 08:04:58.680] That's a lesson, right?
+[08:05:00.620 --> 08:05:01.340] There we go.
+[08:05:01.720 --> 08:05:02.260] All right.
+[08:05:04.920 --> 08:05:09.040] Another thing is making it so the agent is able to irrefutably
+[08:05:09.040 --> 08:05:12.700] prove what the thing it's building is correct.
+[08:05:13.580 --> 08:05:15.000] There's a lot of ways they can do this.
+[08:05:16.820 --> 08:05:21.180] things. So if you're trying to remove like jitter in the UI, make sure that when you load, it's like
+[08:05:21.180 --> 08:05:25.480] nice and crisp. You can ask the agent to do something that no human would ever have the patience to do,
+[08:05:25.600 --> 08:05:29.660] which is take every single frame and compare them visually. And that's what I did here.
+[08:05:30.960 --> 08:05:35.800] You can ask the agent to go make a ton of different versions of something. You can never ask a human
+[08:05:35.800 --> 08:05:40.320] to like, you know, if you ask a designer, go make nine iterations or nine styles of this. They're
+[08:05:40.320 --> 08:05:43.480] going to get really annoyed. I know because I've worked with designers and I know they don't like
+[08:05:43.480 --> 08:05:47.400] But for the agent, yeah, you can have it make a ton of different things.
+[08:05:47.480 --> 08:05:50.500] This is the waveform for dictation in AMP.
+[08:05:50.700 --> 08:05:52.680] And this is one of the solutions that people say,
+[08:05:52.900 --> 08:05:54.360] I don't like waiting on my agent.
+[08:05:54.560 --> 08:05:56.460] They're asking for one thing at a time.
+[08:05:56.600 --> 08:05:57.960] And then they say, make this little change.
+[08:05:58.080 --> 08:05:58.700] You shouldn't do that.
+[08:05:58.800 --> 08:06:00.780] Go have it make a ton of things at once,
+[08:06:00.800 --> 08:06:01.980] and you're going to get a lot more done.
+[08:06:04.000 --> 08:06:07.480] We have this magical system where if you report a bug in AMP,
+[08:06:07.600 --> 08:06:09.100] has anyone here reported a bug in AMP?
+[08:06:09.680 --> 08:06:11.020] All right, cool.
+[08:06:11.020 --> 08:06:18.620] Cool. I apologize for the bug, but we have a system that is a full loop where when you
+[08:06:18.620 --> 08:06:26.340] report a bug, we will fix it, of course. Android app. We'll fix it, obviously with the agent.
+[08:06:26.520 --> 08:06:30.640] I think everyone does that now. Mostly everyone. A lot of times still, the engineers are different
+[08:06:30.640 --> 08:06:35.180] from the support team, which is kind of crazy. We'll send an email to the person thanking
+[08:06:35.180 --> 08:06:40.020] them. We give them free credits, which is always kind of nice. I think it sucks. I think
+[08:06:41.020 --> 08:06:43.220] There's a bug in a product and the company doesn't apologize.
+[08:06:43.480 --> 08:06:44.760] I just think that's morally wrong.
+[08:06:45.360 --> 08:06:49.040] And then what we'll do is we'll go through the logs and this is something that no human
+[08:06:49.040 --> 08:06:49.960] would ever do by themselves.
+[08:06:50.140 --> 08:06:52.460] We'll see everyone else who was affected by that issue.
+[08:06:53.040 --> 08:06:55.060] Because where there's smoke, there's fire.
+[08:06:55.500 --> 08:06:58.680] So you find the 17 other people that hit that same obscure error.
+[08:06:59.040 --> 08:07:00.240] They remember it probably.
+[08:07:00.500 --> 08:07:01.700] And you proactively tell them.
+[08:07:01.840 --> 08:07:05.380] How many times have you gotten an email from some product that says, hey, I know that you
+[08:07:05.380 --> 08:07:06.960] saw an error yesterday and that was really annoying.
+[08:07:07.080 --> 08:07:07.800] I'm really sorry about that.
+[08:07:07.860 --> 08:07:08.280] Here's $10.
+[08:07:08.280 --> 08:07:09.000] We fixed it.
+[08:07:09.000 --> 08:07:16.180] And by the way, that, it's a self-perpetuating cycle where then people who get that know that you care and they're going to send more feedback in the future.
+[08:07:17.220 --> 08:07:19.700] And then you ship those all out and then, you know, boom.
+[08:07:19.860 --> 08:07:21.340] And that's the cycle.
+[08:07:21.560 --> 08:07:25.380] That, people talk about vibe-coded products being junk.
+[08:07:25.520 --> 08:07:31.060] AMP is basically 100% built with AI and people say it's very high quality.
+[08:07:31.300 --> 08:07:33.960] And this is one of the things that you can do differently with an agent.
+[08:07:33.960 --> 08:07:39.880] But there's no way in hell you could do this if you had to go through a PM or go to the team that owns this bug and the designers each time.
+[08:07:41.820 --> 08:07:47.560] Dictation. Who dictates to their agents? Yeah? Wow, that's pretty good.
+[08:07:47.820 --> 08:07:54.400] That's a lot more than I thought. It is the fastest way to get bits of information from your brain to the agent.
+[08:07:54.740 --> 08:08:02.320] And I think that there's probably something around it ushering in the return of remote work.
+[08:08:04.280 --> 08:08:06.340] with Biong, another AMP co-founder, dictating,
+[08:08:06.420 --> 08:08:07.540] and it was very annoying.
+[08:08:09.760 --> 08:08:12.420] Dictation, if you're not doing it yet, you've got to do it.
+[08:08:12.800 --> 08:08:14.340] Just overcome the embarrassment.
+[08:08:14.780 --> 08:08:17.380] You know, channel Nathan Fielder
+[08:08:17.380 --> 08:08:19.460] and tell yourself that you can withstand
+[08:08:19.460 --> 08:08:20.860] any amount of awkwardness as you talk.
+[08:08:22.540 --> 08:08:24.900] We've hooked up our agent to a lot of different tools.
+[08:08:25.640 --> 08:08:28.920] I think a lot of companies have gotten here to this point.
+[08:08:29.080 --> 08:08:32.280] We've been doing this in production for a long time,
+[08:08:33.960 --> 08:08:36.100] is the more that we start using these tools,
+[08:08:36.220 --> 08:08:37.880] where just the agent is using it directly,
+[08:08:37.940 --> 08:08:40.420] we don't even need the software product on the other end.
+[08:08:40.480 --> 08:08:42.680] And it's a very small number of products
+[08:08:42.680 --> 08:08:44.660] that we think actually have sticking power for us.
+[08:08:45.920 --> 08:08:51.720] So we built some new things in AMP, for example, a CRM.
+[08:08:51.900 --> 08:08:54.320] And a year ago, you heard people talking about, oh,
+[08:08:54.420 --> 08:08:56.600] no one's going to Vibecode Salesforce from scratch.
+[08:08:56.800 --> 08:08:57.880] And yeah, that's totally true.
+[08:08:57.960 --> 08:08:58.580] Why would you want to?
+[08:08:59.040 --> 08:08:59.980] Have you ever used it?
+[08:09:00.580 --> 08:09:02.360] Would you be proud if you Vibecoded that,
+[08:09:03.960 --> 08:09:07.040] And also, you've used like 2% of the features of Salesforce.
+[08:09:07.420 --> 08:09:10.960] So actually, you know, people ridiculed this idea,
+[08:09:11.220 --> 08:09:17.540] but actually, would you code the 2% subset of Salesforce features
+[08:09:17.540 --> 08:09:21.860] and then another 2% that integrate with the rest of your stack
+[08:09:21.860 --> 08:09:24.740] in the most perfect way because the agent is so good at that?
+[08:09:24.900 --> 08:09:29.180] And that, you know, 4% of Salesforce total, that's like the easy shit.
+[08:09:29.180 --> 08:09:31.680] And you know what you want out of that better than Salesforce,
+[08:09:31.680 --> 08:09:34.800] and you certainly don't want to spend your time talking to some Salesforce product manager
+[08:09:34.800 --> 08:09:38.920] and hearing from them, I'm going to advocate with my PM and my executive team
+[08:09:38.920 --> 08:09:41.260] to get that on our Q4 roadmap, all that bullshit.
+[08:09:42.060 --> 08:09:46.300] So compared to that, it's actually getting easier and easier
+[08:09:46.300 --> 08:09:49.740] to just build the tools that you want from scratch.
+[08:09:50.080 --> 08:09:56.320] And this goes back to some of the existential dread, but also mind-blowing feeling
+[08:09:56.320 --> 08:09:57.820] that we felt when we first tried an agent.
+[08:09:57.820 --> 08:10:01.640] This is what we kind of thought would happen,
+[08:10:01.920 --> 08:10:05.080] that it would change everything about the software industry.
+[08:10:05.260 --> 08:10:09.580] If Salesforce, which is like the king cobra of SaaS,
+[08:10:10.000 --> 08:10:11.920] they have the most reliable customers,
+[08:10:12.040 --> 08:10:13.320] most reliable renewals, all that.
+[08:10:13.420 --> 08:10:14.600] They like invented the category.
+[08:10:15.160 --> 08:10:18.720] If we're starting to see, you know, why would we use them?
+[08:10:19.140 --> 08:10:20.900] Well, everything is starting to fall,
+[08:10:20.920 --> 08:10:23.120] and all of SaaS starts to break down
+[08:10:23.120 --> 08:10:25.860] if you can no longer assume that you can pay a salesperson
+[08:10:27.820 --> 08:10:29.500] and that deal's going to last for 10 years,
+[08:10:29.620 --> 08:10:32.000] and it's going to get bigger by a little bit.
+[08:10:32.340 --> 08:10:34.000] All of that is called into question now.
+[08:10:34.180 --> 08:10:35.720] So if you're at a software company,
+[08:10:35.900 --> 08:10:39.200] and that is how you ultimately make money,
+[08:10:39.380 --> 08:10:41.780] and you're trying to ring the bell,
+[08:10:41.900 --> 08:10:43.940] you're trying to raise the alarm here,
+[08:10:45.160 --> 08:10:46.100] absolutely raise it,
+[08:10:46.180 --> 08:10:49.900] and get out of the cage that you are in,
+[08:10:49.980 --> 08:10:53.080] because, in my opinion,
+[08:10:53.940 --> 08:10:56.980] once you have seen how the new kind of companies
+[08:10:57.820 --> 08:11:00.860] two orders of magnitude smaller, where everyone can do everything,
+[08:11:00.980 --> 08:11:03.900] and where everyone has skin in the game, then you don't want anything else.
+[08:11:04.080 --> 08:11:06.080] And so this is what we call this new kind of company,
+[08:11:07.080 --> 08:11:11.280] where we take that old org chart, and now we just got 21 people on AMP.
+[08:11:12.760 --> 08:11:14.480] We have no PMs.
+[08:11:14.540 --> 08:11:15.700] Everyone talks to customers.
+[08:11:15.960 --> 08:11:19.680] Brady is this guy who is an SDR at Sourcegraph, a really smart guy.
+[08:11:19.760 --> 08:11:20.340] I love the guy.
+[08:11:20.640 --> 08:11:24.260] And one day he's like, I'm going to make a ACH wire transfer thing
+[08:11:24.260 --> 08:11:27.020] so customers can pay us if it's too big for a credit card.
+[08:11:27.820 --> 08:11:29.400] And he's like two years out of college,
+[08:11:29.520 --> 08:11:30.300] and he's just doing that.
+[08:11:30.580 --> 08:11:31.860] And nobody knows on the other end.
+[08:11:31.900 --> 08:11:33.600] It's like that old New Yorker cartoon on the internet,
+[08:11:33.680 --> 08:11:34.580] nobody knows you're a dog.
+[08:11:34.980 --> 08:11:37.820] Nobody knows that he's an SDR, that we're all kind of devs
+[08:11:37.820 --> 08:11:38.480] and doing everything.
+[08:11:38.820 --> 08:11:39.600] But you can.
+[08:11:40.180 --> 08:11:43.020] And you also get people that are really real with customers.
+[08:11:43.240 --> 08:11:45.080] And I think sometimes customers need real talk.
+[08:11:45.260 --> 08:11:50.000] So Alex Kemper on our team, just today, he was like, hey,
+[08:11:50.440 --> 08:11:51.780] to a customer who wanted our stuff,
+[08:11:52.120 --> 08:11:53.700] that sounds like we're just going to get bogged down
+[08:11:53.700 --> 08:11:54.480] in a bunch of BS.
+[08:11:54.540 --> 08:11:56.260] And I don't think that's a good use of anyone's time.
+[08:11:57.900 --> 08:12:00.860] where you have people that feel empowered to say that
+[08:12:00.860 --> 08:12:03.180] and to truly say the best thing for the customer, that's great.
+[08:12:03.240 --> 08:12:04.820] You're not going to get that out of a salesperson who
+[08:12:04.820 --> 08:12:05.360] is commissioned.
+[08:12:06.780 --> 08:12:08.860] We have, this is some people's favorite part,
+[08:12:09.100 --> 08:12:10.500] we have one meeting per week.
+[08:12:10.620 --> 08:12:13.080] And then everything else, the guidance is follow your energy.
+[08:12:14.180 --> 08:12:15.920] You couldn't run most companies like that.
+[08:12:16.000 --> 08:12:18.640] But if everyone at the company has a massive stake
+[08:12:18.640 --> 08:12:21.680] in the company, take 100% and divide it by 21,
+[08:12:22.860 --> 08:12:25.500] and all that, you can actually trust people.
+[08:12:25.540 --> 08:12:27.140] Because again, when people have skin in the game,
+[08:12:27.820 --> 08:12:32.560] better at everything they do, it's like an incentive to make them think whole company,
+[08:12:32.800 --> 08:12:34.780] to make them do more, to make them work harder.
+[08:12:34.940 --> 08:12:38.200] And that's why I included Saturday and Sunday as well on this.
+[08:12:39.440 --> 08:12:42.620] And we are shipping just so much more.
+[08:12:42.860 --> 08:12:47.220] I think that AMP for many people is a product that they love.
+[08:12:47.360 --> 08:12:52.460] We also have a great business and we're serving as proof that this new kind of company that
+[08:12:52.460 --> 08:12:57.240] is profitable, that's more than 100 million ARR, that is doing so on a dollar in, dollar
+[08:12:57.880 --> 08:13:03.680] basis that's 40 to 50 times more efficient than old-fashioned companies here, that that
+[08:13:03.680 --> 08:13:04.140] can work.
+[08:13:04.740 --> 08:13:09.060] And so if this is appealing to you, if you want to push your company in this direction,
+[08:13:09.560 --> 08:13:12.860] if you want to go start a company like this, then reach out.
+[08:13:12.960 --> 08:13:13.660] I'm happy to help.
+[08:13:13.840 --> 08:13:16.860] And my guidance is just get out of the cage.
+[08:13:17.240 --> 08:13:21.400] I've heard from so many people who say, I hate that there's a gossip channel with the
+[08:13:21.400 --> 08:13:22.100] people at my company.
+[08:13:22.140 --> 08:13:23.540] We're all talking about the change.
+[08:13:23.740 --> 08:13:24.240] You know what?
+[08:13:24.340 --> 08:13:27.460] The longer that you are in the gossip channel, the longer that you are at a company getting
+[08:13:27.820 --> 08:13:30.020] and you're really smart and you're not doing shit about it,
+[08:13:30.260 --> 08:13:32.360] you're starting to become part of the problem.
+[08:13:32.580 --> 08:13:36.540] And the longer that you let yourself be just a developer
+[08:13:36.540 --> 08:13:38.800] when agents have completely changed the game,
+[08:13:39.200 --> 08:13:40.840] you're really hurting yourself.
+[08:13:40.980 --> 08:13:45.300] So if this is the one thing that you take away,
+[08:13:45.400 --> 08:13:49.440] just get out of that cage, let agents really shape how you work
+[08:13:49.440 --> 08:13:51.920] and get to a company that's willing to be shaped by the agents.
+[08:13:53.720 --> 08:13:54.440] Thank you.
+[08:13:54.440 --> 08:13:57.980] and if you want to try AMP, you can get up there,
+[08:13:58.060 --> 08:13:59.000] you can copy that.
+[08:13:59.240 --> 08:14:00.960] I've got more hats, so find me afterwards,
+[08:14:01.520 --> 08:14:03.680] and I'll probably be getting dinner at Chipotle or something,
+[08:14:03.820 --> 08:14:06.140] so come find me if you want to chat about all this stuff.
+[08:14:07.080 --> 08:14:08.000] All right, thank you all.

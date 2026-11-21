@@ -1,0 +1,35 @@
+[
+  {
+    "id": "expert-route",
+    "after": "p11",
+    "title": "把查询交给合适的专家",
+    "time": "05:39:41",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=20381s",
+    "en": "assets/expert-route-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把查询交给合适的专家</h3><dl><div><dt>评测设置</dt><dd>团队用 751 条金标准标注样本，按图分为 34、42、6 和 669 条对比以提示词驱动的大模型和 Jev 路由器。</dd></div><div><dt>延迟</dt><dd>转给专家的请求中，专家调用的中位提速为 8.1 倍。未转交时，新增的路由调用会阻塞请求。</dd></div></dl></div>",
+    "note": "柱图按每条路由分别比较精确率。",
+    "sourceSeconds": 20381
+  },
+  {
+    "id": "ranking",
+    "after": "p16",
+    "title": "从已有候选里选择一条后续建议",
+    "time": "05:41:53",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=20513s",
+    "en": "assets/ranking-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>从已有候选里选择一条后续建议</h3><dl><div><dt>固定选项</dt><dd>排序器从候选中选择最多一条，也可以选择不展示。</dd></div><div><dt>讲者报告</dt><dd>排序器中位耗时从 4.67 秒降到 0.67 秒。建议引擎超时率从 10.2% 降到 0.8%。</dd></div></dl></div>",
+    "note": "排序器耗时和整个建议引擎的超时率来自不同指标。",
+    "sourceSeconds": 20513
+  },
+  {
+    "id": "decision-rule",
+    "after": "p36",
+    "title": "根据输出形式选择模型",
+    "time": "05:49:23",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=20963s",
+    "en": "assets/decision-rule-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>根据输出形式选择模型</h3><dl><div><dt>选项可列举</dt><dd>可以评测决策模型。标签稳定且调用量高时，加入微调分类器作对照。</dd></div><div><dt>还需要自由文本</dt><dd>把选择交给决策模型，再由生成模型撰写参数或说明。</dd></div></dl></div>",
+    "note": "图中列出的三个判断依据是输出能否枚举、标签是否稳定、是否需要动态生成的文本。",
+    "sourceSeconds": 20963
+  }
+]

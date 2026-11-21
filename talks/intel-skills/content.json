@@ -1,0 +1,191 @@
+[
+  {
+    "id": "p01",
+    "time": "07:00:57.960—07:01:44.320",
+    "start": 25257.96,
+    "end": "07:01:44.320",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25257s",
+    "zh": "……这些技能。[开场转写有缺漏] 我们一开始用的都是些简单的提示词，试着让 Agent 做些新工作。同一条提示词反复用，就开始把它们封装成技能，把可以反复使用、可以复现、可以带到别处的能力教给 Agent。有些技能在 GitHub 上有几百颗星。技能也有不同类型，有些给模型带来新知识，让它学会新能力，还有一类……",
+    "en": "of those skills. We'll start it with the simple prompts where we've been playing with the new stuff, new work being done by the agents, repeating those prompts over and over again. And then we start packing those into the skills, creating repeatable, reproducible, portable type of their functionality or capabilities that we can teach agents to work with. And some of those skills are hundreds of stars on GitHub. There are different types of their skills. Some teach models something new, bringing new knowledge or capabilities to the model, but there are also types of their"
+  },
+  {
+    "id": "p02",
+    "time": "07:01:44.320—07:02:10.980",
+    "start": 25304.32,
+    "end": "07:02:10.980",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25304s",
+    "zh": "是引导型或流程型的技能。这类技能不提供额外信息，只是让 Agent 按我们希望的操作流程反复执行。两种都有用。这次我们聊给模型补充新知识的技能，看看通过测量模型对这些技能的理解，我们能得到什么。",
+    "en": "just steering or process skills where we do not bring any additional information but just getting repeatable flow of the actions that we want agents to perform. Both are useful. In this session we'll be talking about new knowledge type of the skills and we'll see what we can get from the models understanding of those skills."
+  },
+  {
+    "id": "p03",
+    "time": "07:02:13.340—07:02:56.440",
+    "start": 25333.34,
+    "end": "07:02:56.440",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25333s",
+    "zh": "我们把最初几个技能打包好、用起来，一开始大致是凭感觉判断好不好用。还有一种更技术化、更可控的办法，可以检查技能是否有效、带来了什么影响，就是做评测。评测可以用不同格式定义，实质上就是规定一项你希望 Agent 能解决的任务。把任务设置好，最好让结果更容易确定，这样才方便验证。然后就可以做两组实验。第一组不加载技能……",
+    "en": "So we get our first skills packed, start using them, basically starting with the feel of does it work or not, but there is also the more technical way and more deterministic way for the checking if skills are working or not and what's the impacts of those skills are evals. There are different formats where evals can be defined, but at a sense this is task definition that you want your agent to be able to solve. You put it in the place, ideally more deterministic so we can validate it and we can check two arms one they're no skill loaded"
+  },
+  {
+    "id": "p04",
+    "time": "07:02:56.440—07:03:35.060",
+    "start": 25376.44,
+    "end": "07:03:35.060",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25376s",
+    "zh": "第二组加载技能，把这些额外信息放进上下文。我们比较两组表现，可以看好几样东西。比如做对了多少道评测题。这个例子里，不带技能解出了五题中的三题，带技能五题全解出来了，也就是多做成了两个任务。还可以看 token 用量、任务完成时间和其他因素。最后，把这些结果放在一起比较，看看哪些做法合理，哪些不合理。这是我们用来……",
+    "en": "and their second one where we're loading the skill and providing this additional information to the context and we compare how they're arms there are multiple things one is how many evals been solved in this case with no skill we're solving three out of five with skill with all-in 05 meaning that we get two more tasks. There also would be implications on the tokens usage or time that it took those tasks to be completed and other factors but at the end we are comparing those and seeing what makes sense what not and this is one of the main tools for"
+  },
+  {
+    "id": "p05",
+    "time": "07:03:35.060—07:04:28.520",
+    "start": 25415.06,
+    "end": "07:04:28.520",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25415s",
+    "zh": "评估技能的一项主要工具，可以看出它们是否真能给 Agent 提供有用的上下文，而不只停留在好点子。接下来呢？现在有了能用的技能，也能通过评测，但我们知道还可以做得更好。模型在变，有时我们也想让技能更高效，比如少用一点 token。有几种办法。一种是逐行改，穷举所有不同组合。另一种是先想想什么改动合理，比如借助……",
+    "en": "evaluating the skills and saying that they not just nice ideas but actually working pieces of and context for the agents but what next we get to the stage there we have their working skill it's all some ul's but we know that there should be a better way we have models evolving we have some might be cases there we want to get skill more efficient meaning consuming less tokens So what's the options there? One is just change line by line and try brute force all the different combinations. Another would be to think through what makes sense so maybe use something as the"
+  },
+  {
+    "id": "p06",
+    "time": "07:04:28.520—07:05:13.560",
+    "start": 25468.52,
+    "end": "07:05:13.560",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25468s",
+    "zh": "用户对技能的反馈，看看它在哪些地方表现好、哪些地方表现不好。遇到新模型，也可以直接跑一遍技能，看看表现怎样。有哪些调整办法？改动要多大，改一行、一句话，还是改一个想法？我们发现，与其碰运气，可以用更可控的流程。我们借用了按条目评分的思路，把技能及其中的指令拆成一个个条目。[方法名称转写有缺漏]",
+    "en": "user feedback on the skills to see where the skills perform well. There it's not. And with new models just running skill and seeing how it works what's the options there and how large those modifications should be just lines sentences ideas so what we found to be useful is instead of relying on their luck we can put more So, deterministic process here, using ID of their items from the effect score, we can split their skill and instructions into those items."
+  },
+  {
+    "id": "p07",
+    "time": "07:05:14.120—07:05:52.960",
+    "start": 25514.12,
+    "end": "07:05:52.960",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25514s",
+    "zh": "每个条目都配一道问题和一个预期答案。它可以是一般性的概念，比如这里的一个例子 [示例术语转写有缺漏]，也可以是行为约定，对 Agent 该怎么做给出更明确的要求。通常会预先定好一个数量，比如每个技能拆成 25 或 30 个这样的最小知识点。",
+    "en": "And for each of those, have a pair of question and answer that we expect. This could be either general ideas like preposition in this case, or contracts there we put more definitive expectation on their action. And in general we will be getting there some predefined amount of the atoms per skill and we will have let's say 25 or 30 atoms per skill."
+  },
+  {
+    "id": "p08",
+    "time": "07:05:53.940—07:06:22.860",
+    "start": 25553.94,
+    "end": "07:06:22.860",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25553s",
+    "zh": "然后每个条目也跑两组，一组不带技能，一组带技能。我们安排一个裁判或一组裁判来评模型的答案。也就是把这些题问给要测的模型，再交给裁判评。最好选另一个模型家族做裁判，或者由几个裁判一起评。",
+    "en": "then for each of the items we will again run two arms one without skill and one with skill and we will have judge or panel of judges that will be evaluating model answers so we asking those questions to the model that we're interested in we evaluating those questions with their judge ideally different family of the models or panel of judges."
+  },
+  {
+    "id": "p09",
+    "time": "07:06:23.220—07:06:41.500",
+    "start": 25583.22,
+    "end": "07:06:41.500",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25583s",
+    "zh": "还要保证问题不会泄露答案。按场景，可以在没有工具和额外信息的条件下比较，检验模型自己懂多少。也可以给它一些工具，比如联网访问。",
+    "en": "It also ensures that the question do not leak answers. We, depending on the case, can compare with no tools or additional information to check their internal model understanding or provide it with their some tools like WebAccess."
+  },
+  {
+    "id": "p10",
+    "time": "07:06:41.680—07:07:16.260",
+    "start": 25601.68,
+    "end": "07:07:16.260",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25601s",
+    "zh": "这样会更接近实际使用。我们就得到一张简单的四种结果矩阵，看模型懂不懂某件事，以及这跟技能产生的影响有什么关系。最简单的第一种，是同一组问题，模型带不带技能都能答对。",
+    "en": "So it would be more practical. and we can get their simple four outcomes matrix basically where we are checking that the model knows or do not know something and how this maps to their skill impact on this so the simplest The first option is where model was able to answer these particular questions even without skill or with skill."
+  },
+  {
+    "id": "p11",
+    "time": "07:07:16.480—07:07:56.740",
+    "start": 25636.48,
+    "end": "07:07:56.740",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25636s",
+    "zh": "这说明技能在这里没有产生影响，模型原本就掌握这些知识。第二种是模型没加载技能时能答对，加入技能后，某些方面的表现和解释能力反而下降。最理想的情况是，没技能时模型答不出来，带上技能后，就能回答这类新的问题、应对新的场景。这就是我们想要的，教给模型一点新东西。也可能出现……",
+    "en": "This means that skill have no impact on this and this was already part of the model's knowledge. The second one is where without skill actual model was able to answer this correctly. And by adding skill we saw degradation in performance and model capability to talk or particular aspects. The ideal case is where without skill model wasn't able to answer something and with skill we start seeing that it can answer those new type of the questions and scenarios and this is what we were aiming for teach model something new. But there also can be there."
+  },
+  {
+    "id": "p12",
+    "time": "07:07:56.740—07:08:17.620",
+    "start": 25676.74,
+    "end": "07:08:17.620",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25676s",
+    "zh": "第四种情况。技能也许写得不够好，或者表达得不够清楚，模型加载前答不出，加载后也还是答不出。即使这个话题跟任务相关，对模型也很重要，它仍然没掌握其中一些概念。",
+    "en": "Fourth option where skills were written not ideally or in some maybe not clean way where model wasn't able to answer it either without skill or with skill and while this topic might be relevant and important for the model it still sort of misses some of those concepts."
+  },
+  {
+    "id": "p13",
+    "time": "07:08:20.580—07:09:13.320",
+    "start": 25700.58,
+    "end": "07:09:13.320",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25700s",
+    "zh": "最容易修的是那些实实在在拖累表现的指令或条目。热门技能里这种情况很少。下面这个框里可以看到，Anthropic 技能的近 400 个知识点里只有一个这样的例子，其他一些技能里没有。但在规模小、没那么热门的技能里，你很可能会遇到。这是我们在一些实验里看到的。直接处理这种条目最简单，可以确保技能别削弱模型能力、拖累表现，只带来相关的上下文。",
+    "en": "the simplest thing to fix are instructions or items that actually hurts performance and for popular skills those are pretty rare so in the box below you see that it's just one case out of the mostly 400 atoms in Anthropic skills and others don't have those but for their smaller skills that are less popular you probably have income of those this is what we're seeing with some of our experiments and this is just straightforward the simplest thing to fix to ensure that your skill do not reduce model capabilities and performance and bring only prevalent context there."
+  },
+  {
+    "id": "p14",
+    "time": "07:09:15.020—07:10:00.060",
+    "start": 25755.02,
+    "end": "07:10:00.060",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25755s",
+    "zh": "还可以用颜色来标记。这里是按行标色，真按最小知识点来标的话，同一行甚至同一句话里，可能会出现不同的颜色。这里给了几个例子，说明在哪些地方用可视化会有帮助。哪些细节和指令给模型带来了新东西，哪些它本来就会，可以一眼看出来。费用上，我们把所有问题都问了一遍，整体仍然挺便宜。29 个技能，Sonnet 和 Haiku 的调用一共花了 14 美元……",
+    "en": "And we also can actually color this. In this scenario, this is done by lines, but actually going with atoms, you might have their different coloring for a single line or a single sentence. And this just gives your examples there, visualization where this would be helpful, details and instructions in terms what new stuff you bring to the model and what is something that model already knows cost-wise we are running all those questions and asking model but still relatively this is cheap for 29 skills 14 bucks of their sonnet and haiku"
+  },
+  {
+    "id": "p15",
+    "time": "07:10:00.620—07:10:56.300",
+    "start": 25800.62,
+    "end": "07:10:56.300",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25800s",
+    "zh": "这里 Sonnet 也担任裁判。检验模型掌握某些知识到了什么程度，还有不同的严格程度。我们有宽松和严格两种评法。宽松只检查是否理解大意，严格要核对具体细节。可以想一下，理解一个话题的常识和大概意思，跟掌握确切的键名、参数、值或步骤，有什么区别。我们测过的模型里，两种评分的差距都不小，规模更大的前沿模型尤其明显。比如 Opus 对技能的理解，按大意来评有 70%……",
+    "en": "calls with their sonnet used as a judge and there are a couple ways how we also can check their strictness of their some knowledge we have laniard and strict ways of the checking this where first checks the general idea while the second one is checking for exact details and you can think about the difference between general knowledge and understanding of the topic to the understanding of the exact keys, parameters and exact values or steps and what we see across the models is the difference is large especially with their larger frontier models where we see OPPOS dropping from 70% understanding of their"
+  },
+  {
+    "id": "p16",
+    "time": "07:10:56.300—07:11:48.700",
+    "start": 25856.3,
+    "end": "07:11:48.700",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25856s",
+    "zh": "一旦要求精确细节，就只剩 22%。这跟我们的预期很相符。新模型对概念的理解可以很好地泛化，但给它提供解题会用到的准确细节和数据，仍然有帮助。这里是对三个热门技能仓库用不同模型测试的概览。一个有意思的观察是，小模型通常对技能的理解少一些，规模较大的 Sonnet 理解得更好。这也正是……",
+    "en": "skill in case of the general understanding to just 22% of the specific details. And this is much our expectations. We see that new models are pretty well generalized to understand concepts but it's still helpful to provide them with exact details and data that will be useful solving those problems. Here is outlook of their comparing those three popular repos with the skills across different models. So one of their interesting observations here is that smaller model have in general lower understanding of their skill with their larger sonnet having better understanding which is"
+  },
+  {
+    "id": "p17",
+    "time": "07:11:49.800—07:12:38.520",
+    "start": 25909.8,
+    "end": "07:12:38.520",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25909s",
+    "zh": "我们需要大模型的原因。不过整体来看，模型已经懂得技能中许多细节和上下文。我们可以预期，随着模型继续更新、训练能力进一步提高，它们懂的会越来越多。不同技能之间的差异也很明显。这没有什么不好，有些技能本来就是为引导行为设计的。看同一个技能对不同模型、不同模型家族各自提供了哪些新知识，仍然很有用。",
+    "en": "why you have bigger models but also we see that overall their models already understand a lot of their details and context of those skills and you would expect that with the newer models and more advances in their better training capabilities we will have more and more in terms of the models understanding but also we see that this pretty significantly differs skill to skill and it's not bad some skills are intended to be directional but it's also useful piece of information to see how So those skills bring new knowledge to the different model and different families, and"
+  },
+  {
+    "id": "p18",
+    "time": "07:12:38.520—07:13:29.520",
+    "start": 25958.52,
+    "end": "07:13:29.520",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25958s",
+    "zh": "理想情况下，应该在更广泛的模型上跑这些测试。但知识的新颖性只是一项信号，主要用来给优化找一个起点。最后还是得做评测，确认对技能的改动确实有效。比较简单的一种做法，是看看技能里哪些信息模型已经会了，试着删掉其中一部分或全部，再跑一次评测。有可能得分一样，也就是……",
+    "en": "this should be run ideally in the broader set of the models. But just having this novelty piece of information is just one of the signals. It's basically initial vector for optimization. at the end we still have to run evals and validate that all the changes that we try make with their skill actually works so one of their simpler scenarios would be we can look on their skill and try to remove some or all of the already known pieces of information from the skill and run evaluation it might come up with their same scoring basically we will be"
+  },
+  {
+    "id": "p19",
+    "time": "07:13:29.520—07:14:17.920",
+    "start": 26009.52,
+    "end": "07:14:17.920",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=26009s",
+    "zh": "结果没变，模型还是能解决那些问题。那就很好，我们可以缩短技能，省 token，也省上下文空间。这样有了依据，就不用穷举组合，猜应该删什么、加什么，或者怎么修复表现下降。这些测量和实验都是用一个框架做的 [框架名称待核。07:11:15 幻灯片脚注的 Dokimi paper 可作回看线索]。这个框架可以比较跟 Agent 和上下文有关的各种东西，比如技能、`AGENTS.md`、MCP 工具等。知识新颖性是其中一项功能，可以帮你找到……",
+    "en": "getting their same results model still capable of solving those problems then great we can reduce skill size safe tokens safe context and instead of their brute forcing and guessing what we can or should remove or add or how to fix their degradations we can have a guidance so all of those measurements experiments been done with the documy which is a framework for the comparing everything related to the agents and context where it's is skill agents md mcp tools whatever and normalty is one of their pieces of the functionality where you can get this"
+  },
+  {
+    "id": "p20",
+    "time": "07:14:17.920—07:14:44.340",
+    "start": 26057.92,
+    "end": "07:14:44.340",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=26057s",
+    "zh": "技能优化和评估的起点。它也可以做评测、衡量上下文的影响、测试路由，并比较技能描述和命名，还有其他跟技能有关的内容。用更可控的方式评估这些方面，就有依据来决定接下来要怎么改技能。",
+    "en": "initial vector for their skill optimization and evaluation but they're also evals there is assessment of the context impact routing comparing their descriptions naming a bunch of things that related to their skills where it would be helpful to actually get their more deterministic evaluation to make conscious decisions in terms of what should be done with your skills."
+  },
+  {
+    "id": "p21",
+    "time": "07:14:46.940—07:14:52.160",
+    "start": 26086.94,
+    "end": "07:14:52.160",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=26086s",
+    "zh": "谢谢大家抽时间听，也请大家去写出更好的技能。",
+    "en": "So thank you for your time and please go ahead and write better skills."
+  }
+]

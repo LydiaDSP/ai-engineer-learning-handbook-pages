@@ -1,0 +1,35 @@
+[
+  {
+    "id": "triage",
+    "after": "p09",
+    "title": "把分散的值班信号放到一起",
+    "time": "02:02:02",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=7322s",
+    "en": "assets/triage-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把分散的值班信号放到一起</h3><dl><div><dt>原有流程</dt><dd>告警、工单、部署变更和历史事故分头记录。</dd></div><div><dt>团队 AI 队友</dt><dd>每组轮值共享一个入口，汇集线索并维护调查状态。</dd></div></dl></div>",
+    "note": "原图对照各环节的局部信息与团队视图。",
+    "sourceSeconds": 7322
+  },
+  {
+    "id": "autonomy",
+    "after": "p14",
+    "title": "轮值 Agent 的三级自主权",
+    "time": "02:04:20",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=7460s",
+    "en": "assets/autonomy-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>轮值 Agent 的三级自主权</h3><dl><div><dt>调查建议</dt><dd>只读调查、提出假设和建议。</dd></div><div><dt>批准后执行</dt><dd>可以起草修复，等人批准再执行。</dd></div><div><dt>自主处理</dt><dd>在获准范围内处理低风险事项，把关键决策留给人。</dd></div></dl></div>",
+    "note": "放权看出错代价、错误是否容易发现，以及 Agent 在该操作上的记录。",
+    "sourceSeconds": 7460
+  },
+  {
+    "id": "handoff",
+    "after": "p23",
+    "title": "早间交班摘要和聊天追问",
+    "time": "02:07:21",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=7641s",
+    "en": "assets/handoff-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>早间交班摘要和聊天追问</h3><dl><div><dt>交班摘要</dt><dd>合成数据示例收到 23 项，3 项待人处理，18 项已处理，2 项进行中。</dd></div><div><dt>追问与批准</dt><dd>在同一讨论串追问结账异常的证据、范围和回滚方案。</dd></div></dl></div>",
+    "note": "原图标为使用合成数据的交班示意。",
+    "sourceSeconds": 7641
+  }
+]

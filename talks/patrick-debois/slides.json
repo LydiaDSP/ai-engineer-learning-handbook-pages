@@ -1,0 +1,35 @@
+[
+  {
+    "id": "isolation",
+    "after": "p12",
+    "title": "Git 分叉代码；Agent 分叉它所处的世界",
+    "time": "05:40",
+    "url": "https://www.youtube.com/watch?v=fTUinMqA1XQ&t=340s",
+    "en": "assets/isolation-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Git 分叉代码；Agent 分叉它所处的世界</h3><dl><div><dt>机器</dt><dd>磁盘与内存快照</dd></div><div><dt>外部系统</dt><dd>有状态、可重放的 API 模拟环境</dd></div><div><dt>数据库与测试数据</dt><dd>独立分支、自己的记录与清理过程</dd></div><div><dt>上下文</dt><dd>私有工作笔记；共享修改经审查或 PR 返回</dd></div></dl></div>",
+    "note": "原图举出了相关工具，不意味着本手册已安装、测试或推荐这些工具。",
+    "sourceSeconds": 340
+  },
+  {
+    "id": "intent",
+    "after": "p18",
+    "title": "检查合并意图，而不只检查代码冲突",
+    "time": "07:55",
+    "url": "https://www.youtube.com/watch?v=fTUinMqA1XQ&t=475s",
+    "en": "assets/intent-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>检查合并意图，而不只检查代码冲突</h3><dl><div><dt>共同起点</dt><dd>total() 返回 1299.00，单位为美元</dd></div><div><dt>Agent A</dt><dd>改成 129900，单位为美分；修改它找到的调用方</dd></div><div><dt>Agent B</dt><dd>新的发票页面仍假设 total() 返回美元，测试用旧值模拟</dd></div><div><dt>结果</dt><dd>没有文本冲突、检查全绿，却显示 $129,900.00；应为 $1,299.00</dd></div><div><dt>发现方式</dt><dd>记录 B 读取的前提，合并时比较变化，验证新 main 上的真实行为</dd></div></dl></div>",
+    "note": "原图补充了转写中没有完整说出的金额与单位，不能只检查两个 PR 是否能分别通过。",
+    "sourceSeconds": 475
+  },
+  {
+    "id": "decisions",
+    "after": "p32",
+    "title": "每个决定进入团队共享日志",
+    "time": "14:50",
+    "url": "https://www.youtube.com/watch?v=fTUinMqA1XQ&t=890s",
+    "en": "assets/decisions-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>每个决定进入团队共享日志</h3><dl><div><dt>已完成 did</dt><dd>BIL-142：CSV writer + tests</dd></div><div><dt>已决定 decided</dt><dd>refund VAT: origin country（Ana）</dd></div><div><dt>受阻 blocked</dt><dd>Stripe sandbox key missing</dd></div><div><dt>下一步 next</dt><dd>BIL-142：refund rows</dd></div><div><dt>读取时机</dt><dd>新 Agent 启动时先读；反复出现的规则再考虑升级为 Skill</dd></div></dl></div>",
+    "note": "原图中的 VAT 是示例条目，不是本手册提供的税务处理规则。保留历史记录的意义是让决定可追溯。",
+    "sourceSeconds": 890
+  }
+]

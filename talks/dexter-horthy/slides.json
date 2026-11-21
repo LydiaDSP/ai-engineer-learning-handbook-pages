@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "构建步骤交给 Agent 后，交付流程仍要运转",
+    "time": "08:19:55",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29995s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图中文字替换了动手实现的人，讲者接着追问需求、验证、评审、部署等周边阶段要如何调整。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 29995
+  },
+  {
+    "id": "frame-02",
+    "after": "p11",
+    "title": "用预计返工成本决定规划深度",
+    "time": "08:26:40",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=30400s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>比较需要返工的概率和返工的代价。有了这个尺度，小改动和昂贵、难逆转的改动就可以采用不同的规格与验收方式。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 30400
+  },
+  {
+    "id": "frame-03",
+    "after": "p19",
+    "title": "交付时说明哪些内容由 Agent 撰写",
+    "time": "08:33:50",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=30830s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>这条建议让评审者能衡量产出的来源与验证负担，减少将未经审查的输出当作团队结论。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 30830
+  }
+]

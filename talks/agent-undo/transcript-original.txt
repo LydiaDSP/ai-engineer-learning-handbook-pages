@@ -1,0 +1,140 @@
+Agent 改错了，怎样确认撤销真的恢复了状态？
+Tanmay Sah、Dolly Sah
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[04:26:17.100 --> 04:26:17.980] Hi, everyone.
+[04:26:18.260 --> 04:26:19.180] I am Tanmay.
+[04:26:20.140 --> 04:26:27.860] today joining me is dolly and we will be presenting the missing undo button for coding agents
+[04:26:31.000 --> 04:26:40.940] so imagine a coding agent working on a repository issue it applies patch run the tests and
+[04:26:40.940 --> 04:26:48.000] everything passes it even creates a release stack but then a downstream integration fails
+[04:26:48.000 --> 04:26:57.500] Now, here is the question. Can the agent actually get everything back to the state it was in before?
+[04:26:58.800 --> 04:27:12.360] So, Git can tell us what changed in the repository, but what about changes outside Git, such as external API calls or runtime configurations or notifications?
+[04:27:12.360 --> 04:27:19.980] And simply retrying an operation does not necessarily undo what already happened.
+[04:27:20.280 --> 04:27:30.400] So we wanted to understand not just whether agents can complete tasks, but whether they can recover when something goes wrong.
+[04:27:36.440 --> 04:27:41.620] This brings us to our first research work, UndoBench.
+[04:27:42.360 --> 04:27:52.320] We wanted to investigate whether an agent's ability to complete a task also translates into its ability to recover from failure.
+[04:27:52.640 --> 04:28:04.880] We evaluated agents across 2,880 paired trials comparing normal execution with execution under an injected failure.
+[04:28:05.140 --> 04:28:10.760] So, under normal conditions, the agent achieved an 84% success rate.
+[04:28:12.360 --> 04:28:19.880] introduced failures, only 47% of the normally successful trials recovered successfully.
+[04:28:20.200 --> 04:28:24.720] Notice that these two percentages do have different denominators.
+[04:28:25.080 --> 04:28:34.000] But yeah, so even when an agent can complete a task successfully, recovery remains a significant
+[04:28:34.000 --> 04:28:35.100] challenge.
+[04:28:38.100 --> 04:28:42.180] Now, let's look at a specific failure scenario.
+[04:28:42.540 --> 04:28:49.080] Imagine a coding agent sending a request to an external system to create a ticket.
+[04:28:50.160 --> 04:28:54.560] The request has been sent and the agent is waiting for a response.
+[04:28:56.840 --> 04:29:04.340] Next, the server receives the request and successfully creates ticket number 781, but
+[04:29:05.100 --> 04:29:13.340] gets lost on its way to the agent. From the agent's perspective, the request has
+[04:29:13.340 --> 04:29:18.880] timed out but the agent does not know that the ticket has already been created.
+[04:29:19.180 --> 04:29:25.600] A timeout tells us that the response didn't arrive, not that the operation failed.
+[04:29:27.860 --> 04:29:33.940] So the agent tries the request without checking whether the first
+[04:29:36.500 --> 04:29:42.860] And now we have two tickets even though the agent intended to create only one.
+[04:29:43.620 --> 04:29:52.520] So in undo bench, naive retries produced duplicate effects in 54% of these kinds of trials.
+[04:29:53.420 --> 04:29:59.840] That's why we need to distinguish a failed response from a failed operations.
+[04:30:05.580 --> 04:30:10.740] Now, the failure phase also changes the answer.
+[04:30:11.960 --> 04:30:17.540] What do I mean is that recovery also depends on when the failure happens.
+[04:30:17.940 --> 04:30:24.260] Before the mutation, retrying is generally safe because nothing has changed.
+[04:30:24.260 --> 04:30:29.040] But during the mutation, the system may be partially modified.
+[04:30:29.760 --> 04:30:32.460] So we need to inspect its state.
+[04:30:32.680 --> 04:30:39.280] And after the mutation, the operation may have committed even if the acknowledgement was lost.
+[04:30:39.500 --> 04:30:43.260] As we just saw, retrying could create duplicates.
+[04:30:43.480 --> 04:30:50.340] So we need different recovery strategies depending on the failure phase.
+[04:30:58.020 --> 04:31:02.720] Now, why can't we just use git revert?
+[04:31:03.360 --> 04:31:12.260] So, git can restore repository changes, but coding agents also modify their runtime state,
+[04:31:12.460 --> 04:31:16.260] including tool registries, middleware, and configurations.
+[04:31:16.260 --> 04:31:22.840] They can also trigger external effects such as deployment or database rights.
+[04:31:24.280 --> 04:31:27.920] GitRevered does not reverse all these changes.
+[04:31:28.440 --> 04:31:33.980] The recovery mechanism has to match the type of effect the agent created.
+[04:31:39.180 --> 04:31:51.200] And this becomes particularly important when coding agents start modifying their own execution environment or what we call the agent hardness.
+[04:31:51.200 --> 04:31:58.960] This includes prompts, tools, middleware, event listeners, resources, and routing configurations.
+[04:31:59.480 --> 04:32:06.640] Such changes may improve the agent's performance, but they can also make recovery more difficult.
+[04:32:07.100 --> 04:32:15.360] In other words, an agent can become more capable while becoming less recoverable.
+[04:32:20.140 --> 04:32:26.720] and that's why undo needs more than an inverse command
+[04:32:26.720 --> 04:32:35.620] now like undoing a change is not always as simple as reversing a command suppose an agent
+[04:32:35.620 --> 04:32:44.400] changes a timeout from 30 to 60 to undo that change it needs to know that the original value
+[04:32:45.360 --> 04:32:52.340] That's why Evo undo captures a pre-state witness before applying the mutation.
+[04:32:53.200 --> 04:33:05.060] And that witness provides the information to restore the original state and later verify that recovery actually worked.
+[04:33:05.780 --> 04:33:13.560] Now, question comes, how often do improved hardnesses fail?
+[04:33:15.360 --> 04:33:23.980] in evo undo we evaluated 600 self-evolution tasks out of those 478 produced capability
+[04:33:23.980 --> 04:33:33.320] improvements but 197 of those improvements had recovery defects that is around 42 percent of the
+[04:33:33.320 --> 04:33:41.920] capability positive cases so here key takeaway is that a mutation can improve an agent's capability
+[04:33:41.920 --> 04:33:47.760] and still leave the system unable to recover reliably.
+[04:33:51.880 --> 04:33:57.600] Now we can say that why please fix the undo did not work.
+[04:33:57.840 --> 04:34:06.440] So naturally we wanted to use prompting and wanted to tell agent that hey could you simply repair all these recovery failures.
+[04:34:06.440 --> 04:34:20.540] So we tested four verifier guided repair strategies but under the original recovery language none recovered the 197 naturally occurring failures.
+[04:34:20.540 --> 04:34:25.520] The problem was not necessarily the agent's reasoning.
+[04:34:25.820 --> 04:34:32.320] In some cases, the agent lacked precise information about the original state.
+[04:34:32.600 --> 04:34:41.740] In others, the recovery language could not express the operation needed to reverse the chain.
+[04:34:41.960 --> 04:34:46.860] So we investigated these two limitations separately.
+[04:34:49.740 --> 04:34:57.000] So, two bottlenecks. First is state grounding and another one is recovery expressivity.
+[04:34:58.200 --> 04:35:05.680] When we provided precise information about what had changed and where, then recovery
+[04:35:05.680 --> 04:35:14.320] improved from 0 to 38 out of 48 cases. And the second is recovery expressivity. So, when
+[04:35:14.320 --> 04:35:22.960] we introduced richer and do operation recovery improved significantly from 0 to 142 out of 143
+[04:35:22.960 --> 04:35:30.480] cases so these results come from the two different experimental subgroups but together they show
+[04:35:31.120 --> 04:35:39.480] why recovery needs both accurate state information and ability to perform the required and do operation
+[04:35:46.000 --> 04:35:52.580] Now, question comes to our mind that can better undo mechanism rescue failed mutations.
+[04:35:53.860 --> 04:35:59.180] So what happens like when we give the agent better recovery capabilities?
+[04:35:59.460 --> 04:36:07.040] So with the original recovery language, none of the 197 recovery defective mutations could
+[04:36:07.040 --> 04:36:07.860] be restored.
+[04:36:07.860 --> 04:36:15.680] but after extending the recovery language we successfully recovered 180 out of 197 cases
+[04:36:15.680 --> 04:36:24.500] that is around 92 percent as a result the number of admissible improvement increased from 281 to
+[04:36:24.500 --> 04:36:35.040] 461 out of 600 tasks that is a 30 percentage point improvement and that brings us to the next
+[04:36:35.040 --> 04:36:41.760] question how do we build these recovery checks into the agent's evolution process
+[04:36:42.560 --> 04:36:48.720] i will now hand it over to dolly to walk through the evo and do algorithm
+[04:36:51.280 --> 04:36:57.740] all right thanks sanme so let's get into the working on how evo and do actually works
+[04:36:57.740 --> 04:37:12.080] So first we will start with the agent process. The agent processes the mutation on which state it is currently in along with the effect contract and the recovery plan.
+[04:37:12.080 --> 04:37:20.200] and before applying the mutation we capture the state witness representing the original state
+[04:37:20.200 --> 04:37:27.560] and even before that the then a testing in the testing environment agent will apply the mutation
+[04:37:27.560 --> 04:37:35.160] and execute the recovery plant an independent verifier will also verify the original if verify
+[04:37:35.160 --> 04:37:41.340] to check if the original state has been restored or not if the mutation improves the capability
+[04:37:42.080 --> 04:37:48.600] the user defined criteria and passes the recovery check the agents admit the
+[04:37:48.600 --> 04:37:56.840] changes otherwise well the agent attempt to repair or the verifier itself rejects
+[04:37:56.840 --> 04:38:00.960] the mutation altogether this way the recovery ability becomes a part of the
+[04:38:00.960 --> 04:38:06.140] admission decision rather than something that we strategize or even plan once we
+[04:38:06.140 --> 04:38:17.480] are deployed the deployed the AI agent okay so with next next we will walk
+[04:38:17.480 --> 04:38:21.560] through as as Tanmay have already explained in and given an example let
+[04:38:21.560 --> 04:38:26.860] let me walk through how the how that example of a time or changing from 30 to
+[04:38:26.860 --> 04:38:33.120] 60 would look like in action so let's take let's start with the original state
+[04:38:33.120 --> 04:38:38.900] a simple example that simple example of our agent having the time value of 30
+[04:38:38.900 --> 04:38:45.360] before changing anything the Evo and over first read the original value and
+[04:38:46.140 --> 04:38:51.060] then it will save it will capture the original value as a state witness you
+[04:38:51.060 --> 04:38:57.140] know exact we so we know exactly what need to be restored then then and then
+[04:38:57.140 --> 04:39:01.540] if we have to restore it we would know what what need to be restored or which
+[04:39:03.120 --> 04:39:08.760] state to return back to now the agent so next come the mutation now the agent
+[04:39:08.760 --> 04:39:13.920] changes the timeout from 30 to 60 as we want it to do and if recovery is
+[04:39:13.920 --> 04:39:20.440] required if recovery is required the undo uses the saved witness to restore
+[04:39:20.440 --> 04:39:26.140] the timeout to 60 now independently the verifier finally an independent verify
+[04:39:26.140 --> 04:39:31.020] would also confirm that the recovered value matches the original value so the
+[04:39:31.020 --> 04:39:36.520] recovery isn't considered successful simply because an undo command was run
+[04:39:36.520 --> 04:39:41.860] but also the verifier would verify the resulting state to make sure that we are
+[04:39:41.860 --> 04:39:50.940] in fact doing the recovery those in the state we want it to be well now comes
+[04:39:50.940 --> 04:39:56.500] the bigger question so so we have this capability of recovery in our arsenal
+[04:39:56.500 --> 04:39:59.660] should we be using it for uniformly and applying the recovery
+[04:39:59.660 --> 04:39:59.880] mechanic
+[04:40:00.000 --> 04:40:06.820] to all the failures? Well, of course not. Not every failures can be recovered the same way.
+[04:40:07.080 --> 04:40:13.440] If nothing has changed, then simply, if nothing has changed in the system, we would simply
+[04:40:13.440 --> 04:40:25.240] want it to safely retry. We would want the agent to simply retry and try to achieve the
+[04:40:25.240 --> 04:40:31.440] state that we want to be however if we have the original state once we have the original state
+[04:40:31.440 --> 04:40:37.440] we can restore it if the external action has already been committed and we need uh
+[04:40:38.980 --> 04:40:43.980] it's then when we would need a compensation mechanism compensation action to
+[04:40:44.820 --> 04:40:52.320] compensating action to reverse its effect and if we cannot recover the recovery uh and we cannot if
+[04:40:52.320 --> 04:40:58.440] if and if you cannot the cannot verify that recovery is safe or the verifier have rejected
+[04:40:58.440 --> 04:41:04.420] the recovery then the agent should stop and escalate the right response definitely depends
+[04:41:04.420 --> 04:41:16.420] on what actually happened and what we what can be safely reversed or not that brings me to the
+[04:41:16.420 --> 04:41:21.120] almost the last slide which is about bringing everything together on our two paper and
+[04:41:22.560 --> 04:41:30.380] so the key takeaways here is our first the end under bench shows the successful task execution
+[04:41:32.520 --> 04:41:37.620] the under bench shows that a successful task execution doesn't guarantee it doesn't always
+[04:41:37.620 --> 04:41:44.000] guarantee the successful recovery of it secondly the evil undo algorithm provides a structured
+[04:41:44.000 --> 04:41:48.760] process capture the original state apply the mutation recover independently verify and
+[04:41:48.760 --> 04:41:55.860] restoration so the undo algorithm does work in the in the fashion in the way we intended it to
+[04:41:55.860 --> 04:42:02.200] and third we should admit self-evolution changes only when the when both the capability and the
+[04:42:02.200 --> 04:42:09.840] recoverability requirements are met so ultimately as we give agent more autonomy we should also give
+[04:42:09.840 --> 04:42:13.300] them more reliable ways to recover from their actions.
+[04:42:15.840 --> 04:42:22.600] All right, so finally I hope you remember the agent from the beginning. It was looking for
+[04:42:22.600 --> 04:42:27.400] an undo button. Well, now it has one. We have started building this capability through our
+[04:42:27.400 --> 04:42:33.180] research project, Ivo Undo, and you can explore the world through the in the GitHub repository.
+[04:42:33.420 --> 04:42:39.700] You can scan the QR code on the screen to get to the page. Our goal is to make the recovery
+[04:42:39.840 --> 04:42:46.600] fundamental capability of AI agents so that we not only have the agent does not even execute
+[04:42:47.120 --> 04:42:52.380] does not only execute the action but also recover when something goes wrong as well thank you so much

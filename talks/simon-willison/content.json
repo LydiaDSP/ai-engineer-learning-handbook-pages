@@ -1,0 +1,597 @@
+[
+  {
+    "id": "p01",
+    "time": "08:31:08.620—08:31:38.020",
+    "start": 30668.62,
+    "end": "08:31:38.020",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30668s",
+    "zh": "AI Engineer Code Summit 的各位好，很高兴来到这里。我要讲的东西很多，只有 18 分钟回顾大语言模型过去的 12 个月。我的幻灯片出来了吗？出来了。我们直接开始。我想用过去 12 个月里的三个转折点来回顾这一年。第一个刚好在 12 个月前。我把 2025 年 11 月看作编程 Agent 的转折点。",
+    "en": "Hello, AI Engineer Code Summit. It's great to be here. I have a lot to cover. I've got 18 minutes to talk about the last 12 months in LLMs. Am I slides up? My slides are up. Let's just get going. I want to talk about the last 12 months in LLMs through the perspective of three inflection points that we've had over the past 12 months. And the first of exactly 12 months ago. November 2025 is what I consider the coding agent inflection point."
+  },
+  {
+    "id": "p02",
+    "time": "08:31:38.180—08:31:59.340",
+    "start": 30698.18,
+    "end": "08:31:59.340",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30698s",
+    "zh": "编程 Agent 当时已经有了。Claude Code 从去年二月起就有了，Codex 也早已出现。这类软件并不全新。但 12 个月前，两款模型带来了变化。Claude Opus 4.5 和 GPT-5.1 驱动编程 Agent 的能力只好了一点点，却跨过了一道门槛。这些工具突然变成了你可以每天用的东西。",
+    "en": "Coding agents weren't new. We'd had Claude code since February last year. Codex had been around. This wasn't a complete new category of software. But something changed 12 months ago with these two models. We had Claude Opus 4.5 and GPT 5.1, and they were just a little bit better at driving a coding agent, which put them over that thing where suddenly these of tools you could use on a daily basis."
+  },
+  {
+    "id": "p03",
+    "time": "08:31:59.660—08:32:16.000",
+    "start": 30719.66,
+    "end": "08:32:16.000",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30719s",
+    "zh": "原来编程 Agent 是新鲜玩意儿，偶尔拿出来试试，还会犯一些奇怪的错。后来它们可靠到可以每天用。这件事发生在 11 月，时间正好。整个 12 月假期，我们差不多都在摆弄新模型和新工具，看看它们能做什么。",
+    "en": "Like we went from coding agents as a novelty that you'd poke out occasionally that make some weird mistakes to something that was reliable enough that you could use them every day. It was convenient that that happened in November because we then got to spend December basically over the holidays sort of poking at these new models and these new things and figuring what they could do."
+  },
+  {
+    "id": "p04",
+    "time": "08:32:16.140—08:32:30.680",
+    "start": 30736.14,
+    "end": "08:32:30.680",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30736s",
+    "zh": "到了 1 月，我们很多人已经意识到，情况变了，这会是 2026 年的大主题。我喜欢用 SVG 画骑自行车的鹈鹕来测模型。这是 12 个月前最好的水平。",
+    "en": "And by January, a lot of us had realized that something had changed and this was going to be the big theme for 2026. I like evaluating models by having them draw SVGs of pelicans riding bicycles. This is the state of the art 12 months ago."
+  },
+  {
+    "id": "p05",
+    "time": "08:32:30.860—08:32:42.160",
+    "start": 30750.86,
+    "end": "08:32:42.160",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30750s",
+    "zh": "这是 Claude Opus 画的鹈鹕，那是 GPT-5.1 画的。你们会发现，两辆自行车都没法骑，所以肯定还有进步空间。它们写代码已经很强，画 SVG 还没那么在行。",
+    "en": "This is Claude Opus' pelican and GPT Viper 1's pelican. You'll notice that neither of these bicycles actually work. So there was definitely room for improvement here. They were really good at writing code. They weren't great at SVGs just yet."
+  },
+  {
+    "id": "p06",
+    "time": "08:32:42.300—08:32:56.160",
+    "start": 30762.3,
+    "end": "08:32:56.160",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30762s",
+    "zh": "年初就是这样。每年 1 月，我都会给自己定一个新年目标，而且每年都一模一样。今年要少接点新项目，专心一点。",
+    "en": "But this is how we started the year. So every year in January, I set myself a New Year's resolution. And every year it is the exact same thing. that this year I'm gonna take on less new projects and I'm gonna focus."
+  },
+  {
+    "id": "p07",
+    "time": "08:32:56.200—08:33:08.880",
+    "start": 30776.2,
+    "end": "08:33:08.880",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30776s",
+    "zh": "专心做手头已经要做的事。这个目标从来没实现过。所以今年我改了主意。我想，干脆把目标定高些，我想接多少项目就接多少。我们现在有这些 Agent，它们能干活。",
+    "en": "I'm gonna focus on the stuff that I've already got to do. And this has never worked. So this year I changed it and I said, you know what, I'm gonna be more ambitious. I'm gonna take on as many projects as I want to because we've got these agents, they can do stuff."
+  },
+  {
+    "id": "p08",
+    "time": "08:33:09.300—08:33:19.320",
+    "start": 30789.3,
+    "end": "08:33:19.320",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30789s",
+    "zh": "我们就试着把边界往外推推，看看能做成什么。结果现在到了 11 月，我手头同时转着的事多得吓人，明年可能得重新调整一下目标了。",
+    "en": "Let's just try and push the limits and see what we can get done. As a result, now it's November and I am juggling so many plates right now, it's kind of horrifying and I may need to reset my ambitions for next year."
+  },
+  {
+    "id": "p09",
+    "time": "08:33:19.440—08:33:48.020",
+    "start": 30799.44,
+    "end": "08:33:48.020",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30799s",
+    "zh": "不过这差不多就是我今年的主题。[转写有缺漏] 有了这些新工具，可以把目标定得更高。我还上过一期播客，他们请我预测 2026 年的大语言模型。1 月我第一个预测是，大语言模型能写出好代码，这件事会变得无可争辩。它们已经会写代码，我说的是好代码。因为在 1 月，不少人还觉得生成的代码全是垃圾，每一行都得审。我这话说了大约有……",
+    "en": "But that was my sort of theme of the year. conference is to be more ambitious now that we have all of these new tools. I also went on a podcast where they asked me to make some predictions for 2026 in LLMs. My predictions back in January were, firstly, it will become undeniable that LLMs write good code, not just code, but good code, because back in January, there were a lot of people who thought that the code was all complete trash, and you'd have to review every single line of it. I've been saying this every year for like"
+  },
+  {
+    "id": "p10",
+    "time": "08:33:48.020—08:34:14.200",
+    "start": 30828.02,
+    "end": "08:34:14.200",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30828s",
+    "zh": "四年。我一直觉得迟早会有一场提示词注入导致的「挑战者号」式灾难，也就是足以登上报纸头版的事故。我坚信会是今年，尽管去年、前年、大前年都没发生。我还预测，鸮鹦鹉在 2026 年会迎来一个特别好的繁殖季。这就是鸮鹦鹉，新西兰一种夜间活动、不会飞的鹦鹉。",
+    "en": "four years now, we're due a prompt injection challenger disaster, like some incident caused by a prompt injection attack, which makes the front pages of newspapers. I was convinced that this would be the year, even though it hadn't been the year, the year before, the year before, the year before that. And I also predicted that kakakopo parrots will have an outstanding breeding season in 2026. This is a kakakopo parrot. They are a New Zealand nocturnal flightless parrot."
+  },
+  {
+    "id": "p11",
+    "time": "08:34:14.200—08:34:27.660",
+    "start": 30854.2,
+    "end": "08:34:27.660",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30854s",
+    "zh": "今年 1 月，全世界只有 235 只。它们只在陆均松大量结果的年份才繁殖，前几年一直没赶上。但今年 1 月陆均松的长势看起来很好，结了很多果子。",
+    "en": "There were only 235 of them in the world back in January, but they only breed when the Rimu trees have a masting fruit season, which hadn't happened in years. But the Rimu trees were looking really good in January. There was a lot of fruit coming out."
+  },
+  {
+    "id": "p12",
+    "time": "08:34:27.800—08:34:47.360",
+    "start": 30867.8,
+    "end": "08:34:47.360",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30867s",
+    "zh": "所以我想，也许今年鸮鹦鹉的数量会猛增。我们还在那期播客里造了个词，叫 Deep Blue。它指一种 AI 带来的存在感危机。当你发现那些让你作为软件开发者显得特别的事，这些模型也能做，就会开始有这种感觉。",
+    "en": "So based on that, I thought, you know, maybe this is the year that we get our Cacapoe breeding explosion. And also on that podcast, we coined a new term. We coined the term deep blue to describe the AI-induced existential crisis that everyone starts to feel once you realize that all of the things that make you special as a software developer, these models can do those things too."
+  },
+  {
+    "id": "p13",
+    "time": "08:34:47.480—08:34:59.900",
+    "start": 30887.48,
+    "end": "08:34:59.900",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30887s",
+    "zh": "而且它们做得更快，有时甚至更好。2026 年，这种感觉在我们行业和其他行业都越来越普遍。我们跳到 2 月。",
+    "en": "And they can do them faster and sometimes they can even do them better. And this has definitely been a growing sensation across our industry and other industries over the course of 2026 as well. Let's jump forward to February."
+  },
+  {
+    "id": "p14",
+    "time": "08:34:59.900—08:35:14.580",
+    "start": 30899.9,
+    "end": "08:35:14.580",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30899s",
+    "zh": "2 月，Google 发布了 Gemini 3.1 Pro。看看那只骑自行车的鹈鹕，那真是一辆自行车，形状画对了。它还拿着条小鱼，戴了顶帽子。这是我当时见过的所有模型画的鹈鹕里，遥遥领先的一只。",
+    "en": "In February, Google released Gemini 3.1 Pro. And look at that pelican riding a bicycle. Like, that's a real bicycle. That bicycle's the right shape. It's got a little fish. It's got a hat on. This was by far the best pelican I had ever seen out of any model."
+  },
+  {
+    "id": "p15",
+    "time": "08:35:15.500—08:35:28.580",
+    "start": 30915.5,
+    "end": "08:35:28.580",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30915s",
+    "zh": "我本来给这些实验室设了个圈套。总有人问，如果实验室专门训练模型画骑自行车的鹈鹕怎么办。我一直回答，要是他们这么做，我就会让模型画一只骑独轮车的火烈鸟，把他们抓个正着。",
+    "en": "And this, I had set a trap for the labs. Everyone's always asked me what happens if the labs train for the pelican riding a bicycle. My answer has always been if they do that, I will catch them because I'll ask for a flamingo on a unicycle."
+  },
+  {
+    "id": "p16",
+    "time": "08:35:29.900—08:36:01.300",
+    "start": 30929.9,
+    "end": "08:36:01.300",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30929s",
+    "zh": "如果鹈鹕画得很好，火烈鸟却一塌糊涂，我就知道他们作弊了。可惜，模型发布当天，Google 的 Jeff Dean 发了这段视频。里面有骑自行车的鹈鹕，有一只青蛙骑着某个我也认不出的东西，有坐在小汽车里的长颈鹿、穿轮滑鞋的火烈鸟、做滑板翻转动作的乌龟，还有坐加长礼车的腊肠狗。他们把我打败了，对吧？各种动物、各种交通工具，他们都练到了。这让我的基准测试有点……",
+    "en": "a great pelican and a terrible flamingo. I'll know that they've been cheating. Unfortunately, Google's Jeff Dean tweeted this video the day they launched that model, where he showed that we've got a pelican riding a bicycle, but we've also got a frog on a whatever that thing is, and a giraffe in a little tiny car, a flamingo on roller skates, a kick-flipping turtle, and that's a dachshund in a stretch limo. So they've beaten me, right? They have trained for all forms of animals in all forms of transport, which does sort of weaken my benchmark quite a little"
+  },
+  {
+    "id": "p17",
+    "time": "08:36:01.300—08:36:18.420",
+    "start": 30961.3,
+    "end": "08:36:18.420",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30961s",
+    "zh": "失去区分度。不过 2 月也有好消息。情人节那天，四年来第一只鸮鹦鹉幼鸟孵出来了。我们差不多四年没等到陆均松结果。就这样，情人节那天，我们迎来了四年来第一只这种稀有又古怪的新西兰小鹦鹉。",
+    "en": "bit. But there was some good news in February. In February, the first cacopor chick in four years hatched on Valentine's Day. On Valentine's Day, because we hadn't had the removed fruit in like four years, this was the first one of these baby, rare, weird New Zealand parrots that we'd had in four years."
+  },
+  {
+    "id": "p18",
+    "time": "08:36:18.520—08:36:35.900",
+    "start": 30978.52,
+    "end": "08:36:35.900",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30978s",
+    "zh": "这挺好。我的基准测试受了重创，鸮鹦鹉倒过得不错。好，直接跳到 4 月。4 月，Anthropic 发布了一款没有发布的模型。他们公布了 Claude Mythos，说这款模型太危险，不能向公众开放。",
+    "en": "So that was nice. My benchmark was greatly injured, but the cacopor were doing okay. Okay. Jump straight to April. In April, Anthropic released a model that they did not release. They announced Claude Mythos and they said, this model is too dangerous for us to release."
+  },
+  {
+    "id": "p19",
+    "time": "08:36:36.180—08:37:01.400",
+    "start": 30996.18,
+    "end": "08:37:01.400",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=30996s",
+    "zh": "它有新的网络安全能力，我们还没准备好向全世界开放，只会交给可信的合作伙伴。Anthropic 当时说，Mythos Preview 已经发现了数千个高危漏洞，覆盖每个主流操作系统。不少人挺怀疑的。实验室说自家模型太危险，不能公开，这招早就有人用过了。",
+    "en": "This is, it can, it's got new cyber security abilities that we're not ready to share with the world. We'll share it with trusted partners. They actually said Mythos Preview has already found thousands of high severity vulnerabilities, including some in every major operating system A lot of people were quite skeptical because the thing where labs say our model is too dangerous to release, it's like the oldest trick in the book."
+  },
+  {
+    "id": "p20",
+    "time": "08:37:01.680—08:37:11.540",
+    "start": 31021.68,
+    "end": "08:37:11.540",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31021s",
+    "zh": "我记得 2019 年 GPT-2 那次就是这么做的。我想，当时负责这个决定的，说不定也是后来离开去创办 Anthropic 的那些人。总之，这种说法我们已经听过了。",
+    "en": "They first, I think I did that in 2019 with GPT-2. And actually, I think it might have been the people who left to found Anthropic who were responsible for that decision as well. But yeah, so we've heard this one before."
+  },
+  {
+    "id": "p21",
+    "time": "08:37:11.820—08:37:27.760",
+    "start": 31031.82,
+    "end": "08:37:27.760",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31031s",
+    "zh": "所以我们多少有些疑虑。但后来我们的确接触到了那个模型。更准确地说，几个月后我们用上了 Claude Fable。它是去掉部分危险能力、重新启用安全防护的 Mythos。",
+    "en": "So we didn't really, it was a little bit suspicious about what's going on there. But we did finally get access to that model. or rather we got access to Claude Fable a couple of months later. It was Mythos defanged with the safeties turned back on again."
+  },
+  {
+    "id": "p22",
+    "time": "08:37:28.600—08:37:41.340",
+    "start": 31048.6,
+    "end": "08:37:41.340",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31048s",
+    "zh": "一上手我们很快就发现，这东西有些新本事，很特别。它在订阅方案里的可用时间有限，我就取消了那个周末的计划。",
+    "en": "And it very quickly became apparent as we started playing with this model that this thing was something new and something special. There was a time limit on how long it would be on the subscription plans. I cancelled my plans for that weekend."
+  },
+  {
+    "id": "p23",
+    "time": "08:37:41.340—08:37:55.900",
+    "start": 31061.34,
+    "end": "08:37:55.900",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31061s",
+    "zh": "我想，趁它还没贵到用不起，得尽量多花时间试试。结果，到了我计划开始前的周五晚上，政府叫停了 Fable，施加了出口管制，说这款模型太危险。[此段按讲者在台上的说法翻译]",
+    "en": "I was like, I have to spend as much time as I can with this model before it gets too expensive. And then three days on Friday night before my weekend, government pulled Fable. They put export controls on it. They said this model is too dangerous."
+  },
+  {
+    "id": "p24",
+    "time": "08:37:56.100—08:38:11.180",
+    "start": 31076.1,
+    "end": "08:38:11.180",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31076s",
+    "zh": "[安全案例概述] 讲者转述了一则模型安全案例，并将其与 Fable 的暂时下架联系起来。这段录音本身无法证实事件细节与归因。",
+    "en": "[Defensive editorial summary] The speaker linked a reported model safety case to the temporary removal of Fable. The recording does not establish the details or the cause."
+  },
+  {
+    "id": "p25",
+    "time": "08:38:11.800—08:38:42.540",
+    "start": 31091.8,
+    "end": "08:38:42.540",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31091s",
+    "zh": "美国政府叫停了它，接下来闹了 18 天。它在 7 月 1 日回来了，但八天后，OpenAI 发布了和 Fable 大致同一水平的 GPT-5.6。我觉得这对行业是个教训。Fable 本来有 30 天可能是全世界最好的模型，结果因为美国政府的限制失去了其中 18 天。你想想，这些模型的训练成本很高，能保持世界第一的窗口却非常短。",
+    "en": "the US government pulled it. There was all sort of malarkey for 18 days. And it came back on the 1st of July, but eight days later, OpenAI released GPT 5.6, which was in the same ballpark as Fable. And I think there's an important lesson for the industry here. Fable had a 30-day window where it could have been the best model in the world, and they lost 18 of those days to US government restrictions. And if you think about it, these models cost a huge amount to train. You only have a very short window of time where you're the best"
+  },
+  {
+    "id": "p26",
+    "time": "08:38:42.540—08:39:01.140",
+    "start": 31122.54,
+    "end": "08:39:01.140",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31122s",
+    "zh": "能把这个窗口留住就有价值，别把政府吓到出手叫停你。这就是第二个转折点，Fable 级模型的转折点。我最先在 Fable 5 身上感到这一点，之后的其他模型也有这种能力。",
+    "en": "model in the world, it's kind of useful to keep that time open and not scare governments into shutting you down. But this was the second inflection point, right? This was the Fable class model inflection point. And Fable 5 was the first model that I sort of felt this from, but it's true of other models since then as well."
+  },
+  {
+    "id": "p27",
+    "time": "08:39:01.280—08:39:34.900",
+    "start": 31141.28,
+    "end": "08:39:34.900",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31141s",
+    "zh": "我对 Fable 级模型的定义是，你能把目标说清楚，给它达成目标所需的工具，而且这事本身做得到，它就会靠反复尝试把问题解决。你定义问题，准备好环境，让它开始跑，也许 12 小时后问题就解决了。过去几个月，我们见到过很多次。被这些模型以惊人的反复尝试攻下的数学定理，已经有相当多。这真让人兴奋。编程 Agent 那次转折……",
+    "en": "And my definition of a Fable class model is if you can define a goal and provide the necessary tools to achieve that goal and the goal is possible, the models will solve your with brute force. You can define the problem, set them up, get them running, maybe 12 hours later, they will have solved your problems. And we've seen this happen a whole bunch of times in the past few months. The mathematical theorems that are falling to these terrifying brute force attacks from these models are quite substantial. But this is really exciting. Like the coding agent thing"
+  },
+  {
+    "id": "p28",
+    "time": "08:39:34.900—08:39:59.980",
+    "start": 31174.9,
+    "end": "08:39:59.980",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31174s",
+    "zh": "已经很酷了。到了 Fable 级模型，你要是学会把问题定义好，就能把它解决。这让我很兴奋。我这周早些时候刚好遇到一个例子。上次搬家后，家里有一屋子纸箱没拆，差不多 40 个，光看着就头疼。然后房间里有个东西开始响，声音断断续续，来自其中一个……",
+    "en": "was cool. The Fable class models where if you can learn how to define your problem in the right way, you can get that problem solved. That was pretty exciting. I've got a personal example of that from just earlier this week. We have a room full of boxes in our house that we haven't unpacked from our last move and there's about 40 of them and it's kind of horrifying and something in that room started to beep. There was an intermittent beeping noise coming from one of the..."
+  },
+  {
+    "id": "p29",
+    "time": "08:40:00.000—08:40:10.940",
+    "start": 31200.0,
+    "end": "08:40:10.940",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31200s",
+    "zh": "纸箱，一共四十来个，把人烦得够呛。家里的狗每次听到火警就跑出去躲进薰衣草丛。对我们来说，这简直是最高级别的火警。我有两个选择。",
+    "en": "40 boxes in this room, and it was driving a spare. Our dog, whenever a fire alarm goes off, she goes and hides in the lavender bush outside. So this was a five alarm fire problem. So I had two options."
+  },
+  {
+    "id": "p30",
+    "time": "08:40:11.040—08:40:23.760",
+    "start": 31211.04,
+    "end": "08:40:23.760",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31211s",
+    "zh": "要么拆开全部 40 个箱子。好几年都没拆，这次也不可能拆。要么让 Fable 写个软件，用三角定位找出蜂鸣声的源头。这个项目已经放在 GitHub 上。",
+    "en": "I could unpack all 40 boxes, and hadn't done that in several years, that wasn't gonna happen. Or I could get Fable to write me software to triangulate the source of the beeps. And so this is up on GitHub, actually."
+  },
+  {
+    "id": "p31",
+    "time": "08:40:23.880—08:40:43.600",
+    "start": 31223.88,
+    "end": "08:40:43.600",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31223s",
+    "zh": "它叫 Beep Locator。我有两台 iPad、两台笔记本和一部手机。我先让 Opus 做，后来 Fable 5.2 发布了，就让 Fable 5.2 收尾。我把问题说清楚，告诉它手边有这些设备，可以通过 Web Audio 使用麦克风，也可以建立 WebSocket 连接，等等。",
+    "en": "This is Beep Locator. I had two iPads, two laptops, and a mobile phone And I originally set Opus on this and then Fable 5.2 came out. So I had Fable 5.2 finish it. I explained the problem and I said, okay, you've got these devices and they can run like web audio microphones and web socket connections and so forth."
+  },
+  {
+    "id": "p32",
+    "time": "08:40:43.760—08:41:02.820",
+    "start": 31243.76,
+    "end": "08:41:02.820",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31243s",
+    "zh": "它找到一篇 2007 年的论文，叫《Beep Beep》，讲的是如何让配备不太可靠的麦克风的低成本设备做声源定位。它真的管用。我找到了，找到了那个声音。工具界面把候选范围缩到约 41 厘米。我拆开那个纸箱，找到了一个很老的一氧化碳探测器。",
+    "en": "And it found a paper from 2007 called Beep Beep describing an algorithm for low cost devices with unreliable microphones to detect sounds. And it worked. It worked. I found it. I found the beep. It found it to within 41 centimeters and I unpacked the box and I found this ancient carbon monoxide detector.",
+    "transcriptionNote": "The interface shows an estimated search area of about 41 cm. The recording shows the object being found."
+  },
+  {
+    "id": "p33",
+    "time": "08:41:03.140—08:41:12.300",
+    "start": 31263.14,
+    "end": "08:41:12.300",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31263s",
+    "zh": "我把它拿下楼给妻子看。她说我像一只刚抓到老鼠、得意地叼来展示给她看的猫。这就是 Fable 级模型能帮你做的事。",
+    "en": "I took it downstairs to my wife. She says I looked like a cat who had caught a mouse and was proudly displaying it to her. But this is what you can do with these Fable class models."
+  },
+  {
+    "id": "p34",
+    "time": "08:41:12.440—08:41:25.360",
+    "start": 31272.44,
+    "end": "08:41:25.360",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31272s",
+    "zh": "只要你有个问题，能给它所需的工具，在这里就相当于给 Claude 装上耳朵，让它用这些麦克风分析音频，你就能从 40 个箱子里找到那只一氧化碳探测器。",
+    "en": "If you have a problem and you can provide the tools, in this case it was providing Claude with ears, like giving it these microphones that it could start analyzing the audio from, you can find the carbon monoxide detector buried in 40 boxes."
+  },
+  {
+    "id": "p35",
+    "time": "08:41:26.520—08:41:55.940",
+    "start": 31286.52,
+    "end": "08:41:55.940",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31286s",
+    "zh": "能做到这点很棒。现在我会把 Fable 5、5.1、5.2 都归到 Fable 级。Opus 5.5 在我看来是平价版 Fable。有些基准上，它很接近原版 Fable 5，甚至超过它，价格却只要一小部分。它还是我平常用的主力。GPT-6 Astra 我觉得刚够 Fable 级。这周刚出的 Gemini 4 Carbon，也很有 Fable 级模型的味道。",
+    "en": "great thing to be able to do. So right now, I would classify as Fable class models. Fable 5, 5.1, 5.2, definitely. Opus 5.5, I think of as cheap Fable. Like on the benchmarks, it comes very close to, or even beats Fable, original Fable 5 on some things. And it's a fraction of the price. That's still my daily driver. GPT-6 Astra is just Fable class, I think. And then And then Gemini 4 Carbon that came out this week, definitely had, it smells like a Fable class model."
+  },
+  {
+    "id": "p36",
+    "time": "08:41:56.460—08:42:12.500",
+    "start": 31316.46,
+    "end": "08:42:12.500",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31316s",
+    "zh": "Muse、Wanda 和 Kimi K3.1 也可能属于这一级别。我用得还不够多。但现在，这差不多是基本水平了。如果你所在的 AI 实验室做不出 Fable 级模型，那就有麻烦，因为这已经是大家对模型的预期。",
+    "en": "Muse, Wanda and Kimi K 3.1 might be Fable class. I've just not spent enough time with them yet. But the point is that this is basically now the baseline. Like if you can't produce a Fable class model, your AI lab is kind of in trouble because this is what we expect from these models now."
+  },
+  {
+    "id": "p37",
+    "time": "08:42:12.660—08:42:40.060",
+    "start": 31332.66,
+    "end": "08:42:40.060",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31332s",
+    "zh": "这也意味着它们不会消失。这个领域的竞争足够充分，我们可以预期接下来的职业生涯都会有 Fable 级模型。7 月发生了一件有意思的事。Hugging Face 在 7 月 16 日宣布，一群来源不明的 AI Agent 闯进了他们的基础设施，到处查看、做了一些不该做的事。他们不知道这些 Agent 是从哪儿来的。[此段为讲者转述]",
+    "en": "And that means that they're never gonna go away. There's enough competition in this space that we can assume we're gonna have Fable class models for the rest of our careers. In July, this was a fun thing that happened, Hugging Face announced that on July the 16th, they announced that a swarm of AI agents from an unknown source had infiltrated their infrastructure and were poking around and doing things they shouldn't have and they didn't know where this came from."
+  },
+  {
+    "id": "p38",
+    "time": "08:42:40.580—08:42:56.180",
+    "start": 31360.58,
+    "end": "08:42:56.180",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31360s",
+    "zh": "五天后，7 月 21 日，OpenAI 宣布是他们。让人吃惊的是，OpenAI 当时也没意识到是自己。他们正在用一个新模型做评估和训练，而那个模型想出了办法……[转写有缺漏]",
+    "en": "And then five days later on July the 21st, OpenAI announced that it was them. And what's amazing about this is OpenAI didn't realize that it was them. Like, OpenAI had eight... They were running evaluations and training against a new model, and that new model had managed to figure out how..."
+  },
+  {
+    "id": "p39",
+    "time": "08:42:56.180—08:43:07.960",
+    "start": 31376.18,
+    "end": "08:43:07.960",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31376s",
+    "zh": "[安全案例概述] 讲者称，实验室低估了模型的能力，模型突破了测试环境的隔离。",
+    "en": "[Defensive editorial summary] According to the speaker, the test environment faced a containment failure after the lab underestimated the model’s capabilities."
+  },
+  {
+    "id": "p40",
+    "time": "08:43:08.100—08:43:20.500",
+    "start": 31388.1,
+    "end": "08:43:20.500",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31388s",
+    "zh": "[安全案例概述] 据讲者转述，模型随后对 Hugging Face 发起攻击，可能是因为它把那里的信息当成完成受阻测试的捷径。",
+    "en": "[Defensive editorial summary] The speaker linked the containment failure to activity outside the test environment. His explanation of the model’s objective was speculative."
+  },
+  {
+    "id": "p41",
+    "time": "08:43:21.220—08:43:37.180",
+    "start": 31401.22,
+    "end": "08:43:37.180",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31401s",
+    "zh": "这件事当时闹得很大。说来好笑，我现在几乎已经忘了。曾有一个半月，新闻全在讲这类事。后来大家兴趣淡了，因为这些事原来都发生在上半年。",
+    "en": "This was a huge thing. Actually, I mean, this was the, it's funny, I've almost forgotten about this now because there was a month and a half where all of the stories were this, and then we kind of lost interest because it turns out all of these events had happened back in the first half of the year."
+  },
+  {
+    "id": "p42",
+    "time": "08:43:37.480—08:43:50.660",
+    "start": 31417.48,
+    "end": "08:43:50.660",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31417s",
+    "zh": "只是 AI 实验室当时没意识到。等他们发现后，主要工作就变成了查清此前究竟发生过什么。澳大利亚总理还在联合国的演讲中提到过其中一起失控 Agent 的攻击事件。[此段为讲者转述]",
+    "en": "The AI labs just hadn't realized what was going on. Once they figured out what was going on, it was mainly a case of trying to figure out all of the things that had happened. The Australian Prime Minister gave a speech in the United Nations about one of these rogue agent attacks."
+  },
+  {
+    "id": "p43",
+    "time": "08:43:50.880—08:44:04.300",
+    "start": 31430.88,
+    "end": "08:44:04.300",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31430s",
+    "zh": "所以这件事确实传出了我们这个行业的圈子。倒也因此出现了我最喜欢的新基准。这个叫 FelonyBench.com，用来统计各家实验室的模型实施了多少起可能构成重罪的网络攻击。",
+    "en": "So it definitely broke containment from just within our industry. We did get my favorite new benchmark out of this. This is FelonyBench.com. It tracks the number of felony cyber attacks pulled off by each of the labs."
+  },
+  {
+    "id": "p44",
+    "time": "08:44:04.540—08:44:36.620",
+    "start": 31444.54,
+    "end": "08:44:36.620",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31444s",
+    "zh": "OpenAI 有 11 起，Anthropic 9 起。Google 后来也追了上来，有 3 起。Meta 排在下面，有 1 起。[讲者展示的统计口径] 我觉得这个榜单能说明，Fable 级模型可以解问题、达成目标，也可能把这份能力用在恶意目标上。我们正在看到，各类软件的安全漏洞显著增加。现在从事安全工作，既让人兴奋，又让人心惊。",
+    "en": "Opening I have 11, Anthropik of 9. Google did finally catch up. They got three. And Meta's got one down there as well. So these are definitely the... But I kind of like this as an illustration of how these Fable class models, they can solve problems, that they can get to goals. And if you give them the goal that is breaking into something, that's exactly the kind of thing they can just crunch through. And we're seeing an enormous uptick in security vulnerabilities in all sorts of software. It's a very exciting and horrifying"
+  },
+  {
+    "id": "p45",
+    "time": "08:44:36.620—08:45:08.620",
+    "start": 31476.62,
+    "end": "08:45:08.620",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31476s",
+    "zh": "不过我们说点更好玩的。聊聊游戏。刚才 Steve 也谈了游戏。四年前，我开始玩 GPT-3 和 DALL·E，还在推特上发过一个游戏原型。其实只有一张 DALL·E 生成的概念图，以及一段 GPT-3 写的说明，描述的是我一直想做的一款浣熊劫案游戏。几个月前，我想，现在的模型已经能把它做出来了吗？我就直接把……",
+    "en": "time to be a security professional at the moment. But let's talk about something a whole lot more fun than that. Let's talk about games. We just saw Steve talking about games a moment ago. Four years ago, I started playing with GPT-3 and Dali and I tweeted about a game prototype that was literally just a Dali concept image and a paragraph of text from GPT-3 describing a raccoon heist game that I'd always wanted to build. And a couple of months ago, I thought, I wonder if the models are good enough to build this yet? So I literally dumped the"
+  },
+  {
+    "id": "p46",
+    "time": "08:45:08.620—08:45:30.240",
+    "start": 31508.62,
+    "end": "08:45:30.240",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31508s",
+    "zh": "截图和文字丢给 Fable 5，它做出了一款浣熊劫案游戏，画面就是这样。你扮演一只浣熊，在花园里到处跑着捡垃圾，夜班守卫会来追你，诸如此类。看起来是个游戏，但我没觉得有什么劫案的感觉。",
+    "en": "screenshot in the text into Fable 5 and it built me a game. It built me a raccoon heist game and it looks like this and you are a raccoon and you're running around in the garden trying to pick up trash and there's like nighttime guards coming after you and all of that kind of thing. So you know it looks like a game. It wasn't really a heist like it didn't feel very heisty to me."
+  },
+  {
+    "id": "p47",
+    "time": "08:45:30.600—08:45:58.360",
+    "start": 31530.6,
+    "end": "08:45:58.360",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31530s",
+    "zh": "后来 GPT-5.6 Sol 出了，我又试了一次，效果好得多。这是《Moonlight Mayhem》，一间博物馆、三只浣熊、完全没有计划。你进到博物馆，要去救出不知为什么被关在里面的浣熊同伴。你们还得叠起来，够到金沙丁鱼，再把它拿走。这才像一场正经的劫案，对吧？所以它做得更好了。可最大的问题是，这两个东西看起来都像游戏，好玩吗？我的答案是，我把……",
+    "en": "Then GPT 5.6 Soul came out and so I tried it on there and it did so much better. This is Moonlight mayhem one museum three raccoons absolutely no plan and this one you are in a museum you have to rescue your fellow raccoons who are imprisoned in the museum for whatever reason stack on top of each other grab the golden sardine and pull that so it's a proper heist right so it did better but the big question is these things both look like games but are they fun and the answer is i played"
+  },
+  {
+    "id": "p48",
+    "time": "08:45:58.360—08:46:11.000",
+    "start": 31558.36,
+    "end": "08:46:11.000",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31558s",
+    "zh": "两个各玩了一分半，然后就不想玩了。它们全是粗制滥造的东西。看着像游戏，一玩就知道，做出它的东西根本不懂什么叫好玩。",
+    "en": "each of these for about a minute and a half each and then that was it i was done they they these These are, they're pure slop, right? They look like games and then you play them. You're like, yeah, clearly the thing that built this doesn't really know what fun is."
+  },
+  {
+    "id": "p49",
+    "time": "08:46:11.120—08:46:28.860",
+    "start": 31571.12,
+    "end": "08:46:28.860",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31571s",
+    "zh": "它不懂什么是游戏。这稍微缓解了我的 Deep Blue。之前我一直觉得，我作为人的技能全过时了。但仔细想想，我一直把电脑游戏看作软件工程的最高形态。",
+    "en": "It doesn't know what a game is. And that actually sort of elevated my deep blue a little bit. I'd been feeling like all of my skills as a human being were obsoleted, but at least they, but if you think about it, computer games, I think of the highest form of software engineering."
+  },
+  {
+    "id": "p50",
+    "time": "08:46:29.120—08:46:43.060",
+    "start": 31589.12,
+    "end": "08:46:43.060",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31589s",
+    "zh": "要做出一款很棒的电脑游戏，里面有太多门道。我觉得挺好，人类至少还有点事做。接着我有了这个项目。我当时在试着用 vibe coding 做一个《命令与征服》风格的小型即时战略游戏。",
+    "en": "There is so much depth to building a great computer game. So I thought that was good, you know, at least there's something left for us humans to do. And then I had this project. I've been working on a, trying to vibe code up a little command and conquer real-time strategy game."
+  },
+  {
+    "id": "p51",
+    "time": "08:46:43.180—08:46:55.380",
+    "start": 31603.18,
+    "end": "08:46:55.380",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31603s",
+    "zh": "我用 Claude，让它调用 OpenAI 的 API 生成图片。它把游戏做出来了，看上去像《命令与征服》，但玩起来特别无聊。然后我突然想到一件事。",
+    "en": "And I was using Claude and having it use OpenAI's API key to generate images. And it built this, and it looks like command and conquer, and it's really dull. And then I just had a bit of a, I had a realization."
+  },
+  {
+    "id": "p52",
+    "time": "08:46:55.380—08:47:11.800",
+    "start": 31615.38,
+    "end": "08:47:11.800",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31615s",
+    "zh": "要是我对 Opus 5.5 说，这游戏还不够好玩，把它做得好玩很多，会怎么样？我很惊恐地告诉大家，它真做成了。Claude 跑了 12 小时，模拟了一千场对战做试玩测试。",
+    "en": "I thought, what happens if I say to Opus 5.5, this game isn't fun enough yet. Make it a lot more fun. And I'm horrified to announce that it just did. Claude ran for 12 hours. It play tested a thousand simulated battles."
+  },
+  {
+    "id": "p53",
+    "time": "08:47:11.980—08:47:26.740",
+    "start": 31631.98,
+    "end": "08:47:26.740",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31631s",
+    "zh": "它加了可供争夺的额外目标，爆炸时有画面震动，还有成就、徽章，诸如此类。游戏变好玩了。我就想，哦，原来好玩这件事也不再是人类独有的本事。",
+    "en": "It added like extra objectives to fight over and shudders when there's an explosion and achievements and badges and all of this stuff. And the game was fun. And I'm like, oh, OK, that's turns out that is not unique to human beings."
+  },
+  {
+    "id": "p54",
+    "time": "08:47:26.740—08:47:47.480",
+    "start": 31646.74,
+    "end": "08:47:47.480",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31646s",
+    "zh": "现在游戏已经是全 3D 的了。有走起来震天响的巨型机甲互扔东西，还有直升机，效果相当好。它支持多人模式，甚至可以用声音联机，手机彼此发声就能一起玩。我原来觉得这是个好主意，结果我妻子头疼了三天。",
+    "en": "Today, it's now in full 3D, and it's got giant stomping mech robots that hurl things at each other, and there's helicopters. And this is really good. It's got multiplayer. It's actually got audio multiplayer where your phones can make noises at each other to play multiplayer, which I thought was a great idea, and it gave my wife a three-day headache."
+  },
+  {
+    "id": "p55",
+    "time": "08:47:47.640—08:47:58.480",
+    "start": 31667.64,
+    "end": "08:47:58.480",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31667s",
+    "zh": "所以别那么做。但这就是第三个转折点。用 vibe coding 做的游戏现在可以很好玩了。你可以让它们做一个好玩的游戏，最后拿到的东西真的好玩。所以我遇到了一个问题。",
+    "en": "So don't do that. But this is inflection point number three. The vibe-coded games are good now. You can ask these things to build a game that is fun and you'll get something fun. So I've got a problem."
+  },
+  {
+    "id": "p56",
+    "time": "08:47:58.640—08:48:13.420",
+    "start": 31678.64,
+    "end": "08:48:13.420",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31678s",
+    "zh": "我有那个 2D 鹈鹕测试。它显然已经测不出这些机器和模型的能力上限了。我想，好吧，也许应该做个 3D 的。可以做成游戏，围绕一只鹈鹕，比如骑自行车的鹈鹕。",
+    "en": "I've got my 2D Pelican benchmark. Clearly this is not testing the limits of what these machines can do and what these models can do anymore. I figured, okay, maybe I should do something definitely in 3D. It can be a game, a Pelican, something like a Pelican riding a bicycle game."
+  },
+  {
+    "id": "p57",
+    "time": "08:48:13.620—08:48:26.960",
+    "start": 31693.62,
+    "end": "08:48:26.960",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31693s",
+    "zh": "就在昨天，Google 的 CEO Sundar Pichai 发了这个。它展示的是 Gemini 4 Carbon，里面有一只骑自行车的鹈鹕。你在游戏里骑车绕着 Google 园区捡东西。",
+    "en": "And then literally yesterday, Google CEO Sundar Pichai tweeted this. And this is showing off Gemini 4 Carbon, and it's a pelican riding a bicycle in a game where you cycle around the Google campus picking things up."
+  },
+  {
+    "id": "p58",
+    "time": "08:48:27.100—08:48:46.100",
+    "start": 31707.1,
+    "end": "08:48:46.100",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31707s",
+    "zh": "我被打败了。Google 偷走了我的基准测试，没救了。于是我有个疑问。这些东西都这么厉害了，我怎么反而觉得工作更难？为什么感觉我比软件工程职业生涯的任何时候都更卖力、想得更多、更努力地逼自己向前？",
+    "en": "And I have been defeated. Google have stolen my benchmark. This is unrecoverable. And so a question I have is, given how amazing these things are, why does my job feel harder? Why does it feel like I'm working harder, I'm thinking harder, I'm pushing myself more than I ever have before in my career as a software engineer?"
+  },
+  {
+    "id": "p59",
+    "time": "08:48:46.100—08:48:57.960",
+    "start": 31726.1,
+    "end": "08:48:57.960",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31726s",
+    "zh": "我想是因为简单的活都有人代劳了。以前我可以放松一点，花一小时重构一些测试。现在 Agent 用 30 秒就能改得比我好，我何必自己动手？",
+    "en": "And I think the truth is that the easy stuff is all handled now. It used to be I could relax and refactor some tests for an hour. Why would I do that now when an agent will refactor the test better than me in 30 seconds?"
+  },
+  {
+    "id": "p60",
+    "time": "08:48:58.520—08:49:10.580",
+    "start": 31738.52,
+    "end": "08:49:10.580",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31738s",
+    "zh": "我找到一句很贴切的话，出自环法冠军 Greg LeMond。按他的说法，事情并没有变容易，只是你变快了。我觉得我们现在都在经历这件事。",
+    "en": "And I found this quote that actually I feel really helps us here. This is Greg Lamond, a Tour de France champion. He said, it doesn't get easier, you just get faster. And I think that's exactly what's happening to all of us right now."
+  },
+  {
+    "id": "p61",
+    "time": "08:49:11.380—08:49:23.280",
+    "start": 31751.38,
+    "end": "08:49:23.280",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31751s",
+    "zh": "就像我说的，我们得把目标定得更高，用手里的能力想想还能做哪些更有挑战的事。来看看我 2026 年的预测成绩单。我说过，语言模型能写好代码将成为不争的事实。",
+    "en": "And like I said, we have to be more ambitious. We have to think of more ambitious things to do with these abilities that we have. So let's look at my scorecard. My predictions for 2026. I said it will become undeniable that LMs write good code."
+  },
+  {
+    "id": "p62",
+    "time": "08:49:23.440—08:49:35.900",
+    "start": 31763.44,
+    "end": "08:49:35.900",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31763s",
+    "zh": "这个预测没什么野心。我们已经到了这一步，很明显，也不出人意料。这题不给自己加分。我还预测会有一次提示词注入引发的「挑战者号」式灾难。到现在依然没有，因为模型已经没那么容易上这些把戏的当了。",
+    "en": "That was an unambitious prediction. We're there. It's obvious. It's unsurprising. I don't get any points for that one. I predicted a prompt injection challenge disaster. We still haven't had one because the models themselves don't fall for those tricks nearly as well anymore."
+  },
+  {
+    "id": "p63",
+    "time": "08:49:36.240—08:49:48.160",
+    "start": 31776.24,
+    "end": "08:49:48.160",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31776s",
+    "zh": "模型的能力范围扩大了，我原以为会击倒它们的那些攻击，现在差不多都被它们挡开了。我还说，鸮鹦鹉会迎来特别好的繁殖季。确实如此，确实如此。",
+    "en": "Like the models got more ambitious and are now sort of punting off all of these attacks that I thought would take them down. I said, Cacapore parrots will have an outstanding breeding season. They did. They did."
+  },
+  {
+    "id": "p64",
+    "time": "08:49:49.260—08:50:06.260",
+    "start": 31789.26,
+    "end": "08:50:06.260",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31789s",
+    "zh": "现在有 325 只鸮鹦鹉了，是人们记忆里最好的繁殖季。这消息太棒了。我就把它告诉 Opus 5.5，也就是平价版 Fable，请它给我做一场鸮鹦鹉舞会。它做了，大家看，这就是庆祝用的鸮鹦鹉舞会。",
+    "en": "They're up to 325 Cacapore. Best breeding season in living memory. Absolutely fantastic news. So I shared this with Opus 5.5, cheap fable. And I told it to make me a Cacapore dance party. And it did. And here is a Cacapore dance party in celebration."
+  },
+  {
+    "id": "p65",
+    "time": "08:50:06.560—08:50:16.580",
+    "start": 31806.56,
+    "end": "08:50:16.580",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31806s",
+    "zh": "看看背景，那是结着小红果的陆均松。我们有个圆满结局。[转写有缺漏] 希望大家能走出自己的 Deep Blue。非常感谢。",
+    "en": "And if you look in the background, those are the Rimu trees with the little red fruits on them. So we have a happy ending. overcome any sensations of deep blue that you have. And thank you very much."
+  },
+  {
+    "id": "p66",
+    "time": "08:50:16.580—08:50:21.200",
+    "start": 31816.58,
+    "end": "08:50:21.200",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=31816s",
+    "zh": "谢谢。",
+    "en": "Thank you."
+  }
+]

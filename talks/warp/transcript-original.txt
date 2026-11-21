@@ -1,0 +1,271 @@
+让软件工厂的工作流程也能测试和改进
+Zach Lloyd
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[01:01:21.960 --> 01:01:24.180] All right, hi everyone.
+[01:01:24.720 --> 01:01:27.520] Excited to be here and today I'm gonna chat about
+[01:01:27.520 --> 01:01:33.800] about the evolution of software engineering and how it's becoming factory engineering.
+[01:01:34.040 --> 01:01:39.200] So excited to do this. First, a little bit about me. I've been an engineer for a long
+[01:01:39.200 --> 01:01:45.020] time. I was a principal engineer at Google. I used to lead engineering on the Google Docs
+[01:01:45.020 --> 01:01:50.480] suite, helped scale that product to hundreds of millions of users. I'm currently the founder
+[01:01:50.480 --> 01:01:57.020] and CEO of Warp. Warp builds a platform for companies to build their own internal software
+[01:01:57.520 --> 01:01:59.460] I'm going to show a little bit of that today.
+[01:02:01.180 --> 01:02:04.900] Warp is also well known for our open source agentic terminal.
+[01:02:05.120 --> 01:02:07.000] It has about 65,000 GitHub stars.
+[01:02:08.440 --> 01:02:10.220] It's used by almost a million developers.
+[01:02:11.300 --> 01:02:15.360] Our mission has always been helping developers ship better software more quickly, and it's
+[01:02:16.040 --> 01:02:18.980] cool to evolve what we're doing as the world changes around us.
+[01:02:20.720 --> 01:02:23.620] This is where I think we're still mostly at.
+[01:02:23.620 --> 01:02:31.380] that, most developers that I talk to, most platform teams, they're working with individuals
+[01:02:31.380 --> 01:02:37.280] who are running their own coding agents locally. Maybe they're running multiple of them at
+[01:02:37.280 --> 01:02:41.680] a time. It could be through their terminal. It could be through an agentic development
+[01:02:41.680 --> 01:02:46.620] environment. Just a show of hands quickly, actually. How many people in here are mostly
+[01:02:46.620 --> 01:02:50.080] working in this fashion, local multi-threading?
+[01:02:51.620 --> 01:02:54.560] Okay, so still most people, but actually not everyone.
+[01:02:55.940 --> 01:02:57.920] I think that this is gonna change,
+[01:02:58.060 --> 01:02:59.540] and it's starting to change already.
+[01:03:01.280 --> 01:03:03.540] The reasons are, there's a few of them.
+[01:03:03.680 --> 01:03:07.000] So one is like, if you are doing local interactive prompting
+[01:03:07.000 --> 01:03:09.900] as your main way of working with coding agents,
+[01:03:10.940 --> 01:03:14.300] you're kind of limited by human throughput, really.
+[01:03:14.300 --> 01:03:19.400] Like, you cannot automate if every agent needs to be interactively prompted.
+[01:03:19.920 --> 01:03:25.660] There's a second reason, too, that I hear a lot from platform teams and from, you know,
+[01:03:25.720 --> 01:03:26.360] engineering leaders.
+[01:03:26.680 --> 01:03:31.620] This mechanism of, like, everyone choosing their own local setup, their own models, their
+[01:03:31.620 --> 01:03:37.400] own skills, it makes it very hard to actually make sure that you're using these agents efficiently
+[01:03:38.020 --> 01:03:40.920] from, like, a cost perspective and a productivity perspective.
+[01:03:40.920 --> 01:03:46.820] And then finally, there's like a big security problem and governance problem when everyone
+[01:03:46.820 --> 01:03:48.880] is setting up and running their own local agents.
+[01:03:49.160 --> 01:03:55.760] And so the thing that is coming, I loosely call a software factory, that means different
+[01:03:55.760 --> 01:03:56.980] things to different people.
+[01:03:57.940 --> 01:04:04.480] I would, I'm curious for people in this room, like how many folks are currently trying to
+[01:04:04.480 --> 01:04:07.600] build or building or using their own internal software factories?
+[01:04:07.760 --> 01:04:08.380] Show of hands.
+[01:04:09.600 --> 01:04:13.720] Okay, so I would say that's almost more than the interactive agents at this point.
+[01:04:13.820 --> 01:04:14.420] That's super cool.
+[01:04:16.440 --> 01:04:21.300] So I'm going to define what I think of as a software factory, but I'll start by saying
+[01:04:21.300 --> 01:04:23.740] what I think a software factory is not.
+[01:04:24.900 --> 01:04:28.180] I think it's not just a loose set of automations.
+[01:04:29.060 --> 01:04:33.180] I don't think of a software factory as a collection of AI teammates.
+[01:04:34.200 --> 01:04:37.040] I don't think it's a shared set of skills and MCPs.
+[01:04:38.380 --> 01:04:40.760] think software factories are personal agent swarms.
+[01:04:41.000 --> 01:04:43.840] I think these are all useful primitives, but
+[01:04:44.700 --> 01:04:47.640] they're not the end state that we should be shooting for.
+[01:04:48.500 --> 01:04:53.240] And so to me, the way that I define software factory is very specific.
+[01:04:55.120 --> 01:05:00.100] And I'll unpack this, but I define it as a code defined closed loop system for
+[01:05:00.100 --> 01:05:03.860] continuously measuring and improving cloud coding agents.
+[01:05:04.120 --> 01:05:05.980] That's a mouthful, but let me unpack it.
+[01:05:06.900 --> 01:05:12.480] So if you want to build a software factory and really scale it, I believe the first thing
+[01:05:12.480 --> 01:05:17.100] you need to do is fully encode it in a declarative language.
+[01:05:17.280 --> 01:05:22.720] So you need to say, okay, these are all of the coding agents that I want to run.
+[01:05:22.900 --> 01:05:24.100] These are how they're triggered.
+[01:05:24.580 --> 01:05:30.780] When work comes into this factory, this is the workflow from triage to spec, whatever
+[01:05:30.780 --> 01:05:36.040] your workflow is, you need to specify what MCPs are available, where your agents run,
+[01:05:36.220 --> 01:05:44.160] really as much as you can in a Terraform-style declarative set of code files that define
+[01:05:44.160 --> 01:05:44.660] your factory.
+[01:05:44.820 --> 01:05:46.400] I'll talk about why this matters in a bit.
+[01:05:47.460 --> 01:05:51.280] The second part of it is a continuous closed loop of improvement.
+[01:05:51.860 --> 01:05:54.780] And that closed loop can look something like this.
+[01:05:54.880 --> 01:05:55.920] This is the typical one.
+[01:05:55.920 --> 01:05:57.900] and this is just really the SDLC,
+[01:05:58.900 --> 01:06:01.240] where you have ideas that come in from people.
+[01:06:02.560 --> 01:06:04.580] They could come in from automated signals,
+[01:06:05.280 --> 01:06:07.060] and then your agents do some amount of work
+[01:06:08.180 --> 01:06:11.060] taking that issue through various stages,
+[01:06:11.280 --> 01:06:13.760] from triage to implementation, verification,
+[01:06:14.200 --> 01:06:15.180] monitoring, and so on.
+[01:06:15.380 --> 01:06:18.660] The important piece here is really this closed-loop concept
+[01:06:19.360 --> 01:06:21.680] where the more that your agents run,
+[01:06:22.340 --> 01:06:24.620] the more efficient you can make this loop.
+[01:06:25.920 --> 01:06:31.800] that in a second. The third really key aspect, if you're building a software factory, is
+[01:06:31.800 --> 01:06:37.500] that everything needs to be measurable. If you're just going on vibes in terms of how
+[01:06:37.500 --> 01:06:44.300] you deploy coding agents, you can't be confident that you're actually getting the best, highest
+[01:06:44.300 --> 01:06:48.520] quality outputs at the best cost. You can't be confident you're maximizing throughput.
+[01:06:48.780 --> 01:06:54.540] So you really need a measurement mindset and measurement capabilities. And so if there's
+[01:06:55.920 --> 01:07:02.780] hoping people walk away from this talk with, it's the idea that the way to work with coding
+[01:07:02.780 --> 01:07:08.060] agents and the way to think about them is that there's a really cool fundamental new
+[01:07:08.060 --> 01:07:14.640] engineering problem, which is how do you take this magic new primitive that we all have,
+[01:07:14.740 --> 01:07:18.700] that we've gotten in the last year, that you have these intelligent agents, and how do
+[01:07:18.700 --> 01:07:23.580] you engineer a system around them to use them most effectively?
+[01:07:23.580 --> 01:07:28.200] To me, it's not about growing a garden or following a recipe.
+[01:07:29.160 --> 01:07:30.560] We're all engineers.
+[01:07:31.060 --> 01:07:34.540] We've spent our careers learning how to solve problems from an engineering mindset.
+[01:07:35.000 --> 01:07:38.940] And when you think of coding agents as a new engineering primitive,
+[01:07:39.740 --> 01:07:44.860] then you naturally want to, you'll naturally start to build a certain way of using them.
+[01:07:45.040 --> 01:07:45.840] That's the mindset.
+[01:07:47.360 --> 01:07:49.240] So yeah, just to unpack that a bit.
+[01:07:49.420 --> 01:07:52.760] So there's continual measurement and continual learning.
+[01:07:53.580 --> 01:07:55.720] But there's also a new set of tools.
+[01:07:56.560 --> 01:08:01.140] And so when I was learning how to become a better engineer at Google,
+[01:08:02.060 --> 01:08:06.520] I really had to get good at using things like debuggers and profilers and
+[01:08:06.520 --> 01:08:10.880] Chrome DevTools, and basically there were all of these tools of the trade for
+[01:08:10.880 --> 01:08:15.420] building software by hand that maybe are not as important now, but
+[01:08:16.020 --> 01:08:20.140] they really separated the best engineers from the OK engineers.
+[01:08:20.140 --> 01:08:25.880] engineers. And in the new world of factory engineering, there's a new set of tools that
+[01:08:25.880 --> 01:08:31.400] everyone should be trying to master. And so those are things like evals, it's can you
+[01:08:31.400 --> 01:08:37.980] set up self-improvement loops that work, can you write benchmarks, can you A-B test your
+[01:08:37.980 --> 01:08:45.100] factory. And that's a really important skill set, and mastering that skill set is something
+[01:08:45.100 --> 01:08:51.160] that I think of as like factory engineering. Now, that doesn't mean that that's the only
+[01:08:51.160 --> 01:08:55.040] kind of engineering you're going to be doing. You're still going to be doing product engineering,
+[01:08:55.300 --> 01:09:02.440] meaning you as an engineer should still feel responsible for, you know, does the product
+[01:09:02.440 --> 01:09:08.880] you ship actually solve a real user or customer problem? But the best engineers, and I would say
+[01:09:08.880 --> 01:09:13.920] like every engineer really, is going to need to learn this new tool set of how do you improve
+[01:09:15.100 --> 01:09:15.920] not just build the product.
+[01:09:17.520 --> 01:09:19.480] And so what does that look like?
+[01:09:20.320 --> 01:09:25.820] If you think from first principles about how do you engineer an agentic system, I think
+[01:09:25.820 --> 01:09:27.340] you come up with something like this.
+[01:09:27.480 --> 01:09:32.780] It doesn't have to be exactly this, but it's kind of an infrastructure stack that you're
+[01:09:32.780 --> 01:09:34.200] going to want to use to engineer your agents.
+[01:09:34.480 --> 01:09:38.500] And so at the bottom of this is what I call factories is code.
+[01:09:38.680 --> 01:09:39.540] I talked about this earlier.
+[01:09:39.540 --> 01:09:45.260] it's defining all of your coding agent workflows in a code format,
+[01:09:45.340 --> 01:09:49.040] and the value of that is that you get the ability to branch off it
+[01:09:49.040 --> 01:09:50.920] and test different factory configurations.
+[01:09:51.420 --> 01:09:52.780] You can roll back.
+[01:09:53.480 --> 01:09:57.900] And then, crucially, it opens up the way for self-improvement,
+[01:09:57.980 --> 01:10:00.720] which is the ability for coding agents themselves
+[01:10:00.720 --> 01:10:04.000] to suggest changes to how your factory works
+[01:10:04.000 --> 01:10:06.040] to get that continual loop going.
+[01:10:06.040 --> 01:10:12.980] doing. Above that is a layer of data and context. This is also crucial. So if you are running
+[01:10:12.980 --> 01:10:20.080] coding agents at scale in an organization, you really must be recording everything that
+[01:10:20.080 --> 01:10:24.640] those agents are producing. So all of their conversations, all of their artifacts, the
+[01:10:24.640 --> 01:10:29.500] videos that they make, the screenshots. And the reason for doing that is that's the raw
+[01:10:29.500 --> 01:10:36.320] material that you will use to improve the way your factory works over time. On top of
+[01:10:36.320 --> 01:10:42.260] that is a compute layer. So you need to have sandboxing. Sandboxing increases security.
+[01:10:42.480 --> 01:10:46.720] It makes your factory more repeatable. Your sandboxing should be probably multi-platform.
+[01:10:47.600 --> 01:10:52.520] On top of that is the inference layer. The way that I would think about inference and
+[01:10:52.520 --> 01:11:00.760] models in a factory is they are a degree of freedom to test. And so your factory, however
+[01:11:00.760 --> 01:11:06.240] you build it, should support multiple models. It should also support multiple coding agents
+[01:11:06.240 --> 01:11:12.600] because, you know, Cloud Code might be better for some things. Codex, Pi, Warp, these harnesses
+[01:11:12.600 --> 01:11:16.620] all have different properties. You might want to write your own coding agent harness that
+[01:11:16.620 --> 01:11:20.720] has some of your organizational context baked in. So your platform should support that.
+[01:11:22.520 --> 01:11:27.320] an orchestration layer. So this is what actually moves work through the factory. In some ways,
+[01:11:27.420 --> 01:11:32.700] the least interesting part, but you need that. And then finally, your factory should be all API
+[01:11:32.700 --> 01:11:40.140] and MCP first, so that it can be used not just by people, but it can be used by other coding agents.
+[01:11:40.960 --> 01:11:45.800] And it can go to where the work is being done. So your factory should integrate into things like
+[01:11:45.800 --> 01:11:49.320] Slack, Linear, Jira, GitHub, and so on.
+[01:11:50.500 --> 01:11:55.140] I'm going to give a quick demo of what some of these tools look like in the context of
+[01:11:55.140 --> 01:12:01.300] warp factories, but this stuff I'm going to show I think applies also if you're building
+[01:12:01.300 --> 01:12:01.740] your own.
+[01:12:04.040 --> 01:12:05.800] So let me start here.
+[01:12:06.160 --> 01:12:11.880] So at the foundation, I mentioned earlier, is factories in code.
+[01:12:11.880 --> 01:12:14.200] And so I'm going to show some code.
+[01:12:14.320 --> 01:12:15.360] It's not going to be that interesting.
+[01:12:15.380 --> 01:12:19.620] But if you're familiar with something like Terraform, you will get what's going on here.
+[01:12:20.320 --> 01:12:25.340] You basically want a declarative way of saying, this is my factory.
+[01:12:25.840 --> 01:12:28.560] My factory has certain policies.
+[01:12:28.560 --> 01:12:30.200] It accesses certain repos.
+[01:12:30.640 --> 01:12:32.260] It has certain triggers.
+[01:12:32.720 --> 01:12:37.100] It has a sort of blueprint that defines the workflow of work going through it.
+[01:12:37.100 --> 01:12:43.880] And then if you zoom out, all of these other things that are part of the factory also have code definitions.
+[01:12:44.740 --> 01:13:03.180] The second thing, moving up a layer, is the idea that everything that you do in the factory should be tracked across your entire team.
+[01:13:03.180 --> 01:13:05.860] And so this, think of what I'm showing here,
+[01:13:06.020 --> 01:13:09.060] is this is a sort of Google Docs style live view
+[01:13:09.060 --> 01:13:11.540] of what every coding agent on Warp's team
+[01:13:11.540 --> 01:13:15.040] across all of our engineers are doing at all times.
+[01:13:15.220 --> 01:13:16.840] And so I could click in and I could see,
+[01:13:16.940 --> 01:13:19.600] okay, I don't know what Maggie is working on,
+[01:13:19.640 --> 01:13:21.100] but I know I could look at it.
+[01:13:21.180 --> 01:13:23.260] She's implementing Opus 5.5 on the high plan.
+[01:13:23.640 --> 01:13:24.860] She's doing it from Slack.
+[01:13:25.240 --> 01:13:26.360] It has this artifact.
+[01:13:26.720 --> 01:13:29.180] I could look in and see the actual conversation here.
+[01:13:29.260 --> 01:13:31.400] I could see what it's generated.
+[01:13:33.180 --> 01:13:38.300] which is cool, but the really important thing is that you gather all this information so that it
+[01:13:38.300 --> 01:13:46.060] can be used for improving the factory. And so that brings me to the third thing, moving up the stack
+[01:13:46.060 --> 01:13:52.260] here, is once you have all of this information that's being stored centrally, you get the ability
+[01:13:52.260 --> 01:13:59.840] very easily, without doing any install stuff on everybody's laptop, anything like that, to understand
+[01:14:00.560 --> 01:14:02.240] how these coding agents are working.
+[01:14:02.680 --> 01:14:04.300] And you can think of that in terms of, like,
+[01:14:04.440 --> 01:14:07.760] traditional output metrics, like your DORA metrics,
+[01:14:07.940 --> 01:14:09.180] like, okay, cycle time.
+[01:14:09.540 --> 01:14:11.100] But you can also think of that in terms of, like,
+[01:14:11.160 --> 01:14:12.220] how automated am I?
+[01:14:12.340 --> 01:14:14.500] Like, how many human interactions per PR?
+[01:14:15.100 --> 01:14:16.020] What's your throughput?
+[01:14:16.580 --> 01:14:20.860] You get, you should be able to see data very clearly here
+[01:14:20.860 --> 01:14:22.520] on, like, what's your cost?
+[01:14:22.900 --> 01:14:25.980] Again, surfacing this, if you don't have this data,
+[01:14:27.000 --> 01:14:28.960] you're kind of flying, uh-oh.
+[01:14:30.420 --> 01:14:31.900] You're kind of flying blind.
+[01:14:32.280 --> 01:14:33.660] So this is really important.
+[01:14:33.780 --> 01:14:38.880] And then there's this next layer of data, which is also really important that I mentioned
+[01:14:38.880 --> 01:14:44.180] earlier, which is the ability to set up online evals that run across all your coding agent
+[01:14:44.180 --> 01:14:44.560] sessions.
+[01:14:44.920 --> 01:14:50.920] And so what I mean by this, an eval is just like as these coding agent sessions are running
+[01:14:50.920 --> 01:14:56.300] and they're recording their output, you want the ability to go back and have another agent
+[01:14:56.300 --> 01:15:00.220] look at them and score them on some dimension
+[01:15:00.220 --> 01:15:02.300] that might indicate how well they're doing.
+[01:15:02.640 --> 01:15:04.220] And to make that more concrete,
+[01:15:04.500 --> 01:15:06.360] so it's like we have an eval,
+[01:15:07.020 --> 01:15:08.120] a score here that we use
+[01:15:08.120 --> 01:15:10.340] that is looking for redundant tests.
+[01:15:10.440 --> 01:15:11.120] This is a good example.
+[01:15:11.380 --> 01:15:14.300] And so one common failure mode of coding agents
+[01:15:14.300 --> 01:15:16.520] is that sometimes they will write tests
+[01:15:16.520 --> 01:15:17.200] that are unnecessary.
+[01:15:17.800 --> 01:15:19.300] We want to catch that,
+[01:15:19.360 --> 01:15:20.620] and that's what this eval does.
+[01:15:20.940 --> 01:15:22.960] We want the ability then to see,
+[01:15:22.960 --> 01:15:29.800] okay, when it's writing too many tests, why is it doing that? And is there a mechanism
+[01:15:30.420 --> 01:15:35.980] that we could change in the factory for improving that? And so, again, just to kind of recap
+[01:15:35.980 --> 01:15:42.740] here, you want a way of recording all the runs. When these runs run, I didn't show this,
+[01:15:42.880 --> 01:15:50.700] but all of the runs are, you know, you want a way of specifying what is the sort of, like,
+[01:15:50.700 --> 01:15:54.600] actual loop that they're running through. You want to be able to see where they are in that loop.
+[01:15:55.300 --> 01:16:01.080] As the runs work, you want to be able to gather their data. Once you gather their data, you want
+[01:16:01.080 --> 01:16:05.660] to be able to set up these online evals. And then these online evals give you a sense of,
+[01:16:05.740 --> 01:16:09.940] like, okay, where are there opportunities for improvement? Once you have that in place,
+[01:16:10.420 --> 01:16:15.540] you can do something that we call self-improvement, which is rather than having humans look at the
+[01:16:15.540 --> 01:16:18.340] the outputs of these scorers, you have agents look at the output.
+[01:16:18.820 --> 01:16:22.260] And so the way to think about self-improvement is like,
+[01:16:22.980 --> 01:16:25.400] it looks at the score output, it says, okay,
+[01:16:25.540 --> 01:16:28.460] we saw some number of failed runs.
+[01:16:30.300 --> 01:16:34.760] Let's try to look for patterns in those failures and
+[01:16:34.760 --> 01:16:37.040] suggest a possible solution.
+[01:16:37.340 --> 01:16:43.840] And then the form that that solution takes is as a PR
+[01:16:45.560 --> 01:16:51.600] definition. And so this is like the awesome thing about having your factory defined as code and
+[01:16:51.600 --> 01:16:56.560] being able to use coding agents is that you can then have the coding agents diagnose problems
+[01:16:57.120 --> 01:17:00.700] with how they're working internally and suggest fixes to them.
+[01:17:01.840 --> 01:17:04.640] The final tool that I'm going to point out that I mentioned earlier
+[01:17:05.300 --> 01:17:12.020] is the ability to create and run benchmarks. This is also essential. So if you're following
+[01:17:12.020 --> 01:17:13.020] So, when you're learning this course online,
+[01:17:13.080 --> 01:17:15.460] you'll often see things like, okay, this is the best model,
+[01:17:15.560 --> 01:17:17.880] this is the new best skill, this is the best harness.
+[01:17:18.260 --> 01:17:20.560] The only way to answer those questions for real
+[01:17:20.560 --> 01:17:23.140] is to test on your own data.
+[01:17:23.340 --> 01:17:25.480] And so you should have in place some mechanism
+[01:17:26.020 --> 01:17:28.800] where you can basically create a benchmark set
+[01:17:28.800 --> 01:17:30.400] out of your real data,
+[01:17:31.740 --> 01:17:35.460] and then replay those tasks.
+[01:17:35.980 --> 01:17:37.380] Oops, I'm on the wrong one here.
+[01:17:37.620 --> 01:17:39.120] And replay those tasks
+[01:17:39.120 --> 01:17:44.420] against different configurations to see how they would have done
+[01:17:44.420 --> 01:17:47.680] if you had varied some model or varied some harness
+[01:17:47.680 --> 01:17:49.520] or varied your factory configuration.
+[01:17:49.880 --> 01:17:51.580] So just to make this clear,
+[01:17:54.540 --> 01:17:58.480] this is something that looks like what you might get
+[01:17:59.260 --> 01:18:03.100] when a new model drops, like in SweetBench or TerminalBench.
+[01:18:03.280 --> 01:18:06.520] It's showing the trade-offs of different models here
+[01:18:06.520 --> 01:18:08.500] in terms of cost and quality.
+[01:18:09.120 --> 01:18:13.020] this upper left-hand quadrant, but it's on your own actual data.
+[01:18:13.420 --> 01:18:17.980] And you can test not just models, but also you want to be able to test, hey, if I got
+[01:18:17.980 --> 01:18:20.480] rid of these skills, does my factory perform better or worse?
+[01:18:20.920 --> 01:18:22.840] So these are some of the tools.
+[01:18:24.520 --> 01:18:28.780] And just to return to this big concept, like, this has worked well for us.
+[01:18:29.040 --> 01:18:35.260] We have managed to use these tools to drastically improve our throughput and lower our cost.
+[01:18:35.960 --> 01:18:40.060] We are just constantly doing this because this cost really matters to us,
+[01:18:40.300 --> 01:18:44.360] where we're getting a performance baseline, we're scoring, we're benchmarking,
+[01:18:44.500 --> 01:18:47.080] we're testing, and we're doing factory engineering.
+[01:18:47.520 --> 01:18:51.960] And so that brings me back to this last point that I just want to emphasize again.
+[01:18:53.100 --> 01:18:54.320] Engineer your agents.
+[01:18:54.900 --> 01:18:56.420] It's a new engineering primitive.
+[01:18:56.620 --> 01:18:57.240] We're all engineers.
+[01:18:57.760 --> 01:19:01.000] Think about how you can get the most out of them and build the system for that.
+[01:19:01.880 --> 01:19:03.280] I think this is very exciting.
+[01:19:05.260 --> 01:19:10.720] of like angst around what it means to be an engineer right now. I know we're not writing
+[01:19:10.720 --> 01:19:15.180] code, but I'm still using all the engineering skills that I spent my whole career learning,
+[01:19:15.280 --> 01:19:20.000] and so to me it's still a really exciting time. If you're interested in Warp Factories, you
+[01:19:20.000 --> 01:19:22.980] can check it out here. Thank you all for coming to the talk.

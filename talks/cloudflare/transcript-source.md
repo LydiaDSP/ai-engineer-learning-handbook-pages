@@ -1,0 +1,449 @@
+# Cloudflare 如何让小模型分担 Agent 的判断和提取？
+
+Michelle Chen
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据大会主回放第 03 场（00:40:09–00:59:44），议程英文题名为 cloudflare is a neolab。正文沿用工作区逐段中英对照，英文来自机器转写，保留缺漏。原视频幻灯片把提取模型写作 Clairic，正文的既有转写和校译使用 Cleric 等拼写。运行数据来自现场及讲者此前的单次演示。上手练习使用合成输入。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 从 CDN 到开发者平台 / From CDN to developer platform
+
+[00:40:09.180—00:40:29.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2409s)
+
+大家好，我叫 Michelle Chen。今天很高兴来到 AI Engineer Code Summit，跟大家聊聊 Cloudflare 为什么变成了一家新兴模型实验室（Neolab）。我是 Cloudflare 的产品负责人，带领产品团队做 Workers AI、AI Search 和 AI Gateway 等产品。今天我们就一起回顾一下 Cloudflare 是怎么走到这一步的。
+
+Hi, everyone. My name is Michelle Chen. I'm so excited to be here today at AI Engineer Code Summit chatting a little bit more about why Cloudflare became a Neolab. So at Cloudflare, I am the group PM here. I run on the product team working on products like workers AI, AI Search, AI Gateway as well. And so today we're going to go through this little journey of how Cloudflare came to be.
+
+[00:40:29.280—00:40:38.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2429s)
+
+你可能听说过，我们最近训练并发布了几个模型。我会多讲讲我们为什么这么做，以及你能拿这些模型做什么。我们也会稍微聊一点哲学。
+
+You might have heard that we launched and trained some models recently. I'm going to tell you a little bit more about why and what you can be doing with it. And so we're going to go through a little bit of a philosophical journey.
+
+[00:40:39.880—00:40:50.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2439s)
+
+准备这次演讲的时候，我本来想引用这句话。结果 Anthropic 上周末发了一篇博客，用了我想用的引语。不过我还是要用。原话是……
+
+When I was preparing for this talk, I wanted to use this quote, and then Anthropic launched a blog post last weekend and used my quote, but I'm still going to use it anyways. So the quote goes...
+
+[00:40:53.800—00:41:08.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2453s)
+
+请等我一秒。这句话出自克尔凯郭尔。他说，人生只有回过头才看得懂，但我们必须向前走。我觉得这话太适合我们了。Cloudflare 已经 16 岁了，这些年我们做过很多事。
+
+In one second. The quote is from Kierkegaard, and it says, Life can only be understood backwards, but it must be lived forwards. And I think this is really, really apt quote here for us because at Cloudflare, we're a 16 year old company and we've done so many things over the years.
+
+[00:41:08.160—00:41:23.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2468s)
+
+不知怎么的，我们有些地方做对了，最后还真得变成一家新兴模型实验室。我们一起走一遍这段路。第一步是回头看，聊聊 Cloudflare 为什么走到非做模型实验室不可的地步。
+
+But somehow we got some of the pieces right and we ended up having to become a new lab. So we're gonna go through a little bit journey. The first thing we're gonna do is look backwards and talk through why Cloudflare had to became a new lab.
+
+[00:41:25.680—00:41:44.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2485s)
+
+请等我一秒。好了，我们回到过去，聊聊 Cloudflare 怎么变成了一家新兴模型实验室。Cloudflare 是一家有 16 年历史的 CDN 公司。今年 9 月的生日周，我们刚过完 16 岁生日。
+
+Give me one second here. Perfect, we're going to go backwards and talk through why Cloudflare became a Neolab. So Cloudflare is a 16-year-old CDN company. We just celebrated our 16th birthday at birthday week this year in September.
+
+[00:41:45.980—00:42:01.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2505s)
+
+我们最早就是做 CDN，也就是内容分发网络。做 CDN，就得尽可能快地把内容送到用户面前。我们处在用户请求和源站之间，可以做缓存，也可以做防护、保障安全之类的事。
+
+And we first started as a CDN. So as a CDN company, what you have to do is you have to serve content as quick to your users as possible. You sit between the user's request and the origin, and you help sit in the middle, and you can do things like cache and protect, do security and things like that.
+
+[00:42:02.000—00:42:16.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2522s)
+
+Cloudflare 大致就是这么起步的。要做好 CDN，Cloudflare 的基础设施必须能适应各种情况。所以 16 年前，也就是 2010 年，我们用自己的基础设施上线了。要让 CDN 足够快，就得把它铺到各地。
+
+So that's kind of how Cloudflare started. But Cloudflare's infrastructure had to be adaptable in order to become the CDN. And so what we did was 16 years ago, in 2010, we launched with our own infrastructure. Our fast CDN had to be everywhere.
+
+[00:42:16.520—00:42:44.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2536s)
+
+这跟传统超大规模云服务商很不一样。它们的算力集中在美国东部 1 区或美国西部 1 区这样的区域。我们的基础设施完全是另一种架构。数据中心遍布全球，尽可能靠近用户。对 CDN 来说，这很重要。既然这些机器已经在离用户尽可能近的地方运行，我们就问自己，还能用这些机器做什么，开发者又愿意拿它们来做什么？就这样，我们开始提供计算服务。
+
+And this looks really different than a traditional hyperscaler where compute is centralized in US East one or US West one. infrastructure is a completely different paradigm. We have data centers all around the world as close to the user as possible and this is really important in becoming a CDN but now we have these computers basically running as close to the user as possible so we thought to ourselves what else can we be doing with these computers that people would want to build with and so came compute. We
+
+[00:42:44.720—00:43:00.220](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2564s)
+
+我们开始推出一些基础计算能力。2017 年发布了一个产品叫 Workers，基本上就是无服务器函数。和当时的虚拟机相比，虚拟机得整台租下来，机器用着也好、闲着也好，都要为整台机器付钱。
+
+started launching these compute primitives as well and so in 2017 we launched a product called workers which is basically like serverless functions It contrasted VMs at that time where you had to rent a whole machine and pay for the whole machine, either you're using it or not using it.
+
+[00:43:00.560—00:43:11.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2580s)
+
+用 Workers，执行一段代码，Worker 就退出了。不用为闲置的机器付费，启动按毫秒计，虚拟机通常按秒计。后来我们又推出了别的基础计算能力，比如更强调状态管理的 Durable Objects。
+
+And so with workers, you just execute some code and then the worker goes away. You don't have to pay for it. It takes milliseconds to start up, not seconds as well. And then we followed with other compute primitives like durable objects, which are more stateful.
+
+[00:43:12.120—00:43:25.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2592s)
+
+2025 年，我们又推出了容器。确实有些工作负载需要类似虚拟机的环境，我们希望它们都能跑在 Cloudflare 上。回到 2017 年，我们的开发者平台就从这些基础计算能力起步。
+
+And then in 2025, we launched containers as well, because there are some workloads that do need something like a VM. And we want all of those workloads to be able to run on Cloudflare. So now, you know, 2017, start of our developer platform, we have these compute primitives.
+
+[00:43:25.580—00:43:51.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2605s)
+
+有人开始用它，也开始做静态网站之类的东西。我们就想，怎样再往前推进一步？于是我们加上了存储。Cloudflare 的开发者平台现在有 KV、R2 对象存储，还有 D1 这样的数据库。我们的想法是，让开发者在 Cloudflare 上就能构建完整的全栈应用。
+
+People started using it. People started building more like static websites and things like that. So we thought to ourselves, how do we elevate this and take it to the next level? So we introduced storage as well. And so we have these storage primitives on Cloudflare's developer platform. We have KV, we have R2.ObjectStory, we have databases like D1 as well. And the idea here is that people should be able to build full stack applications all on Cloudflare.
+
+[00:43:51.700—00:44:06.520](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2631s)
+
+开发者可以直接在 Cloudflare 的开发者平台上做有状态的应用、完整的 Web 应用和平台。我们先有基础设施，然后在上面加了基础计算能力，又加了基础存储能力。
+
+Stateful applications where people can go on and start building full applications and web apps and platforms on Cloudflare's developer platform. So we have this infrastructure. We added compute primitives to it. We added storage primitives to it.
+
+## Workers AI 和运行大型模型 / Workers AI and serving large models
+
+[00:44:06.660—00:44:26.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2646s)
+
+然后到了 2023 年。大家如果还记得，那一年 ChatGPT 火起来了，改变了我们看待 AI 的方式。我记得当时快到生日周了。离生日周还有三个星期时，我们很多人坐在一个房间里，一起问，ChatGPT 已经起来了，我们现在该做什么？
+
+And then came 2023. And if you guys remember what happened in 2023, ChatGPT kind of blew up a little bit and it changed how we think about AI. And I remember it being birthday week, and three weeks before birthday week, a lot of us sat together in a room, and we were like, what should we do now that ChatGPT is on the rise?
+
+[00:44:26.540—00:44:44.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2666s)
+
+我们有这些基础设施和基础能力，Cloudflare 在 AI 这件事上能做些什么？所以 2023 年我们推出了 Workers AI，把 GPU 加进我们的网络。这依然是高度分布式的，GPU 跑在尽可能靠近用户的地方。
+
+What can Cloudflare play in here with our infrastructure and our primitives in order to be in this AI game? So in 2023, we launched a product called Workers AI, where we added GPUs to our network. And so again, this is really distributed, where GPUs are running as close to the user as possible.
+
+[00:44:44.020—00:44:59.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2684s)
+
+这些 GPU 尽可能靠近网络边缘运行，传统超大规模云服务商则可能把它们集中在美国东部 1 区。我们刚做 Workers AI 时有个假设，模型会越来越小，因此网络延迟会越来越重要。
+
+It's not centralized like a US East 1 hyperscaler, for example, but it's running as close to the edge as possible. And we had a hypothesis when we started to work as AI. Our hypothesis was that models were going to get smaller, so that network latency was going to become more and more important.
+
+[00:45:00.920—00:45:14.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2700s)
+
+我们上线时用的是小模型，可以放进分布在全球各地的小型硬件里。我们当时觉得，模型会越来越好、越来越快、越来越聪明，网络延迟也会在这里产生大得多的影响。
+
+We launched with small models that could fit on our small hardware around the world that were super distributed, and we thought that people would have models get better and faster and smarter and that network latency was going to play a much more bigger impact here.
+
+[00:45:15.620—00:45:27.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2715s)
+
+结果模型反而越做越大。当时约 70 亿参数就算前沿规模，后来已经有 3 万亿参数的模型发布。
+
+Well actually the opposite happened and models got larger and larger. So we went from something like 7 billion parameters which was frontier scale at the time to being the 3 trillion parameter models that were getting launched.
+
+[00:45:28.000—00:45:58.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2728s)
+
+回过头看，我觉得这也不奇怪。我们在通往通用人工智能（AGI）的路上，按规模定律来理解，数据越多、模型越大，泛化能力越好。大家当然会在研究前沿不断往前推，把模型做得越来越大，也越来越聪明。这跟我们原先认为模型会缩小的假设相反。模型最后变大了，网络延迟的影响越来越小。那么，
+
+And I think this is not so shocking when you look back in time because as we're on the way to AGI if you're following scaling law as you train on more data, as the models get larger, they're more generalizable. And so on the path to AGI, it makes sense that we're pushing the frontier of research here in order to get larger and larger and smarter models. So this goes against our hypothesis, right, that the models were gonna get smaller. The models actually ended up being larger and the network latency mattered less and less. So what did we
+
+[00:45:58.660—00:46:15.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2758s)
+
+我们怎么办？最后，我们调整了方向。Cloudflare 也练出了提供超大模型推理服务的能力。2026 年 3 月，我们上线了 Kimi，接着又上线了 GLM、DeepSeek 等万亿参数级的大模型，都托管在我们自己的基础设施上。
+
+What did we do? We ended up pivoting. So Cloudflare got really good at serving these giant models as well. So in March 2026, we launched Kimi and followed up with GLM and DeepSeq and these large trillion parameter models hosted on our infrastructure.
+
+[00:46:16.360—00:46:32.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2776s)
+
+这也是无服务器的。用户发一次 API 请求，就能拿到 token。我们其实花了些时间才决定要做。到 2026 年 3 月才开始提供这种模型，已经算比较晚了。不过我们是有意识地在问，Cloudflare 来提供它到底合不合适？
+
+And so this is serverless. People hit an API call and get a token back. It actually took us a while in order to decide to do this, right? March 2026 is actually pretty late in the game to serving this model, but we were trying to make a conscious decision here on, does this actually make sense for us to be serving it?
+
+[00:46:32.840—00:46:46.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2792s)
+
+它跟我们的基础设施路线没那么契合，却很适合开发者平台。到了 2026 年，这些基础能力都已经就位。我们有 Cloudflare 自己的基础设施，在靠近用户的地方运行。
+
+It didn't really fit with our infrastructure story, but it fit really well with the developer platform. So in 2026, we had all these primitives in place. We had the infrastructure, which is unique to Cloudflare, running close to users.
+
+[00:46:47.160—00:46:58.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2807s)
+
+我们有 Workers 和 Durable Objects 这样的基础计算能力，开发者已经在上面构建 Agent。Agent 有任务时就启动，执行完，没任务时就休眠。
+
+We had compute primitives where people were building agents on top of, so workers and durable objects, right? to complete a task. It goes on and it spins and does a task and then sleeps when it doesn't.
+
+[00:46:58.220—00:47:10.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2818s)
+
+我们有基础存储能力，Agent 可以跟数据和存储交互。我们也有模型，为 Agent 提供能力的大模型。这些放在一起，就成了 Cloudflare 的 Agent Cloud。
+
+We have storage primitives, so your agents can actually interact with data and storage. And then we have models, these large models that are powering agents. And so all of this fit into the Cloudflare agent cloud story.
+
+[00:47:10.500—00:47:20.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2830s)
+
+我们开始对外讲，我们想做 Agent Cloud。Agent 部署在 Cloudflare 上，由 Cloudflare 上的模型驱动，使用我们的计算和数据能力，所有这些都跑在我们的基础设施和网络上。
+
+And so we started telling this narrative that we want to be the agent cloud. We want agents to be deployed on us, powered by models on us, using our compute and data primitives, all built on our infrastructure and our network.
+
+## 决策模型进入 Agent Cloud / Decision models in the Agent Cloud
+
+[00:47:20.720—00:47:42.120](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2840s)
+
+但我们总觉得哪里还不太对，好像少了一块。现有的基础设施模式和 Workers AI 的实际做法没有完全对上。[此处转写有缺漏] 我想再给大家讲一句带点哲学意味的中文话。虽然这么讲我觉得有点冒险，我还是要讲。
+
+But it never felt quite right. We felt like we were always missing a piece here, because the infrastructure pattern didn't necessarily fit in with what workers AI was designed for. And so I'm just gonna sit here and give you my second philosophical quote, which is a brisk, considering that I'm a girl in Chinese and AI, but I'm gonna give you this Chinese quote anyways.
+
+[00:47:44.180—00:48:01.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2864s)
+
+这句话的意思是，什么都准备好了，只缺东风。你很难提前知道风会从哪里吹来、以什么方式吹来，但它真吹来的时候，你得赶紧反应。
+
+And it basically says, which means everything is ready here. All that's missing is the east wind. And one of the things about this is like, you can't really predict where the wind is going to come from or how it's going to come, but you need to be very reactive when it happens.
+
+[00:48:01.660—00:48:36.480](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2881s)
+
+2026 年 9 月，东风来了。TypeSafe 发布了名为 Jev 的模型，提出了 System 1 模型的概念。我们熟悉的大语言模型（LLM）采用自回归方式生成 token，还涉及随规模呈二次增长的计算开销等问题。System 1 模型走的是另一条路，输入只需做一次前向传播，输出就能直接拿来作决策。我觉得它来得正是时候。大家那时已经开始对 LLM 有点受够了，因为
+
+And so in September 2026, the east wind came. TypeSafe launched a model called GEV and introduced this idea of system one models. And it contrasted what we typically knew with LLMs, which were auto regressive and tokens, it scales quadratically, etc. A system one model is a completely different paradigm, where it actually just takes one forward pass through the inputs and generates an output that you can use to make decisions with it. And so I really think that this came down to perfect timing. I think people were starting to get fed up a little bit with LLMs because
+
+[00:48:36.480—00:49:01.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2916s)
+
+它成本高、消耗的 token 多，也很耗时。我不知道你们怎么样，我有时一读推理轨迹，血压都上来了。[此处转写有缺漏] 我们把什么都往 LLM 里扔，开始觉得这不太行。System 1 和 Jev 这种模式一出现，我们就觉得很适合我们。每个请求都有更合适的去处，有些可以发给 System
+
+they were so costly, it cost so many tokens, it's super time consuming, and I don't know about you, but when I read a reasoning trace, sometimes my blood pressure rises when the the things right and so I think we were sending everything to LLMs and started getting frustrated with it and so when this system one and JEV paradigm started coming on board we were like this makes so much sense for us to adopt right we don't have to send every request to an LLM we can send some of it to a system
+
+[00:49:01.260—00:49:30.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2941s)
+
+1 模型。这样，System 1 就能从超大 LLM 手里接过一部分工作，交给体积小、速度快的模型处理。两类模型可以相互配合，更快完成任务。你看，我们又回到了小而快的模型。这就是 Workers AI 最初的假设。Cloudflare 的方向没有错，只是走早了。模型又小又快的时候，网络延迟就重新变得重要了。
+
+one model and so the system one models actually end up taking work off of the giant LLMs and you give it to the small fast models and the two are supposed to work in tandem they're supposed to complement each other and get to the end goal faster. And so if you look, we are back at these small and fast models, right? This was the original workers AI hypothesis. And so Cloudflare was not wrong here. We actually were just early. With these small and fast models, the network latency became important
+
+[00:49:30.980—00:49:46.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2970s)
+
+我们希望模型响应快，网络传输也要更快。于是我们决定做点什么。可 Jev 是闭源的。[此处转写有缺漏] Cloudflare 无法自行托管 Jev 来发挥我们基础设施的优势。
+
+again. We want the model to be responding fast, but also the network latency to be even faster. And so we decided to do something here. But, Jev was close source. Cloudflare actually host the JEV models and take advantage of our infrastructure.
+
+[00:49:46.900—00:50:00.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=2986s)
+
+我们最后怎么做的？做了自己的 Jev 同类模型。Jev 是 9 月 15 日发布的。9 月 18 日，只过了三天，我们就开始做实验，发布了我们自己版本的第一次试验成果。
+
+So what did we decide to do? We built our own version of JEV. So JEV launched on September 15th. On September 18th, just three days later, we started experimenting and we launched our version of JEV, our first experiment of it.
+
+[00:50:00.840—00:50:13.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3000s)
+
+接下来，我们讨论了一周。我们真要进入新兴模型实验室这个领域吗？对我们来说，这是全新的。我们甚至不知道还有什么需要弄懂。我们要让外界开始把 Cloudflare 当成一家模型实验室吗？
+
+And then it took us a week of deliberation to decide, do we actually want to be going into this Neolab territory? It's completely new to us. We don't know what we need to know. Are we going to set the expectation that we want to be a Neolab?
+
+[00:50:14.080—00:50:24.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3014s)
+
+我们又能不能做到大家期待的样子？最后我们还是决定做。我记得是星期五傍晚，大家说，那就放手做吧。于是我们动手了，用周末的 48 小时训练了模型。
+
+And are we going to live up to those expectations? But we decided to do it. I remember on a Friday evening, we were like, let's just go for it. And we did it. And we ended up training the model over 48 hours over the weekend.
+
+[00:50:25.020—00:50:36.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3025s)
+
+下一周，我们就发布了这个叫 Clef 的模型。Clef 让 Agent 可以自己作判断，行动时也更自主。
+
+And then we launched it the following week. And so we ended up with a model called Clef. Clef gave power back to the agents to be able to make decisions on their own. So agents could act more autonomously.
+
+[00:50:36.980—00:50:48.820](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3036s)
+
+你不必让 LLM 花几分钟来推理某个决定该不该作。如果想让 Agent 每天 24 小时、一周 7 天运行，也不用每次拉个人进来参与，结果被人的睡觉时间打断。
+
+You didn't need to have LLM reason through for minutes on if it should make this decision or not. You also didn't need to put a human in the loop and be interrupted by a human's sleep schedule when you want your agents to be running 24-7.
+
+[00:50:49.080—00:51:02.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3049s)
+
+你可以直接在代码里通过程序作判断，再让 Agent 据此行动。跟 LLM 相比，这些决策模型速度快很多，也便宜很多。
+
+So you can now programmatically, in code, decide, make decisions for your agent to take action on. So these decision models countered LLM models because they were a lot faster and they were also a lot cheaper as well.
+
+[00:51:02.980—00:51:16.520](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3062s)
+
+我们作为推理服务提供方，也能借此减轻 LLM 的负担。LLM 可以留给更需要它的工作，快速、近似直觉的判断和处理可以交给 Clef 这类决策模型。
+
+And so it actually, as an inference provider, takes a lot of pressure off the LLMs as well, because the LLMs were reserved for meaningful work, whereas the clef and decision models could be used for fast, intuitive thinking and work, right?
+
+## 把非结构化材料变成可用字段 / Extracting fields from unstructured inputs
+
+[00:51:18.300—00:51:42.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3078s)
+
+我们又回头想了一下，还有哪些事人和 Agent 也会交给 LLM，可实际上有点大材小用？我们已经找到了决策这个例子。肯定还有别的工作负载，有些是用 LLM 太贵，有些是太耗时间，还有些它可能会答错，因为 LLM 的自回归生成可能产生幻觉。
+
+And so we also went back and thought to ourselves, you know, what else do agents and people use for LLMs that are overkill? So we came up with decisions, and there must be other workloads out there both because they are either too expensive or take too long, or maybe that it just would get the answer wrong, because the auto-aggressive nature of an LLM means that it would hallucinate.
+
+[00:51:43.540—00:52:05.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3103s)
+
+于是三周后，我们又发布了一个叫 Clairic 的模型。实际上三周里我们发了四个模型，作为一家刚起步的实验室，我觉得做得还挺不错。Clairic 是一种全新的模型模式，我们叫它提取模型。它也是 System 1 模型，同样快，同样便宜，处理用户输入时也只做一次前向传播。
+
+So we also launched a model three weeks later called Cleric. We actually ended up launching four models in the span of three weeks, so I think we did a pretty good job as a new lab. But Cleric is a new model paradigm, so it's completely new, we're calling it an extraction model, but it's a system one model in the sense that that it is just as fast and just as cheap, but it is also doing like one forward pass through the user.
+
+转写校注。The slide at 00:52:38 spells the model name Clairic. The wording in the English transcript is automatic.
+
+[00:52:05.960—00:52:19.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3125s)
+
+Clairic 要解决的是，你跟现实世界打交道，收到的通常不是类型规整的 JSON 对象，对吧？有时是一封邮件、一条推文、一条 Slack 消息。发消息的人可没替你填好一份规整的表单，等着你从里面提取输入。
+
+And the purpose of Cleric is when you're interacting with the world, you're not interacting in perfectly typed JSON objects, right? Sometimes you're getting an email, a tweet, a Slack message, but those people are not filling out perfect forms for you to extract inputs out of.
+
+[00:52:19.380—00:52:33.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3139s)
+
+Clairic 能接收非结构化输入，从中提取数值，也能计算、估算和预测所需的值，再返回一个字段有明确类型的 JSON 对象，Agent 就能继续处理。
+
+So what Cleric does is it can take unstructured input and it can extract, compute, estimate, and forecast values from those inputs. And it gives you back a perfectly typed JSON objects, which means the agents are able to do things with it.
+
+[00:52:33.340—00:52:47.480](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3153s)
+
+我们相当于让 Agent 先用 Clairic 读懂材料，也能再用 Clef 决定要采取什么行动。在代码里，你把非结构化数据交给 Clairic，让它提取有明确类型的值。非结构化数据可以是各种各样的。
+
+So we're kind of giving agents the ability to read here and take action with Clef as well. And so in code again, you're giving Cleric typed values from unstructured data. You can pass it in whatever kind of unstructured data.
+
+[00:52:47.580—00:52:58.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3167s)
+
+它也能接受图片输入。你可以让它读出里面的文字，再交给 Clef 判断这些文字该怎么处理，最后交给 LLM 来决定 Agent 下一步该做什么。
+
+It can also take image input as well. And so you can just tell it to read basically what's in text here, pass it to Clef, decide what to do with this text, and then pass it to an LLM to decide what to do with the agent.
+
+[00:53:01.140—00:53:19.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3181s)
+
+所以，Cloudflare 当时得成为一家新兴模型实验室。这就是我们缺的那一块。我们有基础设施，有基础计算能力，有基础数据能力，也有为 Agent 提供能力的大模型。要把这些都用起来，发挥我们自己的基础设施的优势，我们就得训练和发布适合这套架构的 System 1 模型。
+
+And so Cloudflare had to become a Neolab here. This was our missing bit. We had the infrastructure, we had the compute primitives, we had the data primitives, we had the large models powering the agents, but in order to take advantage of all of that and our infrastructure that we were built on, we had to be a Neolab and ship these System 1 models that fit perfectly with our infrastructure.
+
+[00:53:20.060—00:53:37.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3200s)
+
+还有一点，我觉得更重要。我们能做的也不限于这些。成为模型实验室，就能自己做出缺少的东西。比如我们缺一个 System 1 模型，而现有模型存在闭源或监管风险，我们就可以自己研发新的模型。
+
+And I think one of the more important things is that we're not limited to this. Being a Neolab means that we can create what we are missing, right? It means that we're not, if we're missing a system one model because we're at risk of things being closed source or regulatory risks or things like that, we can actually create and invent things.
+
+[00:53:38.140—00:53:49.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3218s)
+
+所以我觉得，成为一家新兴模型实验室，让 Cloudflare 有了更多机会在 AI 领域做事。刚才我们回头看了看，讲了一小段历史。现在我也想往前看。
+
+So I think being a Neolab has actually opened a lot of doors for Cloudflare to do more in the AI world. So we went through backwards. We went through a little bit of a history lesson. I want to go forwards as well.
+
+## 失败 CI 的两条排查路径 / Two workflows for failing CI
+
+[00:53:49.320—00:54:03.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3229s)
+
+我想让大家看看拿 Clef 和 Clairic 可以做什么。我知道这里是 AI Engineer Code Summit。各位开发者和工程师，怎样把 Clef、Clairic 和 System 1 模型用进你们的工作流程里，让它跑得更好？
+
+I want to teach you guys what you guys can be doing with Clef and Cleric. And I'm cognizant that I am at AI Engineer Code Summit. developers and engineers, how can you guys leverage Clef and cleric and system 1 models in order to better use your workflows?
+
+[00:54:05.280—00:54:18.580](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3245s)
+
+我们来快速演示一下。假设你有一个 Agent，要给失败的 CI 构建做初步排查。这个 Agent 可以用 40 个工具，你手上有一个出了问题的 PR。
+
+So we'll do a quick demo here. Let's think you have an agent. You're triaging a CI build that went wrong, right? Let's say you have 40 tools that are available to this agent. You have your PR that went wrong.
+
+[00:54:18.880—00:54:36.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3258s)
+
+接着是 Agent 本身。既然都用 Cloudflare 来搭，它也许是一个运行 Pi 的 Durable Object。环境就是这样。通常，你会让 LLM 发起一次工具调用，工具把结果返回给 LLM，LLM 再发起另一次调用，就这样一直往返，直到问题解决。
+
+And then you have your agent. Maybe it's running PyDurable on a durable object, since all of this is built on Cloudflare. So this is the setup here. Typically what you would do is you would take an LLM, and then the LLM would make a tool call, the tool call would go back to the LLM, the LLM would make another tool call, et cetera, et cetera, until the issue is resolved.
+
+转写校注。The on-screen demonstration identifies this as a Durable Object running Pi.
+
+[00:54:37.120—00:54:49.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3277s)
+
+比如用 GLM 5.3，要来回五轮。每轮把约 40 个候选工具的定义放进模型上下文，同一批输入在 LLM 和工具之间来回带，上下文可能越滚越大。
+
+So this is like five back and forths with GLM 5.3. You're sending 40 tools every single time, and maybe you're blowing up the context, right, because you're sending the same kind of inputs back and forth to the LLM.
+
+[00:54:49.400—00:55:16.220](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3289s)
+
+如果用 System 1 模型来辅助，流程会很不一样。假设我们追求速度，就用 Clef Flash。它可以缩减工具清单，比如 40 个工具只需要其中 10 个，那就选出这 10 个。然后用 Clairic 从输入里提取字段，它不用长时间推理，就能取到 PR 编号。
+
+And so what if we augment this with system one models? models. With system one models, this could look a lot different. So let's say we want speed, so we pick cleft flash. Cleft flash can help you prune your tool list. Maybe it only needs 10 out of the 40 tools that are available. So you only need to pick 10 of those. Then let's say you take cleric and you use it to extract the values from the input. So it can get the PR number without reasoning and thinking about it too long.
+
+[00:55:16.220—00:55:35.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3316s)
+
+接下来可以写一点编排代码去调用这些 API，直接拿回结果。再让 Clairic 从日志里提取数据。一般用 LLM 时，你大概会把整段日志都粘进去，可能有 300 行，也可能有 600 行。
+
+And then let's say you just orchestrate some code here to execute these API calls, and you can actually just get those answers back. Then you ask Cleric again to pull the data from the logs. So normally when you're working with an LLM, you probably just paste in all of the logs, all 300, 600 lines of logs.
+
+[00:55:35.360—00:55:55.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3335s)
+
+Clairic 可以直接把日志读一遍，告诉你具体哪里出错了、报错是什么、影响了哪几行代码。这样就能大幅缩短上下文。原本要用 LLM 采取行动、作决定、提取字段，现在同一个 Agent 可以用 System 1 模型配合完成。
+
+But Cleric can actually just go through and read those and say, here's the exact error, here's the error message, here are the lines of code it's affecting. And you're basically shrinking your context a lot. you use an LLM to actually do take action and make decisions and take action and extract values altogether, this same agent can run with system one.
+
+## 读懂现场与先前的对照结果 / Reading the live and earlier comparisons
+
+[00:55:55.960—00:56:10.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3355s)
+
+我们来现场跑一下，看看效果。我要点一下，同时运行两套流程。这是现场演示。我先说一下，Cloudflare 的 Workers AI 用量有明显的昼夜变化。
+
+Let's do a little bit of a live demo. Let's see how it goes. We're going to have to click run both here. This is a live demo. And I will say that Cloudflare, our workers AI, has a very diurnal usage pattern.
+
+[00:56:10.860—00:56:20.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3370s)
+
+现在正值工作时段，我们看看会跑得怎么样。这个例子可以让大家大致看到过程。我们用的还是会场 Wi-Fi，大家稍微耐心一点。
+
+So we're in the middle of the workday. So we'll see how this goes. but it'll give you some illustrative example here of how it goes. And we're also dealing with conference Wi-Fi, so bear with me here.
+
+[00:56:20.920—00:56:41.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3380s)
+
+好了，System 1 这一边已经结束了，全程用 LLM 的方案还在跑。即使只看这一次，你也能看到 System 1 这一组模型快很多。看这个简单的瀑布图就知道，System 1 这一段比实际生成花的时间少得多。图上的紫色条就是生成的部分。
+
+All right, the System 1 model side finished already, and the all-LLM one is going, so I think even illustratively you can see that the System 1 set of models is a lot faster. Even by just this simple waterfall chart, you can see that the System 1 part takes so much less time than the actual generation, which is the purple bars here.
+
+[00:56:43.580—00:56:55.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3403s)
+
+最后两套流程都得到了答案，所以这次质量没有受到影响。时间短了很多，花费也少了很多。LLM 调用从六次降到一次，LLM token 从 4 万降到 1,800。
+
+We ended up getting to the answer at the end, so the quality was not affected, but it took a lot less time, it was a lot cheaper, six LLM calls versus one, 40,000 LLM tokens versus 1,800.
+
+[00:56:56.020—00:57:10.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3416s)
+
+你看，即使在开发流程里，也可以把 System 1 和 System 2 模型配合起来用，更快得到答案。答案一样，消耗的 LLM 时间和成本只剩原来的一小部分。
+
+And so you can see how you can use these kind of system one and system two models, even in like developer workflows, in order to get you to your answer faster. So the same answer, but it took a fraction of the LLM time and cost, right?
+
+[00:57:10.540—00:57:29.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3430s)
+
+我之前用的不是会场 Wi-Fi，那次大约是 9.2 秒，全用 LLM 的方案是 17.2 秒，差不多快了一倍，成本低了 72%。LLM 调用从五次降到一次，token 大约少了 94%。
+
+I ran this when we were not doing conference Wi-Fi, but we had about 9.2 seconds and 17.2 seconds on the LLLM. It was almost two times faster. It was 72% less expensive. We shrunk our LLM calls from five down to one, and it was about 94% less tokens.
+
+[00:57:30.100—00:57:48.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3450s)
+
+这个例子是为了说明 System 1 和 System 2 怎么配合。你可以继续使用 LLM，让 System 1 帮它分担工作，给其他更重要的任务腾出时间和算力。
+
+And so this is an illustrative example of how you could be using the System 1 and System 2 models in tandem. It's not intended to completely replace your LLM usage, but it can augment it and make it better by allowing you to free up time and compute for your other more important tasks here.
+
+[00:57:48.600—00:58:00.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3468s)
+
+也可以跑并发量更大的任务，因为这些模型有能力处理更多工作。这就是其中一个例子。我还想在屏幕上快速展示一下，
+
+And you can now do higher concurrency tasks because these models are able and capable to do so much more. And so that was one illustrative example. I just wanted to flash on the screen really quickly as well.
+
+## 从新模型回到工作流选择 / From new models to workflow choices
+
+[00:58:00.080—00:58:12.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3480s)
+
+大家还拿 Clef 和 Clairic 做了哪些东西。你可以做各种路由器，让模型决定该往哪条路径走。我们也看到不少欺诈检测场景，比如判断垃圾信息或钓鱼内容。
+
+What else are people building with Clef and Cleric, right? There's a lot of routers that you can build and making decisions there. There's fraud that we've been seeing a lot, like spam or phishing, it can make decisions on there.
+
+[00:58:12.740—00:58:23.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3492s)
+
+用 Clairic，可以从网页、客服工单之类的地方提取数据。还有一件事我很期待，我们有一个 Clairic 的新版本要发布。我们已经放出了早期预览，接下来还会上线。
+
+With cleric, you can use it to extract data from web pages or support tickets and things like that. I'm excited to see, we actually have a new launch coming out for cleric. We released an early preview, but it's coming out.
+
+[00:58:23.720—00:58:37.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3503s)
+
+试用的人越来越多，这些用途也会继续增加。现实世界里还有很多可做的事，我们的范围也可以继续扩大。[此处转写有缺漏] 现在有了这些新的做法，我觉得大家都应该用起来，试着做点东西。
+
+So these use cases will grow as people are trying it out more and more. But the idea is that there's so much in the world, we're not limited to just Now these new paradigms have been introduced, and I think we should all take advantage of that and try building with it.
+
+[00:58:39.160—00:58:51.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3519s)
+
+我们刚才回头看过，也往前看了。我觉得最重要的是接着走下去。这一行，不管你喜欢不喜欢，都得反应快，因为事情说变就变。
+
+And so we went backwards, we went forwards, but I think the most important thing here is that we go onwards, right? We have to be very reactive in this industry, love it or hate it, things just change on a whim.
+
+[00:58:52.120—00:59:06.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3532s)
+
+当年我们在 Cloudflare 发现原来的假设没应验，就得调整方向，开始提供这些超大 LLM 的服务。我们想做 Agent Cloud，提供这些模型符合我们对平台的定位。
+
+If we as Cloudflare back in the day said our hypothesis was wrong, we have to go and actually pivot and start serving these giant LLMs in order to take advantage of the fact that we want to be an agent cloud and that it makes sense for our story.
+
+[00:59:07.080—00:59:41.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3547s)
+
+东风来了，决策模型正好契合我们的基础设施，我们就得再变一次，成为一家新兴模型实验室。坐在这里回顾是一回事，更重要的是接住发生的变化，继续向前。我最后再留给大家一句话，出自托尔斯泰的一个故事。请记住，重要的时间只有一个，就是现在。现在最重要，因为只有在现在，我们才能做点什么。最后，除了这句话，我还想问大家
+
+When an east wind comes and we need to have decision models because it fit perfectly with our infrastructure story, we have to pivot and be a Neolab as well. So it's not, it's one thing to sit here and look back, but the more important thing is that we took what we had in stride and moved forwards. So I'll leave you with one last quote here, which is a story from Tolstoy. Remember then, there's only one time that is important now. It is the most important time because the only time when we have any power. And so I'll leave you with this quote and a
+
+[00:59:41.440—00:59:43.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=3581s)
+
+一个问题，你今天打算做出什么？
+
+question of what are you going to build today?

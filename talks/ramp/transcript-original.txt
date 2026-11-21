@@ -1,0 +1,224 @@
+Ramp 怎样让同事接得上 Agent 做过的事？
+Zach Bruggeman
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[07:48:52.040 --> 07:48:53.200] Thank you so much.
+[07:48:53.580 --> 07:48:54.840] So let's get a second here.
+[07:48:55.900 --> 07:48:57.260] Any 49ers fans?
+[07:48:58.860 --> 07:49:02.440] Okay, that's a better reaction I've gotten to other events this year when I've asked
+[07:49:02.440 --> 07:49:03.780] you know about their local sports teams.
+[07:49:03.820 --> 07:49:07.560] I've gotten a lot of just like muted signs after the, you know, well, wrong audience
+[07:49:07.560 --> 07:49:10.040] for that type of joke, but glad at least I could hit this time.
+[07:49:28.220 --> 07:49:29.260] Do you need help?
+[07:49:57.260 --> 07:49:58.900] And then, .
+[07:49:58.900 --> 07:49:59.980] Yeah, perfect.
+[07:50:00.920 --> 07:50:02.040] All right, good.
+[07:50:02.360 --> 07:50:03.960] Well, thanks so much for waiting, everyone.
+[07:50:04.160 --> 07:50:06.260] My name is Zach, and I'm an engineer at RAMP.
+[07:50:06.420 --> 07:50:08.480] I'm just really excited to tell you all a bit
+[07:50:08.480 --> 07:50:11.060] about how RAMP has evolved its engineering culture this year
+[07:50:11.060 --> 07:50:13.640] through the help of our robotic friend, Inspect.
+[07:50:14.400 --> 07:50:16.440] As a quick introduction, Inspect is
+[07:50:16.440 --> 07:50:18.040] RAMP's collaborative coding agent.
+[07:50:18.240 --> 07:50:20.400] About a year ago, we decided to take a bet
+[07:50:20.400 --> 07:50:23.000] on building our own coding agent with every session running
+[07:50:23.000 --> 07:50:24.920] remotely and being fully multiplayer.
+[07:50:24.920 --> 07:50:30.580] Inspect can work alongside you and your team, whether that be an Inspect itself, Slack, Linear,
+[07:50:30.700 --> 07:50:37.320] or any other of our integrations. And now it goes far beyond just writing the code with the design
+[07:50:37.320 --> 07:50:42.660] primitives, review agents, and verification players that let any builder go from prompt to
+[07:50:42.660 --> 07:50:47.280] shipping all inside Inspect. Inspect is also connected with all of our integrations company-wide,
+[07:50:47.420 --> 07:50:51.740] so everyone's automatically connected to the data and tools that matter most, whether that be
+[07:50:51.740 --> 07:50:58.200] telemetry, databases, or any of the other tooling available. Through this we now see
+[07:50:58.200 --> 07:51:04.100] around 75% of all of RAMP's code being written and shipped by Inspect.
+[07:51:05.220 --> 07:51:08.760] When we started sharing Inspect publicly at the start of the year, the technology
+[07:51:08.760 --> 07:51:13.120] itself was the more novel part, spinning up sandboxes in under five seconds, wiring
+[07:51:13.120 --> 07:51:16.600] up all that internal context, having agents work together in a multiplayer
+[07:51:16.600 --> 07:51:20.880] setting. People had a lot of questions about the plumbing, but now with much
+[07:51:21.740 --> 07:51:26.100] of these concepts, and Inspect itself now being a product on the market, the technology
+[07:51:26.100 --> 07:51:27.940] isn't nearly the barrier that it once was.
+[07:51:28.560 --> 07:51:32.120] Instead, I want to talk about the other angle, the lessons we've learned around building
+[07:51:32.120 --> 07:51:36.260] a culture around Inspect and what you can take away to inspire the people and teams
+[07:51:36.260 --> 07:51:37.180] that you work with.
+[07:51:39.140 --> 07:51:42.480] I'm not going to talk as much about those technical aspects of Inspect today, but if
+[07:51:42.480 --> 07:51:47.080] you are curious about that, you can read our blog posts or take a look at Pragmatic Engineer's
+[07:51:47.080 --> 07:51:48.840] deep dive that they did with us a few months ago.
+[07:51:48.840 --> 07:51:53.580] You can also follow my boy Dylan Garcia on Twitter. He's on his social media grind,
+[07:51:53.600 --> 07:51:59.440] but he's also been posting a ton of really great inspect insights since we've launched it. So shout
+[07:51:59.440 --> 07:52:05.480] out Dylan. Please give him a follow. One thing about working at RAMP is that it really makes
+[07:52:05.480 --> 07:52:10.120] you start thinking about everything through the lens of saving time and money. And although I
+[07:52:10.120 --> 07:52:14.260] think it is important to understand the systems that you work with and understand how your tooling
+[07:52:14.260 --> 07:52:19.880] works, if you're a multi-hundred or multi-thousand person organization and everyone has to go through
+[07:52:19.880 --> 07:52:27.040] say 15 minutes of setup, once you start multiplying that across an organization, this is days lost for
+[07:52:27.040 --> 07:52:33.960] what is very rote work. Then, if you consider how fast the frontier moves here on best practices and
+[07:52:33.960 --> 07:52:39.400] new ways to set up an agent, you realize this setup cost isn't just one time. Not to mention,
+[07:52:39.400 --> 07:52:41.920] these advancements won't always spread equally.
+[07:52:42.260 --> 07:52:45.200] So now you have an indeterminate amount of time and effort
+[07:52:45.200 --> 07:52:47.940] spent on this maintenance without an equal spread of knowledge,
+[07:52:48.080 --> 07:52:50.600] leading to disparate outcomes across an organization.
+[07:52:51.180 --> 07:52:54.240] While you can perceive this as an advantage on an individual level,
+[07:52:54.580 --> 07:52:57.240] when you're trying to win, you need everyone on your A-game.
+[07:52:58.400 --> 07:53:02.920] So this was our first lesson, build tools that kill information silos.
+[07:53:03.440 --> 07:53:07.420] When we found patterns that worked well or tools that benefited everyone,
+[07:53:09.400 --> 07:53:14.080] organization immediately. If you want to spend time tweaking your own setup, that's fine, but
+[07:53:14.080 --> 07:53:19.160] Inspect is always available as a very solid baseline. And what we've found is that we've never
+[07:53:19.160 --> 07:53:24.380] needed to mandate usage of Inspect because it existing as this baseline reduced the need for
+[07:53:24.380 --> 07:53:30.800] people to reach for their own setups all the time. Part of what I think makes this powerful as well
+[07:53:30.800 --> 07:53:36.960] is that the reality of this industry is that it's unlikely that you, as an individual, always know
+[07:53:36.960 --> 07:53:42.100] the absolute best way to work with agents across everything. Even if keeping up with this is your
+[07:53:42.100 --> 07:53:48.240] full-time job, we all miss things, hold biases, and have blind spots. So part of the design of
+[07:53:48.240 --> 07:53:53.700] Inspect is that there's just one single Inspect for the whole company. When people figure out
+[07:53:53.700 --> 07:53:57.500] better ways to use it or have ideas for what would make it better for the work they do,
+[07:53:57.740 --> 07:54:02.900] we're able to bring it to the entire company. The best part of this is that for most changes,
+[07:54:02.900 --> 07:54:04.860] this is invisible to everyone else.
+[07:54:05.100 --> 07:54:07.660] You just keep using Inspect as you normally would
+[07:54:07.660 --> 07:54:09.100] and benefit from the improvements
+[07:54:09.100 --> 07:54:10.360] that everyone's making over time.
+[07:54:12.080 --> 07:54:14.520] And what we found is that we really don't have to run
+[07:54:14.520 --> 07:54:16.040] these formal sit down,
+[07:54:16.240 --> 07:54:19.060] here's how you use AI effectively training sessions
+[07:54:19.060 --> 07:54:19.640] for Inspect.
+[07:54:20.020 --> 07:54:22.320] With every Inspect session being public
+[07:54:22.320 --> 07:54:23.740] within the company by default,
+[07:54:24.000 --> 07:54:27.000] it's actually easier to work in public than in private.
+[07:54:27.200 --> 07:54:30.020] As such, you default to working in public
+[07:54:30.020 --> 07:54:31.620] and you can learn how to use it
+[07:54:32.900 --> 07:54:37.300] teammates use it in the channels that you're already in, and your teammates can learn from you.
+[07:54:37.640 --> 07:54:42.320] You can literally ask Inspect to go through their recent sessions and tell you about how they work,
+[07:54:42.540 --> 07:54:45.720] how they structure prompts, or how they break down gnarly problems.
+[07:54:47.180 --> 07:54:52.200] I think this has not just been helpful for the builders at Ramp, but also for the Inspect team
+[07:54:52.200 --> 07:54:58.460] itself. We frequently see the way that people use Inspect in ways that we didn't originally imagine.
+[07:54:58.460 --> 07:55:03.700] This then informs what we should build towards, whether that should be more native primitives
+[07:55:03.700 --> 07:55:06.380] for common patterns or where tools and data are missing.
+[07:55:06.820 --> 07:55:11.340] All in all, it creates this self-sustaining loop where we're able to build towards what
+[07:55:11.340 --> 07:55:16.260] makes Inspect the most successful by seeing what people are already achieving with Inspect.
+[07:55:18.280 --> 07:55:20.220] This feeds into the second lesson that we've learned.
+[07:55:20.440 --> 07:55:21.940] It's all about building trust.
+[07:55:22.180 --> 07:55:27.680] I think it's fair to say that adopting agentic-driven coding has been a massive trust-building
+[07:55:28.460 --> 07:55:32.860] every engineer this year. It's helped that the models have become more competent at writing
+[07:55:32.860 --> 07:55:38.100] high quality code, but there's a large part of this that's just learning to trust what an agent builds.
+[07:55:39.360 --> 07:55:43.920] So much of building trust in tools comes from learning from other people. After all, that's
+[07:55:43.920 --> 07:55:48.860] why most of us are here, right? You wanted to listen to people you respect, or at least I hope
+[07:55:48.860 --> 07:55:54.220] you respect, teach you about the things that they learned. But if we limit our corpus of knowledge
+[07:55:54.220 --> 07:55:59.540] to just those who find the perverse enjoyment in public speaking, we're still not getting the full
+[07:55:59.540 --> 07:56:06.180] picture. This democratization of knowledge sharing is just fascinating to me as a concept. Instead of
+[07:56:06.180 --> 07:56:10.680] grouping around a select few leaders, can we build systems that inherently share the knowledge of
+[07:56:10.680 --> 07:56:18.460] everyone? This is what Inspect has built towards. Every time someone ships something with Inspect,
+[07:56:18.700 --> 07:56:23.680] people can see it right there on the work you've done. The session itself is easy to share.
+[07:56:24.220 --> 07:56:29.500] a living artifact of how that change came to be. When a pull request goes up, anyone reviewing it
+[07:56:29.500 --> 07:56:34.900] doesn't just see the 400-line diff dropped over the wall and hope for the best. They can see the
+[07:56:34.900 --> 07:56:41.000] exact conversation that you had, all the tools that InSpec used, before and after screenshots,
+[07:56:41.360 --> 07:56:46.280] or even a video recording of the verification agent clicking through the app in the browser
+[07:56:46.280 --> 07:56:52.740] to prove its work holds up. It makes it effortless to show not just what changed, but why you can trust it.
+[07:56:54.260 --> 07:56:58.360] It also just makes it easier to bring people you don't work with all the time into the fold.
+[07:56:58.840 --> 07:57:01.500] A fun moment on this one, it was back in February.
+[07:57:01.840 --> 07:57:04.560] One of our engineers, Andrew, reported a bug in Inspect.
+[07:57:05.140 --> 07:57:08.620] So naturally, I reached for Inspect and asked it to investigate.
+[07:57:09.360 --> 07:57:13.220] What's funny here is that although Inspect had access to Datadog for a while,
+[07:57:13.540 --> 07:57:15.840] we'd only just finished instrumenting Inspect itself.
+[07:57:16.280 --> 07:57:19.900] I mean, Inspect was primarily built by front-end e-product engineers,
+[07:57:20.200 --> 07:57:22.580] so tracing is a little bit of a foreign concept for us.
+[07:57:24.220 --> 07:57:26.660] is a great time for us to put it to the test for inspect.
+[07:57:27.020 --> 07:57:31.000] And inspect says, the instrumentation
+[07:57:31.000 --> 07:57:31.940] was causing the error.
+[07:57:32.180 --> 07:57:34.720] Yes, the very instrumentation that was letting us debug
+[07:57:34.720 --> 07:57:36.680] this error was actually causing this error.
+[07:57:37.680 --> 07:57:41.200] So Dylan and I were not exactly convinced by the robot here.
+[07:57:41.580 --> 07:57:44.640] And Andrew is just like, whatever, I'll use Cloud Code.
+[07:57:44.840 --> 07:57:47.840] And while we don't have a mandate to use inspect,
+[07:57:48.400 --> 07:57:51.260] I mean, personally, these were not the words I wanted to hear.
+[07:57:52.600 --> 07:57:58.800] So nobody here is really trusting anybody. Dylan and I don't trust the robot's explanation.
+[07:57:59.500 --> 07:58:05.260] Andrew doesn't trust us to build something that works. And Inspect, well, I don't know if
+[07:58:05.260 --> 07:58:10.540] Inspect trusts anyone, but that's okay. That's okay. But because this is happening together in
+[07:58:10.540 --> 07:58:16.320] public, we keep prodding at it. Dylan asked Inspect to look through the code of the telemetry library
+[07:58:16.320 --> 07:58:20.240] we're using and see if this was just something that was happening before without visibility.
+[07:58:21.260 --> 07:58:22.740] Early by now, coding has been solved,
+[07:58:22.920 --> 07:58:24.560] and there can't be bugs that we introduced.
+[07:58:25.080 --> 07:58:27.940] And this time it comes back with something a bit more specific.
+[07:58:28.200 --> 07:58:31.720] The OTEL library calls fetch, but it never reads or cancels
+[07:58:31.720 --> 07:58:32.380] the response body.
+[07:58:32.660 --> 07:58:34.480] This was just a Cloudflare platform
+[07:58:34.480 --> 07:58:36.620] limitation at the time, albeit happening
+[07:58:36.620 --> 07:58:38.960] in a library specifically made for Cloudflare workers.
+[07:58:39.440 --> 07:58:40.280] But that happens.
+[07:58:40.380 --> 07:58:42.580] This library was written pre-AGI, after all.
+[07:58:43.420 --> 07:58:46.020] At this point, we ask Inspect to make a patch.
+[07:58:46.220 --> 07:58:49.140] It updates the exporter to explicitly cancel the response
+[07:58:49.140 --> 07:58:49.460] body.
+[07:58:51.260 --> 07:58:52.820] in the thread a bit while it's deploying,
+[07:58:52.980 --> 07:58:54.820] but we see after it deployed, there
+[07:58:54.820 --> 07:58:55.960] haven't been any errors since.
+[07:58:56.220 --> 07:58:59.480] So great, inspect fixed a bug, which at this point,
+[07:58:59.620 --> 07:59:01.120] it's nothing special in itself.
+[07:59:01.360 --> 07:59:03.480] But there was a much more important story
+[07:59:03.480 --> 07:59:04.760] playing out in this thread.
+[07:59:06.520 --> 07:59:08.320] Before inspect, a report like this
+[07:59:08.320 --> 07:59:10.520] might have been acknowledged, a ticket filed,
+[07:59:10.760 --> 07:59:12.880] and then one of us would have gone away to debug it.
+[07:59:13.220 --> 07:59:15.860] Andrew might have received a message later saying it was fixed,
+[07:59:15.960 --> 07:59:18.180] but the interesting work would have been done in private.
+[07:59:18.880 --> 07:59:25.780] Now, though, it's easier to do all of this in public. And as such, Andrew naturally starts
+[07:59:25.780 --> 07:59:30.540] becoming engaged, wanting to chime in with his thoughts and experiences. And then in that same
+[07:59:30.540 --> 07:59:35.660] thread, this leads to ideas coming up about how Inspect could power other work. And none of this
+[07:59:35.660 --> 07:59:40.340] required any prodding or pressure to work together. Instead, it was just like, oh, these guys are
+[07:59:40.340 --> 07:59:47.300] doing something cool, and we could work on it together. So in the span of an hour, we go from
+[07:59:48.180 --> 07:59:51.220] with a broken user experience to an engaged colleague
+[07:59:51.220 --> 07:59:54.020] wanting to build together and a more stable inspect.
+[07:59:55.360 --> 07:59:59.980] So once you have a tool that gives everyone the best setup on day one with no
+[08:00:00.000 --> 08:00:04.240] information silos and you've built a system of trust that brings innovation together,
+[08:00:04.600 --> 08:00:10.540] what happens next? This is the last lesson I want to share. I think the only thing left is to think
+[08:00:10.540 --> 08:00:16.860] bigger together. Something that's pained me this year is how much reverence has been built for the
+[08:00:16.860 --> 08:00:23.020] lone wolf operator. It's great that we can all do more individually with the help of AI, but this
+[08:00:23.020 --> 08:00:28.880] can't be the end game in my opinion. If we don't build outwards, collaborate with other people,
+[08:00:30.000 --> 08:00:34.300] share the progress and learnings we make, I think this is all going to collapse in on itself.
+[08:00:34.780 --> 08:00:38.940] We'll only consider ourselves as our target audience, and we won't grow through the
+[08:00:38.940 --> 08:00:43.980] consideration of others' perspectives and experiences. This is not to say I'm all doom
+[08:00:43.980 --> 08:00:47.980] and gloom about this. The fact we're all here hopefully is a testament to the value of connection.
+[08:00:48.720 --> 08:00:53.100] More importantly, though, I think we can shape our tools to enable these connections to flourish
+[08:00:53.100 --> 08:00:59.260] even stronger than before. That story I told about Andrew has played out so many times within
+[08:01:00.000 --> 08:01:02.720] It's probably the most inspiring thing about InSpec to me, honestly.
+[08:01:03.560 --> 08:01:07.500] Sure, it's a coding agent, but remarkably, it's become part of the culture.
+[08:01:07.800 --> 08:01:11.840] Everyone at RAMP knows its face, we dress it up on holidays,
+[08:01:12.140 --> 08:01:17.380] we throw in Easter eggs over time, and we evolve it as RAMP itself has evolved.
+[08:01:17.800 --> 08:01:21.300] Not L iterations have been perfect, as any RAMP engineer could tell you,
+[08:01:21.460 --> 08:01:24.360] but I do think every iteration has been together.
+[08:01:26.020 --> 08:01:29.360] Going back to earlier this year, InSpec didn't have nearly the amount
+[08:01:30.000 --> 08:01:36.860] it has today. A great example is its code review agent. Before this, we were using various off-the-shelf
+[08:01:36.860 --> 08:01:41.780] code review products, frequently rotating between them to find a good fit. At some point, though,
+[08:01:41.980 --> 08:01:46.020] a couple engineers, Daniel and Frangel, realized that we could probably build it ourselves,
+[08:01:46.260 --> 08:01:50.440] as Inspect already had automation triggers that fired from a variety of sources,
+[08:01:50.680 --> 08:01:56.300] including when a pull request was opened. With just what we built already, they got to work
+[08:01:56.300 --> 08:02:01.560] building another beloved agent at RAMP, ReviewBuddy. And what was so cool about this is that,
+[08:02:01.720 --> 08:02:07.420] much like Inspect's own origins as a side project, these engineers were working on this. They didn't
+[08:02:07.420 --> 08:02:11.840] need to ask for permission to build it. They just challenged themselves to build something better,
+[08:02:12.260 --> 08:02:16.920] used Inspect to move faster, and quickly built an agent that was better for all of RAMP.
+[08:02:18.180 --> 08:02:22.320] This really did force us working on Inspect to think about Inspect differently.
+[08:02:22.320 --> 08:02:28.200] At that point in time, we were pretty okay with Inspect quote-unquote just being a coding agent,
+[08:02:28.420 --> 08:02:34.720] but once we saw what others were pushing it to do, it got us thinking about how Inspect could
+[08:02:34.720 --> 08:02:39.800] become full circle. If this push didn't happen naturally, I think it would have taken the
+[08:02:39.800 --> 08:02:46.540] Inspect team a lot longer to get there. This is what I mean about thinking bigger together.
+[08:02:47.080 --> 08:02:51.780] Especially with the continued improvements in model performance, now's the time to push yourself
+[08:02:52.320 --> 08:02:57.560] the people around you to think bigger. I encourage all of you to take some time in this coming week
+[08:02:57.560 --> 08:03:03.040] to ask everyone that you work with, what have we been waiting to do that we haven't done yet?
+[08:03:03.580 --> 08:03:08.960] And once you've found those things, try to build them together. There's really not an excuse to
+[08:03:08.960 --> 08:03:14.620] not just try anymore. You have access to the same models as everyone else, but you have to start
+[08:03:14.620 --> 08:03:20.160] somewhere. And I believe that there is so much potential in unlocking wins, not just for yourself,
+[08:03:20.160 --> 08:03:21.880] but for the people around you.
+[08:03:22.600 --> 08:03:23.920] Inspect itself was born this way,
+[08:03:24.080 --> 08:03:26.160] not only as something that I wanted to build
+[08:03:26.160 --> 08:03:27.340] and Jason wanted to build,
+[08:03:27.540 --> 08:03:30.240] but out of a want to build something for a team
+[08:03:30.240 --> 08:03:32.480] that I truly love and truly respect,
+[08:03:32.700 --> 08:03:35.280] that would just make their jobs a little more enjoyable.
+[08:03:36.680 --> 08:03:38.580] Now, if you'd like to use a coding agent
+[08:03:38.580 --> 08:03:40.440] that has embodied all these lessons that we've learned,
+[08:03:40.660 --> 08:03:43.580] I'm happy to say that Inspect is now available outside of RAMP.
+[08:03:43.660 --> 08:03:46.580] If you go to inspect.com slash AIE,
+[08:03:46.840 --> 08:03:49.100] we'll prioritize you and your team on the waitlist.
+[08:03:50.160 --> 08:03:52.720] his waitlist pretty quickly, so expect to hear from us soon.
+[08:03:53.100 --> 08:03:55.120] But otherwise, I hope you've enjoyed
+[08:03:55.120 --> 08:03:56.640] hearing about our robotic friend, Inspect.
+[08:03:56.980 --> 08:03:59.460] If these topics interest you, feel free to reach out here,
+[08:03:59.740 --> 08:04:01.860] or on X. But otherwise, thanks so much for listening.

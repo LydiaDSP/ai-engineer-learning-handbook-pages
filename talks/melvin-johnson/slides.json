@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p01",
+    "title": "Google 展示的 AI 参与新代码比例",
+    "time": "07:41:40",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27700s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图表逐期跟踪由 AI 生成、再经工程师审核通过的新代码占比。数据与右侧的使用人数都来自团队自报。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 27700
+  },
+  {
+    "id": "frame-02",
+    "after": "p09",
+    "title": "真实工程训练任务的三种来源",
+    "time": "07:46:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=27960s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>跨多文件的开源提交用来构建可复现沙箱和评分规则。从零实现的 CLI 用保留的边界测试验证。生产代码库的题目来自真实开发会话和已合入的多文件改动。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 27960
+  },
+  {
+    "id": "frame-03",
+    "after": "p14",
+    "title": "Gemini 4 各版本的编造率评估",
+    "time": "07:50:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28225s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>这页用三个模型版本对比内部评测中的编造比率。柱形值只适用于该套指标与任务。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 28225
+  }
+]

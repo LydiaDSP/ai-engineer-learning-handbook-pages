@@ -1,0 +1,256 @@
+多 Agent 交接时，编排器凭什么判断任务已经完成？
+Girish Konda
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[06:37:53.860 --> 06:37:58.400] Hey folks, this is Grish, a Principal Software Engineer at Microsoft.
+[06:37:58.840 --> 06:38:02.940] Outside my job, I build open source tools for AI agents.
+[06:38:03.380 --> 06:38:08.640] One of them is MCP Pacemaker, a supervised bridge that keeps MCP servers running.
+[06:38:10.020 --> 06:38:12.040] Before we start, a small disclosure.
+[06:38:12.560 --> 06:38:16.060] The views in this talk are my own and doesn't represent my employer.
+[06:38:17.380 --> 06:38:19.480] So, sub-agents are a distributed system.
+[06:38:20.480 --> 06:38:24.920] Over the past year, I have been using agents and sub-agents on real engineering work.
+[06:38:25.520 --> 06:38:30.240] Devositions, code reviews, instant triaging, and whatnot.
+[06:38:31.440 --> 06:38:36.540] This talk is about what happens when one agent hands work to another.
+[06:38:37.520 --> 06:38:39.340] So here's an architecture.
+[06:38:40.440 --> 06:38:46.500] The orchestrator splits the task and hands the pieces to three different sub-agents.
+[06:38:46.500 --> 06:38:48.260] They all run at the same time.
+[06:38:49.540 --> 06:38:52.480] They all read from the same shared state.
+[06:38:53.080 --> 06:38:59.680] Colonization, memory files, repo, working trees, issues, vector stores.
+[06:39:01.040 --> 06:39:03.140] And they don't just think.
+[06:39:03.440 --> 06:39:12.380] They make tool calls to real systems which touch databases, APIs, CI tools, deployment pipelines.
+[06:39:14.320 --> 06:39:21.540] and the results come back and orchestrator merges them into a single answer. An orchestrator
+[06:39:21.540 --> 06:39:29.000] works shared mutable state and results merge from concurrent executions. This represents a classic
+[06:39:29.000 --> 06:39:35.900] distributed system. I have known how to reason with distributed systems for decades but none of
+[06:39:35.900 --> 06:39:42.820] this setup came with it. What you get is a function that takes a string and returns a
+[06:39:42.820 --> 06:39:49.940] string. Failures we hit are not new, are not specific to the AI agents. They are classic
+[06:39:49.940 --> 06:39:58.580] distributed system failures. Partial failure, a normal call that fails halfway through and
+[06:39:58.580 --> 06:39:59.840] returns an exception error.
+[06:40:00.740 --> 06:40:05.140] In a sub-agent case, it returns a text that looks like a success.
+[06:40:06.220 --> 06:40:13.620] Dirty reads. Normally, we have isolations, versions. Here, every worker reads one shade
+[06:40:13.620 --> 06:40:16.760] context, including things another worker only guessed.
+[06:40:18.420 --> 06:40:27.180] Unbounded fan-out. A busy service pushes back with the queues, 429s, 503s.
+[06:40:27.840 --> 06:40:33.080] In agents, orchestrator does not see any of this. It just starts in the worker.
+[06:40:34.260 --> 06:40:38.740] Retries. In normal distributed systems, we build
+[06:40:38.740 --> 06:40:45.960] item potency to make retries reliable. In agents, a retried sub-agent runs the whole task again,
+[06:40:46.320 --> 06:40:53.820] with side effects included. For each of these cases, I'll name the concept it already is,
+[06:40:53.820 --> 06:41:00.440] Then I will put them together as a consistency model I am proposing and walk through why each part is there.
+[06:41:01.720 --> 06:41:04.980] Start with the failure model because everything else depends on it.
+[06:41:05.900 --> 06:41:12.080] The friendly case is a crash stop. The process that was running correctly stops and stays stopped.
+[06:41:12.800 --> 06:41:16.460] The sub-agent that throws an error in this box is easy to handle.
+[06:41:17.680 --> 06:41:21.660] Next, no reply. The call is lost or it's very late.
+[06:41:22.240 --> 06:41:23.540] We will come back to this soon.
+[06:41:25.500 --> 06:41:29.300] The hot case is the one from Byzantine General Sniper.
+[06:41:29.760 --> 06:41:32.740] A component that gives conflicting information.
+[06:41:33.260 --> 06:41:35.820] The process answers and the answer is wrong.
+[06:41:36.980 --> 06:41:39.700] A half-finished sub-agent sits closest to the box.
+[06:41:40.040 --> 06:41:43.360] It is not malicious, but from the outside it looks the same.
+[06:41:43.760 --> 06:41:44.820] It does not crash.
+[06:41:45.080 --> 06:41:45.880] It answers fluently.
+[06:41:46.440 --> 06:41:47.560] Let's jump into this.
+[06:41:48.200 --> 06:41:55.480] A sub-agent that half-finished does not raise. It returns normal looking text with the same
+[06:41:55.480 --> 06:42:02.440] type signature as success. I talked about one version of this in one of my talks. We
+[06:42:02.440 --> 06:42:09.620] appointed an agent at an LLQ. Here's an illustration I used there with three different paths which
+[06:42:09.620 --> 06:42:16.800] gave the same answer. The first one, it pulled the telemetry and compared with a known-beenign set.
+[06:42:17.560 --> 06:42:18.660] It actually did the work.
+[06:42:19.220 --> 06:42:25.740] The second one, it matched against the title it has seen before and gave the response.
+[06:42:26.880 --> 06:42:30.120] The third alert, it didn't do anything.
+[06:42:31.160 --> 06:42:33.100] It just resonated.
+[06:42:34.380 --> 06:42:37.780] All three are categorized as benign with the same level of confidence.
+[06:42:39.020 --> 06:42:41.540] And nothing downstream can tell this apart.
+[06:42:42.220 --> 06:42:46.480] The orchestrator can read the conclusion. It cannot read how much work was behind it.
+[06:42:47.900 --> 06:42:56.580] Now, the call gets no reply. The orchestrator sent work and the timeout fired. From here,
+[06:42:56.860 --> 06:43:03.240] 3 volts look the same. The subagent is still working. It crashed and the reply was lost.
+[06:43:04.200 --> 06:43:10.260] It's a hard limit, not a Turing gap. The FLP paper from 1985 showed that in an asynchronous
+[06:43:10.260 --> 06:43:17.880] a system with even one faulty process agreement can fail to finish. Chandra and 2x answer in 1996
+[06:43:18.420 --> 06:43:24.900] was failure detectors that can make mistakes they suspect did not know. I hit both directions
+[06:43:26.040 --> 06:43:34.920] in my own open source project MCP pacemaker supervised bridge. A server whose first friend
+[06:43:34.920 --> 06:43:43.040] downloads itself hit the 30 second call timeout and look broken it was slow not dead we fixed it
+[06:43:43.720 --> 06:43:49.840] by giving initialize its own timeout now the other way the server crashed during a call
+[06:43:50.360 --> 06:43:55.540] the call then timed out and the timeout overrode the exit code that explained the crash
+[06:43:56.260 --> 06:44:04.760] we fixed it by recording the timeout only when it was alive so timeout is a suspicion
+[06:44:04.920 --> 06:44:15.240] record it as unknown and keep the real cause. And now make failure a value. Let's
+[06:44:15.240 --> 06:44:21.980] take this illustration. A sub-agent returns a status, what it did, what it did
+[06:44:21.980 --> 06:44:29.220] not do, the evidence and any side effects. Partial is a normal answer here. The
+[06:44:29.220 --> 06:44:36.360] protocols already have a slot for this. In A2A, a task can end as completed, failed,
+[06:44:36.660 --> 06:44:44.780] cancelled or rejected. Or stop and ask for input. In MCP, a tool result can say is
+[06:44:44.780 --> 06:44:50.980] error true. But a sub-agent can still say completed while its text says
+[06:44:50.980 --> 06:44:55.180] something else. And a loop that only reads the text never sees the difference.
+[06:44:56.360 --> 06:45:03.800] Another split. Checking a condition and getting no is a different fact from not being able
+[06:45:03.800 --> 06:45:12.060] to check at all. My own individual internet draft on evaluation states talks about this.
+[06:45:13.340 --> 06:45:19.180] Collapse the two and you change what gets retried and who gets paged and what the audit says
+[06:45:19.180 --> 06:45:29.680] later. Next, dirty reads. Let's take this made up example from one of my talk. The subagent,
+[06:45:29.780 --> 06:45:38.080] the stretch, it writes into a shade context saying that error rate fell by 80%. It did not measure
+[06:45:38.080 --> 06:45:48.760] it. It inferred it. Now, two other sub-agents read from the same shade context. The second
+[06:45:48.760 --> 06:45:55.060] sub-agent writes a review note and picks the same sentence up. The third agent writes a
+[06:45:55.060 --> 06:46:03.380] runbook and uses it as a reason to proceed. The orchestrator merges all these three. Three
+[06:46:03.380 --> 06:46:10.080] artifacts agree. It is once an unsupported sentence, read three different times. The
+[06:46:10.080 --> 06:46:15.460] 1995 critique of SQL isolation levels defined a dirty read as, you read a value
+[06:46:15.460 --> 06:46:20.820] before the writer commits or rolls back. In a shared context, a guess is readable
+[06:46:20.820 --> 06:46:28.660] the moment it is written, and nothing marks it as unchecked. A regular fix is
+[06:46:28.660 --> 06:46:36.560] to ask three sub-agents and get a quorum. Quorums do work for a specific reason. In
+[06:46:36.560 --> 06:46:44.000] weighted voting from 1979, the read quorum plus write quorum is greater than total. So
+[06:46:44.000 --> 06:46:49.920] every read overlaps the latest write. The overlap is the guarantee. In sub-agents case,
+[06:46:50.800 --> 06:46:55.780] the three sub-agents that read the same shared context does not give you that. They are not
+[06:46:55.780 --> 06:47:01.520] independent copies. They read the same guess. Their agreement is one source counted three
+[06:47:01.520 --> 06:47:07.940] different times. Let's pick a consistency model. In databases we have a cavalry for this.
+[06:47:10.060 --> 06:47:16.160] Linearizable. Every operation appears to happen at one point in real-time order. Sequential.
+[06:47:16.720 --> 06:47:25.080] One total order that respects each process's own order. Causal. Operations that are causally
+[06:47:25.780 --> 06:47:27.100] appear in the same order everywhere.
+[06:47:27.840 --> 06:47:28.900] Session guarantees.
+[06:47:29.740 --> 06:47:35.000] There are promises to one client, like read your writes and monotonic reads.
+[06:47:35.920 --> 06:47:40.960] Eventually, if no new updates are made, reads eventually return the lost value.
+[06:47:42.620 --> 06:47:44.440] A shared context gives you none of these.
+[06:47:44.900 --> 06:47:46.680] There is no stated guarantee at all.
+[06:47:48.460 --> 06:47:51.080] And you don't need the top consistency models.
+[06:47:52.040 --> 06:47:56.220] The strongest models cannot stay available when the network splits.
+[06:47:57.220 --> 06:48:02.260] Causal in-session guarantees can, as long as each client sticks to one place.
+[06:48:03.040 --> 06:48:05.940] For sub-agents, that place is orchestrated.
+[06:48:06.560 --> 06:48:11.260] So, here's a consistency model I use for sub-agents.
+[06:48:11.860 --> 06:48:14.860] I call it SAFE handoffs.
+[06:48:15.920 --> 06:48:19.080] S stands for source feeds.
+[06:48:19.800 --> 06:48:30.220] Every fact the worker hands on carries its source version as of time and revision, and decisions read only fresh source facts.
+[06:48:31.540 --> 06:48:33.820] A at most one's effects.
+[06:48:35.180 --> 06:48:39.140] Every write has an identity and a single use approval for that exact action.
+[06:48:40.120 --> 06:48:43.480] An outcome is read back, never replayed.
+[06:48:44.620 --> 06:48:52.680] F. Fan out budgets. Each downstream gets a gate and a bounded weight, and refusal counts as a
+[06:48:52.680 --> 06:49:01.840] fail. E stands for explicit outcomes. Every handoff ends in a named state, and a timeout is unknown,
+[06:49:02.500 --> 06:49:09.360] with its cost kept. This consistency model is the one I use for my own sub-agents. It's not a
+[06:49:09.360 --> 06:49:15.380] universal model. It's based off my own public work. Some of it is in my FCB
+[06:49:15.380 --> 06:49:22.020] pacemaker bridge and some are based on my other talks and my own internet draft.
+[06:49:23.700 --> 06:49:32.880] Now let's see what's behind each letter. Guess source rates. It's the answer to
+[06:49:32.880 --> 06:49:39.600] that he reads where one worker's guess becomes another worker's fact. What helps is to treat
+[06:49:39.600 --> 06:49:47.160] every fact as a record not a sentence. Lampard's 1978 paper defined when one event happened before
+[06:49:47.160 --> 06:49:54.440] another. The fact's provenance is that record. What it was read from and when. Let's take this
+[06:49:55.240 --> 06:50:03.140] made up example, the record names, the claim and its revision, the source and its version,
+[06:50:04.160 --> 06:50:11.420] the scope and three different times when the data was current, when we read it and when
+[06:50:11.420 --> 06:50:12.100] we used it.
+[06:50:13.800 --> 06:50:16.400] Freshness is checked where the fact is used.
+[06:50:17.660 --> 06:50:27.200] In this illustration, the data ends at 905, we read it at 906 and we decided at 907.
+[06:50:28.780 --> 06:50:36.320] In this case, we picked a 5 minute limit, so the data decision at 907 is fine.
+[06:50:37.340 --> 06:50:40.460] Now at 915, a second decision came in.
+[06:50:42.280 --> 06:50:45.600] Because our freshness limit is 5, this is still recorded.
+[06:50:46.940 --> 06:50:47.980] We reject it.
+[06:50:49.320 --> 06:50:51.700] And we say that the next decision needs another read.
+[06:50:53.200 --> 06:50:56.400] This is how you separate an observation from an inference.
+[06:50:56.840 --> 06:50:59.340] An observation has a source and a read time.
+[06:50:59.900 --> 06:51:01.020] An inference has none.
+[06:51:02.640 --> 06:51:05.120] Yay, at most of it is about retries.
+[06:51:06.320 --> 06:51:12.800] This is an illustration from my article about MCP pacemaker bridge.
+[06:51:14.900 --> 06:51:16.800] The orchestrator delegates a task.
+[06:51:17.480 --> 06:51:25.020] The sub-agent calls a tool which does a real right, like creating a PR.
+[06:51:26.800 --> 06:51:27.600] The reply is lost.
+[06:51:29.200 --> 06:51:31.940] The orchestrator knows one thing, the outcome is unknown.
+[06:51:32.800 --> 06:51:35.840] So, it retries the whole task.
+[06:51:36.480 --> 06:51:37.700] The right happens again.
+[06:51:38.880 --> 06:51:40.440] This is a classic problem.
+[06:51:41.300 --> 06:51:49.600] In 1984, our PC paper says that if the call returns, the procedure ran precisely once.
+[06:51:49.940 --> 06:51:53.640] If you get an exception, it ran once or not at all.
+[06:51:54.040 --> 06:51:55.460] And you are not told which.
+[06:51:57.100 --> 06:51:59.400] So, you pick a delivery semantic.
+[06:52:00.180 --> 06:52:06.020] At most once, don't retry and accept the fact that you may be lost.
+[06:52:07.400 --> 06:52:11.720] At least once, retry and accept that duplicates are possible.
+[06:52:13.220 --> 06:52:22.000] Exactly once, it happened at least once and there is a way we can deduplicate, maybe by
+[06:52:22.000 --> 06:52:23.180] using an idempotency key.
+[06:52:24.180 --> 06:52:28.700] In MCP, item potent hint is only a hint and it defaults false.
+[06:52:28.960 --> 06:52:30.500] If you need it, you build it.
+[06:52:31.580 --> 06:52:35.360] Here's the model design from my bridge on how I handle it.
+[06:52:36.560 --> 06:52:41.780] When a client comes back after restart, the bridge replaces the client's record initialize
+[06:52:41.780 --> 06:52:42.720] against a fresh server.
+[06:52:43.160 --> 06:52:44.840] That's safe, it's just a handshake.
+[06:52:45.240 --> 06:52:47.040] And it does not restore tool state.
+[06:52:49.180 --> 06:52:51.860] What it never replaces is an uncertain tool call.
+[06:52:53.180 --> 06:52:58.520] Once the server is recycled, the bridge drains it, and calls till an answer at the deadline
+[06:52:59.060 --> 06:53:00.400] fail as potentially excluded.
+[06:53:02.220 --> 06:53:02.900] That status is honest.
+[06:53:04.340 --> 06:53:05.860] It tells the caller to go and check.
+[06:53:08.860 --> 06:53:11.680] What helped is giving every side effect an identity.
+[06:53:13.220 --> 06:53:15.500] Approval binds that exact action.
+[06:53:15.800 --> 06:53:16.940] It's only used once.
+[06:53:18.580 --> 06:53:20.980] After the call, read back by that identity.
+[06:53:22.060 --> 06:53:25.640] Submitted is not confirmed. Confirmed means you observe their effect.
+[06:53:27.300 --> 06:53:31.560] The last part of A. It shows up when work passes and resumes.
+[06:53:32.400 --> 06:53:37.340] A lease is a lock with a timeout. Martin Kleppman's post about distributed
+[06:53:37.340 --> 06:53:43.740] locking shows this problem. A client passes while holding it. The lease
+[06:53:43.740 --> 06:53:48.660] expects. Someone else takes over and the first client wakes up and writes anyway.
+[06:53:49.880 --> 06:53:56.660] The fix he proposed is a fencing token, a number that goes up every time the lock is
+[06:53:56.660 --> 06:53:56.940] granted.
+[06:53:58.160 --> 06:54:04.460] The storage remembers the highest token it has seen and rejects any right with a old
+[06:54:04.460 --> 06:54:04.620] one.
+[06:54:06.260 --> 06:54:09.120] Sub-agents pause and resume all the time.
+[06:54:10.140 --> 06:54:15.940] In my other talk, as I put it, restore context, not side effects.
+[06:54:15.940 --> 06:54:18.360] So treat an approval like a fencing token.
+[06:54:19.100 --> 06:54:20.320] One action, one use.
+[06:54:20.980 --> 06:54:21.680] Checked at the gate.
+[06:54:22.580 --> 06:54:24.220] Not remembered in the prompt or conversation.
+[06:54:26.300 --> 06:54:29.100] My bridge fixed the same class of bug.
+[06:54:29.800 --> 06:54:35.160] A stale exit or a deleted resume can no longer remove or bring back a replacement session.
+[06:54:37.220 --> 06:54:41.000] If fanout budgets is about unbounded fanout.
+[06:54:41.560 --> 06:54:43.800] This is flow control or the lack of it.
+[06:54:43.800 --> 06:54:49.000] I hid this issue in my own MCP bridge before it had a limit on cold starts.
+[06:54:50.980 --> 06:54:55.640] Many sessions start their service at the same time through NPX.
+[06:54:56.880 --> 06:54:58.420] They share one package cache.
+[06:54:59.220 --> 06:55:02.340] Every one of them failed with NPM's log compromise error.
+[06:55:03.420 --> 06:55:05.540] Nothing in any single request was wrong.
+[06:55:06.060 --> 06:55:07.740] The failures was the concurrency itself.
+[06:55:08.780 --> 06:55:12.940] And when a downstream does push back, it can arrive as a plain text.
+[06:55:13.860 --> 06:55:17.140] This is MCP specs one example of tool execution error.
+[06:55:17.400 --> 06:55:19.860] A rate limit has one sentence.
+[06:55:20.980 --> 06:55:21.940] The model reads the sentence.
+[06:55:22.240 --> 06:55:24.160] The orchestrator code may never look.
+[06:55:24.500 --> 06:55:25.980] The next worker starts an e-mail.
+[06:55:27.800 --> 06:55:30.860] So I introduce a quota budget in my bridge.
+[06:55:32.020 --> 06:55:38.400] cold starts that use a package manager go through a gate, two at a time by default.
+[06:55:39.080 --> 06:55:43.360] Everyone else waits and the wait is bounded at 15 seconds.
+[06:55:43.860 --> 06:55:46.440] Past that, the start goes ahead without a gate.
+[06:55:47.860 --> 06:55:54.720] And I documented why. A corrupted cache is a risk, while a hung client request is certainty.
+[06:55:55.420 --> 06:55:58.860] That is a choice for availability, made on purpose and written down.
+[06:56:00.860 --> 06:56:09.220] I also built the cap on sessions. At the cap, a new session waits up to 10 seconds and then
+[06:56:09.220 --> 06:56:16.340] it's refused. That refusal now counts as a failure in health. Another bug, capacity has to be reserved
+[06:56:16.340 --> 06:56:23.380] before the synchronous start, not after. Otherwise, queued starts overbook the cap.
+[06:56:23.620 --> 06:56:29.900] That is a check then act raise. For sub-agents, give the orchestrator a number per downstream,
+[06:56:31.100 --> 06:56:41.080] and a refusal it can see. Now, E, the explicit outcomes. Every hand of ends in a named state,
+[06:56:41.260 --> 06:56:48.300] like stale or unknown, not just text. The last piece is who decided that state. Treats
+[06:56:48.300 --> 06:56:52.600] of the agent output as untrusted input, the same way you treat a request body from the
+[06:56:52.600 --> 06:56:59.560] internet. The orchestrator owns the checks, in code. Does the result match the schema?
+[06:57:00.860 --> 06:57:07.500] there is it fresh enough? Do the numbers hold when you recompute them? If a check fails,
+[06:57:08.000 --> 06:57:13.660] the step returns a refusal with a reason. It does not pass the text along with a warning paragraph
+[06:57:13.660 --> 06:57:19.940] underneath. If the same model can skip a check and declare it passed, you have a request, not a
+[06:57:19.940 --> 06:57:27.140] boundary. Here's a made-up example from another talk. A sub-agent says the error rate fell.
+[06:57:28.000 --> 06:57:31.000] Before, it was 10 errors in 1000 requests.
+[06:57:31.860 --> 06:57:34.420] After, it was 6 errors in 600 requests.
+[06:57:35.020 --> 06:57:37.860] It went from 10 to 6 and it claimed that error rate fell.
+[06:57:38.620 --> 06:57:42.480] But when we computed the rate, it's both 1%.
+[06:57:43.580 --> 06:57:46.220] We recomputed it and then the claim is refused.
+[06:57:47.600 --> 06:57:49.360] A supported answer is fine.
+[06:57:49.660 --> 06:57:51.760] A deliberate handoff to a person is fine.
+[06:57:52.100 --> 06:57:53.880] A confident guess it's not.
+[06:57:54.900 --> 06:58:00.360] So limitations because the consistency model is only useful when you know where we should start.
+[06:58:01.620 --> 06:58:11.440] So here's what SAFE model does not do. It does not make facts. A source fact is checkable,
+[06:58:11.580 --> 06:58:17.840] not correct. It does not give you exactly once delivery. A lost reply
+[06:58:17.840 --> 06:58:25.620] stays unknown until you read it back. It does not roll anything back. Undoing a partial task
+[06:58:25.620 --> 06:58:33.200] is a compensation step you design, like the Saga's paper from 1987. And finally, there's no global
+[06:58:33.200 --> 06:58:43.220] order across workers. Only causal order, per fact. And it has a price. CAP theorem says that when the
+[06:58:43.220 --> 06:58:49.560] network splits you trade off availability against consistency. MyBridge
+[06:58:49.560 --> 06:58:57.060] shows availability for cold starts on purpose. For writes, Safe picks consistency
+[06:58:57.060 --> 06:59:05.320] over availability. It refuses rather than guesses. Paclac adds that even without
+[06:59:05.320 --> 06:59:11.040] failures you trade latency for consistency. Every freshness check is
+[06:59:11.040 --> 06:59:22.080] another read and every refusal needs an owner. So, where it does not fit? If a subagent only
+[06:59:22.080 --> 06:59:28.880] drafts text that a person reads before anything happens, most of this is a workhead. It also
+[06:59:28.880 --> 06:59:34.060] assumes that there is one single orchestrator. If you have more, this does not fit.
+[06:59:35.580 --> 06:59:39.780] Peer agents with no single place to stick to need something else.
+[06:59:40.940 --> 06:59:46.440] This is the consistency model I use for my own agents that touch actual real production systems.
+[06:59:47.140 --> 06:59:48.200] It's not universal.
+[06:59:49.240 --> 06:59:52.100] So, wrapping up, here's 3 key takeaways.
+[06:59:53.260 --> 06:59:56.380] Treat every handoff to a sub-agent as a network call.
+[06:59:56.800 --> 06:59:58.240] It can fail a half way.
+[06:59:58.700 --> 06:59:59.760] It can be slow.
+[07:00:00.000 --> 07:00:06.360] and it can come back twice. Return states, not just text. If the result cannot say partial,
+[07:00:06.700 --> 07:00:14.600] stale or unknown, the orchestrator will read it as done. And start with our save consistency model
+[07:00:15.120 --> 07:00:21.500] and enforce it in code. Keep what fits and change what does not. We already know how to build
+[07:00:21.500 --> 07:00:27.960] distribute systems. We just have to notice that we are building one. So these are some of the sources
+[07:00:28.840 --> 07:00:35.940] behind this talk on the left side it's my own work my open source projects my
+[07:00:36.600 --> 07:00:47.340] articles and drafts and my talks on the right side specs and standards and a bunch of papers
+[07:00:47.340 --> 07:00:55.980] behind each concept thank you hello my name is Nikolai Petrov and we will be talking about

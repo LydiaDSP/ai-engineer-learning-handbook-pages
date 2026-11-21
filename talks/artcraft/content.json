@@ -1,0 +1,146 @@
+[
+  {
+    "id": "p01",
+    "start": 4853.54,
+    "time": "01:20:53 至 01:22:45",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=4853s",
+    "zh": "Brandon Thomas 说，一个 Agent 参与制作的类 Photoshop 项目在团队主动推广前就传开了，同一批工具也引来开发者和创作者的反馈。",
+    "en": "Brandon Thomas says an agent-built image editor modeled on familiar Photoshop workflows spread before the team actively promoted it. The same group of tools attracted feedback from developers and creative users.",
+    "end": "01:22:45"
+  },
+  {
+    "id": "p02",
+    "start": 4965.92,
+    "time": "01:22:45 至 01:23:38",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=4965s",
+    "zh": "他曾做基础设施工程和创业项目，也长期参与电影等创作。这里想解决的是创意工作者能不能根据自己的制作流程改工具。",
+    "en": "His background includes infrastructure, startups, and creative work such as filmmaking. That experience leads to a question about whether creators can adapt tools to their own production.",
+    "end": "01:23:38"
+  },
+  {
+    "id": "p03",
+    "start": 5018.62,
+    "time": "01:23:38 至 01:26:26",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5018s",
+    "zh": "他回忆个人架设聊天服务器、第三方客户端和可定制网站的时期。那些接口留给用户自己组合工具的空间，是他衡量今天平台的一个参照。",
+    "en": "He remembers self-hosted chat, third-party clients, and customizable websites. The room those interfaces left for people to combine tools remains a reference point for the platforms he uses now.",
+    "end": "01:26:26"
+  },
+  {
+    "id": "p04",
+    "start": 5186.42,
+    "time": "01:26:26 至 01:27:32",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5186s",
+    "zh": "演讲用订阅条款和平台收紧接口来解释具体的依赖。Thomas 认为，能导出文件并修改应用，会让使用者在工作流改变时多一种选择。",
+    "en": "The talk uses subscription terms and tighter platform interfaces to illustrate dependency. Thomas sees exportable files and editable applications as practical options when a workflow changes.",
+    "end": "01:27:32"
+  },
+  {
+    "id": "p05",
+    "start": 5252.4,
+    "time": "01:27:32 至 01:28:22",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5252s",
+    "zh": "ArtCraft 从开放的专业创作工具起步，重视用户对桌面上的作品和流程拥有控制。早期团队曾担心创作者对开放源代码的兴趣有限。",
+    "en": "ArtCraft started with open professional creative tools and emphasized control over desktop assets and workflows. The team initially worried that open source might not matter to creative users.",
+    "end": "01:28:22"
+  },
+  {
+    "id": "p06",
+    "start": 5302.96,
+    "time": "01:28:22 至 01:29:08",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5302s",
+    "zh": "Thomas 看到有创作者用编码 Agent 改自己的流程。工作室可以把接口和现成组件拼起来，让一个具体岗位只看到它需要的那几项功能。",
+    "en": "Thomas saw artists adapting their own workflows with coding agents. A studio can assemble APIs and existing components into an interface that exposes just what one role needs.",
+    "end": "01:29:08"
+  },
+  {
+    "id": "p07",
+    "start": 5348.56,
+    "time": "01:29:08 至 01:30:05",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5348s",
+    "zh": "他把开放基础设施看成让用户继续动手的条件。文件格式、可调用的功能和可分发的程序，都会影响一项新的流程能做多远。",
+    "en": "He sees open infrastructure as a condition that lets users keep modifying their tools. File formats, callable features, and distributable software shape how far a new workflow can go.",
+    "end": "01:30:05"
+  },
+  {
+    "id": "p08",
+    "start": 5405.24,
+    "time": "01:30:05 至 01:30:41",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5405s",
+    "zh": "团队第一个参照的是 Photoshop。他们准备了大规格，划分界面与实现，逐项列出工具、数据结构、文件导入，再把 CLI 和 MCP 接口写进要求。",
+    "en": "The team began with Photoshop as a reference. Its specification separated interface and implementation, set out tools, data structures, and file importers, and required CLI and MCP access.",
+    "end": "01:30:41"
+  },
+  {
+    "id": "p09",
+    "start": 5441.4,
+    "time": "01:30:41 至 01:30:59",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5441s",
+    "zh": "Thomas 说，早期版本已经能工作，启动也更快。他们当时仍在核对还欠哪些功能。",
+    "en": "Thomas says the early version worked and started faster. The team was still measuring what it needed to add.",
+    "end": "01:30:59"
+  },
+  {
+    "id": "p10",
+    "start": 5459.84,
+    "time": "01:30:59 至 01:31:54",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5459s",
+    "zh": "熟悉的操作让老用户可以沿用一些手感。团队先用相近操作检验可行性，之后仍有空间尝试更适合 Agent 操作的新界面。",
+    "en": "Familiar operations let existing users carry over some of their habits. The team used that familiarity to test feasibility and left room to try interfaces designed more directly for agents.",
+    "end": "01:31:54"
+  },
+  {
+    "id": "p11",
+    "start": 5514.18,
+    "time": "01:31:54 至 01:32:51",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5514s",
+    "zh": "项目在 Reddit 传开后带来意外的需求和反馈。Thomas 看到有原先对 AI 持保留意见的用户，也愿意试能给他们更多控制的应用。",
+    "en": "The unexpected spread on Reddit brought feedback and requests. Thomas says some people who were skeptical of other AI uses were willing to try applications they could control more directly.",
+    "end": "01:32:51"
+  },
+  {
+    "id": "p12",
+    "start": 5571.72,
+    "time": "01:32:51 至 01:35:33",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5571s",
+    "zh": "团队和社区把尝试扩展到 CAD、音频、PDF 与协作设计工具。Thomas 介绍了可在桌面管理这些应用的启动器，并说约四分之一的用户在用 Linux。",
+    "en": "The team and community expanded their work to CAD, audio, PDF, and collaborative design tools. Thomas introduces a desktop launcher for managing the apps and says about a quarter of their users are on Linux.",
+    "end": "01:35:33"
+  },
+  {
+    "id": "p13",
+    "start": 5733.04,
+    "time": "01:35:33 至 01:37:23",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5733s",
+    "zh": "这些应用把 CLI 和 MCP 作为正式入口，让人可以在桌面操作，也可以让 Agent 组装作品。Thomas 还介绍了语言本地化和延续旧软件的工作，并说社区正在把界面组件与二维、三维基础库拆出来供后续应用复用。",
+    "en": "The applications treat CLI and MCP as first-class interfaces alongside the desktop UI, so agents can assemble projects as well. Thomas also describes localization and continued support for older tools, and says the community is breaking out reusable interface components and 2D and 3D libraries.",
+    "end": "01:37:23"
+  },
+  {
+    "id": "p14",
+    "start": 5843.26,
+    "time": "01:37:23 至 01:38:18",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5843s",
+    "zh": "Thomas 用 Rust 说明团队如何看原生应用的响应速度、可移植性和 WebAssembly 部署。更快地产生改动以后，编译和 CI 的承载能力仍要增加。",
+    "en": "Thomas explains the team’s choice of Rust in terms of native responsiveness, portability, and deployment via WebAssembly. Faster change generation still increases demand for compilation and CI capacity.",
+    "end": "01:38:18"
+  },
+  {
+    "id": "p15",
+    "start": 5898.88,
+    "time": "01:38:18 至 01:38:49",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5898s",
+    "zh": "Thomas 建议由人处理后端改动、数据库结构迁移和 API 设计。对桌面应用、游戏以及其他基本不可变的工作，他主张让 Agent 自行迭代。",
+    "en": "Thomas recommends having people handle backend work, schema migrations, and API design. For desktop apps, games, and other work he treats as largely immutable, he gives agents room to iterate on their own.",
+    "end": "01:38:49"
+  },
+  {
+    "id": "p16",
+    "start": 5929.36,
+    "time": "01:38:49 至 01:40:18",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=5929s",
+    "zh": "Thomas 介绍了 Autocraft。这个用代码定义的软件工厂接收工单、分流并推进开发，留下的决策会成为评测和后训练数据。他说计划开源这套流程。",
+    "en": "Thomas introduces Autocraft, a software factory defined in code that receives issues, triages them, and carries out development. Its decisions provide data for evaluations and post-training. He says the team plans to open-source it.",
+    "end": "01:40:18"
+  }
+]

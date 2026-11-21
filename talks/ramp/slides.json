@@ -1,0 +1,35 @@
+[
+  {
+    "id": "shared",
+    "after": "p14",
+    "title": "在公司内部共享会话",
+    "time": "07:54:28",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28468s",
+    "en": "assets/shared-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在公司内部共享会话</h3><dl><div><dt>可见范围</dt><dd>Inspect 会话默认在公司内部可见。</dd></div><div><dt>怎样学习</dt><dd>通过同事的实际会话，观察他们怎样组织提示、拆解问题和继续验证。</dd></div></dl></div>",
+    "note": "右侧是通过 Inspect 回看同事工作习惯的示例。",
+    "sourceSeconds": 28468
+  },
+  {
+    "id": "evidence",
+    "after": "p19",
+    "title": "给每项改动附上可回查的材料",
+    "time": "07:56:44",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28604s",
+    "en": "assets/evidence-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>给每项改动附上可回查的材料</h3><dl><div><dt>过程</dt><dd>保留对话和工具使用记录，包括读取、查询和执行过的内容。</dd></div><div><dt>结果</dt><dd>附改动前后截图，并保留 Agent 在实际应用中走过验证路径的录屏。</dd></div></dl></div>",
+    "note": "原图把变更差异和四类可回查材料放在一起。",
+    "sourceSeconds": 28604
+  },
+  {
+    "id": "reviewbuddy",
+    "after": "p35",
+    "title": "复用 Inspect 的 PR 自动化触发审查",
+    "time": "08:02:04",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=28924s",
+    "en": "assets/reviewbuddy-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>复用 Inspect 的 PR 自动化触发审查</h3><dl><div><dt>触发事件</dt><dd>有人打开一份 PR，自动化启动 Inspect 会话。</dd></div><div><dt>审查结果</dt><dd>ReviewBuddy 对 PR 做审查，图中展示一次通过的例子。</dd></div></dl></div>",
+    "note": "讲者用这个例子说明，同事如何用现有平台能力做出新的工作流程。",
+    "sourceSeconds": 28924
+  }
+]

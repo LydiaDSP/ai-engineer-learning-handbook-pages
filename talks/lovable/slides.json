@@ -1,0 +1,35 @@
+[
+  {
+    "id": "runtime-history",
+    "after": "p22",
+    "title": "在已有任务事件上开一个新分支",
+    "time": "07:36:38",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=27398s",
+    "en": "assets/runtime-history-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在已有任务事件上开一个新分支</h3><dl><div><dt>追加记录</dt><dd>每个事件指向前一个事件，保留请求、工具调用和结果的顺序。</dd></div><div><dt>从中途探索</dt><dd>新分支指向同一个父事件，共享此前的历史。图中两条路径各自继续执行和验证。</dd></div></dl></div>",
+    "note": "这一张展示的是任务历史，讲者随后单独介绍工作机的检查点。",
+    "sourceSeconds": 27398
+  },
+  {
+    "id": "machine-checkpoint",
+    "after": "p33",
+    "title": "用预制检查点启动项目工作机",
+    "time": "07:41:24",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=27684s",
+    "en": "assets/machine-checkpoint-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用预制检查点启动项目工作机</h3><dl><div><dt>预先准备</dt><dd>把系统服务、常用工具和可启动的开发服务纳入基础检查点。</dd></div><div><dt>按项目恢复</dt><dd>从检查点启动，再使用该项目的代码和依赖。</dd></div></dl></div>",
+    "note": "幻灯片将 230 毫秒写在 VM 恢复画面上。讲者口述是复制基准检查点约需 230 毫秒，另称按需恢复可低于一秒。",
+    "sourceSeconds": 27684
+  },
+  {
+    "id": "verification-loops",
+    "after": "p43",
+    "title": "在当前回合修问题，在后续回合改产品",
+    "time": "07:46:27",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=27987s",
+    "en": "assets/verification-loops-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在当前回合修问题，在后续回合改产品</h3><dl><div><dt>内循环</dt><dd>用构建、运行错误、浏览器检查和用户触发的修复及时定位并修复问题。</dd></div><div><dt>外循环</dt><dd>在回合之间观察生产用户反馈、用户行为、实验和转化数据，把发现交回后续工作。</dd></div></dl></div>",
+    "note": "图中的生产反馈作为下一回合的输入。",
+    "sourceSeconds": 27987
+  }
+]

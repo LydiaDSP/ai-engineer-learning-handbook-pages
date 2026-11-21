@@ -1,0 +1,35 @@
+[
+  {
+    "id": "isolated-environment",
+    "after": "p05",
+    "title": "在隔离环境里观察 Skill 的实际行为",
+    "time": "03:12",
+    "url": "https://www.youtube.com/watch?v=_7P580m4kPY&t=192s",
+    "en": "assets/isolated-environment-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在隔离环境里观察 Skill 的实际行为</h3><dl><div><dt>执行</dt><dd>给测试 Agent 一项任务，使它在隔离的环境中加载并运行 Skill。</dd></div><div><dt>记录与分析</dt><dd>先保留执行轨迹和工具结果，再检查证据支持哪些结论。</dd></div></dl></div>",
+    "note": "幻灯片用执行、记录、分析三步说明研究框架。",
+    "sourceSeconds": 192
+  },
+  {
+    "id": "runtime-evidence",
+    "after": "p10",
+    "title": "沿一次工具调用查看后续进程",
+    "time": "06:21",
+    "url": "https://www.youtube.com/watch?v=_7P580m4kPY&t=381s",
+    "en": "assets/runtime-evidence-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>沿一次工具调用查看后续进程</h3><dl><div><dt>操作记录</dt><dd>工具调用可能启动多层子进程。</dd></div><div><dt>需要核对的行为</dt><dd>观察进程有没有读写文件，或者发起网络连接。</dd></div></dl></div>",
+    "note": "画面展示研究者为何需要工具调用以下的运行证据。",
+    "sourceSeconds": 381
+  },
+  {
+    "id": "dependency-review",
+    "after": "p17",
+    "title": "把依赖检查扩展到 Agent 会读的内容",
+    "time": "13:46",
+    "url": "https://www.youtube.com/watch?v=_7P580m4kPY&t=826s",
+    "en": "assets/dependency-review-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把依赖检查扩展到 Agent 会读的内容</h3><dl><div><dt>入口</dt><dd>Skill、文档、聊天消息、依赖包和 API 响应都可能进入上下文。</dd></div><div><dt>审核范围</dt><dd>把这些内容一起纳入来源记录和运行时观察。</dd></div></dl></div>",
+    "note": "这张总结图说明风险也可能来自 Skill 以外的输入。",
+    "sourceSeconds": 826
+  }
+]

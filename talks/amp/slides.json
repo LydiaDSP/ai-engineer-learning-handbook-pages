@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p04",
+    "title": "成熟产品与前沿产品的工作方式",
+    "time": "07:59:15",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=28755s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者把企业就绪和模型前沿的目标并列，借不同约束解释 Amp 为何尝试改变传统软件公司的结构。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 28755
+  },
+  {
+    "id": "frame-02",
+    "after": "p07",
+    "title": "Amp 团队的上线节奏",
+    "time": "08:04:05",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29045s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>Amp 报告每天约 130 次生产部署，从推送主分支到生产的中位时间约为 10 分钟。右侧关于取消强制代码评审的判断来自讲者。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 29045
+  },
+  {
+    "id": "frame-03",
+    "after": "p12",
+    "title": "Agent 能触达的日常工作工具",
+    "time": "08:08:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=29315s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图中列出内部插件和 MCP 服务覆盖的工作，如客户、反馈、日志、评审和日程。它们把原本分散的工作资源带进对话。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 29315
+  }
+]

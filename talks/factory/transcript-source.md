@@ -1,0 +1,293 @@
+# Factory 怎样把一次性 Missions 做成持续运行的 Workstreams？
+
+Luke Alvoeiro
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 12 场（03:42:44–03:58:03）的 45 段中英资料整理。官方议程英文题名为 Earning Autonomy: From Missions to Workstreams。英文沿用机器转写，中文保留原校译中的已知缺漏。演讲中的 token、PR 产量和 Droid 表现均来自讲者报告，未经独立复测。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 软件工厂怎样接收信号和验证改动 / How a software factory receives signals and verifies changes
+
+[03:42:44.480—03:43:17.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13364s)
+
+好了。大家好，我是 Luke，在 Factory 带领核心 Agent 团队。今天想聊聊自主权。最能发挥编程 Agent 作用的团队，会逐步放权，一个检查点一个检查点地放开，慢慢搭出一套像软件工厂一样的系统。第一天就交出去大量工作，并不会让团队从 Agent 身上获益最多。给还不认识我们的朋友介绍一下，Factory 是个做 Droid 的平台，我们以这个编程 Agent 为基础，搭了一整套用于软件工程和开发
+
+All set. Hi, everyone. I'm Luke. I lead our core agent team here at Factory. Today I want to talk about autonomy and why the teams that are getting the most out of coding agents are not actually the ones that are handing over the most work on day one. It's instead the folks who are ramping up autonomy gradually, one checkpoint at a time until what they have starts to resemble a software factory. So for those who don't know us, Factory is a platform that builds Droid and then a whole surface for software engineering and building
+
+[03:43:17.280—03:43:52.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13397s)
+
+软件的工具。全球有数十万开发者在用我们，包括 NVIDIA、T-Mobile 和 Adobe 等公司的开发者。这些公司的工程师用我们的工具搭的，可以说就是软件工厂，一套在公司控制下全天候开发软件的系统。它形成一个循环，从手头已有的信息中接收信号，把信号转成改动，验证改动，再根据生产环境反馈继续改进。凡是能提示软件该怎么演进的，都可以算信号。比如 Sentry 告警，或有人在
+
+software on top of that coding agent. Hundreds of thousands of developers use us around the world at companies like NVIDIA, T-Mobile, and Adobe. What these companies engineers are building with us is really like a software factory, a system that runs 24-7 and builds software under the company's control. And that's a loop that takes in signals from from whatever information is already available, turns them into changes, validates them, and then learns from what production shows. A signal is really like anything that tells you how your software should evolve. So that could be a century alert or someone's idea
+
+[03:43:52.260—03:44:30.600](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13432s)
+
+Slack 提的想法。每条信号都走相同的阶段，这样统一的是处理过程，产出可以各不相同。我们搭这个平台，有五个要求，透明、模块化、可治理、高效，还要跟上技术前沿。很多人一想到软件工厂，就会想到一个熄灯运行、里面没有人的厂房，需求从一头进去，合并好的 PR 从另一头出来。我们在实际使用中看到，做得好的工厂围绕人组织工作。由人决定什么事情重要，以及随着时间推移，哪些工作可以
+
+on Slack. Every signal goes to the same stages, so you standardize the process, not the output. So we built that platform on five foundations. It has to be transparent, modular, governable, efficient, and frontier. Most people picture a software factory as this kind of like lights-out building where there's no people inside of it, requirements come in one end and merged PRs come out the other. And really what we saw firsthand in the field is that that's not the case. The best ones aren't set up like that. They're built around people instead. Humans decide what matters and how
+
+[03:44:30.600—03:44:44.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13470s)
+
+放心交给 Droid。Droid 得通过完成更多工作来赢得这份信任。[此处转写有缺漏] 各家公司的软件工厂差别很大。我们卖的是搭建工厂所需的工具和组件，各家公司可以自己组合。
+
+we should trust droids over time, and those droids earn their keep as they deliver more work that's Every company's software factory looks very different to each other. So what we sell is not really this factory, it's the tools and the building blocks to compose them.
+
+## Missions 复盘与运行框架改造 / What Missions exposed and how Factory redesigned the harness
+
+[03:44:46.520—03:45:01.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13486s)
+
+可以先回头看看我们是怎么走到这一步的。4 月，我们的旗舰产品之一是 Missions。在软件工程里，很多事受限于人能处理的工作量，Missions 是最早开始缓解这个瓶颈的多 Agent 产品之一。
+
+It's worth kind of looking at how we got here in the first place. Back in April, one of our flagship products was Missions, which was one of the first multi-agent products to really take a bite out of the human potential bottleneck that existed in software engineering.
+
+[03:45:01.700—03:45:16.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13501s)
+
+你先描述一个目标，和编排器讨论到双方一致，批准计划，再让它负责实现。它可能一做就是几天，甚至几个星期。只要目标明确、可以验证，等你再回来看时，往往确实能收到完成的工作。
+
+You describe a goal, you'd argue with the orchestrator until you were aligned, you'd approve the plan, and then it would go handle implementation for days or even weeks. When the goal was clear and verifiable, you really could come back to completed work pretty consistently.
+
+[03:45:17.720—03:45:28.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13517s)
+
+随着采用它的团队越来越多，我们反复听到几类反馈。首先是 Missions 要求用户采用的工作方式。它假设你一开始就能把所有事情规划好，之后事情会按计划
+
+But as more teams adopted it, we heard some consistent pieces of feedback. The first was how missions asked you to work. The product assumed that you could plan everything up front and then it would just work.
+
+[03:45:28.240—03:45:51.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13528s)
+
+往下走。界面多少还暗示你别中途打断 Agent。Missions 一旦开始实现，就不会再问你问题，也没有提供让你和 Agent 来回沟通的界面。这适合迁移或大型功能开发，但大多数其他工作用起来不太合适。第二类反馈是成本和时间。
+
+work. And the UX sort of suggested that you shouldn't interrupt them. Machines didn't ask you any questions or provide an interactive surface for that communication between you and the agent once it was starting implementation. So this suits migrations and big coding, like feature projects, but it didn't fit the bill for most kinds of other work. The second was cost and time.
+
+[03:45:51.660—03:46:06.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13551s)
+
+说实话，这个问题起于模型变得非常强。我相信大家现在也见过，让模型专门从反方挑问题，确实很能找出代码里的毛病。我们当时就把这种审查加到了每个里程碑结束的时候。
+
+And that came from, honestly, the models getting really, really good. I'm sure you've all seen now, adversarial review is really, really good at finding these issues in your code. And so at the time, we were adding adversarial review into every milestone's boundary.
+
+[03:46:07.280—03:46:22.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13567s)
+
+这样一来，那个 Mission 的范围就从大约 60 项功能扩到 200 多项，token 账单和时间也跟着涨。最后一点是，Missions 把上下文留在单个
+
+That just kind of like grew the scope of that mission from something like 60 features to over 200. And so you ended up having a token bill and a timeline that matched that. And then the last one was that missions were keeping their contacts to one person.
+
+[03:46:22.100—03:46:56.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13582s)
+
+Mission 里。单独做一个项目没问题，但团队里的其他人很难接着用这个 Mission 学到的东西。于是我们回去重新设计。讨论里反复出现一个思路。一个组织同时跑几十个甚至几百个 Agent，会遇到许多操作系统早年就解决过的问题，比如怎样调度任务、怎样安全地同时运行很多任务。[此处转写有缺漏] 每个操作系统都得从实际执行工作的东西着手。
+
+mission. So that was fine for a single project, but it meant that the rest of the team couldn't really build on what that mission had learned. So we went back to the drawing board. And one mental model kept on coming up. When you have an org that is running dozens or hundreds of agents at a given point in time, you actually have a lot of the problems that operating systems back in the day solved. How to schedule work, how to run many things at one safely, and So, every operating system starts with the thing that actually does the work.
+
+[03:46:57.320—03:47:13.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13617s)
+
+所以我们也想重新看一下 Agent 本身。长期运行的 Agent 要执行成千上万轮，一点低效就会被放大。可能是多发了一次没必要的推理请求，也可能是工具返回的内容太长，或者提示缓存没命中。
+
+And we wanted to revisit the agent itself. Long Horizon agents run for thousands of turns and every inefficiency across of those gets multiplied. So you could have, you know, an extra inference request that's unnecessary or a tool result that's pretty bloated or a prompt cache miss.
+
+[03:47:13.580—03:47:35.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13633s)
+
+这些问题会一点点累积，最后造成浪费。于是我们决定对运行框架本身做些比较大的调整。最大的一项是程序化工具调用，也叫代码模式（Code Mode）。过去是调一次工具，等模型处理完，再调下一次。现在让模型写一小段程序，一次把那些工具都调完，再只输出和任务有关的结果。
+
+All those things compound over time and lead to waste. So we decided to make some pretty significant changes to the harness itself. The biggest one was programmatic tool calling, also known as code mode. Instead of calling one tool, waiting on the model and then calling the next, we have the model write a small program that executes all those tools in one go and then prints out only what's relevant.
+
+[03:47:36.480—03:48:08.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13656s)
+
+举个例子，把 150 张 Linear 工单从一个项目移到另一个项目，按常规做法大约要 30 次推理、100 万 token。让模型写一段程序一次跑完，大约只要 6 万 token，速度快很多。模型只看得到与任务有关的结果，也就是成功了没有。这一层最需要跟上前沿模型，也最讲究效率。每隔几个星期就有新模型出来，没有两个模型以完全相同的方式出错。所以我们调整运行框架，
+
+So there's this example here where you have 150 linear tickets that are getting moved from one project to another. done the normal way, that's like 30 inference requests, a million tokens, but as one model generated program, you actually only have like 60k tokens, it runs much faster, and the model only sees what is actually relevant to the task, the fact whether it was successful or not. So this layer of the OS is where being frontier and efficient matters the most. A new model lands every few weeks, and no two fail the same way. So we tune our harness
+
+[03:48:08.100—03:48:37.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13688s)
+
+尽量抹平不同模型表现不均衡的地方。结果就是，现在 Droid 的质量比市面上任何其他编程 Agent 都高，成本还更低。这是我们得出的结论。现在你有了一个速度更快的 Agent，但系统实际做完的工作量还不会因此一下子跃升。要做到这一点，得有许多 Agent 同时跑，也得有地方让它们跑。远程 Missions 当时受到系统里一个根本限制的影响，只有一个
+
+in such a way that evens out this jaggedness across all these different models. The result is that Droid is now, you know, higher quality at a lower cost than every other coding agent on the market. Now, you have a faster agent, but that doesn't really give you, like, a step function increase in how much work gets done inside of your system. For that, you need many agents running at once, and they need somewhere to run. Remote missions were kind of held back by this, like, fundamental limitation in the system where there was one
+
+## 运行环境、身份与 Workstream 编排 / Environments, identity, and Workstream orchestration
+
+[03:48:38.100—03:49:14.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13718s)
+
+可工作的环境。[此处转写有缺漏] 软件工厂需要算力能随着系统内的工作量增长。否则，各个 Agent 就会争用同样的文件或系统资源。因此我们做了 Environments，也就是给 Droid 使用的可复用沙箱配置，里面准备好了它们开始工作需要的代码库、工具和依赖。系统是可治理的，有一个统一的控制平面，可以把这些沙箱调度到你需要的地方。可以跑在你自己的虚拟私有云（VPC）里，用 EC2、Kubernetes，或者你已经在运维的其他计算资源。你的代码、数据
+
+to work. But to run a software factory, you need compute that scales with the volume of work in the system. Otherwise, every agent is fighting for the same files or system resources. So that's why we build environments, which are reusable definitions of the sandboxes that your droids need, complete with the repos, tools, and dependencies that they need to get started with. The system is governable, so there's one control plane that orchestrates all these sandboxes together wherever you need them. They can run inside of your own VPC on EC2, Kubernetes, whatever compute you already operate. So your code, your data,
+
+[03:49:15.020—03:49:37.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13755s)
+
+和网络都由你控制。算力可以替换，就像我们提供自带密钥（BYOK）和自动选择模型的选项，让模型也可以替换。到这一步，Agent 的成本已经低到可以一直运行，算力也有了。[此处转写有缺漏] 接下来的问题就是，这么多工作要怎么编排？
+
+and your network are in your control. Compute becomes pluggable, just like we made the BYOK options and auto model options that we provide, that provides sort of like this model pluggable layer. So now we had agents that were cheap enough to run all the time and the compute And so then the next question was, how do we orchestrate all this work?
+
+[03:49:38.100—03:49:56.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13778s)
+
+一开始，我们试着做有向无环图（DAG），用非常严格的规则把许多 Agent 组合成一套复杂的系统。结果不太行。Missions 遇到的许多问题又出现了。流程太僵硬，运行起来太贵，也很难适应其他任务。
+
+At first, we tried making this DAG, very complex system of agents composed together by these very strong rules, and it didn't really work. You end up having a lot of the same problems that plagued missions in the first place because it was too rigid, and as a result, it was too expensive to run, and it didn't generalize well.
+
+[03:49:57.660—03:50:09.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13797s)
+
+最后我们采用了一种叫 Workstream 的方式。它有一个长期目标，有一组 Agent 来支持这个目标。除此之外，还有自己的身份、运行环境和记忆。
+
+So what we landed on instead is something that we call a work stream. It's a standing goal with a team of agents to support it. It has this goal, it has an identity, an environment that it runs on, and memory.
+
+[03:50:10.380—03:50:24.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13810s)
+
+新建 Workstream 时，它用你的身份运行，拥有你的访问权限。等它的工作超出一个人的范围，就可以迁到带有独立凭据的服务账户。你仍然是成员，工作则继续以组织实际控制的身份运行。
+
+A new workstream runs as you, and it has your access. When it outgrows one person, it can be moved to a service account with its own credentials. So you stay on as a member, but the work keeps happening under an identity that the org actually controls.
+
+[03:50:26.700—03:50:40.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13826s)
+
+每个 Workstream 的核心都是一个编排器，作用类似操作系统里的调度器。它可以按模型最擅长的方式组织 Agent，不必沿用我们最初设计的那张图。所以给它的指令很短。
+
+At the center of every workstream is an orchestrator. scheduler in an OS. Unlike the graph that we started with, it assembles its agents in whatever way is most natural for the model. So the instructions are pretty short, right?
+
+[03:50:40.260—03:50:59.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13840s)
+
+大致就是，先委派，给每个 Agent 一块负责范围。任务如果属于现有的某块范围，就交给负责那一块的 Agent。一开始，你只要跟编排器聊，想到一件事就交给它。它会把工作分发出去，再把控制权交还给你。
+
+It's like delegate first, give each agent an area of ownership, and then for tasks that can fall into an existing area of ownership, delegate to those. You start by talking to it, you just kind of hand things over as you think of them, and then it fans out the work so that then you can get the control back to you.
+
+[03:51:00.200—03:51:12.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13860s)
+
+Agent 做完、遇到阻碍，或有事情会改变整体计划时，都会汇报。Workstream 还会主动接手更多工作，从你的做事习惯里学习。
+
+Agents report back when they finish, when they get blocked, and when there's something that changes the plan overall. But the work stream doesn't just stop there because it takes on more on its own, and it learns from your habits.
+
+## 从信号到规格，再到人工检查点 / From signals and specifications to human checkpoints
+
+[03:51:12.780—03:51:23.840](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13872s)
+
+到了某个时候，编排器可能会问你，你是怎么决定做哪件事的？它可能了解到，缺陷报告是从两个 Slack 频道进来的。这样它就可以在那里设一个接收和初筛的监听程序。
+
+At some point, the orchestrator may ask you how you decide what to work on, and it learns that maybe bugs are coming from two Slack channels. So here, it can set up an intake at a triage listener.
+
+[03:51:23.840—03:51:37.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13883s)
+
+它每半小时可以从这两个频道拉取报告，对照已有的 Linear 工单或 Sentry 告警去重，再根据 Workstream 的目标判断各条报告的优先程度。
+
+Every 30 minutes, it can go in and pull in those reports from those channels, dedupe them against existing linear issues or sentry alerts that already exist, and then weigh each of those against the work stream's goal.
+
+[03:51:37.820—03:52:01.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13897s)
+
+这样，Slack 上的一条抱怨和一份客户报错记录，可以合成同一项改动。初筛会产出一份规格，由你审查。你可以在一行代码都还没写之前给出意见。规格一旦批准，同一个执行 Agent 就会开 PR，跟进到可以合并为止，并确认审查、评论和 CI 都处理妥当。
+
+So a slack complaint and a customer error report become one change. The output of triage is a spec that you review and you're capable of, like, weighing in on before any code gets written. Once you approve a spec, the same worker opens a PR, stewards it until it's merge ready, and then makes sure that review, comments, and CI are passing.
+
+[03:52:03.200—03:52:23.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13923s)
+
+这些阶段分别对应系统里的自主等级。在 L1，Workstream 会在创建规格时、开 PR 时和合并前暂停，等人审查。随着自主等级提高，可以到 L4，默认自动合并所有改动。
+
+So each one of those stages actually maps to an autonomy level in this system. At L1, the work stream pauses for human review at the spec creation, at the PR, and before hitting merge. But, you know, as you level up those levels of autonomy, you can get to L4, where you're auto-merging everything by default.
+
+[03:52:24.060—03:52:37.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13944s)
+
+等级由负责人设定，敢不敢调高，要靠实际观察。如果提议的改动一直很准确，或者 PR 合并后的质量一直达到预期，就可以考虑放开下一个检查点。
+
+The owner gets to set the level, but the confidence to raise it comes from watching the work. So when proposed changes are accurate or PRs consistently merge at the quality that you'd expect, that's actually your cue to move to the next checkpoint.
+
+[03:52:37.960—03:52:50.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13957s)
+
+这就是你手里的调节方式。你可以只判断编程 Agent 是否值得信任到放开下一个检查点。第一天不必就决定要不要把整个 CI 健康维护流程都交给它。
+
+And so that becomes the dial for you. You don't need to decide on day one whether you trust a coding agent to own your CI health stream off the bat, you just need to trust it to, like, unlock the next checkpoint.
+
+## 共享记忆、PR 验证和生产反馈 / Shared memory, PR validation, and production feedback
+
+[03:52:52.280—03:53:17.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13972s)
+
+在软件工厂里，每个 Agent 都从头开始，就会再犯前一个 Agent 犯过的错。所以我们给 Workstream 做了共享文件系统，鼓励 Agent 保留记忆，并为 Skills 管理版本，这样它们提交的 PR 会随着时间改进。它们也会主动去找自己缺的上下文。比如其他人正在交付相关改动时，
+
+So in a factory, an agent that starts from scratch repeats the same mistakes the last one already did. And so we built work streams to have a shared file system. Agents are encouraged to keep memory and version skills, and so their PRs get better over time. They're also proactive, and they go looking for context that they're missing. So, for example, say that other people are shipping related changes.
+
+[03:53:18.140—03:53:33.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=13998s)
+
+它会设置自动任务，把别人的 PR 拉进来，分析他们做了什么、收到了哪些评论，再把这些内容纳入自己的记忆和 Skills。一个 Agent 学到的东西，别的 Agent 也能用，下一次就有东西可以接着做。
+
+It sets them an automation that pulls in their PRs, analyzes what they've been working on and what comments they've been receiving in those PRs, and then incorporates them into their memory and skills. So what one agent learns, others can use, and nothing starts cold.
+
+[03:53:35.680—03:53:53.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14015s)
+
+这个文件夹也是 Agent 在同一个项目上协作的地方。编排器启动一个 Agent 时，可以告诉它，结果应该放到共享文件夹的哪个位置。这样每个 Agent 都能读写同一个地方。
+
+That folder is also how agents work together on a project. When the orchestrator spawns an agent, it's capable of telling each agent where does its result sort of belong inside of this shared folder? And so every agent can read and write to the same place.
+
+[03:53:53.760—03:54:07.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14033s)
+
+比如，你问一个 Workstream 为什么结账变慢了。你可以派几十个 Agent 去查各条不同线索，让它们分别把发现写到文件夹里，最后由编排器汇总。
+
+If you ask a work stream why checkout got slower, for example, you can send dozens of agents out to track out all of those different leads that you have, and then ultimately, each one can write its findings to the folder and the orchestrator can merge them.
+
+[03:54:08.880—03:54:27.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14048s)
+
+从实现到合并之间还是得设一道关。我们在平台层面做验证。每个 PR 都有代码审查、安全审查、专门的质量验证（QA）和实时预览。所有审查讨论都处理完后，风险裁判再判断能不能安全批准。
+
+Now you still need a barrier between implementation and merging. And for us, that barrier is platform-level validation. Every PR gets code review, security review, and dedicated QA, and it's a live preview. And so once every review thread is resolved, a risk judge then goes in and decides whether it's safe to prove or not.
+
+[03:54:28.180—03:54:39.400](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14068s)
+
+裁判会拿到准确的差异和该分支的检出副本，能自己构建和测试。它用的政策来自主分支，所以待审的改动无法重写用来评判它自己的规则。
+
+The judge gets the exact if and a check out of the branch so it can build and test it, but ultimately it reads its policy from our mainline branch so that the change can't rewrite the rules that it's being judged by.
+
+[03:54:40.520—03:55:02.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14080s)
+
+每周有一个 Droid 回顾审查意见，找出作者实际上采纳了哪些，再把它们写进审查指南。这样整个循环就能持续改进。也有 Droid 每天分析回退、热修复和新的 Sentry 错误等情况，把它们追溯到引发问题的 PR。
+
+Every week, a droid minds the review comments and goes through, figures out which one authors have actually acted on, and then pulls those into review guidelines so that the loop sort of improves over time. We also have droids that every day run and analyze reverts, hot fixes, new sentry errors, for example, and traces them back to the PRs that cause them.
+
+[03:55:02.940—03:55:15.960](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14102s)
+
+这些结果也会作为信号进入同一个循环。我们真正想提高的是「无需补救的合并率」，也就是合并后一直不需要回退或再做修复的改动所占的比例。
+
+And so that also is a signal into this same loop. What we're really hill climbing on here is the regret-free merge rate. The share of changes that merge and never need a revert or a follow-up fix.
+
+[03:55:16.460—03:55:29.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14116s)
+
+我们并排比较 Droid 写的 PR 和人写的 PR。讲者用自动驾驶举例，我们会等到自动驾驶的事故发生率低于人工驾驶，才会让它上路。
+
+We measure it for droid-ridden and human-ridden PR side by side. And it's the same way that we let, like, self-driving cars onto the road. We didn't just give them the green light. We only did so once they crashed less often than human-driven ones did.
+
+## Factory 自用结果和 L1 起步 / Factory’s internal use and getting started at L1
+
+[03:55:29.980—03:56:01.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14129s)
+
+同样，AI 写的改动比人写的更少导致故障，而且这个差异能实际测出来，就可以让它们自动合并。这是把 Workstream 调到 L4 的门槛。Workstream 现在也是我们开发新功能的平台。第一个功能叫 Migrate，补上了以前 Missions 负责的一部分场景，提供专门的一次性迁移体验。第二个是持续修复，它采用的是 Workstream 更擅长的循环形式，
+
+And so once AI-ridden changes, break things less often than human ones, and you can actually measure that, then you can let them merge. And that's the bar for turning a Workstream to L4. Workstream is now like the platform that we build new features on top of. So Migrate is the first one. It sort of fulfills a niche in our product framework for what missions used to be, this like dedicated one-shot migration experience. And continuous remediation is the second, where it follows that circular shape that work streams are best suited for
+
+[03:56:01.500—03:56:34.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14161s)
+
+因为这种工作不会结束。我们自己也用 Workstream 来运行 Factory。生产环境里是什么样的？刚过去的 10 月，有一周我们在开发分支交付了大约 800 份 PR，99% 由 Droid 编写，全部都由它审查。工作有两种方式进入流程。一种是人手动接下一条信号。现在越来越多用另一种方式，Workstream 自动接收信号，按照自己的目标做初筛，最后写出
+
+because there the work never ends. We run factory on top of work streams ourselves. And so this is what it actually looks like in production. In a week in this past October, we shipped about 800 pull requests in our dev branch, and Droid wrote 99% of them and reviewed all of them. Now, work landed in one of two ways. It was either a human picking picking up a signal manually, or increasingly nowadays, it's a workstream picking it up automatically, triaging it against the goal of the workstream, and then ultimately writing
+
+[03:56:34.500—03:56:54.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14194s)
+
+规格并把改动合并。现在我们交付的 PR 中，52% 来自 Workstream 本身。有些 Workstream 已经完全自主了。比如修复一个专门的 Slack 频道里报告的缺陷，每周合并 53 份 PR。另一个处理偶发失败测试的 Workstream，每周大约合并 40 份。
+
+a spec and merging it. 52% of PRs that we ship right now are coming from workstreams themselves. And some of these are operating on full autonomy. So for example, the one that fixes bug reports from a dedicated Slack channel merges 53 PRs per week. Another one is our flaky test work stream, which merges at about 40.
+
+[03:56:56.460—03:57:23.580](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14216s)
+
+完全自主的 PR 只是其中一项值得跟踪的数据。更重要的是进展。多少工作经过 Workstream？每个 Workstream 还需要经过几个检查点？能自行推进的工作越多，工程师就越像这套系统的管理者。他们决定监控什么信号、设什么目标、由谁负责、用哪些 Skills 和审查指南来保证代码质量，以及每个 Workstream 有多大的自主权。
+
+Fully autonomous PRs aren't really the only thing worth tracking, though. What matters a lot more is the progression. How much of your work flows through work streams and how many checkpoints does each one still need? As more work flows unrestricted, your engineers become the regulators of this system. They decide what signals to watch, what are the goals and the owners of those, what are the skills and review guidelines that you need code high quality and how much autonomy each work stream gets.
+
+[03:57:24.660—03:57:43.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14244s)
+
+你有没有一座软件工厂，还是只是工程师做事更快了？问一个问题就知道，你能说出有哪些信号，并持续跟踪它们吗？每个团队已经有这些信号了，比如 Slack 里的缺陷报告、失败的 CI 作业、突然增加的错误、一直没人领的工单。但大多数都在等人先注意到。
+
+And so there's just one question that tells you whether you have a software factory or faster engineers, and that is, can you name and track your signals? Every team already has them. You have bug reports in Slack, failing CI jobs, error spikes, tickets that nobody ever picks up, but most of them wait on a person to notice.
+
+[03:57:44.300—03:57:59.580](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14264s)
+
+所以我想请大家把它们写下来，再挑一个最耗费精力的信号。[此处转写有缺漏] 把它交给 L1 的 Workstream，再设置好验证流程。这样就可以让软件根据你选择追踪的信号持续改进了。
+
+And so my ask to all of you is to write them down and then pick the one that you waste Give it to Workstream on L1, and then set up our validation experience, and then you're well on your way to building software that improves itself with all the signals that you choose to track.
+
+[03:58:00.840—03:58:03.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14280s)
+
+谢谢大家。我今天都会在这里，有问题可以来找我。
+
+Thanks, everyone, and I'll be around to answer any questions today.

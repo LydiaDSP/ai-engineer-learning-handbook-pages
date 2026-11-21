@@ -1,0 +1,426 @@
+[
+  {
+    "id": "p01",
+    "time": "00:00:00.000—00:00:30.340",
+    "start": 0.0,
+    "end": "00:00:30.340",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=0s",
+    "zh": "今天上午演讲时出了点技术故障，所以我赶回家，改用自己的电脑录一遍。大家好，我是 Lydia，在 Anthropic 的 Claude Code 团队工作。最近的模型已经变得很好用了。Opus 5.5 是我最喜欢的日常主力模型。本周早些时候，我们还发布了 Fable 5.2。这些模型特别擅长执行长时间运行的任务，也很能理解你的代码库。尤其是 Fable，它还非常擅长验证自己的输出。",
+    "en": "I had some technical difficulties during my talk this morning, so I ran back home and I'm just going to record it from my computer instead. So hi everyone, I'm Lydia. I work on the Clock Code team at Anthropic and the models have gotten really good lately. So we have Opus 5.5, which is my favorite daily driver. And earlier this week, we also launched Fable 5.2. And these models are extremely good at long running tasks and understanding your code base. And especially especially Fable is also really good at verifying its own output."
+  },
+  {
+    "id": "p02",
+    "time": "00:00:30.640—00:00:45.120",
+    "start": 30.64,
+    "end": "00:00:45.120",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=30s",
+    "zh": "随着模型变强，我们在 Claude Code 里和它们协作的方式也在变。不知道你还记不记得，今年早些时候，会话差不多是这样。我们会用 Opus 4.5 之类的模型，说实话，以当时的水平来说，它真的很不错。",
+    "en": "But as these models get better, the way that we work with them in Cloud Code also changes. So earlier this year, I don't know if you remember, but sessions kind of used to look like this. So we'd use a model like Opus 4.5, which honestly for its time was really good."
+  },
+  {
+    "id": "p03",
+    "time": "00:00:45.260—00:01:00.780",
+    "start": 45.26,
+    "end": "00:01:00.780",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=45s",
+    "zh": "我很喜欢用 Opus 4.5，不过跟现在相比，它停得要早得多，单次运行时间也更短。我们还得不断纠正它，提醒它做这做那，在 CLAUDE.md 里加上「重要！」之类的强调。",
+    "en": "I really enjoyed working with Opus 4.5, but compared to today, it would just stop a lot earlier. So it would just run for shorter amounts of time. And we'd also keep correcting it. We'd keep reminding it to do things, add things like importance, exclamation mark, all these things to our CloudMD file."
+  },
+  {
+    "id": "p04",
+    "time": "00:01:01.420—00:01:19.680",
+    "start": 61.42,
+    "end": "00:01:19.680",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=61s",
+    "zh": "那时也还没有自动模式这一类功能。我们要么手动批准每一项操作，要么冒更大的风险，用 `--dangerously-skip-permissions` 跳过权限确认。所以人那时还深度参与整个过程。随着模型越来越能接手大任务，会话的样子也变了。",
+    "en": "And also features like auto mode didn't exist yet. So we were either approving everything manually or taking the riskier approach with dangerously skip remission. So we were still very much in the loop as humans. But as these models got better at taking on bigger tasks, our sessions also changed."
+  },
+  {
+    "id": "p05",
+    "time": "00:01:19.860—00:01:52.000",
+    "start": 79.86,
+    "end": "00:01:52.000",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=79s",
+    "zh": "现在，至少在 Anthropic，我们的会话更接近这个样子。[转写有缺漏] 同时运行多个会话，每个可以跑上几小时，过程中还会自行验证结果。我们甚至会让会话协调其他会话。以前我们几乎每一步都参与，一次跑一个或几个会话。现在，我们实际上在管理几十个会话，完成的工作也多了很多。你可能看过我们十月发的博文。Anthropic 的每日变更量从五月的约 2,500 项增长到超过……",
+    "en": "So nowadays, at least at Anthropic, our sessions look more like this. sessions at the same time running for hours verifying their own results along the way and we even have sessions orchestrate other sessions so whereas we used to be in the loop for almost every step and running one or just a couple sessions at a time we've now essentially become managers for dozens of sessions we also get a lot more done though now you may have seen our blog post in October about how anthropic went from about 2500 changes a day in May to more than"
+  },
+  {
+    "id": "p06",
+    "time": "00:01:52.000—00:02:27.280",
+    "start": 112.0,
+    "end": "00:02:27.280",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=112s",
+    "zh": "……九月的每日 30,000 项。这也意味着，开发者得重新想想该把注意力放在哪里。回想年初的最佳实践，主要是在会话中引导模型、批准命令、拒绝某些操作或限制 Claude 能做什么、检查输出，以及自己启动会话。现在每当我们退出某个环节，就需要有别的东西接手。可以是模型、运行框架，也可以是会话所在的环境。我们如果不再逐条批准命令，同时又运行这么多……",
+    "en": "30 000 a day in september but this also means that we as developers just have to rethink on what we're focused on instead so if you think about our best practices from earlier this year it was mainly about steering sessions approving commands saying no to certain things or restricting what cloud could do checking the output and also starting the sessions so everywhere that we now step out of that loop something else has to take over and this is either the model the harness or that it's running in. So if we are not in the loop to approve every command and we're running so many"
+  },
+  {
+    "id": "p07",
+    "time": "00:02:27.280—00:02:45.500",
+    "start": 147.28,
+    "end": "00:02:45.500",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=147s",
+    "zh": "……会话，怎么确保它写出的代码仍然有质量？更重要的是，如果这些会话在无人看管的情况下跑几个小时，我们怎么确保它们安全运行？我们拿之前那个会话来走一遍，看看要改哪些地方，才能达到我刚才展示的状态。",
+    "en": "sessions at the same time, how can we make sure that the code it's writing is still high quality? And most importantly, if these sessions are running for hours without our supervision, how can we make sure that they're running safely? So let's go through that by taking this old session and seeing what we have to change to get to that end result that I showed earlier."
+  },
+  {
+    "id": "p08",
+    "time": "00:02:45.840—00:02:57.900",
+    "start": 165.84,
+    "end": "00:02:57.900",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=165s",
+    "zh": "首先，用我们现在启动会话时实际采用的默认配置。[转写有缺漏] 这部分基本不用自己琢磨。这里把模型从 Opus 4.5 改成 Opus 5.5，再把手动权限模式切换成自动模式。",
+    "en": "Well, first of all, let's use the actual defaults we start sessions in nowadays. So So that's not really something you should think about. So let's update the model here from Opus 4.5 to Opus 5.5 and change the manual permission to auto mode."
+  },
+  {
+    "id": "p09",
+    "time": "00:02:58.160—00:03:11.780",
+    "start": 178.16,
+    "end": "00:03:11.780",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=178s",
+    "zh": "Opus 5.5 更能理解你的意图和代码库，所以我们在会话中途需要介入引导的次数少了很多。你也不用逐条批准命令了，因为据我在这场演讲中的介绍，我们从八月开始把自动模式设为默认权限模式。",
+    "en": "And Opus 5.5 is a lot better at understanding your intent and understanding your code base. So we really don't have to steer it as much anymore mid-session. And you also no longer have to approve every command because we started making auto mode the default permission mode back in August."
+  },
+  {
+    "id": "p10",
+    "time": "00:03:12.380—00:03:28.040",
+    "start": 192.38,
+    "end": "00:03:28.040",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=192s",
+    "zh": "模型更能理解意图和代码库，也意味着我们该重新审视写在代码库里的指令。要是你按照我们年初的最佳实践做过，CLAUDE.md 里可能还留着「重要！」或者「绝对不要这样做！」之类的内容。",
+    "en": "Now being better at understanding your intent and your code base also means that we have to rethink the instructions we have in our code base. If you followed our best practices from earlier this year, you may still have things like important or never do this exclamation mark, all these things in your CloudMD file."
+  },
+  {
+    "id": "p11",
+    "time": "00:03:28.260—00:03:59.620",
+    "start": 208.26,
+    "end": "00:03:59.620",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=208s",
+    "zh": "现在的模型已经用不着这些强调了。它们有时还会带偏模型，让模型多调用工具，整体结果也变差。现在，CLAUDE.md 只需要放 Claude 从代码中看不到的信息。比如有个服务还在使用某个旧来源，代码里没有直接引用。[转写有缺漏] 至于项目用什么技术栈、该到哪里找这些信息，现在都可以省掉。我们还为此提供了一个命令，转写记作「Dr. Prompt Audit」。它可以很方便地……",
+    "en": "But with today's models, you really don't need that. And it can actually make the model go off track. So you end up with more tool calls and overall worse results. So nowadays, your CloudMD file should only include the things that Cloud cannot see from your code. So for example, maybe you have a service that's still using some legacy source somewhere, but it's not directly referenced been there. But everything else, like what stack you're on or where to look, you really don't need that anymore. And we actually have a command for this called Dr. Prompt Audit, which makes it really"
+  },
+  {
+    "id": "p12",
+    "time": "00:03:59.620—00:04:19.260",
+    "start": 239.62,
+    "end": "00:04:19.260",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=239s",
+    "zh": "……针对某个模型优化你的环境。比如现在用的是 Opus 5.5，运行这个命令，就会自动检查 CLAUDE.md 和 Skills，找出新模型已经不需要的内容。自动模式是一种权限模式。除了在项目中读写文件这类操作，它基本都会另跑一个分类器来做判断。",
+    "en": "easy to optimize your environment for a specific model. So if you're on Opus 5.5 here and you run this command, it will automatically check your CloudMD and your skills to see what the new model no longer needs. Now, Auto Mode is a permission mode that runs a separate classifier on pretty much everything that isn't just reading or editing files in your project."
+  },
+  {
+    "id": "p13",
+    "time": "00:04:19.660—00:04:33.220",
+    "start": 259.66,
+    "end": "00:04:33.220",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=259s",
+    "zh": "分类器会自动放行它认定安全的命令，比如运行测试或安装依赖。遇到拿不准的命令，它还是会拦下来。通常这样挺好，也基本符合我们的预期。",
+    "en": "So it automatically allows commands that it knows are safe, like running tests or installing dependencies, but it still blocks commands where it's unsure whether they're safe. And normally that's pretty good. Normally that's kind of, you know, what we want."
+  },
+  {
+    "id": "p14",
+    "time": "00:04:33.380—00:04:46.300",
+    "start": 273.38,
+    "end": "00:04:46.300",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=273s",
+    "zh": "举个例子，如果我们让它把某个改动部署到预发布环境，原来我们大概会直接批准它推送到部署仓库。但默认情况下，自动模式只信任当前目录和当前仓库，所以会拦下那条命令。",
+    "en": "But for example here, if we ask it to ship something to staging, we would have just, you know, approved the push to our deploy repo. But by default, AutoMode only trusts this folder and this repo. would block that command."
+  },
+  {
+    "id": "p15",
+    "time": "00:04:46.560—00:05:01.360",
+    "start": 286.56,
+    "end": "00:05:01.360",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=286s",
+    "zh": "这样人就又要介入了。大多数情况下，默认配置应该够用。要是你发现，即使开了自动模式，也还是有很多命令得手动批准，可以先看设置。你可以用普通英文在自己的设置里配置自动模式。",
+    "en": "So we're back in the loop. Now the defaults should be good in most cases, but if you still notice that you have to approve a lot of commands, even in auto mode, the first thing to look at is settings here, because you can configure auto mode in your own settings, just in plain English."
+  },
+  {
+    "id": "p16",
+    "time": "00:05:01.540—00:05:12.680",
+    "start": 301.54,
+    "end": "00:05:12.680",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=301s",
+    "zh": "这些设置会发给分类器，由它决定放行还是拒绝某条命令。我们可以写明信任哪些仓库、存储桶和域名，哪些操作总是允许，哪些操作永远不做。",
+    "en": "And this is what gets sent to the classifier, which then decides whether to reject or allow certain commands. So here we can just write which repos, buckets, domains we trust and what it should always allow or never do."
+  },
+  {
+    "id": "p17",
+    "time": "00:05:13.000—00:05:23.860",
+    "start": 313.0,
+    "end": "00:05:23.860",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=313s",
+    "zh": "这一步说实话挺简单。只用现在的默认配置，我们就已经省掉了大部分人工介入。模型接手了会话中的引导，自动模式接手了审批。",
+    "en": "Okay, so honestly, this was pretty easy, just using today's defaults, we've already gotten rid of most of our in the loop stuff because the model took over the steering and auto mode took over all the approving."
+  },
+  {
+    "id": "p18",
+    "time": "00:05:24.200—00:05:36.920",
+    "start": 324.2,
+    "end": "00:05:36.920",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=324s",
+    "zh": "让人退出过程很容易。更难的是，怎么确认人离开之后也能放心？接下来要考虑安全和验证。先说安全，因为到目前为止我们做的这些……[转写有缺漏]",
+    "en": "So getting out of the loop is easy. But the harder question now is how do we make sure it's OK that we're not there anymore? So first is keeping it safe and then also verification. So let's start with keeping it safe because everything so far."
+  },
+  {
+    "id": "p19",
+    "time": "00:05:37.000—00:06:09.780",
+    "start": 337.0,
+    "end": "00:06:09.780",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=337s",
+    "zh": "升级模型、打开自动模式，靠的都还是模型。它大多数时候会照你说的做，但这没有硬性保证。在我们八月发表的一项研究里，我们对比了自动模式和真人参与审批。只有约 14% 的人发现了明确危险的命令。自动模式拦下了其中的 89%，比我们做得好得多。不过，这类命令仍有大约十分之一会通过。要获得硬性保证，只能在运行框架这一层强制执行。于是就用得上……",
+    "en": "So upgrading the model and using auto mode is just working with a model. And in most cases, it does what you tell it to do. a guarantee. In a study we published back in August, we tested auto mode versus real people in the loop and only about 14% of people caught a clearly dangerous command. Auto mode blocked 89% of them, so it is a lot better at it than we were. But about 1 in 10 of those commands still went through. So if you do want the guarantee, you can only enforce that in the harness. And this is where"
+  },
+  {
+    "id": "p20",
+    "time": "00:06:09.780—00:06:21.420",
+    "start": 369.78,
+    "end": "00:06:21.420",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=369s",
+    "zh": "……我们以前的一些最佳实践，特别是权限规则。比如项目里有一条针对某个工具调用的规则，Claude Code 会先检查这条规则，然后才轮到自动模式分类器。",
+    "en": "some of our older best practices still matters, and that's permission. So for example, if you have a a specific tool call in your project, Claude code looks at this rule before the automo classifier even looks at it."
+  },
+  {
+    "id": "p21",
+    "time": "00:06:21.600—00:06:38.340",
+    "start": 381.6,
+    "end": "00:06:38.340",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=381s",
+    "zh": "如果某个工具调用命中了拒绝规则，分类器甚至看不到它。所以，要确保 Claude 永远不做某件事，拒绝规则依然是最可靠的办法。问题是，哪些事情必须写成项目规则，哪些可以交给如今已经很有能力的模型判断？",
+    "en": "In fact, if a tool call matches a deny rule, the classifier never even sees it. So having deny rules is still the best way to make sure Claude actually never does something. But then how do you know what needs to be a rule in your project versus what the model can just know because they've gotten so good at it?"
+  },
+  {
+    "id": "p22",
+    "time": "00:06:38.620—00:07:04.720",
+    "start": 398.62,
+    "end": "00:07:04.720",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=398s",
+    "zh": "我的判断标准是，如果 Claude 有一次做错了，我能把结果撤回吗？[转写有缺漏] 代码还能回退，所以这类判断可以继续交给模型。要是它丢掉了我们还没提交的改动，或者读取了密钥、导致密钥留在会话记录里，这些你不愿发生的事就仍该写进规则。比如，我们始终不希望 Claude 读取 `.env` 文件。自动模式默认会放行这个操作。",
+    "en": "I think it kind of just comes down to if Claude gets this wrong once, can I take it back? code, you can still revert that. So you can still leave that to the model. But if it throws away our uncommitted changes or it reads a key that's now in your transcript and you don't want that, that should still be a rule. So for example, let's say that we just never want Claude reading our .end file. Now by default, Automode is fine with this, so it would have just approved it."
+  },
+  {
+    "id": "p23",
+    "time": "00:07:05.660—00:07:37.080",
+    "start": 425.66,
+    "end": "00:07:37.080",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=425s",
+    "zh": "要确保 Claude 不能读这个文件，就加一条拒绝规则。这样，像 `cat` 这样的命令也打不开它。不过，有些命令会有副作用，情况就没这么直接了。比如 `npm test`，这是再普通不过的测试命令，自动模式会放行。但脚本运行时会执行一些你没写过的代码，比如依赖里的代码，或者 Claude 为了快速确认某件事，随手写了一个小脚本来跑。万一其中一个脚本被动过手脚……",
+    "en": "So if you want to make sure that Claude can never read this file, you should just add a deny rule. and then commands like cat cannot open this file either but it's not always that straightforward because sometimes certain commands can have side effects so for example let's say that npm test here a very normal command it's just a test so automote runs it that's fine but when the script is running it runs code that you didn't write like your dependencies or maybe claude runs a script real quick that it wrote just to quickly check something so if one of those scripts is compromised"
+  },
+  {
+    "id": "p24",
+    "time": "00:07:37.080—00:08:09.260",
+    "start": 457.08,
+    "end": "00:08:09.260",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=457s",
+    "zh": "……它就可能读到刚才那个 `.env` 文件或你的 SSH 密钥，把这些内容发到一个你从没听说过的服务器。说实话，就算当时是人逐项审批，也可能会点允许，因为眼前看不出有什么该拒绝的。这只是示例里 `npm test` 所运行脚本的一部分。权限规则只能决定是否运行某个工具调用，无法限制它开始运行后能接触到什么。我们仍然希望允许这类脚本运行，因为 Claude 验证自己工作的一部分就是……",
+    "en": "it could just open that same end file or your SSH keys and send those to a server you've never heard of, right? And even if we were still there as humans approving everything, honestly, we would have just clicked allow because there's nothing to say no to. It's just part of the script that in this example case, npm test runs. And permissions only decide if a tool call runs, but they cannot limit what it can reach once it's running. So we want to make sure that these kinds of scripts can still run because this is just part of you know how cloud can check its own work"
+  },
+  {
+    "id": "p25",
+    "time": "00:08:09.260—00:08:43.060",
+    "start": 489.26,
+    "end": "00:08:43.060",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=489s",
+    "zh": "……跑测试。我们不能直接禁掉 `npm test`，但可以限制它的副作用，也就是限制它所在的环境。在本地或自己的机器上，可以把这类命令放在沙箱里运行。你可以控制命令能读哪些文件、能写哪些目录、能访问哪些主机，再由操作系统强制执行。命令启动的子进程也受同样的限制。仅用拒绝规则时，Claude 会在命令运行前检查它……",
+    "en": "running tests so we cannot just block npm tests but we want to limit its side effects so really we just want to limit the environment that it's running in so if you're running it locally or on your own machine you can run commands like that in a sandbox so then you have control over which files in a command it can read which folders it can write to which hosts it can reach and the operating system enforces that also this also applies to everything that command then starts so any child processes so on its own that deny rule got checked by claude before the command runs"
+  },
+  {
+    "id": "p26",
+    "time": "00:08:43.060—00:09:13.200",
+    "start": 523.06,
+    "end": "00:09:13.200",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=523s",
+    "zh": "……但它只看得到 `npm test`，看不到脚本最后打开了哪些文件。开启沙箱后，同样的规则会传给操作系统。这样，当依赖尝试打开 `.env` 文件时，操作系统就会拒绝。默认情况下，[转写有缺漏] 如果你担心 SSH 密钥，还需要再加一条规则。它也不能连接未经批准的主机。不过，沙箱只覆盖 Claude 执行的 shell 命令……",
+    "en": "but all it sees there is npm test so it doesn't see which files that scripts ends up opening but with the sandbox on that same rule gets passed on to the operating system so now when when that dependency tries to open our end file the operating system just doesn't let it and by default it can machine so you'd want to add another rule for your ssh keys if you care about that um and it also cannot reach a host that wasn't approved but the sandbox only covers the shell commands that cloud"
+  },
+  {
+    "id": "p27",
+    "time": "00:09:13.200—00:09:38.880",
+    "start": 553.2,
+    "end": "00:09:38.880",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=553s",
+    "zh": "……和这些命令启动的东西。Claude 自己的文件、MCP 服务器和所有 Hooks 仍在沙箱之外运行。会话的其余部分依然运行在你自己的机器上，能接触到那台机器上的东西。理想情况下，可以把整个会话放到一开始就没有这些东西的地方，也就是云端会话。云端会话有自己的机器，并取得仓库的全新副本。即使我们合上笔记本，会话也会继续跑，这正是……",
+    "en": "runs and whatever those start but claude's own files your mcp servers and all of your hooks still run outside of it so the rest of your session still runs on your own machine and everything that's on there so ideally you want this whole thing to run somewhere where none of that is even there in the first place and that is a cloud session because there it gets its own machine with a fresh copy of our repo and this runs even when we close our laptop which is definitely"
+  },
+  {
+    "id": "p28",
+    "time": "00:09:38.880—00:10:06.100",
+    "start": 578.88,
+    "end": "00:10:06.100",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=578s",
+    "zh": "……持续数小时的长会话所需要的。这样也就自然避开了刚才的 `.env` 问题，因为这个文件没进 Git，SSH 密钥和 GitHub token 也没有进去。如果会话中途告诉你它缺少一个 API 密钥，可以把密钥加为网络密钥，让它使用密钥，同时避免把密钥发送给模型。Claude 的云端会话默认也会限制网络……",
+    "en": "something you want for these longer running sessions that run for hours so in this case this automatically gets rid of the end file issue because it's not in git and neither are my ssh keys or our github token and if it still needs an api key uh you can add that as a network secret where it will tell you like hey i'm missing an api key mid-session um so it can use it without actually ever sending it to the model and by default also in a class cloud session network"
+  },
+  {
+    "id": "p29",
+    "time": "00:10:06.100—00:10:31.000",
+    "start": 606.1,
+    "end": "00:10:31.000",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=606s",
+    "zh": "……访问，只允许软件包注册源、GitHub 之类的服务。Claude 如果需要访问其他主机，你得在环境里明确添加那些域名。这样即使合上笔记本，我们也能让长会话继续在云端运行，安全上也更有保障，因为……[转写有缺漏] 还得记得，这台机器用完可以丢弃，从它发出去的东西却会留在外面。",
+    "en": "access is limited to things like package registries and github so you have to explicitly add those domains to your environment for cloth to to reach other hosts okay so with a cloud session we can run these long-running sessions even with our laptop closed and it keeps us safe because it Now, it's still good to remember that this machine is disposable, but the things that leave it aren't."
+  },
+  {
+    "id": "p30",
+    "time": "00:10:31.120—00:10:45.380",
+    "start": 631.12,
+    "end": "00:10:45.380",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=631s",
+    "zh": "比如它推送的一次提交，或者通过连接器发送的一条消息。所以我们依然开启自动模式，并把拒绝规则提交进仓库，让会话带上这些规则。这样它仍然能拦下强制推送、提交里夹带密钥等情况。",
+    "en": "So a commit it pushed or a message it sent through a connector. So we still run it in auto mode with our deny rules, just commit it into the repo so they come along. So it could still catch things like a force push or a secret and a commit, all that kind of stuff."
+  },
+  {
+    "id": "p31",
+    "time": "00:10:46.960—00:11:10.980",
+    "start": 646.96,
+    "end": "00:11:10.980",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=646s",
+    "zh": "除了安全，我们还得确认 Claude 做的事情确实符合要求。接下来讲验证。人一直参与的好处是，我们看过几乎所有改动，也批准过每一步，所以大概知道结果怎么样。现在 Claude 在后台跑了好几个小时，这种把握就没有了。到了最后，我们也不会逐个文件去读。",
+    "en": "And beyond just safety, we also need to make sure that Claude is actually working on the right thing. So next is verification. nice thing about being in a loop, like we kind of knew the work was good because we'd already kind of seen every change, we'd proved everything. But now if Claude works for hours in the background, we don't have that anymore. And we're not really going to read every file at the end either."
+  },
+  {
+    "id": "p32",
+    "time": "00:11:12.320—00:11:39.760",
+    "start": 672.32,
+    "end": "00:11:39.760",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=672s",
+    "zh": "比如，我们要求把身份验证迁到新的 API。Claude 很能理解我们想要什么，可它一路上还是得自己做很多小决定。用完全相同的提示词，第一次可能迁完还留着旧 API，第二次可能只对新登录生效，第三次可能迁完就把所有人登出。几种做法看上去都说得通。这时候，在过程中设一些验证节点就很有帮助……",
+    "en": "So, you know, say that we ask you to move our auth to a new API. Well, Claude is very good at understanding what we want, but there are still a lot of small decisions that it has to make along the way so with the exact same prompt you know one run might move it over but leave the old api in there or one might move it but only for new logins and another one might move it but log everyone out and these all look pretty reasonable but it really helps to set up these verification points along"
+  },
+  {
+    "id": "p33",
+    "time": "00:11:39.760—00:12:06.140",
+    "start": 699.76,
+    "end": "00:12:06.140",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=699s",
+    "zh": "……让 Claude 持续验证自己的结果。凡是能给出通过或失败结果的东西都可以，比如测试、构建、截图，手头有什么就用什么。接下来我们只需要确认……[转写有缺漏] 审阅这些验证节点比最后检查整个改动省时得多。要是某次运行仍把所有人都登出了，它就过不了第一道检查，得回去找别的办法。",
+    "en": "the way so claude keeps verifying its own results and those can be anything that comes back as a pass or fail so tests a build a screenshot whatever you have so now we just want to make sure that we the verification points. They're a lot shorter to review than if we just had to, you know, review the whole change at the end. So that's pretty reasonable. So if one of these runs would still log everyone out, it doesn't get past that first check, and then it just has to find another way."
+  },
+  {
+    "id": "p34",
+    "time": "00:12:06.360—00:12:20.600",
+    "start": 726.36,
+    "end": "00:12:20.600",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=726s",
+    "zh": "有几种方式可以设置这些检查。最简单的当然是直接写进提示词。告诉它怎样才算完成，让它把工作拆成各自带有测试的任务。我也喜欢让它把实际输出贴出来，因为运行时你不在旁边。",
+    "en": "And there's a couple ways to set this up. The easiest one is, of course, just in your prompt. So, you know, you say what done looks like and ask it to split that into tasks so they have their own tests. And I also like to ask it to show the actual output because you weren't there to see it."
+  },
+  {
+    "id": "p35",
+    "time": "00:12:22.340—00:12:39.220",
+    "start": 742.34,
+    "end": "00:12:39.220",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=742s",
+    "zh": "但模型未必会执行。对于必须运行的检查，我会用 Hooks，也就是 Claude Code 在特定时机运行的脚本。你可以决定什么时候运行、运行什么脚本、检查什么内容，所以掌控程度很高。",
+    "en": "not a guarantee that a model will do it. So for the ones that have to run guaranteed run, I would use hooks, which are just, you know, scripts that cloud code runs at a specific point. And those give you a lot of control because you decide when they run and what they run and what they check."
+  },
+  {
+    "id": "p36",
+    "time": "00:12:39.520—00:13:08.560",
+    "start": 759.52,
+    "end": "00:13:08.560",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=759s",
+    "zh": "例如，每次编辑文件后跑一次 linter。每当它要把一项任务标成完成，就跑与改动相关的测试。碰过身份验证代码，就要通过身份验证测试。它要结束整个会话时，我们就跑完整的测试套件。如果有检查失败，它就知道还有问题，会回去修到通过为止。这里有个细节。测试失败时，大多数工具默认退出时会返回……",
+    "en": "So for example, every time it edits a file, we can run our linter. Every time it wants to mark a task as complete, we can run the tests for what it changed. So, you know, if it touched our auth code or something, it has to pass the auth tests and when it wants to finish the whole session we can just run the entire test suite and if one of those fails it goes oh that's still broken it goes back until it passes so it fixes it now just one thing when a test fails by default most tools that exit with"
+  },
+  {
+    "id": "p37",
+    "time": "00:13:08.560—00:13:32.360",
+    "start": 788.56,
+    "end": "00:13:32.360",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=788s",
+    "zh": "……退出码 1。在这次演示的任务完成前测试 Hook 中，退出码为 1 时，Claude Code 仍把任务标成已完成。让这个 Hook 的脚本返回退出码 2，Claude 才会回去修复。现在，我们有了一个我能放心让它独自运行的会话。接下来可以多开几个，因为各自有自己的机器。",
+    "en": "a one exit code but with a one that task by cloud code just gets marked as completed anyway way. So make sure that your scripts exit with a to exit code because that's what actually sends Claude back to fix it. So okay, now we have one session that I'm pretty comfortable with leaving alone. So now we can start with a few more of those because they've all got their own machine.",
+    "transcriptionNote": "This exit-code behavior applies to the task-completion test hook shown here. Other hook events may behave differently."
+  },
+  {
+    "id": "p38",
+    "time": "00:13:32.360—00:14:00.440",
+    "start": 812.36,
+    "end": "00:14:00.440",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=812s",
+    "zh": "所以它们不用都在同一个目录里工作，我们也不用再费太多心思管理 Git worktree。到这一步，每个会话仍由我们亲自启动和审查。说实话，这已经挺好了。启动什么、什么时候算完成，都由我们掌控。但我们依然要启动每个会话，也仍要参与每一个。所以我认为……",
+    "en": "So they're, you know, not all working in the same folder and we don't really have to think about work trees too much ourselves anymore. But then we still start every session ourselves and we review every one of them and honestly this is already a pretty good place to be we are still fully in control over what gets started and when we call a task done but even there um you know we're still the ones kicking off every session and we're still in the loop for all of them so i think"
+  },
+  {
+    "id": "p39",
+    "time": "00:14:00.440—00:14:20.720",
+    "start": 840.44,
+    "end": "00:14:20.720",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=840s",
+    "zh": "……现在最重要的是把 CI 配好。这些会话最后都会开 PR，无论各个会话中间发生了什么，CI 都会在每个 PR 上运行同一套检查。再打开自动修复，例如我们的 CI Autofix，Claude 还能看见哪些检查失败了，然后回去修。",
+    "en": "the most important thing to have in place here now is your ci because all of these sessions eventually open a pr and your ci runs the same checks on every one of them no matter how that session was along the way. And if you turn on autofix, we have like CI autofix, Cloud can also see when one of those checks fails and then go back to fix it."
+  },
+  {
+    "id": "p40",
+    "time": "00:14:20.860—00:14:33.320",
+    "start": 860.86,
+    "end": "00:14:33.320",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=860s",
+    "zh": "这样，你的审查时间就不用花在检查本来就能发现的问题上。有些 PR 甚至可以开启「就绪后合并」，等检查全部通过，GitHub 就会合并这个 PR。",
+    "en": "So you're not the one spending your review on things that, you know, a check could have already caught. And for some of them, you can even turn on merge when ready. So then GitHub merges the PR once all of the checks have passed."
+  },
+  {
+    "id": "p41",
+    "time": "00:14:33.400—00:15:04.480",
+    "start": 873.4,
+    "end": "00:15:04.480",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=873s",
+    "zh": "这样就不需要你亲自审查。不过这并非默认做法，取决于改动风险。以我们团队为例，[转写有缺漏] 先由 Claude 审查。这个审查会话和写代码的会话是分开的，所以它带着全新的上下文开始。还有另一组 Agent 复核它发现的每一个缺陷。至于人工审到什么程度，看风险而定。文档或界面文案这类小改动不需要人来审，自动检查通过通常就能继续。普通的……",
+    "en": "So you're not in the loop to review. But again, that's not the default. And that really depends on how risky the change is. So for example, on our team, reviewed by cloud first so not by the session that wrote it so it comes with a fresh context and also a separate group of agents to just double check every bug it finds and then how much we review ourselves just depends on the risk so smaller changes like docs or copy they don't need a person so once the automated checks are green we're pretty good to go maybe ordinary"
+  },
+  {
+    "id": "p42",
+    "time": "00:15:04.480—00:15:39.300",
+    "start": 904.48,
+    "end": "00:15:39.300",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=904s",
+    "zh": "……产品改动可能需要一位审查者，风险高的改动可能要两位。再往下走，Anthropic 已经在越来越多地这么做了，你也不再亲自启动每个会话。如果你和我一样很不擅长切换上下文，同时管理这么多会话就容易顾不过来。可以设一个主会话来协调。现在已经能在仍处于测试阶段的 Claude Code Projects 里看到这种方式。你只要告诉它要做什么……",
+    "en": "product changes just need one reviewer and then risky changes might need two now ultimately kind going and we're already kind of doing more of that at Anthropic is that you're not really starting all of those sessions yourself either because if you're anything like me I'm terrible at context switching so having to manage so many sessions at the at the same time doesn't always go well so instead you just have one main session that's your orchestrator and you can already see this in things like cloud code projects which is still in beta but you just tell it what it needs to be done"
+  },
+  {
+    "id": "p43",
+    "time": "00:15:39.300—00:16:07.200",
+    "start": 939.3,
+    "end": "00:16:07.200",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=939s",
+    "zh": "……协调会话就会拆分工作，为每项任务开一个会话，并跟踪它们交回的结果。它会自动启动和验证这些工作线程，每条线程就是一个新会话。这样你只用和一个会话沟通，不用同时和八个会话对话。主会话本身不写代码，所以要给它一个善于决定做什么、判断结果怎么样的模型，例如 Fable。如果交回的东西还没真正做完，主会话就把它打回去。",
+    "en": "and the orchestrator splits that up and then starts other sessions for each task and it keeps track of what comes back so it automatically starts and verifies these threads which are just new sessions so instead of talking to eight sessions you're just talking to one and the main session doesn't write the code itself so there you want a model that's really good at deciding what to do and judging what comes back a model like fable and if something comes back that isn't actually done it just, you know, sends it back."
+  },
+  {
+    "id": "p44",
+    "time": "00:16:07.340—00:16:20.020",
+    "start": 967.34,
+    "end": "00:16:20.020",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=967s",
+    "zh": "它会一直这样做，直到任务真正完成并通过全部检查。各工作线程则需要擅长实际执行的模型，比如 Opus 5.5。两边可以分开配置，主会话用一个模型，工作线程用另一个。",
+    "en": "So until it's actually done and it passes everything and the threads need a model that's good at actually doing the work like Opus 5.5 and you can set those separately. So, you know, one model for the main session and then another one for the threads."
+  },
+  {
+    "id": "p45",
+    "time": "00:16:20.420—00:16:33.620",
+    "start": 980.42,
+    "end": "00:16:33.620",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=980s",
+    "zh": "用 Claude Code Projects 做这种安排还有个好处。我们不用再自己管理上下文，这些都由系统自动处理。所以不用琢磨什么时候压缩上下文，什么时候清空它之类的事。",
+    "en": "And another benefit is that with this setup with Cloak Code Projects specifically, we don't manage context anymore. That's all done automatically for us. So we no longer have to think about, you know, when to compact or clear all of that stuff."
+  },
+  {
+    "id": "p46",
+    "time": "00:16:34.420—00:17:06.540",
+    "start": 994.42,
+    "end": "00:17:06.540",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=994s",
+    "zh": "回头看以前的最佳实践，这些事还在做，只是换了负责的人或系统。模型引导会话，自动模式做审批，拒绝规则和环境限定能做什么，测试、Hooks 和 CI 来检查，最后 Claude 甚至可以自己启动会话。我们原来亲手做的事，几乎都交给了模型、运行框架或环境。人主要负责开第一个会话，再审查最终交回的结果。如果想在自己的环境里试试，我建议你挑一件……",
+    "en": "okay so if you look back at those old best practices they're all still there but they've just moved so the model sears it now um auto mode approves your deny rules and the environment restrict what's possible your test your hooks and your ci check set and then ultimately claude can just start them as well so almost everything we used to do ourselves is now either the model the harness or the environment and we're really just here to start that first one and to just review what comes out so if you want to try this in your own setup i would say just take one thing that's"
+  },
+  {
+    "id": "p47",
+    "time": "00:17:06.540—00:17:30.960",
+    "start": 1026.54,
+    "end": "00:17:30.960",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=1026s",
+    "zh": "……比平时交给 Claude 的任务大得多的事情。确认 CI 真能发现你在意的问题，再花一点时间配好环境里的网络访问、密钥和初始化脚本。然后在云端启动，看看会话卡在哪里、哪些地方还得由你介入。那个地方就是下一步可以交给 Claude 的环节。我也非常推荐去看文档里的最佳实践。非常感谢大家。",
+    "en": "way bigger than you normally give claude make sure your ci actually catches the things you care about and then spend a bit of time just configuring your environment like it's network access it's secret and it's you know setup script and then start in the cloud and see where your sessions get stuck and where you're still in the loop because that's the next thing to hand over to claude i also highly recommend checking out our best practices in the docs as well thank you so much"
+  }
+]

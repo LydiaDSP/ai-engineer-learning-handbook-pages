@@ -1,0 +1,35 @@
+[
+  {
+    "id": "skill-ab",
+    "after": "p04",
+    "title": "用相同任务比较加载和未加载 Skill",
+    "time": "07:03:06",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25386s",
+    "en": "assets/skill-ab-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用相同任务比较加载和未加载 Skill</h3><dl><div><dt>设置</dt><dd>给两个会话同一项任务，一组加载 Skill，一组保持原样。</dd></div><div><dt>通过条件</dt><dd>图中任务检查问题有无编号、是否附建议、是否等待用户回答。</dd></div><div><dt>结果示例</dt><dd>五项任务中，未加载通过三项，加载后通过五项。还可比较 token 和耗时。</dd></div></dl></div>",
+    "note": "同一套通过条件用于两组。五题结果是讲者举例。",
+    "sourceSeconds": 25386
+  },
+  {
+    "id": "knowledge-matrix",
+    "after": "p10",
+    "title": "逐条比较知识点的四种结果",
+    "time": "07:07:15",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25635s",
+    "en": "assets/knowledge-matrix-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>逐条比较知识点的四种结果</h3><dl><div><dt>两组都答对</dt><dd>模型已掌握，可考虑精简。</dd></div><div><dt>加载后答错</dt><dd>Skill 可能引入误解，优先排查。</dd></div><div><dt>加载后答对</dt><dd>Skill 补足了知识，保留对应信息。</dd></div><div><dt>两组都答错</dt><dd>回看题目与 Skill 表述，修改后复测。</dd></div></dl></div>",
+    "note": "一个知识点分别在无 Skill 和有 Skill 的条件下评分。",
+    "sourceSeconds": 25635
+  },
+  {
+    "id": "strict-rubric",
+    "after": "p16",
+    "title": "区分理解大意与掌握精确规则",
+    "time": "07:11:15",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=25875s",
+    "en": "assets/strict-rubric-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>区分理解大意与掌握精确规则</h3><dl><div><dt>宽松评分</dt><dd>理解规则的大意即可，少一个细节仍可能算对。</dd></div><div><dt>严格评分</dt><dd>核对全部条件和细节，包括是否要求停下来等用户回复。</dd></div><div><dt>图中示例</dt><dd>Opus 5.5 未加载 Skill 时，对知识点的基线掌握比例，从宽松评分的 70% 变为严格评分的 22%。</dd></div></dl></div>",
+    "note": "两个百分比采用不同评分标准，来自讲者的实验样本。",
+    "sourceSeconds": 25875
+  }
+]

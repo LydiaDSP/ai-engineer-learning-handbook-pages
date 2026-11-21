@@ -1,0 +1,840 @@
+AI 帮你写代码，哪些判断还得自己做
+Scott Tolinski、CJ Reynolds
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[04:11:43.240 --> 04:11:45.260] All right, folks, welcome to Syntax.
+[04:11:45.480 --> 04:11:46.800] CJ and myself here.
+[04:11:47.000 --> 04:11:47.740] I'm Scott Talinsky.
+[04:11:47.920 --> 04:11:48.840] This is CJ Reynolds.
+[04:11:49.080 --> 04:11:50.860] We're going to be doing all kinds of fun stuff.
+[04:11:51.020 --> 04:11:54.100] We're going to be breaking down some of the latest AI news,
+[04:11:54.240 --> 04:11:59.160] as well as getting into some fun games as to which AI model made this.
+[04:12:00.880 --> 04:12:05.480] eating lunch or whatever, you can come hang out or you can just chill and just do whatever.
+[04:12:05.880 --> 04:12:12.900] But we'll be joining you online as well. So CJ, what's up, man? How are you doing in San Francisco?
+[04:12:12.900 --> 04:12:16.940] I'm good. Let's introduce ourselves. And anybody that doesn't know who we are,
+[04:12:17.080 --> 04:12:21.680] we are Syntax. We're a podcast. We also have a YouTube channel all about web dev, programming,
+[04:12:21.980 --> 04:12:29.880] AI. We're both from Denver. We're both from Denver. Yes. Yeah. So Syntax is more than just
+[04:12:30.880 --> 04:12:34.660] It's also a live stream, so check us out at Syntax on YouTube.
+[04:12:34.980 --> 04:12:37.620] We do all kinds of stuff, including a lot of this.
+[04:12:37.980 --> 04:12:40.220] So let's break it down here.
+[04:12:41.680 --> 04:12:44.340] Let's get into our first little bit, the first bit of news.
+[04:12:44.520 --> 04:12:47.100] They're calling it the greatest prompt ever.
+[04:12:47.260 --> 04:12:52.320] So this tweet has been going viral here because this is a good prompt.
+[04:12:53.440 --> 04:12:57.020] Find all implicit state machines in my app.
+[04:12:57.220 --> 04:12:59.840] CJ, why is this a good prompt?
+[04:13:00.880 --> 04:13:03.620] I haven't used this prompt, but I've used similar prompts.
+[04:13:03.860 --> 04:13:06.140] And I think that there would be a follow-up to this prompt,
+[04:13:06.260 --> 04:13:12.160] because an implicit state machine is essentially a state machine that you haven't defined.
+[04:13:12.540 --> 04:13:17.900] So you have a bunch of variables all over your code, like is loading or is running,
+[04:13:18.240 --> 04:13:21.000] and then you have code and if statements all over those.
+[04:13:21.160 --> 04:13:25.620] And so this prompt is essentially like, let's take that spaghetti code and
+[04:13:25.620 --> 04:13:28.760] turn it into something that is easier to reason about.
+[04:13:28.920 --> 04:13:29.240] Yes.
+[04:13:30.880 --> 04:13:33.860] Basically, if you don't know what an implicit state machine
+[04:13:33.860 --> 04:13:36.240] or an explicit state machine is, the easiest way
+[04:13:36.240 --> 04:13:39.400] to think about this is that an implicit state machine
+[04:13:39.400 --> 04:13:42.580] is stuff that you used to see talked about all over React
+[04:13:42.580 --> 04:13:46.640] code bases, stuff like is loading, has error, is success.
+[04:13:47.440 --> 04:13:51.380] These are often like a Boolean state, like this.
+[04:13:51.620 --> 04:13:56.360] And the big problem with that is that it can be bug prone.
+[04:13:56.360 --> 04:13:57.100] It can be error prone.
+[04:13:57.180 --> 04:14:00.140] But it can also put your UI into impossible states.
+[04:14:00.880 --> 04:14:09.000] So theoretically, if it's just two separate Booleans for these things, you could have a is loading and an is error, both true.
+[04:14:09.200 --> 04:14:12.380] And then what you're showing both of them or you're showing one of them or the other one.
+[04:14:12.540 --> 04:14:23.140] So the idea with this prompt, find all implicit state machines in my app, is that you are able to convert them to explicit state machines.
+[04:14:23.580 --> 04:14:27.260] Explicit state machines have a declared status.
+[04:14:27.260 --> 04:14:31.840] They have a value rather than a Boolean flag, right?
+[04:14:32.380 --> 04:14:35.320] And they have state transitions, right,
+[04:14:35.380 --> 04:14:36.500] with centralized rules.
+[04:14:36.700 --> 04:14:39.100] So if you've ever used something like Redux,
+[04:14:39.340 --> 04:14:44.140] which at a time was verbose and many people didn't love it,
+[04:14:44.160 --> 04:14:47.420] for those reasons, it ended up being a great idea
+[04:14:47.420 --> 04:14:49.380] for explicit state machines.
+[04:14:49.820 --> 04:14:52.620] There's a lot of libraries around explicit state machines
+[04:14:52.620 --> 04:14:56.920] like Redux, or not Redux, Xstate.
+[04:14:57.260 --> 04:14:57.560] X state, yes.
+[04:14:57.560 --> 04:14:58.540] X state, yes.
+[04:14:59.520 --> 04:15:02.680] And it makes working with AI coding a little bit easier
+[04:15:02.680 --> 04:15:05.320] because these impossible states are no longer possible.
+[04:15:05.700 --> 04:15:08.560] And then you can also visualize around your code base
+[04:15:08.560 --> 04:15:09.140] a bit more.
+[04:15:11.840 --> 04:15:15.880] How useful do you find visualizing around your code base?
+[04:15:16.540 --> 04:15:18.780] Yeah, I mean, just in general, though,
+[04:15:18.860 --> 04:15:20.060] I find this useful.
+[04:15:20.060 --> 04:15:22.080] And it's actually an argument against a lot of people
+[04:15:22.080 --> 04:15:25.200] that are basically saying, don't worry about the code.
+[04:15:25.200 --> 04:15:27.040] let the AI make all the decisions.
+[04:15:27.340 --> 04:15:27.580] Yes.
+[04:15:28.000 --> 04:15:33.620] But I have found that a cleaner code base makes it easier for the AI to work in as well.
+[04:15:33.980 --> 04:15:39.760] And so if you give it a prompt like this, it's going to make it harder to have like a weird UI state like you were mentioning.
+[04:15:40.360 --> 04:15:47.500] One prompt that I've been doing recently is find all duplication and opportunities for abstraction.
+[04:15:47.720 --> 04:15:47.840] Yes.
+[04:15:48.040 --> 04:15:51.360] And like that's another thing that for a long time people were saying like,
+[04:15:51.360 --> 04:15:52.900] copy paste is better than abstraction.
+[04:15:53.120 --> 04:15:55.140] But when you have a massive sprawling code base
+[04:15:55.140 --> 04:15:56.760] and AI is having to work in all of that,
+[04:15:57.080 --> 04:15:58.800] having a single source of truth or
+[04:15:58.800 --> 04:16:00.640] one way to do things in your code base
+[04:16:00.640 --> 04:16:02.720] also makes it a lot easier for the AI.
+[04:16:03.580 --> 04:16:03.780] Yeah.
+[04:16:03.960 --> 04:16:05.800] No, the biggest problem with that,
+[04:16:05.920 --> 04:16:06.900] not that that's a problem,
+[04:16:07.020 --> 04:16:08.360] the biggest problem with that is getting
+[04:16:08.360 --> 04:16:11.660] the AI to adhere to your abstractions,
+[04:16:11.740 --> 04:16:14.960] because otherwise you'll end up with copies of abstractions.
+[04:16:15.380 --> 04:16:17.520] Exactly. Personally, I've found
+[04:16:17.520 --> 04:16:19.140] lint rules to be really good for that.
+[04:16:19.140 --> 04:16:24.460] So one example is a CLI tool that I'm building that does a lot of file read and writes.
+[04:16:24.680 --> 04:16:26.180] So it's writing files all over your system.
+[04:16:26.340 --> 04:16:26.920] It's saving them.
+[04:16:27.140 --> 04:16:31.700] And before I refactored, it had like 10 different places with 10 different ways of writing the file.
+[04:16:31.880 --> 04:16:35.080] But then I brought it all into a single file manager.
+[04:16:35.320 --> 04:16:38.620] And any part of my code that wants to write a file has to use the file manager.
+[04:16:38.780 --> 04:16:42.940] So there's a lint rule that says no bare FS read, no bare FS write.
+[04:16:43.140 --> 04:16:46.040] And that basically forces the AI to use that abstraction.
+[04:16:46.240 --> 04:16:46.980] Totally, yeah.
+[04:16:46.980 --> 04:16:51.240] So I like this prompt and I like this type of thing.
+[04:16:51.480 --> 04:16:56.040] So finding your implicit state machines and changing them to be explicit state machines
+[04:16:56.040 --> 04:16:59.540] and really getting a handle on the state of your application,
+[04:17:00.080 --> 04:17:04.240] in my mind, is something that does decrease the slop level of a code base.
+[04:17:04.240 --> 04:17:08.160] Definitely. And this is the AI engineer conference.
+[04:17:08.540 --> 04:17:11.720] So we still need engineering. It's not just prompts.
+[04:17:11.940 --> 04:17:13.640] Yes, yes, yes. It is all prompts, CJ.
+[04:17:13.640 --> 04:17:32.160] All right. The next thing that we brought here is unfair play. So fair play is basically how a iOS app can be encrypted so that way it cannot be decompiled.
+[04:17:32.160 --> 04:17:45.080] So UnfairPlay decrypts an IPA and it allows you to recover the actual application that was built for a macOS app.
+[04:17:45.240 --> 04:17:54.100] And so this project's really neat because what it's doing is it's kind of like the ROM hacking scene of video games
+[04:17:54.100 --> 04:18:00.320] where you aren't supplying a counterfeit app to somebody
+[04:18:00.320 --> 04:18:03.480] or an app that is, you're not hosting the YouTube app.
+[04:18:03.800 --> 04:18:06.020] But potentially what you could be doing
+[04:18:06.020 --> 04:18:08.520] is you could take your own YouTube app
+[04:18:08.520 --> 04:18:10.000] that you've downloaded yourself.
+[04:18:10.320 --> 04:18:12.760] You can unfair play it.
+[04:18:12.880 --> 04:18:13.980] You can get the IPA.
+[04:18:14.100 --> 04:18:18.020] You can modify the application to your heart's content
+[04:18:18.020 --> 04:18:21.140] and then reinstall it on your device.
+[04:18:21.740 --> 04:18:23.200] How does that sound to you, CJ?
+[04:18:23.460 --> 04:18:24.000] Sounds amazing.
+[04:18:24.100 --> 04:18:25.780] So, I mean, I'm an Android person.
+[04:18:25.940 --> 04:18:27.560] If you listen to the Syntax podcast, you know that.
+[04:18:27.720 --> 04:18:29.480] And we've been able to do a similar thing.
+[04:18:29.640 --> 04:18:35.960] So there is this project called Revance in the world of Android that is very similar.
+[04:18:36.160 --> 04:18:43.360] So, I mean, it's very common to take a Spotify app, take a YouTube app, take an Instagram app, and remove the parts that show you ads or something like that.
+[04:18:43.360 --> 04:18:45.340] We're not condoning that necessarily, but that's something.
+[04:18:45.440 --> 04:18:46.480] No, remove those ads.
+[04:18:46.480 --> 04:18:53.800] Yeah, no, and I think what I saw with unfair play is that people were taking YouTube and then removing all YouTube shorts.
+[04:18:54.080 --> 04:18:56.540] Yeah, which honestly, that's not a bad idea.
+[04:18:56.720 --> 04:19:00.360] Yeah, that's like imagine modifying Instagram to give you a timeout.
+[04:19:00.440 --> 04:19:03.380] There's probably some built in rules that are like don't scroll for too long.
+[04:19:03.480 --> 04:19:06.080] Yeah, but they don't always work like you could enforce it.
+[04:19:06.140 --> 04:19:11.920] You could make it so that it only shows you feeds for a certain amount of time and then you have to put the app down or something like that.
+[04:19:12.040 --> 04:19:14.060] Or just like hiding stuff you don't need.
+[04:19:14.060 --> 04:19:23.660] You know, like there's so many functionalities in apps, especially like YouTube now that they did put shorts in the main bar and they removed subscriptions from the main navigation.
+[04:19:23.920 --> 04:19:28.920] So, hey, with unfair play on iOS, you could just swap that back.
+[04:19:29.080 --> 04:19:29.860] Take back your apps.
+[04:19:30.060 --> 04:19:30.980] Take back your apps.
+[04:19:31.100 --> 04:19:32.120] We're taking back our hardware.
+[04:19:32.600 --> 04:19:32.860] Yeah.
+[04:19:32.980 --> 04:19:34.220] We're taking back our apps.
+[04:19:34.540 --> 04:19:35.020] Yeah.
+[04:19:35.020 --> 04:19:40.240] And this is super relevant with like the reverse engineer everything repo that came up.
+[04:19:40.380 --> 04:19:43.040] Like this is this is the good part of AI.
+[04:19:44.380 --> 04:19:45.480] It's stuff like this.
+[04:19:45.640 --> 04:19:48.300] The ownership and the control, all that good stuff.
+[04:19:48.520 --> 04:19:49.200] I'm here for it.
+[04:19:49.560 --> 04:19:50.340] Yes, me too.
+[04:19:50.800 --> 04:19:51.160] Okay.
+[04:19:52.680 --> 04:19:54.260] Let's keep going on some news.
+[04:19:54.400 --> 04:19:55.160] How do you feel about that?
+[04:19:55.280 --> 04:19:55.780] Let's do it, yeah.
+[04:19:56.260 --> 04:19:58.420] We have some coding games lined up for you too,
+[04:19:58.520 --> 04:19:59.980] but I think people are eating right now.
+[04:20:00.000 --> 04:20:01.860] so maybe not the best time to introduce those.
+[04:20:02.040 --> 04:20:07.940] Okay, so let's do the rise of coding languages for agents.
+[04:20:08.320 --> 04:20:16.120] So very recently, Kit from the Anomaly, which is the Open Code team,
+[04:20:16.360 --> 04:20:19.940] has been talking about his new language blood.
+[04:20:20.680 --> 04:20:28.000] And he hasn't shown it really beyond just a couple of glimpses of even what he had described as outdated syntax.
+[04:20:30.100 --> 04:20:33.420] Blood, as well as many of these other AI languages,
+[04:20:34.060 --> 04:20:38.120] have turned into this conversation of our AI languages,
+[04:20:38.500 --> 04:20:40.300] AI first languages,
+[04:20:40.940 --> 04:20:43.440] really something that is worth exploring,
+[04:20:43.740 --> 04:20:46.180] worth investigating, or whatever.
+[04:20:47.080 --> 04:20:49.540] We've talked about a few of these on syntax before,
+[04:20:49.720 --> 04:20:51.080] but now with Blood,
+[04:20:51.280 --> 04:20:55.280] there's also bendlang at bend-lang.com,
+[04:20:55.420 --> 04:20:58.420] as well as 0lang from the Vercel team.
+[04:21:00.600 --> 04:21:04.840] I will say that those are just three that I got off the top of my head.
+[04:21:05.000 --> 04:21:07.360] I've probably seen like 15 of these bad boys.
+[04:21:08.020 --> 04:21:13.960] So before it was everybody is creating a Safari fork or a browser fork or a Chrome fork.
+[04:21:14.460 --> 04:21:17.160] Then everybody is creating a front-end language or whatever.
+[04:21:17.380 --> 04:21:19.960] Now we got vibe-coded languages.
+[04:21:20.260 --> 04:21:23.960] And you better believe, CJ, all of them are faster than Rust.
+[04:21:24.140 --> 04:21:24.980] They're all fast.
+[04:21:25.060 --> 04:21:25.960] They're all very fast.
+[04:21:26.080 --> 04:21:26.760] That's their benchmarks.
+[04:21:27.200 --> 04:21:28.940] Yeah, I mean, I think it's super interesting.
+[04:21:30.000 --> 04:21:36.080] My initial reaction to this is AI was trained on existing programming languages, so why
+[04:21:36.080 --> 04:21:38.260] would it be better at a new programming language?
+[04:21:38.500 --> 04:21:41.940] But if you look at some of their tenants and how they're actually making it useful for
+[04:21:41.940 --> 04:21:48.700] AI, it really comes down to giving it proofs and preventing it from making mistakes.
+[04:21:49.200 --> 04:21:53.340] Almost similar to Elm Lang, there's various programming languages that make it really
+[04:21:53.340 --> 04:21:57.780] hard to get into error states or have memory leaks and stuff like that.
+[04:21:57.780 --> 04:22:05.600] Elm is low-key getting a lot of attention right now because of all kinds of things.
+[04:22:05.740 --> 04:22:14.420] And in fact, Effect and FoldKit, which is the UI framework in Effect, is an Elm-style framework.
+[04:22:14.780 --> 04:22:21.960] And so I see Elm as one of these things that seems to be talked about quite a bit more in this space now.
+[04:22:22.120 --> 04:22:26.080] Well, it's interesting that you bring up Effect because I don't think of Effect as a programming language.
+[04:22:26.080 --> 04:22:27.060] It's more of a runtime.
+[04:22:27.780 --> 04:22:30.900] But it gives you some of these same guarantees that these languages do, right?
+[04:22:30.980 --> 04:22:37.660] Like it makes it so that you have explicit error states and errors have to pass through in a certain way.
+[04:22:38.060 --> 04:22:41.700] And again, it just makes AI more predictable when it's writing in that code base.
+[04:22:41.920 --> 04:22:42.220] Yeah, yeah.
+[04:22:42.500 --> 04:22:48.320] And along with Effect, there is a front-end framework called FoldKit that is built on Effect.
+[04:22:48.800 --> 04:22:54.160] And the developer behind FoldKit just announced that he's going to be working on this full time now.
+[04:22:54.160 --> 04:22:59.580] this thing absolutely rips for a lot of reasons. You have one state tree, it's all
+[04:22:59.580 --> 04:23:04.100] effect-based, everything's a schema. Agents are good at this framework and
+[04:23:04.100 --> 04:23:08.440] their premise isn't, you know, with a lot of front-end frameworks, JavaScript
+[04:23:08.440 --> 04:23:11.840] frameworks, it was always this is faster, this is faster than this or whatever.
+[04:23:12.160 --> 04:23:17.440] This is correct and the AI is good at writing it and your applet...
+[04:23:17.440 --> 04:23:21.520] And I actually saw some alternative renderers for this. Someone was
+[04:23:21.520 --> 04:23:24.120] getting GPUI output from a FoldKit app.
+[04:23:24.260 --> 04:23:24.500] Wow.
+[04:23:24.680 --> 04:23:26.020] So going straight native on it.
+[04:23:26.840 --> 04:23:27.820] I think that's huge.
+[04:23:28.000 --> 04:23:28.700] It's so funny.
+[04:23:28.920 --> 04:23:30.020] I mean, times are changing
+[04:23:30.020 --> 04:23:32.020] because I would see something like FoldKit
+[04:23:32.020 --> 04:23:33.820] and think about it, okay, would I use this?
+[04:23:34.040 --> 04:23:35.120] And I mean, that's one of the reasons
+[04:23:35.120 --> 04:23:36.220] I haven't picked up Effect
+[04:23:36.220 --> 04:23:38.720] because it's a little obtuse.
+[04:23:38.860 --> 04:23:39.980] It takes a while for me to figure out
+[04:23:39.980 --> 04:23:41.740] what is this thing actually doing?
+[04:23:41.900 --> 04:23:42.080] Yeah.
+[04:23:42.240 --> 04:23:43.120] But if it's for the agent.
+[04:23:43.420 --> 04:23:44.180] If it's for the agent.
+[04:23:44.520 --> 04:23:45.900] Then it doesn't matter as much
+[04:23:45.900 --> 04:23:47.960] as long as it makes the app correct
+[04:23:47.960 --> 04:23:48.940] and better.
+[04:23:49.440 --> 04:23:50.760] Give the agent a little treat.
+[04:23:50.940 --> 04:23:51.140] Yeah.
+[04:23:51.520 --> 04:23:52.780] Just a little treat for the agent.
+[04:23:53.060 --> 04:23:55.680] Let him hack a little computer competitor.
+[04:23:55.840 --> 04:23:56.380] Who knows, right?
+[04:23:57.120 --> 04:23:59.020] The FoldKit, I think, is an interesting thing.
+[04:23:59.160 --> 04:24:00.500] Because one of the things that we've
+[04:24:00.500 --> 04:24:04.880] talked about in the past, and this was in the past, what,
+[04:24:05.080 --> 04:24:07.180] like two months ago, so it was ancient history,
+[04:24:07.600 --> 04:24:11.260] was that, ooh, I don't know if these AI languages will ever
+[04:24:11.260 --> 04:24:12.980] catch on because, what, are the models
+[04:24:12.980 --> 04:24:14.220] going to be able to write them?
+[04:24:14.380 --> 04:24:16.640] But the thing that you get with FoldKit in effect
+[04:24:16.640 --> 04:24:23.360] is that you dump an example repo into your code base,
+[04:24:23.480 --> 04:24:26.940] and you just tell the agent to consult the examples
+[04:24:26.940 --> 04:24:30.940] and consult the code base, and the agent's got no problem with it.
+[04:24:31.000 --> 04:24:32.020] It's got no problem.
+[04:24:32.720 --> 04:24:37.940] So in my experience, I don't think that matters anymore.
+[04:24:38.320 --> 04:24:40.800] At one point in time, you had to really worry about,
+[04:24:41.640 --> 04:24:44.440] was it trained on this specific framework?
+[04:24:44.440 --> 04:24:50.600] And as somebody who wrote SvelteKit for a long time, the big problem with that was that it wasn't in the training data.
+[04:24:50.840 --> 04:24:59.380] So therefore, you had to then incorporate all kinds of deterministic checks and skills and MCP servers to validate your code base.
+[04:24:59.380 --> 04:25:00.620] And you still do to an extent.
+[04:25:00.820 --> 04:25:01.040] Right.
+[04:25:01.360 --> 04:25:01.580] Yeah.
+[04:25:01.860 --> 04:25:06.600] But now you can just dump all this stuff in context and it can write it.
+[04:25:06.840 --> 04:25:07.760] And the context is big enough.
+[04:25:07.860 --> 04:25:07.940] Yeah.
+[04:25:08.020 --> 04:25:11.640] I mean, one thing I checked is foldkit.dev slash llms.txt.
+[04:25:11.780 --> 04:25:12.560] It exists.
+[04:25:12.760 --> 04:25:13.100] Yeah.
+[04:25:14.440 --> 04:25:17.320] and it finds all the pages that give examples.
+[04:25:17.740 --> 04:25:20.500] And like you were saying, the context is big enough now
+[04:25:20.500 --> 04:25:24.440] that it can have those docs in context
+[04:25:24.440 --> 04:25:27.720] and do the right thing instead of like hallucinating tag names
+[04:25:27.720 --> 04:25:31.420] or using Svelte 3 instead of Svelte 5 or something like that.
+[04:25:31.420 --> 04:25:31.540] Yeah.
+[04:25:31.640 --> 04:25:34.520] And so with FoldKit, they even have an MCP
+[04:25:34.520 --> 04:25:36.860] to connect directly to their dev tools,
+[04:25:37.060 --> 04:25:40.580] which is sick because the agent can then use the dev tools
+[04:25:40.580 --> 04:25:42.600] in an agent-focused way, right?
+[04:25:42.800 --> 04:25:42.960] Yeah.
+[04:25:44.440 --> 04:25:50.860] really great thing that has changed my mind on agentic-first programming languages.
+[04:25:51.040 --> 04:25:51.980] Because at first I would have said,
+[04:25:52.660 --> 04:25:55.660] I don't know if they'll hang in there.
+[04:25:56.600 --> 04:25:59.960] But seeing how easy it was to develop something on this,
+[04:26:00.060 --> 04:26:02.080] which is clearly not any of the training data or whatever,
+[04:26:02.280 --> 04:26:04.820] it has really changed my mind on this.
+[04:26:05.280 --> 04:26:09.360] That said, just like with everything else Vibecoded these days,
+[04:26:09.580 --> 04:26:11.840] there is a battle for attention.
+[04:26:12.060 --> 04:26:12.240] Right.
+[04:26:12.240 --> 04:26:17.860] Right? It's all about who's using it, how many people are using it, rather than...
+[04:26:17.860 --> 04:26:21.780] I mean, maybe someday we'll all just have our own programming languages that we like.
+[04:26:21.940 --> 04:26:22.140] Yeah.
+[04:26:22.800 --> 04:26:28.960] Because like Kit said in regards to Bloodlang, that the syntax can be whatever you want it to be.
+[04:26:30.080 --> 04:26:31.680] Which he hasn't released too much.
+[04:26:31.880 --> 04:26:33.720] What does that mean? Okay, so he's just talking about it in his tweets,
+[04:26:33.840 --> 04:26:35.200] because I haven't seen this, so yeah.
+[04:26:35.900 --> 04:26:38.980] So the Bloodlang thing, he hasn't really announced too much of it.
+[04:26:39.100 --> 04:26:41.880] But again, there are, I think with any of the things that we're getting into,
+[04:26:42.240 --> 04:26:46.960] first dev tools are going to be really helpful, but I also think it's very
+[04:26:46.960 --> 04:26:52.800] possible that the best agent language for agents may not be TypeScript Rust or
+[04:26:52.800 --> 04:27:00.720] whatever. Right. Possibly. Which isn't that bad for me. No, I mean, and I also
+[04:27:00.720 --> 04:27:05.380] I'm lamenting the death of having a favorite language or framework. Yes.
+[04:27:06.200 --> 04:27:10.360] Languages are like little mascots. Yeah. Yeah. I mean, it was our identity as
+[04:27:12.820 --> 04:27:15.020] So yeah, now it's the agent.
+[04:27:15.160 --> 04:27:16.280] The agent should have a favor.
+[04:27:16.800 --> 04:27:17.800] And it's not even a favor.
+[04:27:17.860 --> 04:27:20.000] If the agent works well in that language or framework,
+[04:27:20.120 --> 04:27:21.680] that's probably the one that you should use.
+[04:27:21.780 --> 04:27:24.580] I mean, it's one of the reasons I started using React again
+[04:27:24.580 --> 04:27:26.420] is because the agents are really good at React.
+[04:27:26.640 --> 04:27:26.900] Yes.
+[04:27:27.600 --> 04:27:27.960] Yes.
+[04:27:28.160 --> 04:27:28.800] And you know what?
+[04:27:28.800 --> 04:27:31.340] I will say I did start a project with FoldKit,
+[04:27:32.160 --> 04:27:34.360] and I kind of really liked its output.
+[04:27:34.620 --> 04:27:36.140] So we will see.
+[04:27:36.320 --> 04:27:37.000] Yeah, for sure.
+[04:27:37.180 --> 04:27:37.960] You heard it here first.
+[04:27:39.580 --> 04:27:40.780] No more Svelte for Scott.
+[04:27:41.060 --> 04:27:41.420] Yes.
+[04:27:42.240 --> 04:27:44.000] Well, no, that's not necessarily true.
+[04:27:44.160 --> 04:27:44.360] Death just felt.
+[04:27:44.700 --> 04:27:46.660] But I was having problems specifically
+[04:27:46.660 --> 04:27:48.860] around state in a large application.
+[04:27:49.360 --> 04:27:52.920] And FoldKit basically, like we were talking about
+[04:27:52.920 --> 04:27:56.840] with implicit state machines, FoldKit
+[04:27:56.840 --> 04:27:59.260] makes a lot of that less possible.
+[04:27:59.940 --> 04:28:02.400] So because of that, you end up getting
+[04:28:02.400 --> 04:28:04.540] a lot of those benefits for free just based out
+[04:28:04.540 --> 04:28:05.120] of the framework.
+[04:28:05.280 --> 04:28:05.420] OK.
+[04:28:05.800 --> 04:28:12.140] Let's talk about another programming language, which is Rust.
+[04:28:12.240 --> 04:28:12.820] Oh.
+[04:28:12.920 --> 04:28:26.080] Okay, we mentioned Rust. Rust being great to write is awesome. And Discord just announced that they were moving Discord themselves to Rust and using GPUI to do it.
+[04:28:26.780 --> 04:28:31.140] Incredible. Yeah, so there's a tweet from Stanislav. He works at Discord.
+[04:28:31.340 --> 04:28:31.560] Yes.
+[04:28:31.820 --> 04:28:41.480] Yeah. And he has a screenshot of his, like, Windows task manager. And Discord Phoenix is the codename, only using 290 megabytes of RAM.
+[04:28:43.040 --> 04:28:49.120] And so, I mean, this is, we talked about on the podcast before, like, this is the age of everything getting faster and being rewritten with Rust.
+[04:28:50.840 --> 04:28:52.120] So I'm here for it.
+[04:28:52.240 --> 04:28:54.400] I mean, I know you've used GPUI quite a bit.
+[04:28:55.060 --> 04:29:00.440] But I think, like, as long as the app works, all of a sudden I've got a gig extra RAM to use.
+[04:29:00.580 --> 04:29:01.100] I'm here for it.
+[04:29:01.200 --> 04:29:01.880] Yes, folks.
+[04:29:02.920 --> 04:29:04.200] So let this be a thing.
+[04:29:04.540 --> 04:29:07.860] You just heard that Discord is moving to GPUI.
+[04:29:07.860 --> 04:29:12.000] I've been talking about GPUI for months, for many months now.
+[04:29:12.240 --> 04:29:14.780] And you heard me talking about FoldKit earlier.
+[04:29:15.040 --> 04:29:18.780] In about six months, when other people start to catch on,
+[04:29:18.960 --> 04:29:21.420] I think FoldKit's going to be getting some major press here.
+[04:29:21.600 --> 04:29:23.460] Just listen to the pod, listen to Scott.
+[04:29:23.580 --> 04:29:24.820] You'll know what's coming next, basically.
+[04:29:25.000 --> 04:29:25.940] Syntax.fm.
+[04:29:26.120 --> 04:29:28.060] We're live every single Monday, folks.
+[04:29:28.480 --> 04:29:29.220] Check us out.
+[04:29:29.440 --> 04:29:31.000] So how do you feel about it?
+[04:29:31.040 --> 04:29:33.380] This is clearly an agentic decision, right?
+[04:29:34.140 --> 04:29:36.840] Discord is one of those apps that opens every single,
+[04:29:36.900 --> 04:29:40.460] or like reinstalls itself every single time you open it, right?
+[04:29:40.480 --> 04:29:41.640] There's always an update coming.
+[04:29:43.000 --> 04:29:46.480] It's also an app that I've never thought was non-performant.
+[04:29:46.640 --> 04:29:52.020] I subscribe to maybe like 40, 50 Discord channels.
+[04:29:52.220 --> 04:29:52.420] Yeah.
+[04:29:52.760 --> 04:29:56.300] And I've always been surprised at how well it handles that.
+[04:29:56.580 --> 04:30:02.140] That said, the fact that they were able to rewrite the entire application,
+[04:30:02.320 --> 04:30:05.080] Discord, no small application, in GPUI,
+[04:30:05.820 --> 04:30:10.680] means that, like, man, we can optimize now easily for performance.
+[04:30:11.040 --> 04:30:11.400] Definitely.
+[04:30:12.240 --> 04:30:15.820] You think about why did it take so long to do this?
+[04:30:16.000 --> 04:30:18.160] Like, one of the reasons they were using Electron
+[04:30:18.160 --> 04:30:19.260] is because it's cross-platform.
+[04:30:19.560 --> 04:30:20.620] They write one app.
+[04:30:20.680 --> 04:30:22.000] It works on Windows, Mac, and Linux.
+[04:30:22.140 --> 04:30:23.540] They have a massive user base.
+[04:30:23.840 --> 04:30:24.560] Distributed anywhere.
+[04:30:24.780 --> 04:30:26.760] Yeah, and so Electron is great for that.
+[04:30:27.120 --> 04:30:29.800] And I mean, you've talked about some of the woes of Tari.
+[04:30:30.160 --> 04:30:30.520] Yes.
+[04:30:30.700 --> 04:30:32.260] It's similar to Electron, but it's
+[04:30:32.260 --> 04:30:33.000] going to be a little bit faster,
+[04:30:33.040 --> 04:30:34.360] and it ships with the system WebView.
+[04:30:34.900 --> 04:30:37.560] But you run into a lot of potential compatibility issues
+[04:30:37.560 --> 04:30:41.680] with like WebKit on Mac OS versus like Chrome on Linux.
+[04:30:42.560 --> 04:30:43.980] And with Electron, you don't get that.
+[04:30:44.100 --> 04:30:46.280] So I understand why it was Electron for so long.
+[04:30:46.420 --> 04:30:46.760] Oh, yeah.
+[04:30:46.880 --> 04:30:48.740] And if you were talking Electron versus anything else,
+[04:30:48.900 --> 04:30:50.000] Electron still wins for a number.
+[04:30:50.120 --> 04:30:52.480] I mean, you can choose your exact Chrome version
+[04:30:52.480 --> 04:30:54.900] with flags in Electron.
+[04:30:55.540 --> 04:30:57.380] Yes, and then every user gets that.
+[04:30:57.520 --> 04:30:59.820] But that's what you also get with GPUI, right?
+[04:30:59.900 --> 04:31:01.720] You have one code base with GPUI,
+[04:31:01.740 --> 04:31:04.340] and then you get a cross-platform app that is native.
+[04:31:04.440 --> 04:31:07.260] It uses native UI elements on every platform.
+[04:31:08.620 --> 04:31:10.060] So now's the time to do it.
+[04:31:10.160 --> 04:31:12.400] Like we saw Bun was rewritten in Rust.
+[04:31:12.840 --> 04:31:16.060] And we talked about it on the pod a few months back.
+[04:31:16.540 --> 04:31:20.660] But Jared had an entire agentic flow of like,
+[04:31:20.720 --> 04:31:22.440] take the existing code based in tests
+[04:31:22.440 --> 04:31:25.620] and then gradually port them, gradually get them passing.
+[04:31:26.400 --> 04:31:28.180] I'm not sure if they could do a similar thing
+[04:31:28.700 --> 04:31:30.740] with an Electron app in its tests
+[04:31:30.740 --> 04:31:32.620] because it's very like browser focused.
+[04:31:32.620 --> 04:31:35.800] But at the same time, agents have gotten really good at
+[04:31:37.560 --> 04:31:42.320] base and making sense of it in some other language or reporting it to another yeah i do wonder what
+[04:31:42.320 --> 04:31:47.540] that how how that portability worked with testing and how they're testing infrastructure right like
+[04:31:47.540 --> 04:31:51.780] did they convert the test yeah i i really am curious about that that's really interesting
+[04:31:51.780 --> 04:32:01.160] and on top of this um anomaly also re released rune have you seen rune what is this r-u-n-e as
+[04:32:01.160 --> 04:32:08.840] you'd typically spell Rune. Rune is their GPUI competitor. It is a Rust-based GPU framework,
+[04:32:08.840 --> 04:32:16.460] and the idea here is, again, that it's going to look nice. And I haven't dove into it beyond just
+[04:32:16.460 --> 04:32:23.500] seeing that it was released and that it was a different Rust-based framework for GPU UI work.
+[04:32:23.660 --> 04:32:28.740] Okay, so they're going to rebuild, like, OpenCode Desktop, or I guess they have built OpenCode
+[04:32:28.740 --> 04:32:31.100] desktop with this and now they're releasing it as open source for other
+[04:32:31.100 --> 04:32:37.260] people to use. Yes, that app that we talked about last week, man, Hex.
+[04:32:37.400 --> 04:32:41.040] Hex, yeah. I got Dex, I got Rex, I got Hex, I got all these different apps on my
+[04:32:41.040 --> 04:32:46.760] thing, but that was built in Rune and they were touting some of the
+[04:32:46.760 --> 04:32:52.200] abilities to have it look nice and fit in and have good UI across all platforms
+[04:32:53.940 --> 04:32:57.580] and make it easy to do so. So this is another one to keep your eye on
+[04:32:58.740 --> 04:33:03.000] about making cross-platform apps performant with Rust.
+[04:33:03.300 --> 04:33:06.940] But obviously, you get into the web space with some of these.
+[04:33:07.100 --> 04:33:08.900] And then you're what?
+[04:33:09.040 --> 04:33:13.540] You're rendering on a canvas, and you're not using DOM
+[04:33:13.540 --> 04:33:14.720] elements at that point.
+[04:33:14.920 --> 04:33:18.520] So it's not, you know, there's all these different write
+[04:33:18.520 --> 04:33:20.740] once, deploy anywhere solutions, whether it's
+[04:33:20.740 --> 04:33:22.520] like React Native translating it,
+[04:33:22.600 --> 04:33:25.160] and then React Native web translating it back to web,
+[04:33:25.180 --> 04:33:28.000] or any of that, or taking web and rendering it as a web view
+[04:33:28.740 --> 04:33:30.340] And there's Flutter is another one.
+[04:33:30.340 --> 04:33:31.240] There's Flutter.
+[04:33:31.440 --> 04:33:36.060] The Flutter folks are very, they will let us know if we forget Flutter again,
+[04:33:36.280 --> 04:33:38.500] because I think there's too many times we've forgotten Flutter.
+[04:33:38.820 --> 04:33:45.260] But what there hasn't necessarily been is truly the right once deploy anywhere,
+[04:33:45.520 --> 04:33:49.880] and have that actually be native everywhere in a way that's effortless.
+[04:33:50.040 --> 04:33:52.080] I think the closest that we've gotten with this,
+[04:33:52.260 --> 04:33:56.180] besides Flutter is like the React Native, React Native web world.
+[04:33:56.180 --> 04:34:00.100] But React Native is a tough platform,
+[04:34:00.180 --> 04:34:02.540] and we're seeing people move off of it all the time, right?
+[04:34:02.800 --> 04:34:02.960] Yeah.
+[04:34:03.420 --> 04:34:06.320] I mean, again, I never thought I'd see the day,
+[04:34:06.420 --> 04:34:10.060] but it's like, again, the reason Electron was so popular
+[04:34:10.060 --> 04:34:13.380] is web devs already knew it, and also made it super simple
+[04:34:13.380 --> 04:34:14.540] to be cross-platform.
+[04:34:14.700 --> 04:34:17.720] But now, if the agent's writing the code and it's performant,
+[04:34:18.360 --> 04:34:19.040] why not?
+[04:34:19.160 --> 04:34:19.800] Why not Native?
+[04:34:20.000 --> 04:34:20.540] Why not?
+[04:34:20.940 --> 04:34:21.600] Why not?
+[04:34:21.900 --> 04:34:22.500] Yeah, I know.
+[04:34:22.660 --> 04:34:23.460] I totally agree with that.
+[04:34:23.920 --> 04:34:26.920] I think there was actually there was another one that I just saw somebody
+[04:34:26.920 --> 04:34:29.960] talk about that was a right once to play everywhere and I'm trying to pull it up
+[04:34:29.960 --> 04:34:36.720] but I cannot it just was announced like 12 hours ago. Is it Rust based or? Oh CJ
+[04:34:36.720 --> 04:34:40.500] that's a good question. There's too many things there's too many dang things
+[04:34:40.500 --> 04:34:43.320] released all the time. Let it sit there maybe it'll come to you. Yes yeah
+[04:34:43.320 --> 04:34:50.160] absolutely. Okay cool. Let's get into some questions. We only get a ton of
+[04:34:50.160 --> 04:34:53.820] questions over here at Syntax. So I want to dive into some questions that are
+[04:34:53.820 --> 04:34:58.980] coming in across the web development and the development ecosystem overall. So we
+[04:34:58.980 --> 04:35:02.520] had a number of these questions come in. First one that we had come in was, how
+[04:35:02.520 --> 04:35:08.040] are y'all feeling about brain rot in big tech? Do we think software engineers at
+[04:35:08.040 --> 04:35:13.260] big companies are losing their skills without knowing it? And I kind of talked
+[04:35:13.260 --> 04:35:17.000] about this in my talk today. I did a talk today. We're at AI engineer. I,
+[04:35:18.260 --> 04:35:20.780] obviously people are losing their skills.
+[04:35:21.060 --> 04:35:22.840] In fact, in my survey that I did,
+[04:35:22.960 --> 04:35:25.820] I think it was like 67% of people listed
+[04:35:25.820 --> 04:35:27.680] that they feel like their skills are diminishing
+[04:35:27.680 --> 04:35:28.700] since using AI.
+[04:35:29.020 --> 04:35:31.720] But I think the bigger question isn't,
+[04:35:32.800 --> 04:35:35.500] are our skills in coding diminishing?
+[04:35:35.720 --> 04:35:38.720] The bigger question is, does that matter?
+[04:35:39.380 --> 04:35:39.820] Yes.
+[04:35:40.060 --> 04:35:40.180] Right.
+[04:35:40.760 --> 04:35:43.300] I mean, again, I'm like biting my tongue
+[04:35:43.300 --> 04:35:44.340] on stuff I've said in the past.
+[04:35:44.540 --> 04:35:46.640] Like, our skill sets are shifting.
+[04:35:47.000 --> 04:35:48.320] They really are.
+[04:35:48.760 --> 04:35:51.080] And you talked about lamenting,
+[04:35:51.220 --> 04:35:53.220] or you maybe didn't even think about it that much,
+[04:35:53.300 --> 04:35:55.160] but if you've been in this space long enough,
+[04:35:55.300 --> 04:35:56.960] things change and things move fast,
+[04:35:57.000 --> 04:35:58.360] especially if you're in the web dev space.
+[04:35:58.700 --> 04:36:01.420] New APIs, new browsers, browsers get deprecated.
+[04:36:01.700 --> 04:36:04.740] And so if you ever had to implement something
+[04:36:04.740 --> 04:36:05.940] for Internet Explorer 6,
+[04:36:06.280 --> 04:36:08.560] there is no reason for you to know how to do that anymore.
+[04:36:08.700 --> 04:36:09.920] It is no longer a thing.
+[04:36:10.140 --> 04:36:11.860] And so it's gradually becoming,
+[04:36:12.740 --> 04:36:15.380] well, what should our expertise be now?
+[04:36:17.140 --> 04:36:21.960] But if it's not programming, then are we now orchestrators?
+[04:36:22.080 --> 04:36:23.420] Are we now tech leads?
+[04:36:24.540 --> 04:36:27.740] And so I do see us moving more and more towards that.
+[04:36:28.080 --> 04:36:32.740] At the same time, in order to be a really good architect or tech lead,
+[04:36:33.180 --> 04:36:36.380] you kind of need to know how things work under the hood
+[04:36:36.380 --> 04:36:38.920] to be able to come up with good decisions and have good guidance.
+[04:36:38.920 --> 04:36:41.380] Yeah, the agents will still do whatever the hell they want.
+[04:36:41.520 --> 04:36:41.740] Right.
+[04:36:42.000 --> 04:36:44.560] And I found that with the tool that I'm working on right now,
+[04:36:45.100 --> 04:36:46.980] it does whatever it wants, but then I...
+[04:36:47.000 --> 04:36:47.880] I rein it back in.
+[04:36:48.020 --> 04:36:50.660] I'm like, hey, we need to be a little bit more performant over here,
+[04:36:50.680 --> 04:36:52.640] or we need to share code a little bit more.
+[04:36:52.920 --> 04:36:56.500] And I know that because I myself have worked in large code bases.
+[04:36:57.220 --> 04:36:59.480] So those kinds of skills definitely translate.
+[04:37:00.320 --> 04:37:02.160] In terms of where the brain rot is happening,
+[04:37:02.280 --> 04:37:03.540] I think it's at multiple levels, though,
+[04:37:03.620 --> 04:37:05.260] because a lot of it comes from management.
+[04:37:05.420 --> 04:37:07.800] Management is like, use AI, move fast,
+[04:37:07.860 --> 04:37:11.120] and then developers are having to stay caught up,
+[04:37:11.200 --> 04:37:12.580] and then they're burning out.
+[04:37:12.720 --> 04:37:14.640] And so now they can't even worry about,
+[04:37:15.320 --> 04:37:16.700] do they still know how to code?
+[04:37:17.920 --> 04:37:21.960] So it's happening, but it's all, I think, part of this big shift of like,
+[04:37:22.220 --> 04:37:24.180] where are we going? Where are we headed?
+[04:37:24.540 --> 04:37:25.640] Yes. Yeah.
+[04:37:26.500 --> 04:37:29.340] So a thing I will say, and I said this during my talk,
+[04:37:29.460 --> 04:37:34.840] so I will say there are things that I used to do in web development.
+[04:37:35.900 --> 04:37:40.900] I used to know every browser hack for Internet Explorer 5,
+[04:37:41.120 --> 04:37:44.660] Internet Explorer 6, and I haven't had to use...
+[04:37:44.660 --> 04:37:47.960] I used to be able to write Angular components by hand.
+[04:37:48.060 --> 04:37:48.940] Yeah, me too.
+[04:37:49.080 --> 04:37:51.640] I haven't had to do this in so long
+[04:37:52.340 --> 04:37:56.160] that my brain has atrophied in those skills.
+[04:37:56.460 --> 04:37:58.480] So does that matter anymore?
+[04:37:58.760 --> 04:37:59.700] It doesn't matter.
+[04:37:59.840 --> 04:38:02.320] I don't have to produce a website for Internet Explorer 5
+[04:38:02.320 --> 04:38:03.260] ever again.
+[04:38:03.460 --> 04:38:04.860] So those skills are gone.
+[04:38:05.160 --> 04:38:07.520] And some of those things you can lament
+[04:38:07.520 --> 04:38:09.800] and you can mourn the loss of those skills.
+[04:38:10.060 --> 04:38:12.120] But at the end of the day, things have shifted.
+[04:38:12.780 --> 04:38:13.120] Right.
+[04:38:14.660 --> 04:38:18.640] Yeah, they've shifted, and I think it becomes what should be important.
+[04:38:18.860 --> 04:38:22.920] I absolutely don't think it should be we are just prompters, just prompt, prompt, prompt.
+[04:38:23.140 --> 04:38:26.980] There has to be some thought behind that prompt, and that's where the skills are shifting to.
+[04:38:27.140 --> 04:38:31.240] And so I do agree that there is actually brain rot in that gray area.
+[04:38:31.260 --> 04:38:31.660] Oh, yeah.
+[04:38:31.820 --> 04:38:33.380] People are like, all I do is prompt now.
+[04:38:33.380 --> 04:38:34.580] I don't actually have to worry about.
+[04:38:34.760 --> 04:38:38.780] I think if you want to have a good product, if you want to have a good team,
+[04:38:39.020 --> 04:38:40.800] you should still care about those things.
+[04:38:40.800 --> 04:38:46.240] So well, yeah, yeah, because at the end of the day it is looking for a simple solution at the end of the day
+[04:38:46.240 --> 04:38:49.460] because what we saw especially with the
+[04:38:50.940 --> 04:38:54.820] The rise of vibe coding was that people were just hucking all kinds of stuff
+[04:38:54.820 --> 04:38:58.660] God knows what into their their browser and you say okay, who cares the app works fine
+[04:38:58.660 --> 04:38:59.920] It gets a decent lighthouse scores
+[04:38:59.920 --> 04:39:04.320] And then you look at it and the entire dom is duplicated twice once per desktop and once for mobile
+[04:39:04.320 --> 04:39:09.140] And you're just like what are we doing here? You know that stuff still matters for sure. It still matters. Yeah. Yeah
+[04:39:10.800 --> 04:39:12.440] All right, next question here.
+[04:39:14.400 --> 04:39:16.500] Just could you say a few words
+[04:39:16.500 --> 04:39:20.180] about what vibe coding actually means in 2026?
+[04:39:20.700 --> 04:39:23.960] As a middle level developer, I see most,
+[04:39:23.980 --> 04:39:25.620] if not all others using AI,
+[04:39:25.940 --> 04:39:28.280] as it's impossible to compete without it.
+[04:39:28.480 --> 04:39:31.500] But for many vibe coded is now a slur.
+[04:39:31.640 --> 04:39:31.900] Wow.
+[04:39:33.000 --> 04:39:36.060] Sometimes unfairly thrown at handwritten projects,
+[04:39:36.200 --> 04:39:38.700] projects with AI by experienced devs
+[04:39:38.700 --> 04:39:41.620] and fairly non-coders and with expensive models.
+[04:39:41.860 --> 04:39:45.040] So vibe coding, is it a bad term?
+[04:39:45.160 --> 04:39:45.860] Is it a loaded term?
+[04:39:45.980 --> 04:39:47.580] What does it mean in 2026?
+[04:39:47.760 --> 04:39:48.780] Is it a dead term?
+[04:39:49.060 --> 04:39:49.720] What's up with that?
+[04:39:49.860 --> 04:39:53.660] I mean, my initial gut reaction to the term was like,
+[04:39:53.800 --> 04:39:55.860] it's a very specific kind of AI coding
+[04:39:56.400 --> 04:39:58.540] where you don't care about the code.
+[04:39:58.700 --> 04:39:59.880] It's all about the vibe.
+[04:40:00.000 --> 04:40:05.060] but the coding that I've been doing lately like I would call it vibe coding
+[04:40:05.060 --> 04:40:08.540] because I'm AI is writing all of the code yes but again like I talked about
+[04:40:08.540 --> 04:40:12.260] earlier I'm still making all of these decisions I'm still orchestrating it I'm
+[04:40:12.260 --> 04:40:20.280] still engineering it AI engineer yeah I am still like you still have to so yeah
+[04:40:20.280 --> 04:40:23.500] I don't I wouldn't call what I'm doing with the tool that I'm building vibe
+[04:40:23.500 --> 04:40:28.160] coding I would call it AI assisted engineering but I do see like vibe
+[04:40:30.000 --> 04:40:31.740] You just somebody posts their app being like, oh,
+[04:40:31.820 --> 04:40:32.460] that was Vibe Coded.
+[04:40:32.640 --> 04:40:33.420] Don't care about it.
+[04:40:33.680 --> 04:40:37.860] So it's tricky because it's a tough line to walk,
+[04:40:37.920 --> 04:40:38.420] I would say.
+[04:40:38.660 --> 04:40:38.820] Yeah.
+[04:40:39.180 --> 04:40:40.980] Yeah, it is funny because it does
+[04:40:40.980 --> 04:40:44.140] seem like there is a group of people with, if anything,
+[04:40:44.740 --> 04:40:46.880] had AI had a hand in it at any point,
+[04:40:47.080 --> 04:40:50.000] it's labeled as Vibe Coded Slop or whatever.
+[04:40:50.280 --> 04:40:51.040] Toss it in the bin.
+[04:40:52.000 --> 04:40:54.660] Which I think anybody who's been using any of the models
+[04:40:55.300 --> 04:40:58.360] in a modern context, like modernism, like the past,
+[04:41:00.000 --> 04:41:02.180] Yeah, who knows in this industry anymore, right?
+[04:41:02.700 --> 04:41:09.520] Anybody who's been using models in that regard knows that, like, hey, things have shifted, and the models have gotten better.
+[04:41:09.720 --> 04:41:12.040] So, I don't know.
+[04:41:12.300 --> 04:41:19.660] Yeah, to me, like, there has, like, the language doesn't, like, kind of bugs me a little bit that people get so hung up on the terms or whatever.
+[04:41:20.000 --> 04:41:21.600] But I understand why they exist.
+[04:41:21.920 --> 04:41:27.560] What I don't get is, like, the insistence of throwing everything out just because AI is used.
+[04:41:28.060 --> 04:41:42.340] That said, there are some things when you have clear tells of AI that are bad, like that show a lack of care, show a lack of taste, show a lack of control over what you're doing.
+[04:41:42.720 --> 04:41:48.040] And those types of things, I think, stand out in a way that really turns people off instantly.
+[04:41:48.400 --> 04:41:53.940] I would not tell you how many YouTube videos I turn on these days and I get like two minutes into it.
+[04:41:54.040 --> 04:41:56.460] I'm like, oh, this is a this is a Claude script.
+[04:41:57.560 --> 04:41:58.120] I'm done with this.
+[04:41:58.280 --> 04:41:59.180] They're reading from Claude.
+[04:41:59.280 --> 04:42:01.120] Their animations were generated from Claude.
+[04:42:01.220 --> 04:42:02.940] But then there was no follow-up, right?
+[04:42:03.020 --> 04:42:03.700] There was no editing.
+[04:42:03.980 --> 04:42:05.920] There was no tweaking, making it their own.
+[04:42:06.200 --> 04:42:06.260] Yeah.
+[04:42:06.420 --> 04:42:08.500] And the script from Claude really kind of bugs me, too.
+[04:42:08.620 --> 04:42:09.660] Not that Claude's the problem.
+[04:42:09.700 --> 04:42:10.980] The script from AI bugs me.
+[04:42:11.780 --> 04:42:13.960] Because when you can see somebody reading a script
+[04:42:13.960 --> 04:42:15.900] that they didn't have any hand in creating,
+[04:42:16.240 --> 04:42:20.040] it feels like, why am I bothering to care about this
+[04:42:20.040 --> 04:42:21.160] if you didn't care about this?
+[04:42:21.260 --> 04:42:21.440] Right.
+[04:42:21.700 --> 04:42:21.920] Yeah.
+[04:42:22.960 --> 04:42:23.360] Definitely.
+[04:42:23.880 --> 04:42:24.280] Yes.
+[04:42:24.780 --> 04:42:25.180] OK.
+[04:42:25.180 --> 04:42:27.480] Okay, so we're going to play a quick little game here.
+[04:42:27.640 --> 04:42:28.500] Let's do a game, CJ.
+[04:42:28.600 --> 04:42:29.080] Okay, I'm ready.
+[04:42:29.320 --> 04:42:29.680] Okay.
+[04:42:30.820 --> 04:42:32.020] Folks, we're going to be doing a game.
+[04:42:32.160 --> 04:42:35.100] So if anybody walks by, they want to play in this game, please join in.
+[04:42:35.200 --> 04:42:36.680] If not, it's just going to be CJ.
+[04:42:36.900 --> 04:42:37.380] That's all good.
+[04:42:37.560 --> 04:42:40.460] We're going to be playing Guess Which AI Model Made This.
+[04:42:40.660 --> 04:42:42.400] You can join at any given time.
+[04:42:42.560 --> 04:42:43.920] You can join in the middle of the game.
+[04:42:44.040 --> 04:42:45.260] Let's see if you can do it.
+[04:42:46.000 --> 04:42:47.680] We got a few of these up here.
+[04:42:48.140 --> 04:42:50.920] So, CJ, are you ready?
+[04:42:51.460 --> 04:42:52.040] Let's do it.
+[04:42:52.280 --> 04:42:54.240] Okay, audience, if you are out there,
+[04:42:55.180 --> 04:43:00.260] to play, scan this QR code. You can join at any given time. We're gonna open this
+[04:43:00.260 --> 04:43:05.440] up with the very first one here. Oh brother, I lost my Wi-Fi. Okay, let's open
+[04:43:05.440 --> 04:43:13.160] this bad boy up. Okay, I see it. Okay, so it's slowly loading. Which button is Opus 5.5?
+[04:43:13.320 --> 04:43:19.220] Alright, which of these buttons did Opus 5.5 make? Okay, so option A, I see like the
+[04:43:19.220 --> 04:43:24.860] green gradient, decent font choices, and then option B has a bunch of extra stuff
+[04:43:25.180 --> 04:43:37.760] and bottom. I'm gonna go with A. Opus did A. You think Opus did A? Okay. Yes. Really? You're wrong. Opus did B, and the A was actually Grok 4.6.
+[04:43:38.140 --> 04:43:46.880] Okay, Grok. It's got some interesting font choices. Yeah. All right. You asked him for a button, and it gave you three, like, taglines below it.
+[04:43:47.020 --> 04:43:53.700] Yeah. Like, that's, I don't have that experience with Opus. And this one is kind of similar. So which of these is Sonnet 4.5?
+[04:43:55.180 --> 04:43:57.440] This is a year old, a year ago.
+[04:43:57.680 --> 04:44:00.580] Yes. Again, the prompt was asking for a button.
+[04:44:02.500 --> 04:44:04.760] I'm going to go with B because I think
+[04:44:04.760 --> 04:44:06.960] wasn't Sonnet that decent back then?
+[04:44:07.140 --> 04:44:08.160] Sonnet 4-5.
+[04:44:08.420 --> 04:44:08.600] Yeah.
+[04:44:08.860 --> 04:44:10.180] Okay. Let's see, CJ.
+[04:44:10.340 --> 04:44:11.120] You're going with B.
+[04:44:11.240 --> 04:44:11.400] B.
+[04:44:11.700 --> 04:44:12.060] Okay.
+[04:44:14.700 --> 04:44:15.580] I am horrible.
+[04:44:15.660 --> 04:44:17.100] No, I'm horrible at this.
+[04:44:17.100 --> 04:44:19.440] No. Sonnet 4-5 was in fact the one that,
+[04:44:20.340 --> 04:44:22.300] and the other one was Gemini 3-1,
+[04:44:22.480 --> 04:44:23.740] which did a pretty decent job.
+[04:44:26.580 --> 04:44:29.360] that I like other models, I guess.
+[04:44:29.580 --> 04:44:30.300] Yes, yes, yes.
+[04:44:31.600 --> 04:44:34.000] Folks, you can join at any time if you're walking by.
+[04:44:34.140 --> 04:44:36.960] We're playing Guess Which Model Made This.
+[04:44:37.120 --> 04:44:40.300] So the prompt for this one was also a button.
+[04:44:40.320 --> 04:44:41.760] We asked this to make a button.
+[04:44:41.960 --> 04:44:44.560] Which of these did Muse Wonder 1.0 make?
+[04:44:44.560 --> 04:44:46.740] I haven't used Muse Wonder at all.
+[04:44:47.080 --> 04:44:48.640] It's got the name Wonder in it.
+[04:44:48.700 --> 04:44:49.440] I'm going to go with B.
+[04:44:49.620 --> 04:44:50.040] Yes.
+[04:44:50.860 --> 04:44:51.880] It looks wondrous.
+[04:44:52.440 --> 04:44:53.080] Is that a word?
+[04:44:53.080 --> 04:44:57.100] Two models also kind of failed the prompt of a single button.
+[04:44:57.340 --> 04:44:58.620] Yes, we need a button here.
+[04:44:59.000 --> 04:45:02.180] And one of them has this awful overflow issue.
+[04:45:02.380 --> 04:45:02.860] Oh, yeah.
+[04:45:03.060 --> 04:45:03.820] Oh, yeah.
+[04:45:04.240 --> 04:45:05.420] Yes, Muse.
+[04:45:05.700 --> 04:45:06.140] Nice.
+[04:45:06.400 --> 04:45:09.440] Muse decided to make a whole-ass card for this instead of a button.
+[04:45:11.260 --> 04:45:12.540] All right, next one here.
+[04:45:14.380 --> 04:45:18.420] Which one of these flyers did Opus 4-5 make?
+[04:45:18.720 --> 04:45:19.160] 4-5.
+[04:45:19.160 --> 04:45:25.300] again so four not five five four five which is like eight or nine months old ten months old at
+[04:45:25.300 --> 04:45:32.120] this this is four five yes um i mean i kind of associate like the really decent backgrounds and
+[04:45:32.120 --> 04:45:38.120] font choices with the newer ones so i'm gonna say but there's a lot of emoji there's emojis in both
+[04:45:38.120 --> 04:45:46.620] of them four five there is emoji yeah this is hard okay i'm gonna go i'm gonna go b yeah or five did
+[04:45:46.620 --> 04:45:55.980] B. You're gonna say 4-5 is B. Okay. 4-5 is B. The A was, of course, 5-5, so quite a bit better.
+[04:45:56.240 --> 04:46:01.640] Yeah, yeah. The emojis are certainly a tell of an era, right? They're very a tell of an era. Folks,
+[04:46:01.720 --> 04:46:06.960] you can join at any time if you want to play. We got the next one here. Which one of these flyers
+[04:46:06.960 --> 04:46:12.580] did Grok 4.6 do? Okay, we learned a little bit about Grok earlier. Are they still loading for
+[04:46:12.580 --> 04:46:18.680] you? They loaded. Okay, there we go. Again, so this one has emojis. I want to think like Grok sets
+[04:46:18.680 --> 04:46:24.240] themselves apart so they don't use emojis. I'm gonna go with A. Grok 4.6 is A. You're gonna say
+[04:46:24.240 --> 04:46:33.460] it's A. Yeah. Okay, which one of these did Grok 4.6 make? And it was A, yes. I got three right.
+[04:46:33.720 --> 04:46:38.380] Yes, the other one was Sonnet 4.5, which you can tell from two and two here, Sonnet be loving those
+[04:46:38.380 --> 04:46:45.840] emojis for sure. It's a tell at this point. It's those emojis, yes. All right, the next one here
+[04:46:46.320 --> 04:46:54.980] is these two flyers. Which one of these did Gemini 3.1 do? Gemini 3.1. That's the latest one.
+[04:46:55.140 --> 04:47:02.800] That's modern Gemini. Like, I would hope it was B, because A looks very basic. I'm gonna go with B.
+[04:47:03.520 --> 04:47:10.680] So CJ is saying B, the votes are coming in, and yeah, he's got a bunch of emojis.
+[04:47:10.840 --> 04:47:12.360] Which one did Gemini 3-1 do?
+[04:47:12.360 --> 04:47:13.280] Does Gemini use emojis?
+[04:47:13.380 --> 04:47:13.640] I don't know.
+[04:47:13.720 --> 04:47:14.300] I don't use Gemini.
+[04:47:14.440 --> 04:47:14.820] Oh my god.
+[04:47:15.000 --> 04:47:15.080] Okay.
+[04:47:15.280 --> 04:47:17.260] Apparently, Gemini uses all these emojis.
+[04:47:17.420 --> 04:47:17.820] Yeah, sadly.
+[04:47:18.000 --> 04:47:19.000] Get your stuff together, Gemini.
+[04:47:19.020 --> 04:47:20.180] This is a frontier model.
+[04:47:20.400 --> 04:47:20.860] Yeah, yeah.
+[04:47:21.220 --> 04:47:25.800] Well, yeah, Muse Wonder actually did a little bit better of a job than the last one we saw
+[04:47:25.800 --> 04:47:26.020] here.
+[04:47:26.380 --> 04:47:27.080] Okay, yeah.
+[04:47:27.680 --> 04:47:27.920] Okay.
+[04:47:28.240 --> 04:47:29.900] Next up, we got some inboxes.
+[04:47:30.080 --> 04:47:30.400] Ooh.
+[04:47:30.740 --> 04:47:32.060] So these ones are a little bit tighter.
+[04:47:32.800 --> 04:47:38.820] to see. Which one of these did Gemini 3-1 did? It's got to be A. Like B has either
+[04:47:38.820 --> 04:47:44.000] ChatGPT or Claude. Like it feels like ChatGPT-ism is on the right, like the
+[04:47:44.000 --> 04:47:49.400] font choices. So I'm gonna go with A. Gemini did A. Okay, you think Gemini did A?
+[04:47:49.760 --> 04:47:56.900] And Gemini did A. Grok 4-6 did B. Yes, and that'd be looking like
+[04:47:56.900 --> 04:48:01.860] last year's Opus or something for sure. Yeah, yeah. You could have told me that was Opus 4-5.
+[04:48:03.900 --> 04:48:04.860] All right, next one.
+[04:48:05.100 --> 04:48:08.060] Which one of these is Opus 5-5?
+[04:48:09.260 --> 04:48:10.140] A or B?
+[04:48:10.600 --> 04:48:14.540] This is modern Opus, but again, both of these have tons of emojis.
+[04:48:16.900 --> 04:48:18.500] Both of them have emojis, yes.
+[04:48:18.660 --> 04:48:19.920] We thought the emojis were gone.
+[04:48:20.160 --> 04:48:20.520] No.
+[04:48:22.980 --> 04:48:25.800] I want to say A.
+[04:48:26.220 --> 04:48:27.100] No, I'm going to go B.
+[04:48:27.440 --> 04:48:28.160] Opus did B.
+[04:48:28.380 --> 04:48:30.900] Okay, CJ says that Opus did B.
+[04:48:31.200 --> 04:48:32.140] Just a gut feeling.
+[04:48:32.800 --> 04:48:39.500] feeling which one is which and actually what do you think let me even what do you think option a is
+[04:48:41.600 --> 04:48:47.560] some some model i've never used i'll say that looks like you're right on both so muse wonder
+[04:48:47.560 --> 04:48:55.200] did option a and opus 5 5 did option b so you were right on that one cool okay let's see we got
+[04:48:55.200 --> 04:49:00.920] one more here for you folks which one of these was sonnet four five again sonnet
+[04:49:00.920 --> 04:49:07.480] four five is ten months ago at this point I this is a toss-up because they're
+[04:49:07.480 --> 04:49:12.680] both pretty bland there's emojis on the right I'm gonna go with like yeah I was
+[04:49:12.680 --> 04:49:16.720] using a ton of emojis like a year ago I'm gonna go with B okay you're gonna say B
+[04:49:16.720 --> 04:49:23.480] what do you think option A is I may hold you to that Gemini Gemini okay so
+[04:49:25.760 --> 04:49:31.280] Option B was Sonnet 4.5 and option A was Opus 4.5.
+[04:49:31.380 --> 04:49:33.620] So those models were out at the same time.
+[04:49:33.800 --> 04:49:34.040] Yes.
+[04:49:34.380 --> 04:49:38.820] And then, I mean, the one on the left was very bland.
+[04:49:39.460 --> 04:49:39.900] Yes.
+[04:49:40.240 --> 04:49:41.320] No character, I guess.
+[04:49:41.660 --> 04:49:43.980] I mean, how much character do you need in an email box?
+[04:49:44.140 --> 04:49:45.100] I guess I need some character.
+[04:49:45.600 --> 04:49:46.280] What was it?
+[04:49:46.340 --> 04:49:48.980] Google Inbox was my favorite email app of all time.
+[04:49:49.280 --> 04:49:49.580] Nice.
+[04:49:49.880 --> 04:49:50.100] Sick.
+[04:49:50.300 --> 04:49:50.660] All right.
+[04:49:50.760 --> 04:49:53.040] Well, that's it for which LLM was this?
+[04:49:53.040 --> 04:49:56.540] Let's get back and we also had some audience questions in here.
+[04:49:56.740 --> 04:49:58.560] So next question was going to be,
+[04:49:59.440 --> 04:50:03.060] now that no one uses Google as a search term anymore,
+[04:50:03.280 --> 04:50:05.800] will the word Google stop being a verb?
+[04:50:06.080 --> 04:50:07.980] No one is saying, let me Google that.
+[04:50:08.120 --> 04:50:11.820] If search isn't a thing anymore, how is Google going to stay in business?
+[04:50:12.520 --> 04:50:17.060] Listen, Google, like we are, like most people using Google now use the AI answers, right?
+[04:50:17.160 --> 04:50:18.020] The AI overviews.
+[04:50:18.120 --> 04:50:22.400] So I think that term is still there, like that verb is still there.
+[04:50:23.040 --> 04:50:25.560] it and then they don't look at the results they just look at the AI answer.
+[04:50:25.800 --> 04:50:31.040] Yes. I use I still say Google and I don't use Google I use DuckDuckGo so
+[04:50:31.040 --> 04:50:34.760] like yeah it's gonna be a while before I shake it as a verb. I don't know what
+[04:50:34.760 --> 04:50:38.680] about you? Yeah what is it gonna take a whole generation before Google is gone
+[04:50:38.680 --> 04:50:42.880] as a term when people are gonna be that iOS computer that iOS
+[04:50:42.880 --> 04:50:48.440] commercial like what's a computer like what's a Google yeah I mean I don't
+[04:50:48.440 --> 04:50:50.720] I don't know. I don't really say Google anyways as a verb.
+[04:50:50.900 --> 04:50:53.300] So I think it's mostly done.
+[04:50:53.640 --> 04:50:56.000] And I've heard people say, like, let me GPT that.
+[04:50:56.520 --> 04:50:58.120] So that's like the new verb.
+[04:50:58.660 --> 04:51:03.320] Yeah. People actually, I have been hearing that in the wild,
+[04:51:03.380 --> 04:51:05.100] like at the airport and stuff like that.
+[04:51:05.200 --> 04:51:08.260] And not in California's airport, in Denver's airport.
+[04:51:08.940 --> 04:51:09.320] Yeah.
+[04:51:09.520 --> 04:51:10.440] Probably got time for one more.
+[04:51:10.720 --> 04:51:13.680] Yeah. Okay. So we got one more question in here.
+[04:51:14.220 --> 04:51:15.680] Which one do you want to pick, CJ?
+[04:51:16.360 --> 04:51:18.120] You got a question you want to pick in particular?
+[04:51:18.440 --> 04:51:19.660] got one about WebMCP.
+[04:51:19.980 --> 04:51:20.860] We got about.
+[04:51:21.400 --> 04:51:24.480] Let's do the one about apps, because this is very relevant.
+[04:51:24.640 --> 04:51:26.140] Anybody trying to build something right now.
+[04:51:26.280 --> 04:51:26.440] Yes.
+[04:51:26.740 --> 04:51:27.600] So why release an app?
+[04:51:27.840 --> 04:51:29.340] OK, so this question came in.
+[04:51:29.400 --> 04:51:32.480] And it says, we used to build apps for ourselves
+[04:51:32.480 --> 04:51:35.620] and then release them to the world in the hope
+[04:51:35.620 --> 04:51:37.640] that someone may find them useful,
+[04:51:37.680 --> 04:51:40.480] and then maybe develop a reputation and make a few
+[04:51:40.480 --> 04:51:40.860] dollars.
+[04:51:41.220 --> 04:51:43.280] Why release an app nowadays, though,
+[04:51:43.660 --> 04:51:45.360] when if it's any good, there's going
+[04:51:45.360 --> 04:51:47.480] to be 100 slop cones within a week,
+[04:51:48.440 --> 04:51:48.940] Boston Demire.
+[04:51:50.080 --> 04:51:50.560] Yeah.
+[04:51:51.120 --> 04:51:52.340] My initial thoughts are like,
+[04:51:53.060 --> 04:51:56.080] if you actually put care and thought into it
+[04:51:56.080 --> 04:51:59.380] and don't just like vibe code and then throw up a link
+[04:51:59.380 --> 04:52:01.260] to a GitHub repo or whatever else,
+[04:52:01.600 --> 04:52:02.260] like people are gonna care.
+[04:52:02.380 --> 04:52:06.360] When people become a actual user of an app
+[04:52:07.340 --> 04:52:08.880] and come back to it,
+[04:52:09.180 --> 04:52:10.700] I think it's because they know
+[04:52:10.700 --> 04:52:12.060] that there was care put into it, right?
+[04:52:12.680 --> 04:52:14.580] Like it's a nice user experience.
+[04:52:15.280 --> 04:52:17.080] So right now I'm working on a developer tool.
+[04:52:18.440 --> 04:52:21.280] but I put so much effort into the docs
+[04:52:21.280 --> 04:52:22.720] and so much effort into making sure
+[04:52:22.720 --> 04:52:24.380] that people understood what this tool was.
+[04:52:24.480 --> 04:52:25.080] Some TLC.
+[04:52:25.360 --> 04:52:26.080] And what it could do.
+[04:52:26.320 --> 04:52:28.520] And a lot of people are just like,
+[04:52:28.580 --> 04:52:30.960] they build the tool and then let AI write the readme
+[04:52:30.960 --> 04:52:32.640] and don't put any thought into it.
+[04:52:32.640 --> 04:52:33.260] Yeah, yeah, yeah.
+[04:52:33.380 --> 04:52:35.700] I think there's still space for it, but you have to care.
+[04:52:35.840 --> 04:52:36.160] Yeah.
+[04:52:36.440 --> 04:52:39.540] Because you'll just be one more app in the sea of apps
+[04:52:39.540 --> 04:52:41.260] that everybody just slopped together.
+[04:52:41.800 --> 04:52:43.720] So I think care is what it comes down to.
+[04:52:43.960 --> 04:52:45.020] Yeah, care is what it comes down to.
+[04:52:45.020 --> 04:52:50.380] I think the perfect example of this is Rex, the Rex terminal.
+[04:52:51.600 --> 04:52:54.180] My gosh, the Rex terminal.
+[04:52:54.420 --> 04:52:55.060] Hex or Rex?
+[04:52:55.200 --> 04:52:55.500] Rex.
+[04:52:55.660 --> 04:52:56.080] Rex, okay.
+[04:52:56.720 --> 04:52:57.200] Rex.
+[04:52:57.520 --> 04:52:58.980] Yeah, Rex is the terminal.
+[04:52:59.180 --> 04:53:01.200] Hex is the voice.
+[04:53:01.300 --> 04:53:02.080] Voice, okay.
+[04:53:02.120 --> 04:53:04.980] And then Dex is the issue tracker.
+[04:53:05.100 --> 04:53:05.780] My gosh, okay.
+[04:53:06.160 --> 04:53:09.840] So Rex is an app that's built with a lot of care.
+[04:53:10.160 --> 04:53:12.320] And you can tell it's built with a lot of care
+[04:53:12.320 --> 04:53:17.540] because everything, even the little notification that says you have an update, is beautiful.
+[04:53:18.420 --> 04:53:26.740] It's got a marquee, it's designed well, and it is like thought in care is put into every tiny corner of this application.
+[04:53:27.700 --> 04:53:33.140] And when you have things like that, and you compare it to a slopped alternative,
+[04:53:34.160 --> 04:53:41.120] it makes it very clear that the people who are putting the care into it are still going to get attention,
+[04:53:42.320 --> 04:53:44.220] users, and they're still going to get downloads.
+[04:53:44.500 --> 04:53:46.700] There's people who are making a lot of money
+[04:53:46.700 --> 04:53:49.360] building small developer tools these days,
+[04:53:49.720 --> 04:53:53.100] releasing them to an audience of people who like their work,
+[04:53:53.160 --> 04:53:55.920] and then still happily pay for that stuff.
+[04:53:56.120 --> 04:53:58.540] So you do hear everybody saying they're all
+[04:53:58.540 --> 04:54:00.740] vibe coding their own personal software these days.
+[04:54:00.860 --> 04:54:01.540] I am too.
+[04:54:01.740 --> 04:54:03.040] Trust me, there's all kinds of stuff
+[04:54:03.040 --> 04:54:05.960] I'm vibe coding as personal software these days as well.
+[04:54:06.160 --> 04:54:08.080] But the cream still rises to the top.
+[04:54:08.460 --> 04:54:10.120] I agree 100%.
+[04:54:10.120 --> 04:54:10.620] Yes.
+[04:54:12.400 --> 04:54:13.900] CJ, what are we at for time here?
+[04:54:14.140 --> 04:54:15.920] I mean, I think technically we're at our limits.
+[04:54:16.300 --> 04:54:19.240] Okay. Folks, this has been it from AIE.
+[04:54:19.600 --> 04:54:20.620] We're in San Francisco.
+[04:54:20.880 --> 04:54:22.420] It's gonna be a great conference here.
+[04:54:22.640 --> 04:54:23.940] My name is Scott Talinsky.
+[04:54:24.140 --> 04:54:26.020] This is CJ Reynolds, and we're Syntax.
+[04:54:26.460 --> 04:54:26.860] Peace.

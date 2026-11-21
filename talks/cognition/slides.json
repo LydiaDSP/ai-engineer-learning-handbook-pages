@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p02",
+    "title": "Cognition 过去一年的合并 PR 与团队规模",
+    "time": "02:34:10",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=9250s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者用内部数据对比了合并 PR 量约 40.4 倍的增长与工程团队约 2.7 倍的扩张。两条序列描述的是数量变化，幻灯片没有给出独立的质量评估。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 9250
+  },
+  {
+    "id": "frame-02",
+    "after": "p10",
+    "title": "让 Agent 能在隔离环境中测完整应用",
+    "time": "02:38:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=9515s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>幻灯片依次展示把应用和依赖集中在一台 VM、每小时生成可启动的快照，以及让 Agent 用技能说明运行测试并维护它。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 9515
+  },
+  {
+    "id": "frame-03",
+    "after": "p21",
+    "title": "从零构建 Android 应用并跟进 iOS 功能",
+    "time": "02:44:45",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=9885s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>画面将 iOS 与 Android 界面并列，列出自动跟进 iOS 功能与监听 Slack 缺陷报告的持续任务。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 9885
+  }
+]

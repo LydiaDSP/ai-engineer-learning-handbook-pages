@@ -1,0 +1,305 @@
+# UiPath 怎样在自动化流程里安排快速判断和深入调查？
+
+Chibi Vikram、Kevin Bernstein
+
+中文校译与英文机器转写
+
+中文为校译。英文栏保留选用的机器转写，可能有听写误差。带时间戳的转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 19 场（05:52:15–06:07:28）的 47 段中英资料整理。官方英文题名为 Your Automation Is Overthinking It。英文沿用机器转写，Jev 在英文里出现多种识别拼写，中文沿用既有校译及缺漏标记。反欺诈数值来自现场演示，重排序分数、用时和费用来自讲者报告，适用于各自的实验口径。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 自动化流程在哪些节点需要模型判断 / Where automation needs a model decision
+
+[05:52:15.500—05:52:32.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21135s)
+
+大家好，我是 Chibi，今天和 Kevin 一起上台。我们想聊聊，为什么说你们的自动化流程可能想得太多了。先简单介绍一下我们自己，我们来自 UiPath。
+
+Hello, everyone. My name is Sidi, and I'm joined in the stage by Kevin. We're here to talk about how we believe that your automations are overthinking it. So, tell us a little bit about ourselves. We are from a company called UiPath.
+
+[05:52:33.100—05:52:58.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21153s)
+
+我们做自动化已经 20 年了，早先做的是机器人流程自动化（RPA），为全球一万多家组织提供服务。我们后来搭了一个 Agent 流程编排层，把 Agent、机器人和人放在一起协作，让自动化能扩展到很大的规模，连续运行好几天甚至几周。
+
+We have been doing automation for the last 20 years. We have been doing RPA before and we service more than 10,000 organizations around the world and we build an agentic process orchestration layer which basically brings agents, robots and people together to interact with each other and build extremely scalable automations that run for days and weeks.
+
+[05:52:59.580—05:53:18.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21179s)
+
+现在大家看到的这张幻灯片启发了我们，今天前面应该也看过。Diogo 三个月前讲这张幻灯片时，我们特别有共鸣，因为我们看自动化也是这么看的。
+
+So we were inspired by this particular slide that you're seeing right now and you saw today today before us as well. When Diego presented it three months ago, the same slide, it resonated really well with us because this is how we see automation as well.
+
+[05:53:18.920—05:53:49.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21198s)
+
+传统软件大体就是 RPA，也就是机器人流程自动化。写个 if/else，执行一个任务，然后继续往下走。控制流程是确定的。LLM 出来后，大家开始做即时生成的软件。我们拿一个 Agent，给它一堆工具，再交给它一个任务，让它做完。结果时好时坏，我们再加入评测，慢慢把效果做上去。
+
+So the traditional software is basically RPA. It's just robotic process automation. If else, just execute some task and then keeps going. The control flow is deterministic. Just keep going. And then when the LLMs came out, we all the just-in-time software where we have this one agent, we give it a bunch of tools, we give it a task, and ask it to finish, and then we were seeing good results, bad results, and then we added evaluations to slowly build the results up.
+
+[05:53:49.860—05:54:12.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21229s)
+
+最后，我们采用了 Agent 流程编排，用一层逻辑把需要理解语义的决策接进流程。流程里既有确定性的调用，也有明确需要模型判断的节点。LLM 只在这些节点上决定流程怎么走，其余控制依然由流程本身负责。
+
+And then finally we landed on agentic process orchestration, which kind of weaves in this cognitive decision through a logical decision layer. So you have deterministic calls and clear cognitive decision points where you would use an LLM to control the control flow rather than leaving it all in the hands of an agent.
+
+[05:54:12.600—05:54:41.800](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21252s)
+
+这时候我们看到了 Jev 可以放在哪里。Diogo 讲 Jev 的时候，我们很兴奋，因为我们发现它正好能填一个很具体的空档。就像 Diogo 说的，Jev 是个很强的基础工具，可以接进各种自动化，正好处在确定性规则和 Agent 处理之间。
+
+So at this time, we saw where JEW would fit in and when Diego was talking about JEW, we were really excited because we saw JEW fit in in a very particular niche area. So, here we see that Jav is a very powerful tool, as Diego was saying is a foundational tool that we would be able to integrate into all automation and it fit right in between a deterministic case and an agent case.
+
+[05:54:42.440—05:55:10.460](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21282s)
+
+Jev 非常快，在座多数人也许已经试过了。我们惊讶的是，它速度这么快，又能把这么多调用并行跑起来，判断还挺聪明。我们用基准比较了它和 LLM 的表现。虽然比不上完整 LLM 的能力，就判断而言已经相当不错。它处在两者之间，可用的地方很多。我现在把时间交给 Kevin，
+
+So Jav is extremely fast and most of you guys would have tried it and we were surprised by how fast and how parallel we could make it work and how intelligent it was. So we were able to benchmark it around how good it was compared to an LLM and it was pretty good not as a full LLM but it was pretty good in terms of intelligence as well. So it falls in between and there are so many ways we could use Jav and I want to hand it off to Kevin
+
+## 交易演示怎么从快速初筛进入深入调查 / How the fraud demo moves from screening to investigation
+
+[05:55:10.460—05:55:33.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21310s)
+
+让他带大家看一个在 UiPath Maestro Flow 里用 Jev 的场景。好，谢谢 Chibi。大家好。今天我想简单带大家看看 UiPath 用 Maestro Flow 在搭什么，也讲讲怎样在同一个流程画布里协调人、机器人和 Agent。
+
+and take you guys through a scenario where we use Jell in UiPath Maestro Flow. Yeah. Thanks, Jeevi. So hi, everybody. Today I want to actually walk us through a little bit about what UiPath is building with UiPath Maestro Flow and talk through a little bit of how we would go through and coordinate humans, robots, and agents all together inside of one canvas.
+
+[05:55:34.860—05:55:50.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21334s)
+
+今天要看的这个流程，基本上就是展示我们怎么把这些元素接在一起。我们的做法是在流程里安排 System 1 Agent，让它们快速作出需要理解语义的判断。
+
+What we're going to walk through today is essentially a flow that will demonstrate we kind of weave all these things together. And the way that we're approaching this is that we're gonna end up having system one agents which are gonna be able to make quick intelligence happen within our process.
+
+[05:55:50.600—05:56:04.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21350s)
+
+比如，这笔交易是不是欺诈？另外，我们也会安排 System 2 Agent，更有条理地做深入调查，由 Agent 主动去调用工具。
+
+Think about things like, hey, is this transaction fraud or not? Additionally, we'll have system two agents running where we're gonna have more of a methodical, deeper investigation that's going on where agents are going off and calling tools.
+
+[05:56:04.400—05:56:36.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21364s)
+
+接着就能看到不同判断之间是怎么交接的。我直接进演示，演示的是账户欺诈场景。开头有一笔 4.8 万美元的交易进来，不在我们的预期之内。我在银行门户里查看这笔交易，然后把它举报为欺诈。提交后，这条报告就会进入我们的
+
+And we'll see kind of this pattern, these patterns start to emerge where we're able to hand off from one to the next. I'll jump into an actual demo where we're going to demonstrate a account fraud scenario. And so our demo starts here with effectively a transaction coming in for $48,000. And this wasn't something that we were expecting. And so as I'm reviewing my bank portal here, I'm going to go ahead and report this as a fraudulent transaction. And so now this would end up submitting it off into our
+
+[05:56:36.380—05:56:52.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21396s)
+
+UiPath Maestro Flow，触发整个端到端工作流开始处理。大家现在看到的是一组不同的节点，从画布左边往右编排执行。
+
+or UiPathMeisterial flow, where this would act as essentially the trigger for this end-to-end workflow to go off and start processing. What we're looking at is a collection of various different nodes that are each going to kind of be orchestrated from the left side of the canvas over to the right.
+
+[05:56:52.340—05:57:05.400](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21412s)
+
+我们会把 System 1 和 System 2 模型组合起来，分析这到底是不是欺诈。第一步是查询账户活动。
+
+And we're going to use essentially a combination of system one and system two models to actually process this and do analysis if this is fraud or not. And so the first thing that actually takes place is we're going to go through and get account activity.
+
+[05:57:06.100—05:57:25.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21426s)
+
+我们把账户活动交给 Jev，取出最近 60 笔信用卡消费，逐笔判断是否属于欺诈。这是实时发生的，Jev 能处理这些交易，并在不到一秒的时间里回答「这是不是欺诈」。
+
+We're going to send this off to Jev to basically pull 60 transactions from the most recent credit card purchases that were made and analyze each one of those individually, whether or not these are fraud. And this is happening in real time where Jev's able to process these transactions and ask that question of, hey, is this fraud or not, within fractions of a second.
+
+[05:57:25.820—05:57:38.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21445s)
+
+现在它认为最近大约有四笔交易像是欺诈。我们就可以启动流程的下一部分，对整个账户做更全面的语义分析。
+
+Now, we found that there's about four transactions that recently appeared that it thinks are fraud. we're able to kick off another part of our flow, which is doing more of a semantic analysis on the entire account.
+
+[05:57:38.720—05:57:49.400](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21458s)
+
+我们回头看被标记的那笔 4.8 万美元交易，再问 Jev，现在的信息够不够判断这笔交易到底是不是欺诈？
+
+We're looking at that one transaction that came in for $48,000, which was flagged, and we're asking a question to Jev is, hey, is there enough information here for us to determine whether or not this is actually fraud?
+
+[05:57:49.780—05:58:02.240](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21469s)
+
+正如刚才 Diogo 讲的，这里出现了新的处理方式和逻辑。模型给了一个分数，结果是还需要更多信息。
+
+And just as we heard Diago talk about this earlier, where you have these new kind of paradigms and logic come up, we ended up finding from this that there's a scoring that took place, and we needed more information.
+
+[05:58:02.520—05:58:24.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21482s)
+
+我们的问题是，判断欺诈的证据够不够？现在要启动一个 System 2 Agent。它会跑得久得多，调用银行 API。调查发现，那笔 4.8 万美元的交易涉及一个收款方，相关账户是在手机上新建的，而且当天早些时候才建好。[转写未清楚区分创建账户者]
+
+We were asking the question, do we have enough information for fraud? And for that, what we're going to end up doing is kicking off a System 2 agent that's going to go spin up and run for much longer, calling a bank API and finding that there was a $48,000 transaction from a payee, basically creating a new account on his phone and it was earlier that day that that account got created.
+
+## 证据充分度、风险评分与人工审查 / Evidence sufficiency, risk scoring, and human review
+
+[05:58:24.180—05:58:44.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21504s)
+
+这是很强的欺诈迹象。我们再把同一个问题交给 Jev，证据够了吗？这次 Jev 认为证据够了，给出 100% 的证据充分度判断，回答的是材料够不够。然后把材料交给另一个评分模型，综合前面找出的交易和系统传入的数据，它判断这个场景里存在欺诈。
+
+So high indicator of fraud. We circle back and ask that same question now to Jev and ask, hey, do we have enough evidence? now, Jev agrees and it finds 100% sufficient activity. And we would hand that off effectively to another grading model that combines all those transactions that we found with the system payload and then finds that there is fraud in this particular use case.
+
+[05:58:45.140—05:59:02.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21525s)
+
+在 1 到 5 分的量表上，System 1 给出 4.97 分。按 05:58:40 原图，≥2.5 进入审查分支，演示结束在流程分流。退出演示说一下，通常从这里往下就该交给人审查了。审查人会看 System 1 和 System 2 两边的日志，确认有潜在欺诈时冻结账户。
+
+A square root of one to five, we got 4.97. Now stepping out of this, typically what would happen from this point onwards is that we'd go off to a human to review, we'd have somebody kind of review both the system one and system and two logs, and then find that there was potential fraud and freeze the account.
+
+[05:59:02.480—05:59:25.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21542s)
+
+我们看到，有些客户把 Jev 接进工作流后，可以替换流程背后原先的一些 LLM 调用。这样一来，我们看到速度大约是原来的 50 倍，费用约是调用传统 LLM 的七分之一点一。
+
+But effectively, what we're seeing from customers that are going through and implementing JEV inside of their workflows is that they're able to replace the typical LLM calls that are going on behind the scenes. And in process, we're increasing the speed about 50 times, while also being 7.1 times cheaper than calling a traditional LLM.
+
+[05:59:26.940—05:59:44.980](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21566s)
+
+刚才展示的是客户怎样在我们的技术里用它。我们也把问题转回 UiPath 自己，我们能不能在提供给客户的产品和服务里用它，帮客户把事情做好？我们正在用 Jev 探索几种不同的做法。
+
+Now, we've gone through and kind of shown how customers would use this within our technology, but we're also pointing the finger back inwards where we're trying to ask the question of how can UiPath use this within the products and services that we offer to be able to help customers out? And there's a number of different patterns that we're kind of exploring with Jev.
+
+## 重排序试验如何找到锦标赛方案 / How the reranking experiment found a tournament strategy
+
+[05:59:45.140—06:00:06.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21585s)
+
+今天会讲一种重排序问题，以及我们在邮件挖掘中的用法。先交代一下重排序的背景。我们想在 Agent 的检索增强生成流程里加上一项能力，找出更合适的片段，再把它们给 Agent。
+
+And today we're going to talk about a re-ranking problem as well as what we're using inside of the email mining. And so to set the stage for kind of re-ranking, effectively what we're trying to do is run and add within our retrieval augmented generation within our agents, the ability for us to find more appropriate chunks to be able to provide to our agent.
+
+[06:00:07.100—06:00:23.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21607s)
+
+基本做法是先找相关文档，这一步之后通常用 LLM 做重排序。我们也在试用 Jev 看一遍不同的片段，挑出最有助于回答问题的那些，再把它们作为上下文提供给 LLM。
+
+And we do that by basically finding relevant documents first and then using typically an LLM to do this. But we're experimenting with also using Jev to go through and find the various different chunks that make our most relevant to answering the question and then providing those as context to the LLM.
+
+[06:00:24.300—06:00:36.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21624s)
+
+围绕这个办法，我们已经跑了几个实验。下面交回给 Chibi，让他讲讲我们发现了什么。好，事情到这儿就有意思了。
+
+And we've run a couple of experiments on this now. And I'd like to hand it back off to Chibi, a little bit more about what we were able to find. Yeah. So this is where things got really interesting for us.
+
+[06:00:36.520—06:00:52.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21636s)
+
+那差不多是 Jev 出来的第一周，我们刚拿到它。我们手上有一套非常扎实的重排序基准和评测集，已经跑了一段时间。每次换模型都需要这套东西。
+
+This is like the first week of Jov. We got our hands on Jov. And we have these extremely strong benchmarks and eval sets that we had for re-ranking that we have been running for some time. And we need those for when we change from one model to another.
+
+[06:00:53.240—06:01:09.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21653s)
+
+我们想到，可以用这批评测集搭一个迭代提分的运行框架，再给 Astra 提个要求。这是用 LLM 能拿到的分数，这是 Jev，这里有三个 API。
+
+And we realized, OK, why not take these eval sets and build a hill-climbing harness and ask Astra to say, okay, this is my score I can get with an LLM. Here is Jeff. Here are the three APIs.
+
+[06:01:10.380—06:01:27.360](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21670s)
+
+找出一个能达到这个分数的办法。然后让它自己跑。它一口气跑了整个晚上，单次会话跑了 14 小时，试出来很多不同策略，弄清了哪里有效、哪里没效，我们看到分数慢慢往上走。
+
+Find a strategy which can achieve that score and let it run. And it ran for the entire night for 14 hours in a session, and it came up with so many different strategies where it worked, where it didn't work, and then we were slowly seeing the number go up.
+
+[06:01:27.500—06:01:41.320](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21687s)
+
+差不多每隔两小时，就会出来一个好一点的策略。这让我们很吃惊，因为我们本来想，Jev 就是一个 API，如果直接调用它，把所有东西都发过去……[此处转写有缺漏，随后讲者示意切换幻灯片]
+
+Every two hours, there will be one strategy that will perform slightly better. This was so surprising for us because what we thought was, JEL as an API, if you just call it, like when you just send all of the, go up, up.
+
+[06:01:41.920—06:02:20.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21701s)
+
+刚试的时候，直接调只能拿到 0.866，在当时看来很低。我们就在想，怎么把它提上去？后来试了不同策略，慢慢跑到了 0.889。把分数提上来的那套策略叫「锦标赛」。我想给大家看看，这些迭代提分的模型是怎么想出它的。我们只换了一种架构和调用方式，就让 Jev 发挥了更多能力。下面来看看锦标赛是怎么
+
+So when we call it, we were getting only 0.866, which was very, very low at that point when we were trying it out. When we were thinking, how do we increase it? And then it slowly got to the number of 0.889 trying out new strategies, and that strategy is called tournament. And I want to showcase that strategy which these hill climbing models actually come up with and how we were able to see the intelligence squeaked out of Jav just by applying Jav in a different architecture and different call method. And I want to take you through tournament now. So what tournament did
+
+[06:02:20.640—06:02:44.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21740s)
+
+重新处理重排序的。逐个看每个片段和问题有多相关，是原来的思路。锦标赛会把片段分成不同的小组，让组内片段互相比较，选出最相关的片段。这些比较要发起成千上万次 Jev 调用。
+
+is that it actually reimagined re-ranking differently. Instead of looking at every how relevant is it for my question? It created cohorts of different groups of these chunks, and made them fight between each other to be the best, most relevant chunk by sending thousands and thousands of JavCars for each and every one of them.
+
+[06:02:44.320—06:03:04.120](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21764s)
+
+接下来，先在各组选出排头的片段，让胜出者进下一轮。然后在这些胜出片段中再选一轮，逐步找到排在最前面的。最好的会慢慢被挑出来，最终得到整个清单里最相关的片段。
+
+And it found leaders in those particular cohorts, and then the winners would be promoted to the next round. And then from those winners, we would again find top winners from those chunks, And then we'll slowly increase and find the topmost, the cream will rise to the top and you will find the most relevant chunks on the whole list.
+
+[06:03:04.440—06:03:21.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21784s)
+
+这套办法效果非常好。测试时，我们很惊讶，就算发起了数千次 Jev 调用、用了数百万量级的上下文，[上下文计量单位转写不清] 跑完所有调用仍然不到一秒。
+
+So this worked extremely well and we were testing it and we were surprised to see that even with thousands of JV calls and many millions of contexts being used, we were still under a second, we were able to make all of these calls.
+
+[06:03:21.080—06:03:39.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21801s)
+
+这给我们的启发很大。我们意识到，Jev 是可以灵活组合的基础部件。我们得找新的办法来使用它。单独拿出来看，它的判断力可能没那么强。
+
+And this was a huge revelation for us. And we realized that JEL is a building block that we can adjust. And we have to find these new strategies where we would be able to apply this building block and it might look less intelligent on its own.
+
+[06:03:39.180—06:03:58.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21819s)
+
+但有了这些策略和组合方式，即使用手上现有的 Jev 模型，也能把判断效果做得更好。速度大约到了原来的 15 倍。我们还在实时索引上试了它，看实际表现，大家都非常惊讶。[此处转写有缺漏]
+
+But with these strategies and patterns, we can get more intelligent with even the current JEL model that we have. And that gave us like 15x speed and our live indexes and saw how it performed, and people were extremely surprised by this one.
+
+## 用历史邮件设计类别，再处理新邮件 / Designing categories from historical mail and classifying new mail
+
+[06:03:59.060—06:04:17.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21839s)
+
+接下来我们看 Jev 在挖掘里的用法。挖掘有很多阶段，我只讲分类。我们有些客户的客服邮箱里有几百万封邮件。
+
+And next, we saw how JEO could be used for mining. So mining has a lot of stages. I'm going to talk only about the classification stage. And what happens is we have customers who have millions of emails in support email box.
+
+[06:04:18.140—06:04:26.420](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21858s)
+
+客户想分析这些邮件，弄清里面发生了什么，再据此采取行动。我相信大家都有过类似的邮箱。
+
+And what happens is they want to analyze and they want to dig to what happened in these emails so that they can take some actions. I'm sure every one of you guys have one of those email boxes.
+
+[06:04:27.220—06:04:41.080](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21867s)
+
+邮件没读一遍，很难找出合适的类别，知道怎么给它们分组。我们以前会去做微调，得到一个给这些邮件分类的模型。
+
+What happens is that it's so hard to find the right categories and bucketizations without reading all of these emails. So what we used to do is that we would go and create fine tuning to figure out a model that classifies them.
+
+[06:04:41.260—06:04:57.500](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21881s)
+
+针对这种分类任务微调模型，要花几个小时，也可能要一整天。我们通过迭代提分又发现一种做法，先用 LLM 找出一份初始的候选类别清单。
+
+It would take hours and maybe day to fine tune the particular model for the classification story. But what we found was, this is again through hill climbing, where we use an LLM to find an initial candidate list of categories.
+
+[06:04:57.880—06:05:11.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21897s)
+
+比如，它会说，我觉得这些邮件应该能放进这 15 类。然后我们用 Jev 把上百万封邮件都跑一遍，看各类分别进了多少邮件。
+
+And then it would say that, okay, these are all the 15 categories that I think the emails will fit. Then what we would do is that we'll use JEL and then all the million emails through it and see where the buckets fill up.
+
+[06:05:11.500—06:05:46.820](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21911s)
+
+这样能看到哪些类别分得不合适、哪些设得太窄、哪些一封都没分进去，然后回头调整类别。分组改好以后，把几百万封邮件再全部分类一遍。因为 Jev 便宜，这个过程可以反复做。最后，就能得到一份非常适合这个邮箱的类别清单。不同邮箱情况不一样，类别可能完全不同。最有用的
+
+And with that, we can actually see which buckets are not filled properly, which gets overfitted, which buckets are never filled out, back and optimize those buckets again. And then once the buckets are rearranged, we'll do another classification of all the millions of emails one more time. Because Java is so cheap, we were able to do this multiple times. And eventually, we'll end up with a category list which is extremely fit towards the mailbox that you're dealing with. Because it's not the same across different mailboxes. The categories are completely different. But the powerful
+
+[06:05:46.820—06:06:18.520](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21946s)
+
+地方在于，前面用 LLM 把类别找出来之后，日常分类与分发无需再调用用于归纳初始类别的通用生成模型。它提供的判断经验已经归到这套类别里。现在只要搭一个 Maestro 流程，把类别给 Jev 就行。每当有新邮件进来，只需要 Jev。它读邮件，把邮件分进相应的类别，后面就能按预设的规则处理。
+
+thing is, once you did all of this work with an LLM going through and finding these categories, you don't need the LLM anymore because you have the categories where you have distilled down all the intelligence into these categories. Now you can just build a Maestro flow which basically takes just the categories alone and uses GEL. So whenever a new email comes, it only needs GEL. It just looks at the email and fits the categories, and we basically a list of follow through.
+
+[06:06:18.780—06:06:28.660](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21978s)
+
+如果邮件属于某个类别，就给你发邮件，或者给这个团队、那个团队发邮件，做起来很容易。这里仍由 Jev 做分类，后续分发按预设规则运行。
+
+So if this matches this category, you are going to get an email. This team is going to get an email, or that team is going to get an email so easily. And we basically removed the LLM completely from the picture on this one.
+
+## 邮件处理效果与分享结语 / Email processing results and closing remarks
+
+[06:06:29.720—06:06:57.860](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=21989s)
+
+邮件处理速度一下快了很多，几乎是实时的。邮件刚进来，就有人收到通知。看到这个效果也很让人惊讶。这几个月大家都在用 Jev 做各种尝试。[此处转写有缺漏] 公司各处的 Slack 讨论每天都很热闹，有人说找到了一种用法，又有人说找到了另一种。过去三个月真的让人很兴奋。
+
+And we saw a humongous speed increase on just email processing. It was almost like at real time, an email comes, and suddenly somebody will get notified. So that was an amazing thing to see as well. So over the few months, we were so with Jev, and every day the Slack threads would light up everywhere in the company that I found this pattern, I found that pattern, and it was such an exciting time during these last three months.
+
+[06:06:58.180—06:07:14.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22018s)
+
+我想告诉大家，还有许多做法和策略没被找出来。我们才刚刚开始。我希望大家都试一试，在这里分享各自摸索出的办法，相互合作。
+
+And I wanted to share that there are so much more patterns and strategies to be found. We are only scratching the surface of this, and I want us to try out and share the strategies that we all find and collaborate here.
+
+[06:07:14.040—06:07:26.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22034s)
+
+如果你想试用 UiPath Flow，现在可以免费使用。扫一下屏幕上的二维码，会打开一个门户。你可以让自己的编程 Agent 访问这个门户，就能在那里获得完整的访问权限，做出你的第一批自动化流程。
+
+And if you're interested in trying out UiPath Flow, we have it available for free right now. Scan the QR code on the screen here, and it'll take you into a portal where you can basically point your coding agent at it and get complete access to build your first automations there.
+
+[06:07:27.040—06:07:28.100](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22047s)
+
+谢谢大家花时间来听。
+
+Thank you for your time, everyone.

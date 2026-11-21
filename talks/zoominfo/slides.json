@@ -1,0 +1,35 @@
+[
+  {
+    "id": "email",
+    "after": "p14",
+    "title": "一封邮件的成功报告与执行凭据",
+    "time": "06:16:43",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22603s",
+    "en": "assets/email-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>一封邮件的成功报告与执行凭据</h3><dl><div><dt>Agent 报告</dt><dd>个性化外联邮件已排队，应于周二自动发送。</dd></div><div><dt>工具返回</dt><dd>HubSpot 和 Salesforce 创建操作报错。成功的一步只创建了 Salesforce 待办。</dd></div></dl></div>",
+    "note": "记录显示创建了待办，邮件排程缺少成功凭据。",
+    "sourceSeconds": 22603
+  },
+  {
+    "id": "decision",
+    "after": "p23",
+    "title": "同一个邮件步骤，两种裁判的判定",
+    "time": "06:19:22",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22762s",
+    "en": "assets/decision-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>同一个邮件步骤，两种裁判的判定</h3><dl><div><dt>原来的大模型裁判</dt><dd>批准。</dd></div><div><dt>Jev</dt><dd>批准 0%，重做 97%，停止 3%。</dd></div></dl></div>",
+    "note": "概率来自这一例，讲者另外说明了批量判定使用的阈值。",
+    "sourceSeconds": 22762
+  },
+  {
+    "id": "shadow",
+    "after": "p26",
+    "title": "影子模式记录了约 37,000 次判定",
+    "time": "06:20:48",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=22848s",
+    "en": "assets/shadow-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>影子模式记录了约 37,000 次判定</h3><dl><div><dt>工具调用失败</dt><dd>728 个步骤中，旧裁判发现 294 个，Jev 发现 623 个。</dd></div><div><dt>同一邮件步骤反复运行</dt><dd>1,081 次运行中，旧裁判发现 1 次，Jev 发现 876 次。</dd></div></dl></div>",
+    "note": "两个裁判查看同一步骤。只有原裁判的决定影响当次运行。",
+    "sourceSeconds": 22848
+  }
+]

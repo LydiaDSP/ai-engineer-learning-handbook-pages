@@ -1,0 +1,35 @@
+[
+  {
+    "id": "sandbox",
+    "after": "p25",
+    "title": "沙箱限制命令运行后的访问范围",
+    "time": "08:20",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=500s",
+    "en": "assets/sandbox-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>沙箱限制命令运行后的访问范围</h3><dl><div><dt>测试入口</dt><dd>Bash → npm test</dd></div><div><dt>内部执行</dt><dd>vitest run、auth.test.ts，以及 node_modules 中的依赖代码</dd></div><div><dt>操作系统约束</dt><dd>哪些文件可读、哪些目录可写、哪些主机可访问</dd></div><div><dt>图中风险对象</dt><dd>.env、~/.ssh、collector.example</dd></div></dl></div>",
+    "note": "代码标识符保留英文。图中强调运行时访问限制，不等于所有会话组件都处于同一个沙箱。",
+    "sourceSeconds": 500
+  },
+  {
+    "id": "checkpoints",
+    "after": "p33",
+    "title": "把目标拆成可验证节点",
+    "time": "11:52",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=712s",
+    "en": "assets/checkpoints-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把目标拆成可验证节点</h3><dl><div><dt>目标</dt><dd>把认证迁移到新的 API</dd></div><div><dt>测试</dt><dd>auth.test.ts：没有用户被意外登出</dd></div><div><dt>构建</dt><dd>npm run build</dd></div><div><dt>截图</dt><dd>核对登录界面的实际表现</dd></div></dl></div>",
+    "note": "三种证据检查不同问题；截图不能单独证明认证逻辑正确。",
+    "sourceSeconds": 712
+  },
+  {
+    "id": "responsibility",
+    "after": "p46",
+    "title": "人的职责没有消失，而是重新分配",
+    "time": "16:50",
+    "url": "https://www.youtube.com/watch?v=vlfCjWuv4es&t=1010s",
+    "en": "assets/responsibility-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>人的职责没有消失，而是重新分配</h3><dl><div><dt>引导执行</dt><dd>模型</dd></div><div><dt>批准工具调用</dt><dd>Auto mode</dd></div><div><dt>限制能做什么</dt><dd>拒绝规则与运行环境</dd></div><div><dt>确认已经完成</dt><dd>Tests、Hooks、CI</dd></div><div><dt>启动新会话</dt><dd>Claude</dd></div></dl></div>",
+    "note": "这是讲者的总结图。责任交接仍依赖配置、检查质量和任务风险。",
+    "sourceSeconds": 1010
+  }
+]

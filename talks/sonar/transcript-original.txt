@@ -1,0 +1,201 @@
+Sonar 怎样用四个反馈循环验证软件交付？
+Andrew Finch
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[03:10:05.940 --> 03:10:06.380] Okay.
+[03:10:07.920 --> 03:10:08.560] All right.
+[03:10:08.720 --> 03:10:09.360] Can you all hear me?
+[03:10:11.980 --> 03:10:12.560] All right.
+[03:10:12.680 --> 03:10:16.880] My name is Andrew, and I think we're starting now.
+[03:10:17.040 --> 03:10:18.580] I don't know if there's a timer anywhere.
+[03:10:19.360 --> 03:10:25.000] My name is Andrew, and I'm excited to talk to you today about the Safe Software Factory.
+[03:10:27.280 --> 03:10:28.840] But first, a little bit about me.
+[03:10:29.700 --> 03:10:33.400] I am a staff software engineer at Sonar.
+[03:10:33.640 --> 03:10:37.600] I work on Guitar, which is Sonar's AI code review product.
+[03:10:38.980 --> 03:10:44.620] And previously, I was at Uber working on the driver trip experience and navigation.
+[03:10:45.580 --> 03:10:49.580] And then after that, I was at a health tech startup called Forward for a little while,
+[03:10:50.500 --> 03:10:55.020] building a sort of an AI-enabled primary health care system.
+[03:10:58.840 --> 03:11:01.980] Okay, so the software factory.
+[03:11:02.340 --> 03:11:07.220] This is like the hottest buzzword in our industry right now.
+[03:11:07.800 --> 03:11:10.340] Everyone's talking about software factories.
+[03:11:10.500 --> 03:11:12.300] Everyone's trying to build a software factory.
+[03:11:15.080 --> 03:11:19.460] And the question is, well, oh, so first of all,
+[03:11:22.120 --> 03:11:25.780] Most of you probably know what this is already.
+[03:11:27.740 --> 03:11:30.120] But if you don't, I'll just give a really quick overview.
+[03:11:31.380 --> 03:11:35.300] This is sort of the main software development lifecycle loop
+[03:11:36.080 --> 03:11:38.020] as it existed before the AI era.
+[03:11:38.900 --> 03:11:43.380] So we have inputs, basically product specs, feature requests,
+[03:11:43.860 --> 03:11:46.120] tickets, things like that.
+[03:11:47.400 --> 03:11:51.180] We take those into the planning step, especially if they're complicated.
+[03:11:52.420 --> 03:11:55.040] And then we build, then we write the code.
+[03:11:56.660 --> 03:12:06.600] And then we put up a PR, and that PR gets reviewed, and it goes through CI, and then it eventually merges.
+[03:12:07.920 --> 03:12:09.920] And then we deploy that to production.
+[03:12:10.780 --> 03:12:16.480] And then users interact with our software, and they give us feedback or they find bugs.
+[03:12:18.100 --> 03:12:21.520] Or we might also get some monitoring and alerts as well.
+[03:12:21.760 --> 03:12:24.160] And then those go back in as more inputs.
+[03:12:24.820 --> 03:12:27.220] And the cycle continues.
+[03:12:27.900 --> 03:12:37.520] And so in the era of agentic coding and AI, automation has followed every bottleneck.
+[03:12:37.520 --> 03:12:41.160] So the bottleneck used to be the coding part, the building.
+[03:12:42.360 --> 03:12:44.940] Now with coding agents, that's been automated.
+[03:12:46.740 --> 03:12:51.200] And now the bottleneck has sort of shifted over to that review step.
+[03:12:51.480 --> 03:12:56.620] And we're starting to introduce AI code review systems for that.
+[03:12:58.600 --> 03:13:04.700] And we're seeing AI systems and automation happen really at every step of this now.
+[03:13:04.700 --> 03:13:13.360] So we're starting to see AI systems for monitoring deployments, controlling rollouts, triaging,
+[03:13:13.360 --> 03:13:18.160] triaging, you know, tickets and incidents, planning.
+[03:13:18.500 --> 03:13:25.360] And so this here is the sort of software factory that we're creating.
+[03:13:27.920 --> 03:13:35.460] And so the question that we all have now is, how do we make this factory safe, right?
+[03:13:35.660 --> 03:13:42.460] In other words, how can we introduce enough layers of verification into this so that we
+[03:13:42.460 --> 03:13:48.720] can trust that the software coming out of it is, it works as expected, it's free of
+[03:13:48.720 --> 03:13:50.980] bugs, free of security, vulnerabilities.
+[03:13:54.240 --> 03:13:59.760] Our CEO, Tarek, said recently, code is abundant, confidence is not.
+[03:14:01.460 --> 03:14:06.540] So what I'm going to talk about today is just how we at Sonar have been thinking about how
+[03:14:06.540 --> 03:14:14.260] to introduce confidence at all different points within this software factory.
+[03:14:18.040 --> 03:14:25.040] And we're approaching this challenge with a defense in depth approach that comes from
+[03:14:25.660 --> 03:14:28.100] adding more loops you might not be surprised to hear.
+[03:14:29.420 --> 03:14:32.240] And I'm going to talk about four of them today in particular.
+[03:14:32.440 --> 03:14:36.120] So there's the loop one, which is the PR checks loop.
+[03:14:38.660 --> 03:14:43.080] loop two, which is the post deploy verifications loop,
+[03:14:44.860 --> 03:14:48.600] loop three, which is the maintenance loop,
+[03:14:50.540 --> 03:14:52.640] and loop four, which is the knowledge loop.
+[03:14:52.780 --> 03:14:54.560] And this is kind of a special loop.
+[03:14:56.040 --> 03:15:00.920] So first I'm going to talk about loop one, the PR checks loop.
+[03:15:01.020 --> 03:15:03.640] So this is the loop that we probably all have in some form.
+[03:15:04.440 --> 03:15:07.540] You put up a PR, it goes through some CI checks,
+[03:15:07.760 --> 03:15:08.720] it gets a code review.
+[03:15:09.200 --> 03:15:11.660] Nowadays, it's probably getting an AI code review as well.
+[03:15:12.640 --> 03:15:14.720] But we're starting to see a lot more automation
+[03:15:14.720 --> 03:15:16.860] being introduced here as well.
+[03:15:17.040 --> 03:15:20.460] So we're starting to see agents pushing fixes
+[03:15:20.460 --> 03:15:22.460] to respond to the code review comments.
+[03:15:24.280 --> 03:15:26.700] And this loop kind of goes around and around
+[03:15:26.700 --> 03:15:28.540] until the PR turns green.
+[03:15:34.380 --> 03:15:38.080] And there's actually a lot more that we can be doing here
+[03:15:39.240 --> 03:15:42.140] because catching a problem at this point is still cheaper
+[03:15:42.140 --> 03:15:44.120] than after it merges into the code base.
+[03:15:45.240 --> 03:15:48.460] So we have a real opportunity here to widen this review
+[03:15:49.000 --> 03:15:53.000] past the sort of normal tests and code review
+[03:15:53.000 --> 03:15:54.080] that most of us do.
+[03:15:54.980 --> 03:15:57.480] So, of course, we have AI code review.
+[03:15:58.260 --> 03:16:00.760] We can also do static analysis here.
+[03:16:00.880 --> 03:16:01.760] Many of us do that.
+[03:16:03.640 --> 03:16:05.740] We could do what's called functional validation.
+[03:16:05.760 --> 03:16:09.080] So this is where we can look at what the ticket asks for
+[03:16:09.080 --> 03:16:12.280] and see if the PR actually addresses those things.
+[03:16:16.080 --> 03:16:21.380] We can look at rules that the team may set for coding
+[03:16:21.380 --> 03:16:26.600] conventions, best practices, things like that,
+[03:16:26.700 --> 03:16:28.720] see if the PR is adhering to those.
+[03:16:30.960 --> 03:16:31.780] We can look at knowledge.
+[03:16:33.720 --> 03:16:35.600] from company documentation,
+[03:16:36.260 --> 03:16:38.980] from things that have been learned on past code reviews
+[03:16:38.980 --> 03:16:40.280] or past outages.
+[03:16:42.960 --> 03:16:44.860] We could do cross-repo checks.
+[03:16:44.860 --> 03:16:46.940] So we could actually look at other repositories
+[03:16:46.940 --> 03:16:51.160] and see if anything in this PR will break
+[03:16:51.160 --> 03:16:53.260] or cause something to break in another repository.
+[03:16:55.920 --> 03:16:58.220] We could do cross-PR analysis.
+[03:16:58.660 --> 03:17:01.840] So we can look at all the other open PRs as well
+[03:17:04.500 --> 03:17:07.160] in this PR that conflicts with one of those.
+[03:17:09.660 --> 03:17:11.340] We could do security review,
+[03:17:11.640 --> 03:17:14.460] check for vulnerabilities, secrets, dependencies.
+[03:17:16.880 --> 03:17:18.380] We could do end-to-end testing.
+[03:17:18.380 --> 03:17:20.340] So, for example, if this is a web app,
+[03:17:20.440 --> 03:17:23.020] we could open up in a browser and click around
+[03:17:23.020 --> 03:17:25.180] and see if it works as expected.
+[03:17:28.300 --> 03:17:30.440] And finally, we could do risk assessment.
+[03:17:30.440 --> 03:17:36.180] So we can sort of look at this and compute the blast radius
+[03:17:36.180 --> 03:17:40.300] and sort of categorize this into low, medium, or high risk.
+[03:17:40.580 --> 03:17:43.440] And that can actually help us determine if this is a PR
+[03:17:43.440 --> 03:17:45.040] that a human even needs to look at at all.
+[03:17:47.380 --> 03:17:51.100] And so all of these things can flow into this sort of decision,
+[03:17:51.360 --> 03:17:54.120] this merge gate, this decision of whether this PR is mergeable.
+[03:17:54.940 --> 03:17:59.580] And of course, every time a fix is pushed, all of these run again.
+[03:18:00.440 --> 03:18:01.420] at least in some degree.
+[03:18:04.260 --> 03:18:06.240] And with all of this, it's important
+[03:18:06.240 --> 03:18:09.700] to gate that merge decision not just on the fact
+[03:18:09.700 --> 03:18:12.500] that a test ran or that it passed, but on the evidence.
+[03:18:13.320 --> 03:18:15.960] So that would be things like the actual code review findings,
+[03:18:16.520 --> 03:18:18.300] the results of the quality gates,
+[03:18:19.500 --> 03:18:23.540] any vulnerabilities, the risk level.
+[03:18:23.720 --> 03:18:28.920] So all of that can be basically fed into this merge gate
+[03:18:30.440 --> 03:18:33.800] that the team can set for what is a mergeable PR.
+[03:18:35.180 --> 03:18:38.460] And when you record that evidence to the PR,
+[03:18:38.860 --> 03:18:42.380] it just makes the merge gate much stronger.
+[03:18:44.500 --> 03:18:48.260] And so what we're seeing now with teams who do this well
+[03:18:48.880 --> 03:18:51.880] is that they can actually delegate more and more trusts
+[03:18:52.680 --> 03:18:55.680] to this type of automation on the PR review.
+[03:18:56.420 --> 03:19:04.540] So we're seeing teams begin to turn on not just automatic merge blocking, but even auto-approve
+[03:19:04.540 --> 03:19:11.000] in some cases for low-risk changes, and even auto-merge for certain types of PRs that are
+[03:19:11.000 --> 03:19:17.800] low-risk and approved. And this can just free up a lot of review bandwidth for human reviewers to
+[03:19:17.800 --> 03:19:19.700] review the more high risk changes.
+[03:19:22.340 --> 03:19:25.980] OK, so now I'm going to talk about loop two,
+[03:19:26.140 --> 03:19:28.440] which is our post deploy verification loop.
+[03:19:29.740 --> 03:19:33.940] So this is, I would say, very much in its early stages right
+[03:19:33.940 --> 03:19:34.120] now.
+[03:19:34.240 --> 03:19:36.760] People are experimenting with all kinds of things here.
+[03:19:37.960 --> 03:19:40.800] But the idea is that once your code is deployed,
+[03:19:41.620 --> 03:19:49.220] you can build AI systems to check, to read production logs, traces, metrics,
+[03:19:49.480 --> 03:19:53.840] and see if your code is actually behaving as you expect it to in production.
+[03:19:55.200 --> 03:19:59.900] And then from there, you can actually, we're starting to see.
+[03:20:00.000 --> 03:20:03.340] things like agentic rollout, where agents can decide
+[03:20:03.340 --> 03:20:05.560] whether to widen a rollout or roll back,
+[03:20:05.880 --> 03:20:07.480] turn the feature flag off.
+[03:20:09.300 --> 03:20:12.260] And you can also do AI outage monitoring.
+[03:20:12.260 --> 03:20:17.700] So you can monitor alerts and use AI systems
+[03:20:17.700 --> 03:20:20.480] to help you root cause and fix outages.
+[03:20:24.760 --> 03:20:24.900] OK.
+[03:20:25.820 --> 03:20:27.920] So moving on to loop three.
+[03:20:28.820 --> 03:20:30.700] So this is what I call the maintenance loop.
+[03:20:31.740 --> 03:20:33.900] This is kind of a parallel loop that
+[03:20:33.900 --> 03:20:38.080] runs alongside your main software development lifecycle
+[03:20:38.080 --> 03:20:38.540] loop.
+[03:20:39.020 --> 03:20:41.860] And this is where we continuously scan the code base
+[03:20:41.860 --> 03:20:42.760] on some schedule.
+[03:20:43.440 --> 03:20:45.280] And we check for a lot of the same things
+[03:20:45.280 --> 03:20:46.380] that we check for on the PR.
+[03:20:46.580 --> 03:20:50.040] We could do code review, static analysis, security checks,
+[03:20:50.400 --> 03:20:50.840] et cetera.
+[03:20:51.480 --> 03:20:55.480] And then if we find an issue, we can open up a remediation PR
+[03:20:56.040 --> 03:20:57.240] to address that.
+[03:20:57.740 --> 03:21:01.420] And this lets us catch things that we couldn't catch in the PR.
+[03:21:01.720 --> 03:21:03.360] So, for example, you could imagine
+[03:21:05.600 --> 03:21:08.460] maybe a new rule was introduced after code merged
+[03:21:08.460 --> 03:21:12.140] or a new vulnerability was published after code merged.
+[03:21:14.460 --> 03:21:16.840] Or even something like slow drift
+[03:21:16.840 --> 03:21:20.660] where you slowly get duplication or complexity building up
+[03:21:20.660 --> 03:21:22.720] that you can't really see on a single PR.
+[03:21:23.360 --> 03:21:25.360] You can catch these kinds of things here.
+[03:21:26.900 --> 03:21:29.420] with the continuous code-based scans.
+[03:21:32.920 --> 03:21:36.840] Okay, and so finally we move over to the knowledge loop.
+[03:21:37.020 --> 03:21:41.100] And this is becoming, we're seeing this become a very important loop
+[03:21:41.100 --> 03:21:42.880] for a lot of companies.
+[03:21:44.240 --> 03:21:46.300] Every company has a lot of knowledge.
+[03:21:47.060 --> 03:21:52.780] Documentation, product specs, business decisions.
+[03:21:55.360 --> 03:21:58.960] and the agents do a better job if they have that knowledge.
+[03:22:00.580 --> 03:22:05.140] So this loop basically collects all that knowledge from different sources,
+[03:22:05.180 --> 03:22:10.640] as well as things that were learned on prior code reviews and from prior outages.
+[03:22:11.020 --> 03:22:17.340] It's curated, and then it can be fed into all of the other loops,
+[03:22:17.660 --> 03:22:22.200] all of these other agents, so they can do a better job.
+[03:22:25.320 --> 03:22:30.720] And for example, this is really powerful with your coding agents, because if they have some
+[03:22:30.720 --> 03:22:37.540] of this knowledge, they can probably do a better job the first time, fewer issues, and
+[03:22:37.540 --> 03:22:42.580] then you'll wind up with basically fewer review laps at the review stage.
+[03:22:47.420 --> 03:22:52.760] OK, so what does this mean for our role as human software
+[03:22:52.760 --> 03:22:54.220] engineers in this factory?
+[03:22:55.160 --> 03:22:59.160] You might be asking, OK, so if we nail all of this,
+[03:22:59.240 --> 03:23:02.720] can we just turn the lights out and run a dark factory?
+[03:23:04.160 --> 03:23:07.200] And I would say probably not, not right now.
+[03:23:08.660 --> 03:23:11.320] I like to say the factory runs dim, not dark.
+[03:23:12.580 --> 03:23:19.500] important for us to intervene in places where our expertise is really important.
+[03:23:21.760 --> 03:23:29.480] So that would be things like auditing risky code, verifying that evidence, verifying things
+[03:23:29.480 --> 03:23:39.100] are actually working as expected, handling exceptions like rollbacks and incidents, reviewing
+[03:23:39.100 --> 03:23:43.980] Doing architecture, agents are not very good at this yet, I would argue.
+[03:23:46.560 --> 03:23:52.460] And supplying the why, or helping to build that knowledge that powers all these agents
+[03:23:52.460 --> 03:23:53.180] and all these loops.
+[03:23:54.100 --> 03:23:58.960] Supplying the product intent, the trade-offs, the business decisions, things like that.
+[03:24:01.880 --> 03:24:05.000] And of course, we engineer the factory ourselves, right?
+[03:24:05.000 --> 03:24:10.020] we've sort of moved into this era where we're building the software factory as a whole.
+[03:24:13.880 --> 03:24:19.000] So with that, I hope that gave you sort of a framework for how to think about
+[03:24:19.560 --> 03:24:25.420] not just how to build your software factory, but how to build a safe software factory.
+[03:24:26.280 --> 03:24:28.820] So thank you. That's all for me.

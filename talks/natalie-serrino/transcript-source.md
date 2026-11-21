@@ -1,0 +1,317 @@
+# 当 AI 快 10 倍，你会构建什么？
+
+Natalie Serrino
+
+中文校译与英文转写／整理稿
+
+中文为校译，英文栏主要保留机器转写。标有编辑概述的段落为双语整理稿。带时间戳的英文机器转写原文可在下方来源说明打开。
+
+依据 AI Engineer Code Summit 主回放第 01 场（00:11:26–00:28:30）和工作区逐段中英校译。英文沿用机器转写，中文保留校译提示。00:23:58–00:26:47 的安全演示采用带标识的中英防护概述。演讲中的性能数字来自讲者展示或其引用。
+
+[英文音频转写原文（带时间戳）](transcript-original.txt)
+
+## 一次幻灯片改版为什么仍让人等 / Why the slide redesign still felt slow
+
+[00:11:26.640—00:11:43.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=686s)
+
+大家好！很高兴来到这里，也谢谢大家今天一早就来。这是今天的第一场，看来在座各位都起得挺早。我今天想跟大家聊聊，当 AI 快十倍时，你会做出什么？
+
+Hello everyone. It's so good to be here. Thank you for being with me this morning. First session of the day. I see everyone here is a morning person. So I'm here to talk to you about what will you build when AI is 10 times faster.
+
+[00:11:43.880—00:12:01.260](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=703s)
+
+在座都是做产品、做技术的人，大家都在想下一步该做什么。先简单介绍一下自己。我叫 Natalie，是 Gimlet Labs 的联合创始人。我们在 Gimlet 做的是推理云，目标是用不同类别、不同类型的芯片，更快、更高效地产出 token。
+
+We're all builders here, so we're all thinking about what's next. Just a bit about me. My name is Natalie. I'm a co-founder of Gimlet Labs. At Gimlet, we're building an inference cloud that's designed to produce much, much faster tokens at high efficiency, leveraging different categories and types of chips.
+
+[00:12:01.920—00:12:36.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=721s)
+
+我在 Gimlet 负责面向不同硬件的计算内核生成。另外，我特别喜欢 Agent，什么事都拿编程 Agent 来做，但我真的很讨厌等。有件事挺让我意外。我在做超快推理时，[转写有缺漏] 常有人问，推理现在还不够快吗？我当时想，什么？不过他们说得有道理。现在我能做的事、大家能让 Agent 帮忙做的事，确实比过去快得多。
+
+At Gimlet, I work on our kernel generation side of things across different hardware types. Another thing about me is I love agents. I use my coding agents for everything, but I really, really hate waiting. And one thing that, given that kind of surprises me is when you're building an ultra-fast inference me this all the time actually they're like isn't inference already fast enough and I'm like what but they have a point right because I can do things and we can all do things with our agents so much faster than we could have done before
+
+[00:12:36.940—00:13:14.280](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=756s)
+
+比如这页幻灯片，我就是让 Agent 帮我做漂亮的。我不太擅长设计，有 Agent 帮忙比自己做省了很多时间。从头到尾看，我们显然能完成更多事，但速度够不够快，这个问题还在。来看看我让 Agent 美化这页幻灯片时发生了什么。右边是改之前的样子，挺丑的。我们点播放。我是这么问 Agent 的，你能不能帮我把这一页的……
+
+for example this slide here I actually made pretty using my agent and it took me with my agent much less time than it would take me to do that by myself I'm not very good at design. And so I think that from an end-to-end perspective, obviously we're getting more done, but in terms of is it fast enough, like that's still a question. So let's take a look at what happened when I used my agent to make that slide look pretty. You can see the ugly before slide on the right. So we're going to press play here. And I said to my agent, can you improve the
+
+[00:13:14.280—00:13:25.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=794s)
+
+……视觉效果改好一点？我很喜欢 Figma，什么都用它，跟 Agent 协作当然也用。下方这条就是整个过程的时间线。
+
+the visual look of this slide. I love Figma, I use Figma for everything, so of course I'm going to use it with my agents. So what we can see on the bottom here is the timeline of what happened.
+
+[00:13:25.320—00:13:36.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=805s)
+
+字有点小。红色是推理，也就是模型花在推理上的时间。绿色是调用工具的时间，蓝色是接收我输入的时间。
+
+And the text is a little small to see, but red is inference. Red is the time spent that the model's in inference. Green is the time it's spent making tool calls, and blue is the time that it's spent taking my input.
+
+[00:13:37.320—00:13:50.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=817s)
+
+可以看到，Agent 做得不错，也思考了不少。但我就在这里等。等得太久了，所以我把视频加快了九倍，免得你们也要等这一轮完整跑完。
+
+And we can see that this agent's doing good work, it's doing a lot of thinking, but I'm waiting here. I'm actually waiting so long I sped up this video 9x because I didn't want all of you to have to wait for the full turn to end.
+
+[00:13:50.560—00:14:01.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=830s)
+
+这一轮最后用了大约两分钟。可以看到，我只输入了一次，最后就拿到了一页漂亮的幻灯片。单看完成这件事，它的确比人做得快很多。
+
+It ended up being about two minutes long. But we can see at the end of this, after my one input, we have this nice pretty slide at the end. So on one hand, this is actually much faster than a human can do.
+
+[00:14:01.260—00:14:20.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=841s)
+
+但这两分钟里，我很可能已经去做另一件事了。注意力已经不在这里，我切换了上下文。推理速度还会不断提高。要理解接下来会发生什么，我觉得可以回头看看互联网早期。
+
+But on the other hand, in those about two minutes, I have probably moved on to another task. I'm not really focused on this anymore. I've context switched. And when we look to the inevitable progression of inference getting faster and faster, I think it helps to look back in time and look back to the internet era.
+
+## 从拨号上网看速度和注意力 / Speed and attention, from the dial-up web
+
+[00:14:21.640—00:14:36.600](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=861s)
+
+当然，我们现在也还在用互联网。我指的是大家通常所说的 Web 时代。每次出现重大技术变化，我们都会获得新的能力，开始做过去做不到的事，比如用 Agent 改我的幻灯片。
+
+I mean, we're still on the internet, but what people canonically call the web era. And what we always see with a new shift is that with each new major wave, new capabilities are unlocked. And so we do things that weren't possible before that technology, like using an agent to edit my slide.
+
+[00:14:38.380—00:15:07.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=878s)
+
+把时间拨回互联网早期的 2000 年。今天在座的许多人那时大概还没出生，就当听一段历史吧。我们要看一个叫 SquirrelMail 的小应用。它是开源的，所以现在也能运行。它是当年用来收发邮件的网页应用。左边我用模拟的 2000 年拨号网速运行 SquirrelMail，右边则用 2026 年……
+
+step back to 2000 in the early days of the internet. I think many people here weren't even alive, so it'll be a history lesson for you. And we're going to look at a little application called SquirrelMail. SquirrelMail is actually open source, so you can run it today. It was a web application for, you know, doing your email back then. So on the left, what we have here is I'm running SquirrelMail and I'm running it with simulated 2000 dial-up speed. And then on the right, it'll run with 2026
+
+[00:15:08.380—00:15:38.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=908s)
+
+……我们现在习惯的网速运行。两边做的操作完全相同，左边只是网速更慢。它确实把活干了。在 2000 年，能在网页上加载这样一张图片，会让人很惊讶。用现在的眼光看，只会觉得这张图也等太久了。我们现在能清楚地感到这些卡顿，但换成当年的人……
+
+that we're used to today so the both sides are going to take the same actions but um the left side i'm using it with that simulated lower uh speed internet and we can see that you know it's doing its job back in 2000 loading an image like this would have blown people's minds but our modern eyes are like wow that took forever to show up and so we can see these lags we can see a noticeable thing but on the same time someone might have looked at this back
+
+[00:15:38.700—00:16:08.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=938s)
+
+……可能就会说，这已经够快了，我又不需要它更快。可那一时期的大公司发现，速度确实有影响。从 Amazon、Yahoo、Google 到微软的 Bing，几乎所有这些公司都发现，哪怕一点点延迟也会流失用户。回访的人变少，用户点击的次数也变少。
+
+in 2000 and said this is fast enough I don't actually need this to be faster the thing is though all of the major giants back in that era did find out it mattered pretty much every major company from Amazon to Yahoo to Google to Bing all of our being part of Microsoft like all of them found that even very small delays cost them users. It cost them people coming back. It cost them people doing as many clicks.
+
+[00:16:08.520—00:16:25.340](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=968s)
+
+损失的还有实实在在的钱。即使只在平时的体验上多加 100 毫秒，也能看到对业绩的影响。后来即使把那段延迟消掉，同一批用户回来的频率也没有恢复到加延迟之前。
+
+It cost them literal money. Even 100 milliseconds of delay added on to the typical experience had a demonstrable impact on the bottom line. And even when you got rid of that delay, those same users didn't come back to the platform as often as they did without that delay.
+
+[00:16:29.180—00:16:55.900](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=989s)
+
+这很好理解，速度快能让人保持专注，用户也更愿意继续用。约 100 毫秒，我们感觉像是立即发生。等一秒，思路还能接上，不是什么大事，我都不太留意。从心理上讲，等十秒，我们就开始想做别的了。可能掏出手机，也可能切到另一个 Agent。但根据六月的数据，现在编程 Agent 的单轮耗时中位数是 63 秒。
+
+And this makes sense because fast products keep us in flow state. They provide a stickier UX. About 100 milliseconds feels instant to us. One second of weight, I still keep my train of thought. It's not a big deal. I don't really notice it. 10 seconds, we're going to start turning to something else from a psychology perspective. Maybe we pull out our phone, maybe switch to another agent. But today, from data from June, the median coding agent turn is 63 seconds.
+
+[00:16:59.380—00:17:34.700](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1019s)
+
+不同工作负载要求的速度不同，每件事不必都一样快。不过，时间一长，我们的预期就会上升。SquirrelMail 那个年代最快的网速，放到今天都会让我们觉得慢得离谱。推理速度也可以预期会有类似变化。问题是，大家都知道算力严重短缺。今天的基础设施承受着巨大压力，既要产出更多 token，又要更快地产出。可这两个目标有根本的冲突，因为……
+
+Each workload has different speed requirements. We don't need the same speed for everything, but over time, our expectations do rise. And the fastest internet in the squirrel mail days would feel incredibly slow to us, and we can expect that trend to continue for inference speed as well. There's a problem though and the problem is everyone knows that we have massive compute scarcity. Today's infrastructure is under incredible pressure to deliver two things at the same time, more tokens and faster tokens. Unfortunately, these goals are fundamentally at odds because
+
+## Token 工厂的速度与产量 / Speed and output in the token factory
+
+[00:17:34.700—00:17:55.820](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1054s)
+
+……要更快地生成 token，就得消耗更多能量。同等能耗下，总量就会少一些。这场演讲原先还是一场普通分享，后来升成了主题演讲，谢谢大家。当初我还打算和大家一起玩一个我做的游戏，叫 Token Mint Factory。
+
+faster tokens require more energy to produce than slower tokens. So with the same energy footprint you can't make as many of them. Back before this was a session and not a keynote, thanks to upgrading this to a keynote, everyone, we were going to play a game that I made called Token Mint Factory.
+
+[00:17:56.060—00:18:05.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1076s)
+
+这个游戏真的能玩。你现在就打开，我也不介意。不过手机上玩不了，得用笔记本。游戏里，你经营一家生产 token 的工厂。
+
+And you can actually play this. I will not be offended if you play it right now even, but just so you know, it does not work on phones. It only works on your laptop. And basically in this game, you're running a Token Mint Factory.
+
+[00:18:05.320—00:18:17.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1085s)
+
+你真的是在生产一个个 token。游戏有不同模式。你可以比最快多久能产出一个 token，也可以比 60 秒内最多能产出多少。
+
+You're printing literal tokens. And there's different modes. The modes are you can play to maximize how quickly you can put out one single token or you can maximize how many tokens you can put out in 60 seconds.
+
+[00:18:17.880—00:18:31.620](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1097s)
+
+还有一种 SLA 模式。每个 token 都得在 20 秒的服务时限内完成才算数，同时你还是要尽量多做。玩一会儿就会发现，追求快速产出单个 token 和采用慢一点的方式，策略非常不同。
+
+Or you can play the SLA mode where you have to maintain a 20 second SLA on each token for it to count but you're still trying to put out as many as you can. And as you play you'll quickly see that the strategy is extremely different for doing fast tokens versus doing slow tokens.
+
+[00:18:31.620—00:18:48.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1111s)
+
+怎么选本身没有优劣，要看应用需要什么，哪种方式更适合你的工厂。我取了公司同事玩游戏的真实记录，画出了游戏里 token 产出表现的帕累托前沿。
+
+and neither one is actually better or worse from a decision perspective. It's just a matter of what the application needs and what makes sense for your factory. So I took real runs from people at my company that played this game and I made a Pareto frontier of these tokens in the game.
+
+[00:18:49.580—00:19:03.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1129s)
+
+这个游戏里真的能看到帕累托前沿。产出速度提高，总量就少一些。总量变多，产出速度就没那么快。不过有办法把这条前沿推向右上方。我们想去的正是右上方。
+
+And we can see there's a real-life Pareto frontier of this game as well. If we have faster tokens, we don't have as many, and if we have more tokens, they're not as fast. But there is a way to get more up and to the right, up and to the right is where we want to go.
+
+[00:19:03.300—00:19:20.640](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1143s)
+
+我们希望既多又快。我不想二选一，两样都想要。所以游戏里可以升级设备。跟不升级的基线相比，这些技术改进确实能把成绩推向右上方，让 token 的产量和速度都提高。
+
+We want more faster tokens. I don't want to compromise, I want both. So the game has a concept of adding upgrades to your equipment. And what we can see is that compared to the no upgrade baseline, these technological innovations help drive us up and to the right and get more tokens and faster tokens.
+
+## 异构推理与同题演示 / Heterogeneous inference and the paired demo
+
+[00:19:23.120—00:19:37.180](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1163s)
+
+那么现实里怎么升级这条生产线，让 token 真的更快呢？Gimlet 的做法建立在一个判断上，每类工作都应该用合适的加速器。
+
+So how do we upgrade our real life assembly lines, so to speak, to making our actual tokens faster? One thing that we do at Gimlet for this is we really believe that you have to use the right accelerator for the right job.
+
+[00:19:37.540—00:19:52.720](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1177s)
+
+我们会把模型拆成不同部分，每部分放到一类不同的加速器上运行。例如，一部分工作负载跑在 GPU 上，另一部分跑在以 SRAM 为主的加速器上。
+
+And so we actually take models and we split them up into different pieces. And we run each piece on a different category of accelerator. So we might run one piece of the workload on a GPU and another piece of the workload on something like an SRAM-centric accelerator.
+
+[00:19:53.000—00:20:04.140](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1193s)
+
+我们发现，即使算上网络开销，token 也能快很多。就像升级 token 工厂的设备一样，让加速器和它擅长的工作更匹配。
+
+And we find that even with the network overhead, this delivers dramatically faster tokens. It's essentially like the same thing as the upgrade. to the equipment in the token factory when you better match the accelerator to the job.
+
+[00:20:04.720—00:20:20.380](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1204s)
+
+可惜，光靠晶体管缩放就能轻松得到性能提升的时代已经结束了。现在得找别的提速办法。这里这张图有点难看清，展示的就是一个前沿模型在现实中的帕累托前沿。
+
+Unfortunately, we have ended the time of free lunch transistor scaling, right? So now we have to look to other approaches to make things faster. And so with this, it's a little hard to read, but we can see the same real life Pareto Frontier for a Frontier model.
+
+[00:20:20.880—00:20:55.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1220s)
+
+只用同类 GPU 做推理，吞吐量很高，但延迟很难再降，速度没法推得那么快。[转写有缺漏] 图上一个轴是能生成多少 token，横轴是每个用户拿到 token 的速度。模型有多种拆法，拆得不同，同样功耗下可以得到快得多的 token，同样速度下可以得到多得多的 token，也可以把两项都往上推。整个行业都需要继续在这上面下功夫……
+
+If you look at simple homogenous GPU inference, it's very high throughput and then the latency drops off a little bit. You can't get it as fast is how many tokens that I can make and the x-axis how fast these tokens are for each user and we can see that depending on how you split the model up because there's different ways of doing it you can get much faster tokens for the same power footprint you can get many more tokens for the same speed or you can get more and faster tokens so as an industry we need to continue pushing pushing
+
+[00:20:55.440—00:21:11.020](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1255s)
+
+……不然我们的数据中心可就要……[转写有缺漏] 我想快速做个演示。让编程 Agent 构建同一个应用，一边用不同类型的芯片做异构推理，另一边用传统推理方式。
+
+pushing on this because otherwise our poor data centers are just going to So I just wanted to show a quick demo of this. So using a coding agent, build the same app using heterogeneous inference that leverages different chip types versus the traditional one.
+
+[00:21:14.040—00:21:25.000](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1274s)
+
+做的是贪吃蛇游戏。可以看到，左边用异构推理，速度快，已经完成了。我可以保持刚才的状态，接着加功能、接着玩。右边还在跑。
+
+So this is going to be the game Snake. And we can see on the left, the heterogeneous fast one's done. I can see in my flow state, I can keep adding things, I can keep playing. But on the right side, it's still going.
+
+[00:21:25.180—00:21:46.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1285s)
+
+顺便说一句，我还是觉得左边太慢，还要再提速。接下来可以给游戏加一个对手。即使算上工具调用和它要做的所有事，左边也会先做完，另一边还得接着等。根本问题是，怎么用同样的资源做得更高效、性能更好？
+
+And by the way, I still think the left side's too slow. we need to make that even faster. And then we can add a competitor to the game, and we can see even with the tool calls, even with all the things that it's doing, it's going to complete, and then the other one will still be hanging, because it's fundamentally about how can you drive more efficiency and better performance with the same resources.
+
+## 提速后重新寻找瓶颈 / Finding the next bottleneck after a speedup
+
+[00:21:48.880—00:22:20.540](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1308s)
+
+右边还会继续跑，就不让大家等了。大家也经常问，瓶颈究竟在推理，还是在工具调用？这个问题很好。回到刚才更新幻灯片的那一轮，80% 的时间花在推理上，18% 花在工具调用上。模拟同一过程，把推理提速十倍，工具调用届时就会占耗时的 67%，如果我们……
+
+It's going to go on. I'm not going to make you guys wait for this. One thing that people often point out, too, is is inference the bottleneck or tool calls the bottleneck and I think this is a great point if we look back to the turn timeline from the time that I was spending updating my slide we can see that 80% of it was inference and 18% of it was tool calls if we simulate that same exact thing and have 10x faster inference we can see that 67% of that will be tool calls at that point if we
+
+[00:22:20.540—00:22:35.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1340s)
+
+……不优化工具调用的话。所以要找出应用当前的瓶颈，能先解决的就先解决。现在大家更关注推理速度，可能没花同样多的心思优化工具调用和调用方式，因为它眼下还不是瓶颈。
+
+don't optimize the tool calls that's why it's important that we have to attack the bottlenecks of the application and get the low hanging fruit where we can. Today, people are focused on inference speed and maybe we haven't optimized the tool call side and how tools are called as much because it's not the bottleneck.
+
+[00:22:36.020—00:22:48.920](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1356s)
+
+如果把上面那个例子里的工具调用耗时省掉，整个应用也快不了多少。但推理速度大幅提高后，我们就得考虑怎样更高效地调用这些工具，把工具端的性能也做上去，否则大家还是要等。
+
+If I cut away the tool calls on the upper one, it wouldn't even really matter to the end application. But once we get much faster, we have to think about how to call these tools much more efficiently and much more performantly because otherwise they're going to be the reason that we're all waiting around.
+
+[00:22:52.920—00:23:24.440](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1372s)
+
+好消息是，提速这件事，包括整个行业正在一起做的这类工作，结果是可以验证的。只要知道预期输入和输出，就能让 Agent 负责从底层到上层的优化。我们也越来越往这个方向做。让 Agent 持续改进，在推理运行的同时就提高效率。Gimlet 正在构建能循环自我优化的系统，从数据中心的底层遥测一直取到模型层的数据，想把这些信息都用起来……
+
+I think the good news is that optimizing these speeds and what we're all collectively doing as an industry is a verifiable task. If I know what my inputs and outputs should be, I can have agents do this very, very full stack. And that's where we're increasingly moving to. We're having self-improvement loops with these agents to drive better efficiency on the fly as our inference is running. And at Gimlet, we're building recursive self-optimization for this that pulls from low level telemetry from our data centers all the way up to the model layer and trying to use all of it
+
+## 即时防护和协作的交互时限 / Latency budgets for timely defense and collaboration
+
+[00:23:24.440—00:23:58.160](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1404s)
+
+……改善整个工作负载的效率。只优化其中一个小环节，总体改善可能不大。我还想给大家看一个演示，因为我觉得现在大家都在关心网络安全。我们对软件里存在这么多漏洞的认识正在快速加深，而更快的推理在这个领域真的能帮上忙。场景是编出来的，有点傻，但演示和应用是真的。
+
+to improve the overall efficiency of the workload. Because if you just optimize one small piece, it might not make that much of a dent. I want to show another demo because I think that cyber security is on everyone's mind right now. We're all seeing like the huge, incredible advances in awareness that there's all these vulnerabilities in our software and I think that this is an area where faster inference can really really help so this is a dumb fake scenario but it's a real application in a real demo where
+
+[00:23:58.160—00:24:33.300](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1438s)
+
+【编辑概述 · 防护演示】讲者用一个模拟网站介绍防护 Agent 如何监测实时流量并识别异常。
+
+[Editorial summary of the defensive demo] The speaker introduced a mock site to illustrate how a defensive agent can monitor live traffic and detect anomalies.
+
+[00:24:33.300—00:24:50.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1473s)
+
+【编辑概述 · 防护演示】普通请求正常通过。防护 Agent 在后台观察，用户请求处理时无需等待它返回判断。
+
+[Editorial summary of the defensive demo] Normal traffic went through. The defensive agent monitored in the background, so handling the request did not wait for its judgment.
+
+[00:24:50.780—00:25:06.040](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1490s)
+
+【编辑概述 · 防护演示】异步防护在正常流量下没有发出告警，演示随后切换到异常请求。
+
+[Editorial summary of the defensive demo] Asynchronous monitoring did not flag the normal request, and the demo then switched to anomalous traffic.
+
+[00:25:06.040—00:25:26.940](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1506s)
+
+【编辑概述 · 防护演示】演示加入了一个会影响站点状态的异常请求，用来观察防护何时作出决定。
+
+[Editorial summary of the defensive demo] The demo introduced an anomalous request that could affect application state, in order to observe when the defense would make its decision.
+
+[00:25:27.480—00:25:39.560](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1527s)
+
+【编辑概述 · 防护演示】防护系统从行为中识别出异常。讲者关注的是识别完成的时机。
+
+[Editorial summary of the defensive demo] The defense recognized abnormal behavior. The speaker focused on when detection completed.
+
+[00:25:39.980—00:26:14.760](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1539s)
+
+【编辑概述 · 防护演示】在演示中，异步检测晚于状态变化。讲者随后对比更低延迟、能在请求处理中给出判断的防护方式。
+
+[Editorial summary of the defensive demo] In the demo, asynchronous detection arrived after the application state changed. The speaker then compared it with a lower-latency defense able to decide during request handling.
+
+[00:26:14.760—00:26:47.060](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1574s)
+
+【编辑概述 · 防护演示】更低延迟的防护在这次演示中及时阻止了异常请求。讲者联系到早期网页后来能支持按需高清视频，并问每秒生成 10,000 个 token 后还会有哪些新用法。
+
+[Editorial summary of the defensive demo] The lower-latency defense blocked the anomalous request in time in this demo. The speaker compared the shift with how the early web came to support on-demand HD video and asked what 10,000 tokens per second might enable.
+
+[00:26:47.160—00:27:12.780](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1607s)
+
+我们现在大概是每秒一两百个。到了每秒一百万个会怎样？我们能做成哪些以前做不了的事？大家都可以问问自己。在 AI 这个领域，得往冰球将要滑到的位置去。变化太快了，我们得做好准备，也得大胆想。光做一直以来就在做的事还不够。大家大概都有过这样的经历，你给 Agent 提了个相当大胆的要求……
+
+We're at in the like low hundreds today. What does it look like when we get to a million tokens per second? Like, what does that unlock for us? And I think that we should all ask ourselves this too. It's important in AI to skate to where the puck is moving, right? It's changing so fast, we need to be ready. We need to think boldly. It's not enough to just do what we've always been doing. I think we've all had the experience where we make an audacious request to our agent,
+
+[00:27:12.820—00:27:35.200](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1632s)
+
+……等到最新版模型一发布，突然就做得成了。延迟也会有同样的变化。我们可以想想，达到某个延迟水平后，近期能做哪些事，也可以想想那些现在听起来还像科幻的事。比如《钢铁侠》里的 Jarvis，现在的推理速度肯定还撑不起来，但我们会到那一步。
+
+and after the latest model release, it just works. And it's going to be the same thing with latency. And so I think that we can think about ideas that are both coming soon when we hit a certain latency threshold, what we can do, but also the stuff that is real life sci-fi. Like if you look at something like Jarvis or something, there's no way today's inference could be fast enough to power for Ironman, but we will get there.
+
+[00:27:36.040—00:27:47.740](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1656s)
+
+所以，我很期待实时场景、实时安全，还有这样的实时协作。我只要告诉 Agent 想做什么，它就在我眼前做出来，我甚至一个字都不用打。
+
+So I'm really excited about online use cases, online security, online things of like, I want to just tell my agent what I want to build and it's building it right in front of me and I don't even have to type anything.
+
+[00:27:48.000—00:28:00.680](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1668s)
+
+我觉得会出现新的交互方式。想象一下，什么都能像按 Tab 一样补全。既然推理端跟得上，用户这一侧怎么也能做得尽可能快，马上就有响应？
+
+I think we're gonna have new patterns of interaction. You know, think tab complete for everything. How can we have the user side of things be as quick and immediate as possible because the inference side is also just as fast to accommodate it.
+
+[00:28:00.680—00:28:13.800](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1680s)
+
+我们还会有多得多的 Agent，甚至可能用 Transformer 驱动机器人。这些能力具备之后，能做的东西太多了。在座的各位都在一线做这些技术，我觉得我们都应该想想这些问题。
+
+And we're going to have so many more agents. We're going to have even maybe Transformers driving robots, right? There's so much that we can build when this gets unlocked. And I think as builders on the frontier here, we should all be thinking about this too.
+
+[00:28:16.140—00:28:29.880](https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1696s)
+
+非常感谢大家今天一早来听我讲。可以在 X 上找到我，转写记作 nSorino。Gimlet 正在招人，很想跟各位聊聊。如果想玩那个 token 工厂游戏，扫这里的二维码就能找到。
+
+Thank you so much for being with me this morning. You can find me on X at nSorino. We're hiring at Gimlet. Would love to talk to you all. And then if you want to play the token mint game, you can also find that QR here.

@@ -1,0 +1,35 @@
+[
+  {
+    "id": "follow-up",
+    "after": "p10",
+    "title": "写完代码以后，交付还有六个步骤",
+    "time": "01:41:50",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6110s",
+    "en": "assets/follow-up-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>写完代码以后，交付还有六个步骤</h3><dl><div><dt>触发与验证</dt><dd>Slack、GitHub、Linear 或定时触发。在真实技术栈的副本上验证，把证据放入 PR。</dd></div><div><dt>跟进与审查</dt><dd>修复失败的 CI、跟上主分支，所有 PR 使用同一审查规则和队列。</dd></div><div><dt>提醒与合并</dt><dd>在工作时间提醒负责人。Agent 可以启用自动合并，实际合并仍由平台按规则执行。</dd></div></dl></div>",
+    "note": "原图明确区分启用自动合并与直接执行合并。",
+    "sourceSeconds": 6110
+  },
+  {
+    "id": "cli",
+    "after": "p17",
+    "title": "不同工具都能让 Spectre 启动任务",
+    "time": "01:44:19",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6259s",
+    "en": "assets/cli-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>不同工具都能让 Spectre 启动任务</h3><dl><div><dt>Claude Code</dt><dd>把一张工单拆成十项，把其中九项交给 Spectre。</dd></div><div><dt>Cursor</dt><dd>写改动，把验证交给 Spectre。</dd></div><div><dt>ChatGPT Dots 与内部 Agent</dt><dd>前者通过 CLI 处理 Spectre 的提问，后者可以启动、引导及移交任务。</dd></div></dl></div>",
+    "note": "不同工具发起或跟进工作，Spectre 统一管理沙箱。",
+    "sourceSeconds": 6259
+  },
+  {
+    "id": "queue",
+    "after": "p26",
+    "title": "高峰日的任务量与完成率",
+    "time": "01:47:35",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6455s",
+    "en": "assets/queue-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>高峰日的任务量与完成率</h3><dl><div><dt>最忙日对比</dt><dd>8 月 14 日启动约 2,000 个任务，完成率 89%。11 月 4 日启动约 4,400 个任务，完成率 94%。</dd></div><div><dt>同期改动</dt><dd>告警去重、管理员批量取消、公平启动队列、增加沙箱节点。</dd></div></dl></div>",
+    "note": "柱图是各月最忙日的启动量和完成占比。多项改动同时发生。",
+    "sourceSeconds": 6455
+  }
+]

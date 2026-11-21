@@ -1,0 +1,154 @@
+读出 Agent 在命令后面写的可用性报告
+Ayush Bhardwaj
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[01:46:46.180 --> 01:46:51.440] Hi, I'm Ayush. I built a CLI that lets your agent reuse context from your past session
+[01:46:51.440 --> 01:46:57.820] across tools. While improving it, I realized why my agent secretly hated my CLI and what
+[01:46:57.820 --> 01:47:04.960] you can do about yours. CloudCode wanted one setting from a docs page, so it downloaded
+[01:47:04.960 --> 01:47:12.240] the whole page, grabbed it, and kept the result at 40 lines. Codex wanted to know how many
+[01:47:13.100 --> 01:47:18.220] vulnerable. It asked the whole JSON report and kept the last 40 lines where this report
+[01:47:18.220 --> 01:47:19.200] puts the totals.
+[01:47:20.500 --> 01:47:24.800] Cursor ran a test suite, found one failure and kept the last 80 lines.
+[01:47:25.380 --> 01:47:30.280] All three cuts kept the information shown here, each one encoded in an assumption about
+[01:47:30.280 --> 01:47:34.340] where the answer sits in the output. That can hide friction from the people who build
+[01:47:34.340 --> 01:47:39.960] these tools. One pipe tells you very little, the same pipe written again and again can
+[01:47:39.960 --> 01:47:44.860] point to something your tool is missing these are real calls from my own transcripts and the cloud
+[01:47:44.860 --> 01:47:48.780] code one was the agent reviewing this talk and it still couldn't help itself
+[01:47:51.040 --> 01:47:56.960] agents can work around friction without filing a bug report they write a little program around
+[01:47:56.960 --> 01:48:05.260] your program in june sanity the content platform wrote up their mcp server more than 20 000 agents
+[01:48:05.260 --> 01:48:10.840] about 3 million tool calls since launch and not a single bug report so they shipped a gif feedback
+[01:48:10.840 --> 01:48:15.940] tool once the agent had somewhere to complain they started expressing what's wrong but you
+[01:48:15.940 --> 01:48:20.700] don't need a feedback tool to start feedback is already sitting somewhere in your transcripts
+[01:48:23.160 --> 01:48:29.560] i i extracted about 20 000 agent calls from my same transcripts 14 clis appear in that sample
+[01:48:29.560 --> 01:48:33.400] Git, GitHub CLI, Cargo, Curl, NPM, Docker, and others.
+[01:48:33.800 --> 01:48:39.080] A quarter fed output into filters such as head, grab, tail, python, sort, or WC.
+[01:48:39.520 --> 01:48:42.360] For read-heavy commands, it's more than half.
+[01:48:42.620 --> 01:48:44.920] Git show and cargo test 62% each.
+[01:48:45.540 --> 01:48:51.660] Some harnesses, by far less, Codex, for example, lets the agent set an output limit on each
+[01:48:51.660 --> 01:48:51.920] call.
+[01:48:53.720 --> 01:48:55.920] And pipes don't only cut noise.
+[01:48:55.920 --> 01:49:01.000] In bash, without pipe fail, a pipeline returns the exit code of its last command.
+[01:49:01.260 --> 01:49:03.720] So let's say you pipe cargo test into head.
+[01:49:03.900 --> 01:49:06.660] It can report success even when the test failed.
+[01:49:07.340 --> 01:49:08.900] Here's one example on the screen.
+[01:49:09.060 --> 01:49:10.920] A compile error and a green dot.
+[01:49:13.120 --> 01:49:16.880] The status was wrong, but the agent could still read the error.
+[01:49:18.320 --> 01:49:21.840] A pipe can also cut the error itself, which is worse.
+[01:49:21.840 --> 01:49:27.120] In a cloud code issue on GitHub, a user reported it a script through a reference error and
+[01:49:27.120 --> 01:49:28.440] exited with an error code.
+[01:49:28.860 --> 01:49:31.780] Tails showed three harmless lines and cloud reported success.
+[01:49:32.200 --> 01:49:34.360] The error never reached the model.
+[01:49:34.740 --> 01:49:37.180] So my advice would be to fail loudly.
+[01:49:37.420 --> 01:49:42.980] When a tool fails, make the very last lines a short summary and a path to the full log.
+[01:49:45.300 --> 01:49:48.620] I learned all this while tinkering with the CLI I built.
+[01:49:48.620 --> 01:49:54.180] It's a small tool that lets coding agents search their own past sessions across cloud
+[01:49:54.180 --> 01:49:55.480] code, codex cursor.
+[01:49:55.700 --> 01:50:00.060] It ships with a skill so the agent can decide when and how to call it.
+[01:50:00.600 --> 01:50:02.860] Agents are the users that I'm studying.
+[01:50:03.180 --> 01:50:08.040] My October audit recorded about 1000 calls and that's my small case study.
+[01:50:08.260 --> 01:50:10.600] The matter works on anything your agent calls.
+[01:50:10.860 --> 01:50:13.320] Just look at what they do right after the call.
+[01:50:15.620 --> 01:50:16.740] 80%
+[01:50:18.620 --> 01:50:22.980] times, an agent opened an old session with my tool, the output went straight into crap,
+[01:50:23.220 --> 01:50:29.300] sad, head, tail, or python. I call that the pipe text. A pipe keeps junk out of context,
+[01:50:29.440 --> 01:50:34.620] and that's fine. The text is that the agent writing that same cut down command by hand
+[01:50:34.620 --> 01:50:40.020] every single time. It's small each time and it mostly works, but each one is another guess
+[01:50:40.020 --> 01:50:41.280] about where the answer is.
+[01:50:43.680 --> 01:50:48.740] The fair objection comes from a hacker news thread about designing CLIs for agent that
+[01:50:48.740 --> 01:50:54.140] I was reading. The command says to leave it to the agents to choose how much output to
+[01:50:54.140 --> 01:51:00.320] reads, agent can pipe through grep or head perfectly well. Well, they can, and for one-off
+[01:51:00.320 --> 01:51:06.160] they should. I'm not against that, but across those everyday CLIs, I found 83% of pipes
+[01:51:06.160 --> 01:51:11.300] fell into the pattern seen at least 10 times, the same CLI, subcommand and pipe tools.
+[01:51:11.560 --> 01:51:16.360] The arguments past could differ, but the agent keep asking for the same things.
+[01:51:18.620 --> 01:51:21.500] I understand the output they're cutting is probably big.
+[01:51:21.680 --> 01:51:25.020] I opened one long session with my tool two ways.
+[01:51:25.200 --> 01:51:29.300] The whole thing, 1.2 million characters, and that's why the agent's pipe.
+[01:51:29.760 --> 01:51:33.040] Just the part around the search match was about 3,000 characters.
+[01:51:33.660 --> 01:51:38.500] Harness is do-cap output, but a size cap does not identify the relevant messages.
+[01:51:38.960 --> 01:51:43.740] Selection flags on the other hand, let the agent tell your tool which part it wants.
+[01:51:45.580 --> 01:51:51.100] So based on my experience and improvements I made to my own tool, I'll give you three examples.
+[01:51:51.440 --> 01:51:55.720] Read the left column as the bug reports. So starting with the first one,
+[01:51:56.160 --> 01:52:02.100] filtering with RG and set means let me pick the part I want. So my read command view
+[01:52:03.040 --> 01:52:08.240] in just the part around a match only the matching messages or the last few with a size gap
+[01:52:09.260 --> 01:52:15.300] second example would be python over json so python over json means give me fewer fields so
+[01:52:15.300 --> 01:52:21.620] search got a compact mode one line per hit about six times smaller than json with the same results
+[01:52:23.380 --> 01:52:29.200] inspect command in chat history summarizes a session about the third of inspect calls came
+[01:52:29.200 --> 01:52:33.180] from agent looping over several sessions by hand as you can see with the for loop
+[01:52:33.680 --> 01:52:39.860] that means let me ask several about several at once and now it's one call as you can see
+[01:52:40.480 --> 01:52:45.280] my roadmap was in the commands around my command and i had to learn from that
+[01:52:46.560 --> 01:52:52.640] infra cost the cloud cost tool brought up the same discovery in may their agents were writing jq and
+[01:52:52.640 --> 01:52:58.040] python pipelines over json dumps so they moved the filtering into the cli and added a compact format
+[01:52:59.520 --> 01:53:04.160] plain cloud with none of that got zero of six hard questions right in their testing
+[01:53:04.160 --> 01:53:10.880] and with it six of six and cost across the benchmark also fell 41 percent on hacker news
+[01:53:10.880 --> 01:53:16.420] the person who wrote that post said that reading those agent logs felt like watching usability tests
+[01:53:16.420 --> 01:53:23.640] and i couldn't agree more this part might sound trivial and obvious once it's in the cli teach
+[01:53:23.640 --> 01:53:29.320] your agent it's there with the skill file or the help flag but agents take their teaching literally
+[01:53:29.320 --> 01:53:36.080] i made some changes that turned my deep flag into a no-op i left the skill telling the agents to use
+[01:53:36.080 --> 01:53:42.600] it to see what they do would they find out or not 95 searches of out of 95 still passed it
+[01:53:43.660 --> 01:53:50.180] after that two sessions loaded a rewritten skill and that no longer told them to use it none of
+[01:53:50.180 --> 01:53:55.540] searches passed deep flag and both tried new flags on their first read so your skill.md
+[01:53:55.540 --> 01:53:59.900] your help text your error messages are the interface that also means
+[01:53:59.900 --> 01:54:03.040] stale dogs are bugs because your agent will keep following them
+[01:54:05.620 --> 01:54:11.020] once the new flags reached agents nearly every search used compact output and nearly
+[01:54:11.020 --> 01:54:12.780] every reduce the new flags.
+[01:54:13.220 --> 01:54:16.960] Pipe read fell from 82% to about a quarter.
+[01:54:22.120 --> 01:54:25.200] You can get real levels and test cases for your tool easily.
+[01:54:25.480 --> 01:54:27.980] If you use it every day, they are already in your transcripts.
+[01:54:28.180 --> 01:54:32.540] The commands agent really ran are the test cases and what agent did immediately next
+[01:54:32.540 --> 01:54:33.740] is a rough answer key.
+[01:54:34.300 --> 01:54:37.060] Replay those commands through your old build and your new one.
+[01:54:37.060 --> 01:54:43.380] if you change the ranking check that result the agent went on to use still
+[01:54:43.380 --> 01:54:47.280] comes out on the top or not if you change an output format check that
+[01:54:47.280 --> 01:54:51.320] nothing went missing if you change the default see which commands now behave
+[01:54:51.320 --> 01:54:55.900] differently and when an agent reader has a call with different arguments you have
+[01:54:55.900 --> 01:55:00.040] probably found a failing case the answer key is only a rough guess at what the
+[01:55:00.040 --> 01:55:06.660] agent wanted keep a few cases back and use those to score your fix so
+[01:55:07.060 --> 01:55:13.540] After analyzing 20,000 invocation, if I were to start all over again, this is what I would build first.
+[01:55:14.020 --> 01:55:19.380] 55% of the measured pipelines used only head, tail, or set downstream.
+[01:55:19.700 --> 01:55:21.820] That points to demand for smaller slices.
+[01:55:22.040 --> 01:55:24.740] So ship ranges and limits before anything fancy.
+[01:55:25.460 --> 01:55:28.840] A flag only helps if agents reach for it.
+[01:55:28.980 --> 01:55:31.320] GitHub CLI's list command have a limit flag.
+[01:55:31.560 --> 01:55:34.080] An agent used it 81% of the time.
+[01:55:34.460 --> 01:55:36.200] The counter example would be cargo.
+[01:55:37.060 --> 01:55:42.680] Cargo test, quiet mode, prints a character per test instead of a line and still reports failures.
+[01:55:43.160 --> 01:55:47.260] Agent passed it on about one cargo run in 10 and piped instead.
+[01:55:48.080 --> 01:55:51.800] So teach the flag in your help test and your skill.
+[01:55:52.480 --> 01:55:57.020] And make big outputs print less by default and say how to get more.
+[01:55:57.260 --> 01:56:03.480] For example, end with something like showing 20 of 300, add offset flag 20 for the next wage.
+[01:56:05.640 --> 01:56:10.860] one way to ship several of these at once is an agent mode your cli notices an agent is calling
+[01:56:10.860 --> 01:56:15.700] it and prints differently agents like cloud code set an environment variable in their self
+[01:56:15.700 --> 01:56:21.920] so your tool can spot them dugdb shipped one at a terminal you get a nicely drawn table
+[01:56:21.920 --> 01:56:26.740] but an agent gets a plain one that says how many rows were left out and how to get them
+[01:56:26.740 --> 01:56:33.020] a huge query stops early and says so and errors come back as json because agents read them better
+[01:56:33.480 --> 01:56:39.200] It's the same list as we have been just through and it cut the output model read by 59%.
+[01:56:39.200 --> 01:56:45.660] However, the tokens saved were nearly 0.5% of all the tokens the model read.
+[01:56:45.860 --> 01:56:47.560] So cost and runtime didn't improve.
+[01:56:47.820 --> 01:56:52.200] If you remember, InfraCost agents started getting answers right.
+[01:56:52.700 --> 01:56:54.440] DuckDBs were already there.
+[01:56:54.720 --> 01:56:57.800] So measure turns and write answers, not just tokens.
+[01:56:59.980 --> 01:57:06.680] You might be thinking, I'll ask my agent to do all of this. They are not that good at this yet,
+[01:57:07.020 --> 01:57:12.660] at least not one-shotting it. The design is where it goes wrong. Ask an agent to build a tool for
+[01:57:12.660 --> 01:57:17.800] agent. It probably pictures a person and then bolts the agent on. It copies most common patterns
+[01:57:17.800 --> 01:57:25.080] it has seen, and most of those are poor. A study of official MCP servers found most just rep an
+[01:57:25.080 --> 01:57:31.640] existing API. Another checked tool descriptions from real MCP servers and flagged issues in 97%
+[01:57:31.640 --> 01:57:38.480] of them. Docs have the same gap. Researchers at each Azurek tested context files written by agents.
+[01:57:38.720 --> 01:57:44.340] They didn't help tasks succeed, cost more to run, and did worse than files written by people.
+[01:57:45.300 --> 01:57:50.740] Agents are already good at other half of this doc. Give one transcript and a test it can run,
+[01:57:50.740 --> 01:57:53.260] and it can find what's wrong and improve the tool.
+[01:57:53.800 --> 01:57:56.080] Sometimes past what people wrote by hand.
+[01:57:56.540 --> 01:57:59.180] And Tropic reported that on its own internal tools as well.
+[01:57:59.740 --> 01:58:01.740] So you decide what the tool should be
+[01:58:01.740 --> 01:58:04.440] and let the agent check it against what really happened.
+[01:58:06.180 --> 01:58:09.300] You've seen the evidence for each of these, so I won't read them.
+[01:58:09.600 --> 01:58:12.040] Take a moment to absorb these or screenshot.
+[01:58:17.860 --> 01:58:23.500] short. To find your own list, backup your transcripts first because Cloud Code can delete
+[01:58:23.500 --> 01:58:30.440] inactive once after 30 days. Then search for them for a tool's name followed by a pipe
+[01:58:30.440 --> 01:58:36.020] and other similar patterns. If you ship an MCP server, look for agent calling your tool
+[01:58:36.020 --> 01:58:43.920] again straight away with different arguments if you remember one thing from this talk if you are
+[01:58:43.920 --> 01:58:49.120] building a tool for your agent your agent transcript rather product analytics you probably aren't
+[01:58:49.120 --> 01:58:57.000] reading the workaround is the bug report so go read your transcript and if you need any help
+[01:58:57.000 --> 01:59:02.500] doing that check out chat history on cargo or github it can do this for you as well thank you

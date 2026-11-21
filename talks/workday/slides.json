@@ -1,0 +1,35 @@
+[
+  {
+    "id": "time-off",
+    "after": "p17",
+    "title": "边输入边打开请假卡片",
+    "time": "06:30:17",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=23417s",
+    "en": "assets/time-off-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>边输入边打开请假卡片</h3><dl><div><dt>输入</dt><dd>用户在输入框写下请假需求，界面随输入逐步更新。</dd></div><div><dt>卡片</dt><dd>日历和请假相关字段出现在操作区域里。</dd></div></dl></div>",
+    "note": "画面是使用合成数据的原型演示。",
+    "sourceSeconds": 23417
+  },
+  {
+    "id": "card-routing",
+    "after": "p24",
+    "title": "先选卡片，再补齐任务需要的字段",
+    "time": "06:32:27",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=23547s",
+    "en": "assets/card-routing-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>先选卡片，再补齐任务需要的字段</h3><dl><div><dt>选择入口</dt><dd>Jev 对既有卡片和聊天选项评分，代码检查是否达到显示条件。</dd></div><div><dt>完善卡片</dt><dd>业务问题补齐请假类型和日期，用户复核后提交。</dd></div><div><dt>证据不足</dt><dd>保留聊天入口。</dd></div></dl></div>",
+    "note": "幻灯片是流程示意，同一次请求可并行回答多个领域的问题。图中 94% 等是示例输出。",
+    "sourceSeconds": 23547
+  },
+  {
+    "id": "duckdb",
+    "after": "p34",
+    "title": "在查询里按语义相关性排序",
+    "time": "06:35:47",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=23747s",
+    "en": "assets/duckdb-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>在查询里按语义相关性排序</h3><dl><div><dt>查询</dt><dd>DuckDB 查询逐条评分，按得分排序并只展示前几条。</dd></div><div><dt>演示结果</dt><dd>在偏机器学习的合成简历里查询水管工相关资历，前五条分数仍很低。</dd></div></dl></div>",
+    "note": "讲者报告这次扫描了 117 条记录，耗时约 2.3 秒。",
+    "sourceSeconds": 23747
+  }
+]

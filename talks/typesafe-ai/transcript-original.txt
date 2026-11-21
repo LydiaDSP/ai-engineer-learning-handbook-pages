@@ -1,0 +1,486 @@
+TypeSafe AI 怎样把语义判断嵌进软件？
+Diogo Almeida
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[05:06:52.300 --> 05:06:52.860] Woo!
+[05:06:57.940 --> 05:06:59.840] Give me a sec to make sure this is working.
+[05:07:00.600 --> 05:07:01.360] Heck yeah.
+[05:07:01.800 --> 05:07:06.700] I'm Diogo Almeida, and this talk is I love you so Jeving much.
+[05:07:08.000 --> 05:07:09.320] Glass Animals reference.
+[05:07:09.520 --> 05:07:10.240] We're not just weird.
+[05:07:11.340 --> 05:07:13.400] Like I said, I'm Diogo Almeida.
+[05:07:13.600 --> 05:07:16.760] I'm known as the Jev guy, sometimes Jevy Pinkman,
+[05:07:17.560 --> 05:07:21.660] also co-created ChatGPT, RLHF, and InstructGPT.
+[05:07:22.300 --> 05:07:25.240] I assume that for the crowd today, y'all know who I am,
+[05:07:25.380 --> 05:07:26.160] at least mostly.
+[05:07:27.820 --> 05:07:31.340] I have a bunch of AIE-specific stuff I want to get to,
+[05:07:31.400 --> 05:07:33.860] but I like going into my favorite topics in AI.
+[05:07:34.340 --> 05:07:37.380] First one is, what the fuck is actually going on?
+[05:07:37.400 --> 05:07:39.320] And where is all the automation?
+[05:07:39.580 --> 05:07:41.220] If you've heard me say this before, I'm sorry.
+[05:07:41.360 --> 05:07:44.260] But it's such an important thing to beat into the field,
+[05:07:44.300 --> 05:07:46.140] because people still do not get it.
+[05:07:46.180 --> 05:07:49.180] And I need to yell this until everyone really understands
+[05:07:49.180 --> 05:07:50.700] what the fuck is going on.
+[05:07:52.300 --> 05:07:55.960] a really good answer about why AI can do so many awesome things
+[05:07:55.960 --> 05:07:58.660] and yet still be so useless for a bunch of other ones.
+[05:07:59.420 --> 05:08:02.540] My relationship to ChatGPT is somewhat unique,
+[05:08:02.600 --> 05:08:06.280] one of the few people who hates on ChatGPT who made it.
+[05:08:06.440 --> 05:08:08.780] I don't hate ChatGPT, to be clear.
+[05:08:08.980 --> 05:08:10.620] I love using agents.
+[05:08:10.760 --> 05:08:11.780] I love using coding agents.
+[05:08:11.840 --> 05:08:12.640] I love chat bots.
+[05:08:12.820 --> 05:08:13.900] They're just quite limited.
+[05:08:14.100 --> 05:08:17.400] And in particular, I think it's a little tragic how much they've
+[05:08:17.900 --> 05:08:20.280] bifurcated the field into over-promise, under-deliver.
+[05:08:20.920 --> 05:08:22.940] Really, really terrible stuff for the world, in my opinion.
+[05:08:23.620 --> 05:08:26.840] And I like to talk about the two cults in AI
+[05:08:26.840 --> 05:08:29.720] and how we can resolve the cognitive dissonance
+[05:08:29.720 --> 05:08:32.560] that everyone, I think, should be having
+[05:08:32.560 --> 05:08:33.820] unless they have a very good answer.
+[05:08:34.320 --> 05:08:37.440] There's cult one, which is the cult of EAs.
+[05:08:37.680 --> 05:08:39.520] They look at all the benchmarks, and they say,
+[05:08:39.560 --> 05:08:42.660] not only are LMs surpassing human level
+[05:08:42.660 --> 05:08:45.700] on basically every benchmark, they have been for two years.
+[05:08:45.880 --> 05:08:49.020] We've been announcing AGI three months away for two years now.
+[05:08:50.520 --> 05:08:51.620] Do people remember that?
+[05:08:51.760 --> 05:08:53.720] No one even cares about that model anymore.
+[05:08:53.840 --> 05:08:57.520] And that was like peak internal to OpenAI AGI hype.
+[05:08:57.860 --> 05:09:00.940] And on the other hand, you look at the non-benchmarks,
+[05:09:00.980 --> 05:09:04.160] and you look at the reality, and you see the rest of the world,
+[05:09:04.240 --> 05:09:06.480] especially if you guys go outside and leave San Francisco.
+[05:09:06.620 --> 05:09:09.060] A lot of the world is really unchanged,
+[05:09:09.300 --> 05:09:11.900] despite AI being so fucking cool.
+[05:09:12.080 --> 05:09:13.240] And I think AI is transformative.
+[05:09:13.440 --> 05:09:17.380] It's a rare point of view to actually think AI is cool and transformative
+[05:09:17.380 --> 05:09:20.860] and also underwhelming the world right now.
+[05:09:21.160 --> 05:09:23.440] And the tricky part is this is the same field,
+[05:09:23.480 --> 05:09:25.400] and we are all seeing the same facts.
+[05:09:25.540 --> 05:09:26.460] So what gives?
+[05:09:27.020 --> 05:09:29.560] Why is AI jagged, so to speak?
+[05:09:29.660 --> 05:09:31.400] Why can it be so good at some things
+[05:09:31.400 --> 05:09:33.820] and so not good at other things?
+[05:09:33.960 --> 05:09:37.160] And what is the Occam's Razor explanation for that?
+[05:09:37.720 --> 05:09:40.240] I will be blasting through my slides fast.
+[05:09:40.260 --> 05:09:40.640] I'm sorry.
+[05:09:40.700 --> 05:09:42.760] Maybe I could slow down for people taking pictures.
+[05:09:44.340 --> 05:09:47.600] But I'm noticing that this is going to go fast,
+[05:09:47.620 --> 05:09:48.160] is all I'm saying.
+[05:09:48.380 --> 05:09:50.680] So I think that we as a field should
+[05:09:50.680 --> 05:09:52.960] have an Occam's Razor explanation for why
+[05:09:53.520 --> 05:09:56.420] are there some things that are just not just good,
+[05:09:56.560 --> 05:09:57.960] they are unbelievably good, superhuman,
+[05:09:58.640 --> 05:10:00.240] like Millennium Prize problems in math.
+[05:10:00.380 --> 05:10:03.920] But on the other hand, they're not just bad, they're so useless,
+[05:10:04.020 --> 05:10:05.960] they can't even be used to touch accounting.
+[05:10:06.300 --> 05:10:08.280] That sounds way easier than Millennium Prize problems in math,
+[05:10:08.320 --> 05:10:08.460] right?
+[05:10:08.640 --> 05:10:09.560] I could do the latter.
+[05:10:09.680 --> 05:10:11.720] I definitely could not do the former, and I was a mathlete.
+[05:10:12.760 --> 05:10:13.400] What gives here?
+[05:10:13.520 --> 05:10:15.360] What is the reason for this?
+[05:10:15.520 --> 05:10:19.480] And I normally love this as an interactive thing, but I will instead just tell you my
+[05:10:19.480 --> 05:10:19.840] answer.
+[05:10:20.020 --> 05:10:20.980] Sorry for the power dynamic.
+[05:10:21.980 --> 05:10:25.940] Everything on the left side is intrinsically a human in the loop task.
+[05:10:26.180 --> 05:10:28.940] Like deep research, I could not do better than deep research.
+[05:10:29.080 --> 05:10:30.560] The models are so fucking good at that.
+[05:10:31.160 --> 05:10:35.860] But if gun to my head or gun to your head, you had to pick between me and deep research
+[05:10:35.860 --> 05:10:39.820] and the answer had to be correct, not well written, you'd probably pick me every time.
+[05:10:39.820 --> 05:10:45.800] And that's the distinction between optimizing for automation, which tends to be a lot easier
+[05:10:45.800 --> 05:10:48.980] and a lot simpler, yet AI keeps failing at this.
+[05:10:49.160 --> 05:10:53.680] Every year there's an infamous failure of AI failing to even automate drive-throughs.
+[05:10:53.760 --> 05:10:56.640] And that should be kind of shocking to people.
+[05:10:56.940 --> 05:11:02.060] And my claim is actually for these tasks, pleasing a human is nothing to do with doing
+[05:11:02.060 --> 05:11:02.400] the task.
+[05:11:02.560 --> 05:11:05.840] What you want to do is basically be an abstraction away.
+[05:11:05.840 --> 05:11:09.720] You want the decision to be made, and then you want to get back into doing automation.
+[05:11:10.060 --> 05:11:11.680] And code is the language of automation.
+[05:11:11.740 --> 05:11:13.220] Therefore, you need to integrate with code.
+[05:11:13.340 --> 05:11:15.280] This is a lot, but I will summarize it again.
+[05:11:15.440 --> 05:11:21.540] I get the irony that I co-created RLHF, and I do believe RLHF is part of the problem.
+[05:11:21.800 --> 05:11:28.740] And RLHF in particular is why all AI today does require a human in the loop with an asterisk,
+[05:11:28.820 --> 05:11:32.160] unless the task is very trivially verifiable and can run on its own,
+[05:11:32.220 --> 05:11:34.800] but still requires a human in the loop to verify it afterwards.
+[05:11:35.840 --> 05:11:37.140] Because we literally put it in.
+[05:11:37.260 --> 05:11:39.700] That is what the HF is in RLHF.
+[05:11:39.800 --> 05:11:42.220] And my claim is that there's a better way.
+[05:11:42.860 --> 05:11:45.840] My summary of the state is 100% of LMs today
+[05:11:45.840 --> 05:11:47.200] are optimized for assistants.
+[05:11:47.480 --> 05:11:49.680] You might talk about RLVR, but the RLVR models
+[05:11:49.680 --> 05:11:52.640] are very bad to interact with if they've not been RLHFed.
+[05:11:53.140 --> 05:11:56.580] The result is LMs become too good to be true at assistants.
+[05:11:56.800 --> 05:11:58.140] They are just so fucking good.
+[05:11:58.240 --> 05:12:01.700] You should never pick me over ChatGPT for your ChatGPT queries.
+[05:12:01.700 --> 05:12:07.040] But for actually doing like, you know, run in the background cognitive work,
+[05:12:07.080 --> 05:12:10.340] you should not trust LMs at all because they have not been optimized for that,
+[05:12:10.480 --> 05:12:12.940] which is why they're so bad at the tasks of automation.
+[05:12:13.180 --> 05:12:16.480] And I would also guess that automation is a lot more valuable than assistance,
+[05:12:16.580 --> 05:12:18.700] because you can do way cooler, deeper.
+[05:12:18.760 --> 05:12:21.220] I'm going to get into this later, but I think there's going to be so much stuff
+[05:12:21.220 --> 05:12:24.320] that we can do, and we are just scratching the surface of that right now.
+[05:12:24.420 --> 05:12:27.640] And that's the tragic thing about AI, the state of AI for me.
+[05:12:29.020 --> 05:12:30.640] Let's talk about the Gevolution.
+[05:12:32.320 --> 05:12:34.700] I can't tell if this is appropriate, but it's too late.
+[05:12:36.240 --> 05:12:38.040] Oh, God, don't take pictures of this one.
+[05:12:39.380 --> 05:12:39.740] Cool.
+[05:12:40.680 --> 05:12:41.900] Oh, I'm getting a thumbs up.
+[05:12:42.120 --> 05:12:43.220] Yeah, excellent.
+[05:12:43.540 --> 05:12:46.700] So instead of doing RLHF, we just have to do something else.
+[05:12:46.800 --> 05:12:47.960] We need to think from first principles,
+[05:12:48.020 --> 05:12:50.040] how do we optimize for machine native AI?
+[05:12:50.260 --> 05:12:51.800] You guys hopefully know the interface of Jev,
+[05:12:51.900 --> 05:12:52.980] and that is what we are doing.
+[05:12:53.280 --> 05:12:55.500] More important than optimizing for its interface,
+[05:12:55.720 --> 05:12:59.440] we are rethinking how AI should be done,
+[05:12:59.440 --> 05:13:01.820] because this is what we did again for Arlochev.
+[05:13:02.480 --> 05:13:05.860] For Sutton's bitter lesson, I'm going to loosely paraphrase
+[05:13:05.860 --> 05:13:10.500] to make my point easier to say, is that scaling and compute
+[05:13:10.500 --> 05:13:11.800] matters more than algorithms.
+[05:13:12.040 --> 05:13:14.600] This is why people become like scaling-pilled Givronis.
+[05:13:14.920 --> 05:13:17.740] And I would argue that there's an even bitterer lesson
+[05:13:17.740 --> 05:13:20.880] than that, which is data always matters more than compute.
+[05:13:21.000 --> 05:13:23.020] We are learning that quite a bit in the field now,
+[05:13:23.060 --> 05:13:25.760] but it has been obvious since the beginning of time.
+[05:13:25.940 --> 05:13:26.580] I'll tell you when.
+[05:13:26.820 --> 05:13:28.320] This is the one you should be photographing.
+[05:13:29.440 --> 05:13:32.800] But the bitterest lesson is doing the right task.
+[05:13:33.040 --> 05:13:35.600] And doing the right task is like a weird thing to think about,
+[05:13:35.660 --> 05:13:38.720] especially for ML people, because they like algorithms.
+[05:13:38.920 --> 05:13:41.300] They want number goes down or up or whichever
+[05:13:41.300 --> 05:13:41.800] is a good direction.
+[05:13:41.900 --> 05:13:43.200] They don't want to think about the real world.
+[05:13:43.300 --> 05:13:46.820] But this is always how you make gigantic gains in performance.
+[05:13:46.960 --> 05:13:48.580] This is how the big breakthroughs happen.
+[05:13:48.800 --> 05:13:50.640] 100% of the time, it comes from this.
+[05:13:51.060 --> 05:13:53.540] And this is true for classical RL games.
+[05:13:53.620 --> 05:13:57.040] This is why Sutton had his bitter lesson, which is data
+[05:13:57.040 --> 05:13:59.520] Data is derived by compute when you're doing rollouts.
+[05:13:59.700 --> 05:14:03.580] Like, why would you need off-policy data when playing chess or something like that?
+[05:14:03.920 --> 05:14:06.160] And doing the right task is defined by the rules.
+[05:14:06.300 --> 05:14:09.400] So actually, when you're doing RL, you don't even need to think about the right task.
+[05:14:09.960 --> 05:14:14.340] For pre-training, we actually, as a field, had to do a lot of thinking about the right
+[05:14:14.340 --> 05:14:14.660] task.
+[05:14:14.920 --> 05:14:19.900] I don't know if people remember the BERT days with masked language modeling, but it took
+[05:14:19.900 --> 05:14:24.980] a while, and it was very unclear to figure out that next token prediction was super fucking
+[05:14:25.440 --> 05:14:27.720] not because it was better at mass language modeling.
+[05:14:28.080 --> 05:14:30.420] The objectives on their own aren't special.
+[05:14:30.600 --> 05:14:32.200] It's about what you can do with them afterwards.
+[05:14:32.480 --> 05:14:35.680] And it turns out next token prediction is incredible at generating strings,
+[05:14:36.000 --> 05:14:37.980] which is what these pretrained models were so good at.
+[05:14:38.220 --> 05:14:41.640] So no level of mass language modeling, even if you had today's compute and
+[05:14:41.640 --> 05:14:44.420] algorithms, would make it as interesting as GPT-3 was,
+[05:14:44.660 --> 05:14:46.620] because it was just doing a different task.
+[05:14:47.060 --> 05:14:50.540] And data, the internet is obviously a giant bottleneck.
+[05:14:50.620 --> 05:14:53.280] Now we're burning books or whatever in order to get more data,
+[05:14:54.980 --> 05:14:57.580] lot more than compute, and people keep rediscovering this
+[05:14:57.580 --> 05:14:58.280] and figuring this out.
+[05:14:59.060 --> 05:15:01.260] It's extra true for making LLMs useful.
+[05:15:02.240 --> 05:15:05.840] Before RLHF even existed, the data for RLHF didn't exist.
+[05:15:06.240 --> 05:15:09.020] And you could, like it was night and day.
+[05:15:09.100 --> 05:15:09.800] I'll just show you the next slide.
+[05:15:09.860 --> 05:15:10.980] This is probably the relevant part.
+[05:15:11.120 --> 05:15:13.820] This is what this was the work in the RLHF paper.
+[05:15:14.440 --> 05:15:17.500] And the high level was that even with the dumbest algorithms
+[05:15:17.500 --> 05:15:20.220] in the world, even with a GPT-2 sized model,
+[05:15:20.420 --> 05:15:23.480] you got something like GPT-9 level performance,
+[05:15:24.980 --> 05:15:26.300] today's fake GPT numbers.
+[05:15:26.860 --> 05:15:29.360] The numbers used to mean 100x scaling
+[05:15:29.360 --> 05:15:31.020] and effective compute for pre-training.
+[05:15:31.120 --> 05:15:32.640] And they've given up on that because it just
+[05:15:32.640 --> 05:15:33.480] can't scale anymore.
+[05:15:33.660 --> 05:15:35.980] And still, even with that, it would take something
+[05:15:35.980 --> 05:15:40.720] like GPT 7 to 9 to match GPT to the model from 2018
+[05:15:41.240 --> 05:15:44.140] or whatever it was at the task of instruction following.
+[05:15:44.300 --> 05:15:47.340] That is kind of wild, because you think big LMs are so
+[05:15:47.340 --> 05:15:48.080] important for this.
+[05:15:48.200 --> 05:15:49.300] And they are.
+[05:15:49.440 --> 05:15:51.300] But that is not the most important thing
+[05:15:51.300 --> 05:15:54.800] compared to even the gigantic jump of doing the right task.
+[05:15:54.980 --> 05:15:57.060] And spoilers, this is what we did for Jev, right?
+[05:15:57.220 --> 05:15:59.280] Like, we made this gigantic leap in the field
+[05:15:59.280 --> 05:16:00.980] that no one realized could be coming
+[05:16:00.980 --> 05:16:03.280] because we were optimizing for a task,
+[05:16:03.340 --> 05:16:05.300] and very few people think about the right task.
+[05:16:07.040 --> 05:16:10.180] This is why Jev has the Jev N'essakois.
+[05:16:11.180 --> 05:16:13.500] That's a really smart bun, I think.
+[05:16:15.840 --> 05:16:17.540] A little bit of a pity laugh, but thank you.
+[05:16:18.280 --> 05:16:20.040] You get what you optimize for.
+[05:16:20.320 --> 05:16:22.300] I'm looking for a better word than reliable,
+[05:16:22.400 --> 05:16:24.100] so if you guys have suggestions, let me know.
+[05:16:24.980 --> 05:16:28.500] There's this reliability of intelligence that's really missing in LLMs.
+[05:16:28.660 --> 05:16:33.920] I often call it, you get Einstein 95% of the time, but Mr. Bean 5% of the time.
+[05:16:34.260 --> 05:16:37.520] And if you can't sell which is which, how the fuck are you going to automate anything?
+[05:16:37.880 --> 05:16:43.300] And instead of focusing on sometimes occasional smarts that you can then verify, what if you
+[05:16:43.300 --> 05:16:48.500] focused on extreme, extreme narrow focused reliability so you can get that smarts every
+[05:16:48.500 --> 05:16:48.740] time?
+[05:16:48.880 --> 05:16:50.560] And this doesn't show up on benchmarks.
+[05:16:50.700 --> 05:16:52.460] It is the reason why people love JEV.
+[05:16:52.460 --> 05:16:54.200] And this is also, I realize in hindsight,
+[05:16:54.320 --> 05:16:57.500] we obviously didn't prepare for a chat GPT moment for developers.
+[05:16:57.540 --> 05:17:01.020] But it happened because people in the AI space just
+[05:17:01.020 --> 05:17:03.440] over promise, under deliver so fucking much,
+[05:17:03.580 --> 05:17:06.040] that having a model that actually doesn't do that
+[05:17:06.040 --> 05:17:06.680] was a surprise.
+[05:17:07.000 --> 05:17:09.440] And it is not the speed cost or even interface.
+[05:17:09.820 --> 05:17:12.420] This is something that my team tells me
+[05:17:12.420 --> 05:17:14.700] I shouldn't be telling people so that we can have a long term
+[05:17:14.700 --> 05:17:16.040] advantage and I just care too much.
+[05:17:16.380 --> 05:17:17.800] It's reliable intelligence.
+[05:17:18.100 --> 05:17:21.920] Make sick models, please, even if it doesn't involve our models.
+[05:17:23.500 --> 05:17:26.320] We see that Jev is like a foundation for smart software.
+[05:17:26.480 --> 05:17:29.840] I'm going to skip all of this, but I think software is going to be so fucking back.
+[05:17:30.100 --> 05:17:33.280] I think the narrative of Sasspocalypse is obviously not going to happen,
+[05:17:33.420 --> 05:17:38.760] but I think that even calling it a Sassapalooza is like an understatement,
+[05:17:38.820 --> 05:17:41.840] and I'll get into that a bit, and you guys ideally are the perfect crowd for this.
+[05:17:41.960 --> 05:17:44.860] I'm so excited for this part because that's the part that's new to me.
+[05:17:46.000 --> 05:17:50.020] I want to make a distinction between smart software and just-in-time software.
+[05:17:50.020 --> 05:17:56.880] The crazy part is AI is so transformative, and yet somehow, despite AI being so awesome,
+[05:17:57.120 --> 05:18:01.600] software has essentially unchanged in the last decade, except being cheaper to write.
+[05:18:02.080 --> 05:18:07.500] Isn't that weird? Isn't it weird that the best we can do in software is having a chatbot to the side
+[05:18:07.500 --> 05:18:11.580] that sometimes interacts with the software but cannot take expensive decisions for you?
+[05:18:11.760 --> 05:18:15.180] That is kind of like a weird thing if AI was really that transformative.
+[05:18:15.180 --> 05:18:21.920] And I think the problem is we're focusing too much on coding agents and not enough about putting the intelligence into the inner loop,
+[05:18:21.940 --> 05:18:26.580] which I'm going to get more into a bit. And people are jeving. There's been tons of successes.
+[05:18:26.820 --> 05:18:29.140] We don't need to flex this. There's so many cool things.
+[05:18:29.200 --> 05:18:34.620] But my AIE secret is going to be that the field isn't jeving hard enough.
+[05:18:34.720 --> 05:18:39.340] And this is what Swix said, that I can make a call to action for you guys that's unique, and hopefully I have enough time for this.
+[05:18:39.620 --> 05:18:42.380] I think the world still has LLM Stockholm Syndrome.
+[05:18:42.380 --> 05:18:47.960] We are still thinking from a really LLM-pilled place, which is, I think, tragic.
+[05:18:48.180 --> 05:18:50.400] You know, like, I love the software saying,
+[05:18:50.500 --> 05:18:52.480] the tools you use change the way you think.
+[05:18:52.600 --> 05:18:55.060] And I think that it's changed the way we think way too much.
+[05:18:55.420 --> 05:18:59.220] And we're not really rethinking software like I think the field needs.
+[05:18:59.340 --> 05:19:01.180] I think we could just be doing so much more.
+[05:19:01.360 --> 05:19:03.920] Hopefully, I can try to do my best for my remaining time
+[05:19:03.920 --> 05:19:05.280] to convince you guys of that.
+[05:19:06.060 --> 05:19:07.460] So let's JIV to the future.
+[05:19:10.220 --> 05:19:13.900] An analogy I love, bear with me, is about LEDs.
+[05:19:14.580 --> 05:19:17.540] Before there was the blue LED, there was red and green LEDs.
+[05:19:17.760 --> 05:19:20.740] These were really limited in capability, and they were used for
+[05:19:20.740 --> 05:19:23.820] simple indicators and clocks and stuff like that.
+[05:19:24.100 --> 05:19:27.260] And when the blue LED was made, discovered,
+[05:19:27.340 --> 05:19:29.880] I actually don't really know how things outside of computer science work.
+[05:19:30.440 --> 05:19:36.800] But when it existed, I guess, it enabled not just 50% more use cases,
+[05:19:37.460 --> 05:19:40.940] about changing colors from two to three, it enabled so many more.
+[05:19:41.120 --> 05:19:43.100] Like now LEDs could be used for white light.
+[05:19:43.180 --> 05:19:45.460] It could be used for the displays that we all use right now.
+[05:19:45.580 --> 05:19:47.460] And it created a revolution in lighting.
+[05:19:47.720 --> 05:19:53.400] And it's unfathomable how much bigger the capabilities of LEDs were,
+[05:19:53.500 --> 05:19:58.080] just adding a new primitive that composes together with an old primitive.
+[05:19:58.200 --> 05:19:59.680] So you can see where I'm going here, maybe.
+[05:20:00.000 --> 05:20:02.800] And I think it's a similar story for software.
+[05:20:03.220 --> 05:20:05.200] Software is so fucking incredible.
+[05:20:05.280 --> 05:20:07.220] Ignore AI for the last half decade.
+[05:20:07.440 --> 05:20:10.760] But software has done so many insanely cool things.
+[05:20:10.940 --> 05:20:12.380] We've done a lot of stuff.
+[05:20:12.520 --> 05:20:15.620] You know, like, do I love using SAS?
+[05:20:15.800 --> 05:20:17.660] Not really, but does it solve problems?
+[05:20:17.900 --> 05:20:18.980] Abso-fucking-lutely.
+[05:20:19.140 --> 05:20:20.960] And it's incredible how much we've done
+[05:20:20.960 --> 05:20:22.880] with three fundamental logic gates.
+[05:20:23.080 --> 05:20:26.400] You know, like, we are doing this with, like, simple binary operations
+[05:20:26.400 --> 05:20:28.740] that can do things like greater than, less than, equal.
+[05:20:30.140 --> 05:20:33.580] how much software has been built from such simple primitives.
+[05:20:33.960 --> 05:20:37.620] And my claim is that what we are doing with AI now,
+[05:20:37.700 --> 05:20:40.160] when we're making our intelligence machine native,
+[05:20:40.580 --> 05:20:44.320] this is kind of conceptually adding a fourth semantic logic gate.
+[05:20:44.720 --> 05:20:48.060] What if we can program with common sense, with intention,
+[05:20:48.360 --> 05:20:49.400] with human understanding?
+[05:20:49.780 --> 05:20:52.080] Like, do we still need regexes with like crazy things?
+[05:20:52.220 --> 05:20:54.480] Or can we just say like we want a Gmail email address
+[05:20:54.480 --> 05:20:55.360] or a real looking one?
+[05:20:55.520 --> 05:20:58.280] There's so much that we can do that we're going to need to push the front,
+[05:21:00.020 --> 05:21:02.640] cheap, smart, fast in order to get done.
+[05:21:02.800 --> 05:21:04.980] But I think that there's going to be so many things here.
+[05:21:05.080 --> 05:21:06.680] And I think just like the blue LED,
+[05:21:06.920 --> 05:21:09.380] it's going to be way bigger than just increasing
+[05:21:09.380 --> 05:21:12.820] the representational ability of software by 33%,
+[05:21:12.820 --> 05:21:16.420] because it's adding effectively another kind of logic gate.
+[05:21:16.580 --> 05:21:18.580] And this sci-fi is the stuff that I think
+[05:21:18.580 --> 05:21:20.580] will be impossible to predict, just
+[05:21:20.580 --> 05:21:23.020] like who could predict how powerful the internet would
+[05:21:23.020 --> 05:21:26.280] have been, because it's much more grassroots and decentralized,
+[05:21:26.280 --> 05:21:29.220] and it requires people to be empowered to do insane stuff.
+[05:21:30.300 --> 05:21:32.700] I call this software research.
+[05:21:34.000 --> 05:21:34.960] That's not a joke.
+[05:21:35.360 --> 05:21:39.580] But I think that there's going to be an explosion of what
+[05:21:39.580 --> 05:21:40.740] software can do.
+[05:21:40.880 --> 05:21:44.000] And we will want people to be exploring those boundaries
+[05:21:44.000 --> 05:21:46.660] of software, not necessarily because it's valuable,
+[05:21:46.860 --> 05:21:50.500] but because they can, because we have new frontiers to explore.
+[05:21:50.700 --> 05:21:52.400] And this is what the early internet was like.
+[05:21:52.520 --> 05:21:54.320] Should all of those websites existed?
+[05:21:56.280 --> 05:21:59.320] Like, it was very cool, and we found a lot of awesome stuff from that.
+[05:21:59.380 --> 05:22:02.200] And I think we have another opportunity for that.
+[05:22:02.220 --> 05:22:05.860] So we should not just keep living in this little fish tank
+[05:22:05.860 --> 05:22:08.640] that we are the victims of open-ion-anthropic on whatever
+[05:22:08.640 --> 05:22:10.800] they ship, and we just have to be like LLM wrappers.
+[05:22:11.000 --> 05:22:14.360] So I'm going to pitch software researchers' direction here.
+[05:22:14.660 --> 05:22:18.580] The theme is going to be real software engineering, not just
+[05:22:18.580 --> 05:22:19.180] vibe coding.
+[05:22:19.860 --> 05:22:22.100] It's going to be the kind of stuff that everyone has known
+[05:22:22.100 --> 05:22:24.300] if you've been a software engineer, decomposition,
+[05:22:24.740 --> 05:22:25.680] breaking tasks down.
+[05:22:26.280 --> 05:22:28.780] think about stages, ideally ones that can be verified
+[05:22:28.780 --> 05:22:30.380] so we have real encapsulation.
+[05:22:30.620 --> 05:22:32.940] And we need to actually do state management
+[05:22:32.940 --> 05:22:36.020] instead of assuming everything is global state within a KV
+[05:22:36.020 --> 05:22:36.300] cache.
+[05:22:36.500 --> 05:22:39.060] And the theme is going to be like real fucking engineering
+[05:22:39.060 --> 05:22:41.680] by people who care a lot about the end result.
+[05:22:41.880 --> 05:22:43.140] It doesn't have to be valuable.
+[05:22:43.380 --> 05:22:44.560] Ideally, it's sick as fuck.
+[05:22:45.060 --> 05:22:46.800] And we should be pushing the limits.
+[05:22:47.940 --> 05:22:50.580] I'm going to go into a couple of my favorite ideas.
+[05:22:50.580 --> 05:22:53.880] And I want to figure out how to encourage these in the world.
+[05:22:53.940 --> 05:22:55.700] So this is my first step at this.
+[05:22:56.280 --> 05:22:56.960] to talk about it.
+[05:22:57.120 --> 05:23:00.360] We have raised a bunch of money, so I would like to figure out how to fund this, but we
+[05:23:00.360 --> 05:23:01.960] don't have the operations help to do that.
+[05:23:02.120 --> 05:23:03.880] But here are just some ideas out there.
+[05:23:04.980 --> 05:23:12.560] I think agents are very cool, but they're so inflexible in their design because of the
+[05:23:12.560 --> 05:23:13.700] tyranny of the KVCache.
+[05:23:13.780 --> 05:23:16.240] I don't have the time for this, if this timer is to be believed.
+[05:23:16.480 --> 05:23:21.000] But believe me that there's so much that people have tried to do but failed at because it
+[05:23:21.000 --> 05:23:23.980] ends up becoming inefficient because it fights against the KVCache.
+[05:23:24.060 --> 05:23:25.760] But I think there's a lot more to do.
+[05:23:26.280 --> 05:23:27.480] Why is memory O of N?
+[05:23:27.740 --> 05:23:31.520] Why can't we have all of our history of coding agents always
+[05:23:31.520 --> 05:23:32.940] included in every new call?
+[05:23:33.080 --> 05:23:35.860] That is how continual learning works.
+[05:23:36.200 --> 05:23:37.880] And we have the memory available.
+[05:23:37.880 --> 05:23:41.040] It's just that we don't have the smarts to map produce over the memory
+[05:23:41.040 --> 05:23:44.620] to find out what you should remember or what you shouldn't.
+[05:23:45.300 --> 05:23:48.200] I think there's many ways to do log N or even better lookups.
+[05:23:48.480 --> 05:23:50.620] Why, when you're making many agents at once,
+[05:23:50.720 --> 05:23:52.040] why can't they not share state?
+[05:23:52.320 --> 05:23:55.080] Why do they need to rediscover the same patterns of the code base
+[05:23:56.300 --> 05:23:59.380] And why can't non-naive routing and sub-agents work?
+[05:23:59.460 --> 05:24:00.660] Like, even naive routing doesn't work.
+[05:24:00.780 --> 05:24:02.560] But why can't we do these things?
+[05:24:02.620 --> 05:24:05.800] And why does the big labs keep going back and forth on whether or not
+[05:24:05.800 --> 05:24:06.600] sub-agents work?
+[05:24:07.480 --> 05:24:11.300] I think that from an engineering perspective, there's elegance to it.
+[05:24:11.360 --> 05:24:12.840] But they fight against the KV cache.
+[05:24:12.980 --> 05:24:15.100] And I think that if we design agents around that,
+[05:24:15.240 --> 05:24:16.440] we could do so much more.
+[05:24:17.340 --> 05:24:20.280] This one's probably the most vague of my directions.
+[05:24:20.320 --> 05:24:22.460] But I feel very strongly about it.
+[05:24:22.740 --> 05:24:25.120] The world is full of principal agent problems.
+[05:24:26.520 --> 05:24:29.700] ulterior motives between this is not a coding agent, but any agent.
+[05:24:30.020 --> 05:24:33.200] The classic example is citizens versus elected officials.
+[05:24:33.380 --> 05:24:36.100] I don't want to make a too political claim here, but
+[05:24:36.100 --> 05:24:39.040] there's misalignment in all levels of society.
+[05:24:39.240 --> 05:24:42.360] And this results in waste, fraud, bad things.
+[05:24:42.680 --> 05:24:46.120] And it results in, for a society that wants fairness,
+[05:24:46.440 --> 05:24:50.020] you need to overemphasize the letter over the spirit, which then results in
+[05:24:50.020 --> 05:24:53.360] loopholes and pay to win dynamics in the world.
+[05:24:53.360 --> 05:24:56.460] And I think the root of that problem is we can't encode the spirit.
+[05:24:56.660 --> 05:24:59.920] Just like with software, we're constrained to encoding bits
+[05:24:59.920 --> 05:25:02.200] instead of what we actually meant in that situation.
+[05:25:02.400 --> 05:25:05.940] And I think so many organizations, society could be transformed
+[05:25:05.940 --> 05:25:08.020] by really encoding the spirit all over the place.
+[05:25:09.300 --> 05:25:11.080] Obviously, real-time intelligence security.
+[05:25:11.800 --> 05:25:15.060] Can we prevent the OpenAI hugging face sandbox, blah, blah, blah?
+[05:25:16.280 --> 05:25:17.820] Why couldn't they prevent it?
+[05:25:17.960 --> 05:25:20.020] It is not because they didn't have the intelligence.
+[05:25:20.020 --> 05:25:22.960] I would argue it's a lot easier to figure out they're doing a naughty thing
+[05:25:23.360 --> 05:25:24.580] to actually do the naughty thing.
+[05:25:24.660 --> 05:25:27.820] It is because it was not fast, cheap, and reliable enough
+[05:25:27.820 --> 05:25:29.740] to actually run real time.
+[05:25:29.940 --> 05:25:32.580] And what happens when every corporation
+[05:25:32.580 --> 05:25:35.440] has their own real time security that's actually smart?
+[05:25:35.580 --> 05:25:36.800] How cool would that fucking be?
+[05:25:37.520 --> 05:25:40.040] I can't talk about generative UIs because people
+[05:25:40.040 --> 05:25:41.660] are going to be talking about it afterwards.
+[05:25:41.740 --> 05:25:42.740] I don't want to steal their thunder,
+[05:25:42.880 --> 05:25:44.280] but it's cool as shit, trust me.
+[05:25:46.080 --> 05:25:47.960] Like semantic dependent typing.
+[05:25:48.220 --> 05:25:53.020] Why can't we have a type system that actually is semantic?
+[05:25:53.360 --> 05:25:53.500] Right?
+[05:25:53.620 --> 05:25:58.000] Why can't we declare what local properties we want
+[05:25:58.000 --> 05:26:00.660] so we don't have to read a chain of dependencies deep down?
+[05:26:01.020 --> 05:26:02.560] These all should be possible.
+[05:26:02.600 --> 05:26:06.220] And imagine if you could run a jev-like model in your lint
+[05:26:06.220 --> 05:26:08.220] checker to check if it's all type safe,
+[05:26:08.320 --> 05:26:10.720] and it could uphold semantic properties.
+[05:26:10.740 --> 05:26:12.700] It would be so fucking cool.
+[05:26:13.920 --> 05:26:18.020] There was a great Twitter video on a voice interface.
+[05:26:18.220 --> 05:26:21.140] In general, I think new interfaces are so exciting.
+[05:26:21.140 --> 05:26:24.600] This is, to me, the return of, like, this is going to show by age in software, like,
+[05:26:24.660 --> 05:26:25.340] do what I mean.
+[05:26:25.640 --> 05:26:30.360] This used to be a popular thing, but it never really worked, because it was too many hard
+[05:26:30.360 --> 05:26:32.420] coded rules to really figure out what I mean.
+[05:26:33.700 --> 05:26:38.460] There's stopping slop, obviously a big theme of here, but we definitely believe this.
+[05:26:38.480 --> 05:26:39.160] This is my props.
+[05:26:39.920 --> 05:26:42.960] We have a stop Gen AI baseball bat for type safe.
+[05:26:43.140 --> 05:26:45.200] It is very, very awesome.
+[05:26:45.400 --> 05:26:47.200] I want to talk about the root of slop.
+[05:26:47.960 --> 05:26:50.140] The root of slop is that AI is unreliable.
+[05:26:51.140 --> 05:26:54.380] For you as a company or you as someone who's doing stuff,
+[05:26:54.600 --> 05:26:57.000] it can't be used for decisions that cost you stuff.
+[05:26:57.300 --> 05:26:59.540] But it's actually totally fine to push the costs
+[05:26:59.540 --> 05:27:02.200] into other people, which is horrible, externalized costs.
+[05:27:02.480 --> 05:27:04.240] And then this is what ends up becoming slop.
+[05:27:04.800 --> 05:27:07.060] If people actually read the stuff and filter it
+[05:27:07.060 --> 05:27:09.500] and care about the quality, it becomes not slop.
+[05:27:09.700 --> 05:27:11.620] But now the world is full of this
+[05:27:11.620 --> 05:27:13.960] because there's an asymmetric advantage for people
+[05:27:13.960 --> 05:27:15.820] who are bad actors and don't give a shit.
+[05:27:16.120 --> 05:27:19.380] So I think that we can save the world from at least inbound hell,
+[05:27:19.400 --> 05:27:20.500] among many other things.
+[05:27:21.140 --> 05:27:21.700] very cool.
+[05:27:22.820 --> 05:27:26.460] And even something I think is super sick is cursed software.
+[05:27:26.760 --> 05:27:27.540] Like, why?
+[05:27:27.800 --> 05:27:30.220] If you guys ever seen the subreddit, Bad UI Battles,
+[05:27:30.340 --> 05:27:32.860] it is so fucking cool, even though they
+[05:27:32.860 --> 05:27:35.420] make horrible interfaces like this whole game of,
+[05:27:35.460 --> 05:27:38.640] like, would you like to delete your account becomes a random thing.
+[05:27:38.840 --> 05:27:41.900] And I actually think doing things because we can
+[05:27:41.900 --> 05:27:43.960] is what software engineering is about.
+[05:27:44.080 --> 05:27:47.240] Because who knows, maybe 1% of these ideas actually
+[05:27:47.240 --> 05:27:49.160] lead to something super awesome.
+[05:27:51.140 --> 05:27:55.640] even bad ideas is kind of what being like this, you know, playful hacker is all about.
+[05:27:56.760 --> 05:28:02.740] And generally, just automating everything, this is what the follow-up, this is a slop image,
+[05:28:02.920 --> 05:28:06.100] but sorry, logo's a little bit wrong, but don't stare at that, that's a little weird.
+[05:28:07.520 --> 05:28:10.920] This is what a lot of the follow-up talks are going to be about. Thank you.
+[05:28:12.100 --> 05:28:16.600] And if you're a software engineer, you almost certainly think in the world of bits.
+[05:28:16.700 --> 05:28:20.240] If you know anything about software, and you've interacted with software,
+[05:28:21.400 --> 05:28:24.780] that there are things software can do and software cannot do,
+[05:28:24.820 --> 05:28:27.120] because that is just only obvious, right?
+[05:28:27.320 --> 05:28:29.780] Like there's some things that you know you need to do,
+[05:28:29.840 --> 05:28:31.740] because that is not compatible with software.
+[05:28:31.980 --> 05:28:34.640] But what if those constraints were no longer true?
+[05:28:34.800 --> 05:28:37.400] Maybe not today, but maybe in like six months or a year,
+[05:28:37.600 --> 05:28:38.760] what couldn't we automate?
+[05:28:39.080 --> 05:28:41.300] And that's kind of where I want to leave this whole thing,
+[05:28:41.420 --> 05:28:44.480] because I think there is very likely to be a future
+[05:28:44.480 --> 05:28:46.480] where it's not a question of whether or not
+[05:28:46.480 --> 05:28:47.340] we can automate something.
+[05:28:47.540 --> 05:28:49.460] It's going to be a question of like how much work is it,
+[05:28:51.140 --> 05:28:53.820] that can be automated, and that would be cool as shit.
+[05:28:54.500 --> 05:28:55.700] So hell yeah, thank you.
+[05:28:59.200 --> 05:29:02.800] I'm super over time, but thank you to the early believers.
+[05:29:03.340 --> 05:29:06.040] We had no idea so many people would resonate with this.
+[05:29:06.220 --> 05:29:07.740] We thought we were the insane ones,
+[05:29:07.780 --> 05:29:10.460] but it turns out we were actually the majority of the world
+[05:29:10.460 --> 05:29:12.660] who realized AI could be so much more.
+[05:29:13.040 --> 05:29:14.860] Thank you to the people who are really
+[05:29:14.860 --> 05:29:16.160] realistic about reliability.
+[05:29:16.560 --> 05:29:17.940] Everyone knows I hate benchmarks,
+[05:29:18.000 --> 05:29:19.940] and a lot of other people are really screaming out,
+[05:29:21.340 --> 05:29:25.940] They're actually, they hurt the people who do not have time for anything other than benchmarks
+[05:29:25.940 --> 05:29:26.260] most.
+[05:29:26.380 --> 05:29:26.900] It's tragic.
+[05:29:27.140 --> 05:29:30.880] And for the people who are pushing the limits of software, like, fuck yes.
+[05:29:31.080 --> 05:29:33.920] And we want to be there with you, helping you all do that.
+[05:29:34.040 --> 05:29:38.620] The dreamers and the people who don't want to be limited by everything that has happened
+[05:29:38.620 --> 05:29:41.760] so far, we want to really fight for you.
+[05:29:41.780 --> 05:29:45.640] And we want this to be as reliable as a fourth logic gate.
+[05:29:45.820 --> 05:29:47.460] And that is a very high bar.
+[05:29:47.560 --> 05:29:49.120] And we have a lot of work to do.
+[05:29:49.260 --> 05:29:50.320] So thank you.

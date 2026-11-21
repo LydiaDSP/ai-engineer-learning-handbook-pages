@@ -1,0 +1,233 @@
+让 Agent 默认做对，比反复提醒更重要。
+Lauren Tan
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[01:01:02.100 --> 01:01:03.040] Hello everyone.
+[01:01:04.000 --> 01:01:09.160] I don't know if you can see my slides, but my name is Potato, also known as Lauren.
+[01:01:10.320 --> 01:01:15.080] excited to chat with all of you today. Maybe you can get a big round of applause for our
+[01:01:15.080 --> 01:01:16.900] tech team helping me with my laptop.
+[01:01:34.360 --> 01:01:35.260] There you go.
+[01:01:37.020 --> 01:01:37.360] All right.
+[01:01:38.900 --> 01:01:40.560] So again, my name is Potato.
+[01:01:41.120 --> 01:01:44.320] I work on DropBot at Space XSI.
+[01:01:44.320 --> 01:01:47.100] Hi, and can I just give a quick show of hands?
+[01:01:47.520 --> 01:01:52.820] How many of you have ever looked at code that somebody else wrote and you thought, that's
+[01:01:52.820 --> 01:01:53.200] all slop?
+[01:01:55.800 --> 01:01:57.300] Well, I have too.
+[01:01:58.880 --> 01:02:03.020] But today I'm going to convince you that you can turn that slop into gold.
+[01:02:06.400 --> 01:02:11.460] And so I did something crazy last month, and I shipped 3,000 deploy requests to production.
+[01:02:11.460 --> 01:02:17.240] Now, before agents, we never really cared about volume, except for the outliers.
+[01:02:18.140 --> 01:02:23.000] And at my previous company, we called these people coding machines, people like Brett
+[01:02:23.000 --> 01:02:28.700] Taylor, who famously rewrote all of Google Maps in a weekend, just an insanely productive
+[01:02:28.700 --> 01:02:29.280] engineer.
+[01:02:30.060 --> 01:02:33.360] And while with agents, anyone can now be a coding machine.
+[01:02:33.560 --> 01:02:38.680] And my thesis is that the job of the software engineer, the meta of being a software engineer,
+[01:02:38.680 --> 01:02:45.020] is figuring out how to maintain or even improve the quality of your code while massively increasing
+[01:02:45.020 --> 01:02:51.340] your productivity. To get there, some people like to call this a software factory, but
+[01:02:51.340 --> 01:02:58.900] I like to keep it simple, and I think of it as all about trust. Not blind trust, but investing
+[01:02:58.900 --> 01:03:02.980] in your agent's environment so you can trust that your agents are going to do the right
+[01:03:02.980 --> 01:03:10.020] thing. Now it takes quite a lot of effort to get there and it took me six months to
+[01:03:10.020 --> 01:03:14.720] get to a point where I could ship thousands of pull requests, a lot of them in my sleep.
+[01:03:15.160 --> 01:03:20.820] But it's certainly possible and it will take you much less time than I did. So let's start
+[01:03:20.820 --> 01:03:28.060] by talking about how we move from a low trust environment to a high trust one. So this inverse
+[01:03:28.060 --> 01:03:32.300] pyramid is how I think about where to spend time on your agent's environment.
+[01:03:33.620 --> 01:03:39.120] The first two layers are deterministic, so using your code itself. So things like good
+[01:03:39.120 --> 01:03:45.680] API design, architecture, refactoring, or using lint rules, type systems, compilers,
+[01:03:45.940 --> 01:03:49.980] or, you know, different kinds of testing. And you can use both of these layers
+[01:03:49.980 --> 01:03:54.700] together to constrain what agents can do and force them to do the right thing by
+[01:03:54.700 --> 01:04:01.100] default. Verification, both runtime and formal, are great tools to layer on to
+[01:04:01.100 --> 01:04:05.300] find bugs and check properties and the invariance in your system that you want
+[01:04:05.300 --> 01:04:10.180] to hold true and also help you check whether or not the agent understood your
+[01:04:10.180 --> 01:04:15.280] goals and your intent. And then finally you want to layer with a little bit of
+[01:04:15.280 --> 01:04:21.260] pros. So things like rules, skills, agents.md, things that require judgment.
+[01:04:22.980 --> 01:04:24.560] But let's start with your code base.
+[01:04:25.140 --> 01:04:28.020] Agents generate their outputs based on their inputs.
+[01:04:28.400 --> 01:04:31.180] And so the quality of the input really matters.
+[01:04:31.400 --> 01:04:35.620] And it just so happens that your code base is one of the largest inputs.
+[01:04:36.220 --> 01:04:40.580] So whenever you're correcting your agent, think about how you can make that a deterministic
+[01:04:40.580 --> 01:04:45.300] check instead of adding another line to your rules or your agents.md.
+[01:04:45.480 --> 01:04:49.660] Because it's far more reproducible when it's in code and it lets you trust it more.
+[01:04:51.260 --> 01:04:55.720] And the analogy that I like to use is that your code base is kind of like a garden.
+[01:04:56.300 --> 01:04:59.380] You know, code used to arrive a few pull requests at a time.
+[01:05:00.160 --> 01:05:07.500] And I remember going into work in 2024 and reviewing the three pull requests that my colleagues wrote.
+[01:05:07.840 --> 01:05:10.580] And today, that number is more like 300.
+[01:05:11.460 --> 01:05:16.800] So, you know, every engineer is now a team of hundreds or even thousands of agents.
+[01:05:16.800 --> 01:05:22.480] and code is arriving so rapidly that it almost feels like a continuous stream,
+[01:05:22.660 --> 01:05:25.940] and it almost feels organic, like a living thing.
+[01:05:27.020 --> 01:05:31.500] And in this analogy, your code base, the constraints that you impose,
+[01:05:31.940 --> 01:05:35.320] the guardrails that you put up are the concrete foundations
+[01:05:35.320 --> 01:05:38.960] that the new code that your agents write grow around,
+[01:05:38.960 --> 01:05:41.180] just like the building in this picture.
+[01:05:41.640 --> 01:05:44.240] And so in many ways, the job of being a software engineer
+[01:05:44.240 --> 01:05:46.640] is kind of becoming like gardening.
+[01:05:48.600 --> 01:05:55.060] Because code is the biggest input for agents, it means that any workarounds, anti-patterns,
+[01:05:55.340 --> 01:06:00.560] deprecated code, tech dep, it's now likely to be just copied by the next agent since
+[01:06:00.560 --> 01:06:03.060] it looks like the established pattern in your code base.
+[01:06:04.140 --> 01:06:09.860] And it's like you have some weeds or pests growing in your garden, and then they spread
+[01:06:09.860 --> 01:06:11.280] everywhere before you know it.
+[01:06:14.680 --> 01:06:20.200] So you want to make your code base as pristine as possible so that agents are always copying
+[01:06:20.200 --> 01:06:20.880] the good stuff.
+[01:06:21.780 --> 01:06:23.520] All right, let's look at some real examples.
+[01:06:24.980 --> 01:06:30.260] So Dune is a client framework that we created for GroffBot to implement this idea for organic
+[01:06:30.260 --> 01:06:30.880] architecture.
+[01:06:32.240 --> 01:06:33.620] It's not really that interesting technically.
+[01:06:34.020 --> 01:06:38.980] You can kind of think of Dune as kind of like Next.js for Electron apps.
+[01:06:38.980 --> 01:06:44.060] But the interesting part of Dune is that it has a lot of constraints and lit rules that
+[01:06:44.060 --> 01:06:48.840] we've encoded a lot of the lessons that we've learned building desktop applications.
+[01:06:50.160 --> 01:06:55.960] And one such lesson is that anything that requires nuance to use well often leads to
+[01:06:55.960 --> 01:06:56.220] slop.
+[01:06:57.520 --> 01:07:01.040] You know, your classic example is useEffect in React.
+[01:07:01.300 --> 01:07:05.080] It has its use cases, but it's often misused.
+[01:07:05.080 --> 01:07:08.220] You know, some people joke that you need a PhD to use useEffect.
+[01:07:09.060 --> 01:07:13.100] And in other words, it really requires a lot of nuance to use well.
+[01:07:13.980 --> 01:07:15.980] And agents are not good at using it.
+[01:07:17.040 --> 01:07:20.660] So our solution has been to just ban it in product code.
+[01:07:20.860 --> 01:07:24.780] And it's really only allowed in some places inside of Dune APIs.
+[01:07:26.040 --> 01:07:31.300] And effectively, this problem has now been categorically eliminated, and we never need
+[01:07:31.300 --> 01:07:32.980] to catch that during code review again.
+[01:07:34.540 --> 01:07:38.340] Another interesting pattern that we use is context through directory structure.
+[01:07:39.000 --> 01:07:44.560] So one anti-pattern that we saw with Cursor, which is an Electron app, is that agents would
+[01:07:44.560 --> 01:07:50.400] often import main thread code into the render thread, which would cause long tasks and jank.
+[01:07:51.640 --> 01:07:57.480] So in Grokbot and in Dune apps, we've made this very, very conventional. We have these
+[01:07:57.480 --> 01:08:03.280] two top-level directories, literally called electron-renderer and electron-main, and imports
+[01:08:03.280 --> 01:08:09.200] between them are forbidden or banned by our dependency graph analyzer and some lint rules.
+[01:08:09.700 --> 01:08:14.880] And again, you know, these are simple lint rules to set up, but it means one less thing that we
+[01:08:14.880 --> 01:08:22.880] need to review and think about, you know, during code review. And then one more surprising thing
+[01:08:22.880 --> 01:08:25.380] that I've seen is agents using markdown.
+[01:08:25.640 --> 01:08:31.880] So things like documentation, code comments, rules or skills, and they use this as a place
+[01:08:31.880 --> 01:08:35.700] to write down their justifications for not doing the right thing.
+[01:08:36.020 --> 01:08:40.320] Or I don't know if you've ever seen this, but they'll over rotate on some small correction
+[01:08:40.320 --> 01:08:44.880] that you made, and they treat it like a hard rule that can never be broken ever again.
+[01:08:46.400 --> 01:08:48.100] And here's another example from cursor.
+[01:08:48.100 --> 01:08:54.280] So agents really loved using imperative timers, so things like set timeout, request animation
+[01:08:54.280 --> 01:08:59.660] frame, request idle callback, and they were using these as quick fixes because they were
+[01:08:59.660 --> 01:09:06.280] really patching over an architecture clash between VS code's imperative style and React's
+[01:09:06.280 --> 01:09:06.960] declarative style.
+[01:09:08.500 --> 01:09:13.780] So our choice of architecture actually made both the client and the agent performance
+[01:09:13.780 --> 01:09:14.560] much worse.
+[01:09:15.060 --> 01:09:18.500] And if you've ever done any performance work in JavaScript, you'll know that when you have
+[01:09:18.500 --> 01:09:24.540] tons of timers being rapidly created and destroyed, causes a lot of major garbage collection,
+[01:09:24.780 --> 01:09:26.600] which causes a lot of lag and jang.
+[01:09:27.400 --> 01:09:31.500] But the worst part is that agents wrote a lot of code comments, like you can see in
+[01:09:31.500 --> 01:09:35.000] red here, explaining why this quick fix was justified.
+[01:09:35.860 --> 01:09:41.460] And before you know it, we had timers spreading everywhere, and the performance of the app
+[01:09:41.460 --> 01:09:42.220] really suffered.
+[01:09:44.100 --> 01:09:50.100] Now in GrokBot, we learned our lesson there and we decided to just ban 99% of comments
+[01:09:50.100 --> 01:09:56.460] because they go stale easily, humans just really don't bother reading the comment slop anyway.
+[01:09:57.360 --> 01:10:04.100] And again, it gives an agent an escape hatch to justify not doing the right thing because it's
+[01:10:04.100 --> 01:10:10.040] hard. And the worst part about comments though is that they're not enforceable. So what seems
+[01:10:10.040 --> 01:10:14.240] well-intentioned, you know, like I'm gonna tell the next agent not to do
+[01:10:14.240 --> 01:10:20.060] something, never ends up actually being anything that you can trust. So in
+[01:10:20.060 --> 01:10:26.340] Grotbot and Dune, we now have lint rules that give good and very helpful error
+[01:10:26.340 --> 01:10:31.780] messages telling the agent to fix the root cause, the real problem, rather than
+[01:10:31.780 --> 01:10:36.920] just patch around it. And so our general principle is that every time we correct
+[01:10:36.920 --> 01:10:39.640] our agents, it turns into one of these deterministic checks.
+[01:10:39.840 --> 01:10:44.760] Or we think about how to categorically eliminate that problem in the code through better API
+[01:10:44.760 --> 01:10:46.940] design, through better architecture.
+[01:10:47.640 --> 01:10:53.120] And if you do this enough times, you'll find that you have just less things to look out
+[01:10:53.120 --> 01:10:53.900] for in code review.
+[01:10:54.340 --> 01:10:57.780] And at some point, you'll realize there's nothing left to review.
+[01:10:58.040 --> 01:11:02.080] And you can just let agents merge most of their own requests.
+[01:11:04.520 --> 01:11:05.140] All right.
+[01:11:06.940 --> 01:11:12.420] is also a really big part of how we make our agents more autonomous and also increase our
+[01:11:12.420 --> 01:11:17.840] confidence and trust in their work. And our code review process has now really shrunk into looking
+[01:11:17.840 --> 01:11:24.640] at verification artifacts instead. So things like videos, screenshots, diagrams, formal verification.
+[01:11:25.940 --> 01:11:31.220] And the most basic example of this is runtime verification, which is just a fancy way of
+[01:11:31.220 --> 01:11:36.340] saying giving your agent a way to run the code for itself and use debugging tools that, you know,
+[01:11:36.920 --> 01:11:39.640] developers use as well, like the Chrome DevTools protocol.
+[01:11:40.720 --> 01:11:44.700] In our runtime verification skills, we have this thing that we call a feature map.
+[01:11:45.360 --> 01:11:50.160] And that's basically kind of like a site map of all of the features that are available
+[01:11:50.160 --> 01:11:52.380] in your application from the user's point of view.
+[01:11:52.680 --> 01:11:57.160] And so with this, agents don't need to guess when you say, you know, the thingy in the
+[01:11:57.160 --> 01:11:57.740] left sidebar.
+[01:11:57.840 --> 01:11:59.860] It gives you some shared vocabulary.
+[01:12:01.160 --> 01:12:07.500] And we also make use of custom CLIs inside these skills so that agents can reuse the
+[01:12:07.500 --> 01:12:12.380] CLI and the driver every time, which cuts down on token usage and is also testable.
+[01:12:14.520 --> 01:12:17.660] And then recently we've also started looking at formal verification.
+[01:12:18.180 --> 01:12:24.300] So we now use TLA Plus to do some model checking of major user flows, such as notifications
+[01:12:24.300 --> 01:12:26.260] across multiple devices and platforms.
+[01:12:26.880 --> 01:12:29.740] We use a lean as well for proving certain algorithms.
+[01:12:30.200 --> 01:12:34.740] For example, we have our own, we wrote our own custom virtualization library and we use
+[01:12:34.740 --> 01:12:39.020] a lean there to check that we don't have flickering or jittering problems.
+[01:12:39.920 --> 01:12:42.340] And we're still experimenting with this approach overall.
+[01:12:42.640 --> 01:12:43.720] It seems very promising.
+[01:12:44.100 --> 01:12:47.600] We've already found quite a few bugs with formal verification.
+[01:12:49.040 --> 01:12:54.880] But it's certainly not a silver bullet and we're treating it as another tool, another
+[01:12:56.260 --> 01:12:57.660] agents' environment.
+[01:12:59.520 --> 01:13:05.040] And then this is a very fast video, but another thing that we just started looking at is property-based
+[01:13:05.040 --> 01:13:06.600] testing as well for UIs.
+[01:13:07.120 --> 01:13:12.560] So we use this library called Bombadil, and this has also caught a few UI bugs for us
+[01:13:12.560 --> 01:13:12.920] already.
+[01:13:15.620 --> 01:13:21.000] Okay, so zooming out, I saw this tweet from Cindy, and six months ago, she said that she
+[01:13:21.000 --> 01:13:26.560] was talking about not being able to trust her agents because of subtle bugs that were
+[01:13:26.560 --> 01:13:27.280] getting merged.
+[01:13:28.720 --> 01:13:32.820] And really what was missing for her in being able to trust her agents was the verification
+[01:13:32.820 --> 01:13:33.380] process.
+[01:13:33.680 --> 01:13:38.980] And now, six months later, she says that 70% of her daily tokens go into verification.
+[01:13:39.280 --> 01:13:44.340] And I'd say that that tracks with what I see as well, that most of my token usage goes
+[01:13:44.340 --> 01:13:45.040] to verification.
+[01:13:46.100 --> 01:13:50.920] And if you really look closely at our process, none of these things here are new or novel
+[01:13:50.920 --> 01:13:52.780] techniques that we've never had before.
+[01:13:54.200 --> 01:13:59.400] These are just good software engineering tools, but ones that might have been prohibitively
+[01:13:59.400 --> 01:14:03.620] expensive to use before as they were hard to understand or write or maintain.
+[01:14:04.720 --> 01:14:07.240] But agents drastically cut this cost down.
+[01:14:07.400 --> 01:14:11.960] And really we're entering a golden age of software testing and verification because
+[01:14:11.960 --> 01:14:16.600] agents let us test everything to a much greater degree than used to be economical.
+[01:14:18.520 --> 01:14:22.620] And then formal verification can also help you better reason about how your product should
+[01:14:22.620 --> 01:14:25.720] work and whether your agents really understand your intent and goals.
+[01:14:26.300 --> 01:14:32.540] I made this new skill called StateChart in my plugin PStack, potato stack, which helps
+[01:14:32.540 --> 01:14:36.480] you visualize state machines from the user's point of view.
+[01:14:36.480 --> 01:14:41.800] And I find this much easier to review alongside the videos and screenshots that we provide.
+[01:14:42.760 --> 01:14:43.920] And so that's been great.
+[01:14:44.780 --> 01:14:45.920] Sorry for the flashbang.
+[01:14:46.980 --> 01:14:50.260] Okay, now let's look at what the promised land looks like.
+[01:14:50.480 --> 01:14:54.380] What do you get in return for all of this investment?
+[01:14:55.740 --> 01:15:00.900] So on the GroffBot team, our velocity is taking off and rapidly increasing.
+[01:15:00.900 --> 01:15:08.360] And last month, our team shipped a ridiculous 11,000 pull requests to production, which
+[01:15:08.360 --> 01:15:09.040] is a wild number.
+[01:15:09.540 --> 01:15:15.060] And our pace of releasing the client has also increased, and we cut a new stable version
+[01:15:15.060 --> 01:15:16.340] about once a day.
+[01:15:17.560 --> 01:15:24.020] And then the core team is also shipping much more, and we also have a lot more casual or
+[01:15:24.020 --> 01:15:29.560] drive-by contributors who don't always have a lot of context, but they're also contributing.
+[01:15:30.900 --> 01:15:36.740] In October, we had about 227 people who contributed at least one pull request.
+[01:15:38.540 --> 01:15:42.180] So despite this velocity accelerating, you might be thinking to yourself, isn't this
+[01:15:42.180 --> 01:15:42.980] going to be chaos?
+[01:15:43.260 --> 01:15:44.520] Isn't this going to be a bunch of slop?
+[01:15:44.940 --> 01:15:50.160] But actually, the number of PRs that get reverted has actually gotten lower on a relative basis
+[01:15:50.160 --> 01:15:52.260] and is steady at about half a percent.
+[01:15:53.960 --> 01:15:59.020] But I think the really interesting thing about this shipping pace and this volume of pull
+[01:16:00.900 --> 01:16:06.200] that the performance of GroffBot has stayed not just stable, but has improved on multiple
+[01:16:06.200 --> 01:16:07.860] dimensions compared to when we launched.
+[01:16:08.600 --> 01:16:14.220] So startup, typing, opening new chats, switching chats, all of this has gotten faster.
+[01:16:14.580 --> 01:16:19.240] And keep in mind, GroffBot is still an electron app for now.
+[01:16:19.520 --> 01:16:21.200] So there is a ceiling, right?
+[01:16:21.420 --> 01:16:25.240] But it's already much faster than many other Asian UIs out there.
+[01:16:26.060 --> 01:16:32.560] And for an election app with this high velocity and this many people contributing, I'd say
+[01:16:32.560 --> 01:16:33.240] that's pretty good.
+[01:16:34.820 --> 01:16:39.900] So before you jump into building out a software factory and automating everything that you
+[01:16:39.900 --> 01:16:44.560] can, whenever you correct your agent, try and do it by improving your code base first.
+[01:16:45.120 --> 01:16:50.840] Start with a lint rule to prevent new occurrences of anti-patterns, and then clean up those old
+[01:16:50.840 --> 01:16:54.920] patterns as well. And then make sure that your verification story is really strong.
+[01:16:56.520 --> 01:17:02.900] A lot of this work is a prerequisite to automation anyway. And if your inner coding loop produces
+[01:17:02.900 --> 01:17:08.340] slop, then automating that loop just produces more slop. And you need to throw more and
+[01:17:08.340 --> 01:17:13.900] more and more tokens at the problem, which we all know is very expensive. And once you
+[01:17:13.900 --> 01:17:19.620] meet these investments into your code base, static analysis, runtime and formal verification,
+[01:17:20.840 --> 01:17:25.880] find that many things become possible with these foundations and that you can
+[01:17:25.880 --> 01:17:31.420] really easily build your own factory on top of these foundations. And when you're
+[01:17:31.420 --> 01:17:35.620] ready, Grotbot is a great way to build that outer loop. We have tons of
+[01:17:35.620 --> 01:17:40.660] connectors, routines that can kick off cursor, cloud agents, and projects which
+[01:17:40.660 --> 01:17:45.220] let you orchestrate thousands of hundreds or even thousands of agents. And
+[01:17:45.220 --> 01:17:49.200] as a quick example, you know, whenever we cut a new release now, Grotbot will
+[01:17:50.880 --> 01:17:55.800] project first that will fuzz the entire application, the entire build, and it will
+[01:17:55.800 --> 01:18:00.440] find bugs by running the app and using it like a real user. And then it's going to
+[01:18:00.440 --> 01:18:04.420] open fixed PRs for each of those bugs that it finds and it's going to auto
+[01:18:04.420 --> 01:18:09.700] merge it, as crazy as that sounds. And that's because our code base is good
+[01:18:09.700 --> 01:18:14.340] enough that pull requests tend to just be good by default and most product code
+[01:18:14.340 --> 01:18:17.260] that we land no longer really requires deep human review.
+[01:18:20.380 --> 01:18:26.420] So when you have solid foundations and good organic architecture, you can turn slop into
+[01:18:26.420 --> 01:18:32.660] gold and you can ship with high quality, high velocity without compromising on quality.
+[01:18:33.060 --> 01:18:35.200] My name is Potato, also known as Lauren.
+[01:18:35.460 --> 01:18:37.160] Thanks to you again for listening to my talk.

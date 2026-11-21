@@ -1,0 +1,35 @@
+[
+  {
+    "id": "conflicting-rules",
+    "after": "p02",
+    "title": "两条单独读得通的规则也可能冲突",
+    "time": "01:51:33",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6693s",
+    "en": "assets/conflicting-rules-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>两条单独读得通的规则也可能冲突</h3><dl><div><dt>规则 2</dt><dd>订单已提交且库存不足时，转为待补货。</dd></div><div><dt>规则 3</dt><dd>不允许任何订单转为待补货。</dd></div></dl></div>",
+    "note": "同一笔缺货订单触发了相反要求。",
+    "sourceSeconds": 6693
+  },
+  {
+    "id": "smt-translation",
+    "after": "p09",
+    "title": "把自然语言规则写成可检查的逻辑",
+    "time": "01:54:41",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6881s",
+    "en": "assets/smt-translation-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把自然语言规则写成可检查的逻辑</h3><dl><div><dt>条件</dt><dd>订单已提交，库存不可用。</dd></div><div><dt>结果</dt><dd>两个条件同时满足时，订单进入待补货状态。</dd></div></dl></div>",
+    "note": "求解器检查给定公式和场景能否同时满足。",
+    "sourceSeconds": 6881
+  },
+  {
+    "id": "clarification",
+    "after": "p13",
+    "title": "把含糊的业务词改成一道具体选择题",
+    "time": "01:56:15",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=6975s",
+    "en": "assets/clarification-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把含糊的业务词改成一道具体选择题</h3><dl><div><dt>解释一</dt><dd>删除记录。</dd></div><div><dt>解释二</dt><dd>保留记录供审计，从用户界面隐藏。</dd></div></dl></div>",
+    "note": "业务负责人选定意图后，再把相应行为写回规格。",
+    "sourceSeconds": 6975
+  }
+]

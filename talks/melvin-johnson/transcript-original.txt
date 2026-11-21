@@ -1,0 +1,261 @@
+把工程师仍在卡住的任务送回后训练
+Melvin Johnson
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[07:35:53.560 --> 07:35:55.180] Hey everyone, good to be here.
+[07:35:55.380 --> 07:35:57.600] I'm Melvin and I lead post training for Gemini.
+[07:35:57.980 --> 07:36:02.600] So today I thought I'll take you through a little journey of how we post trained Gemini
+[07:36:02.600 --> 07:36:02.900] 4.
+[07:36:03.280 --> 07:36:08.980] And our journey begins by people calling us not a frontier model.
+[07:36:10.180 --> 07:36:11.040] So here's an example.
+[07:36:12.040 --> 07:36:15.300] People say Gemini is cooked, but GCP is cooking.
+[07:36:15.300 --> 07:36:20.380] for all intents and purposes, we believe DeepMind is no longer a frontier lab.
+[07:36:21.320 --> 07:36:26.080] Ethan Malik, who we respect a lot, he says in his own nice way,
+[07:36:26.300 --> 07:36:29.580] pretty long gap between launches is what he calls us.
+[07:36:30.860 --> 07:36:34.480] And I'm here to tell you we're not dead.
+[07:36:34.980 --> 07:36:35.820] We're here.
+[07:36:37.340 --> 07:36:41.820] And we have launched Gemini 4 Argon.
+[07:36:42.320 --> 07:36:45.120] We announced Carbon and we launched Carbon.
+[07:36:45.300 --> 07:36:47.520] all within the last 28 days.
+[07:36:47.760 --> 07:36:53.360] So we're on a run here, and that's not it.
+[07:36:54.500 --> 07:36:58.840] In the process, we actually garnered an apology from Dylan.
+[07:36:59.400 --> 07:37:02.220] He says official apology to Google.
+[07:37:03.340 --> 07:37:05.360] They actually cooked. They're not cooked.
+[07:37:06.520 --> 07:37:10.580] Ethan says one of the most significant aspects of Gemini 4
+[07:37:10.580 --> 07:37:13.060] is the speed at which we're launching things.
+[07:37:13.060 --> 07:37:17.700] So we've gone 236 days without having a frontier model,
+[07:37:17.900 --> 07:37:20.800] and we've had two frontier models in 28 days.
+[07:37:21.000 --> 07:37:23.920] That's a 10x improvement in our speed of shipping.
+[07:37:24.660 --> 07:37:28.600] And, you know, people call us Google kind of cooked,
+[07:37:28.840 --> 07:37:33.180] but Google's not cooked, so it's good to see that sentiment.
+[07:37:33.440 --> 07:37:34.720] It's glad to be on the other end.
+[07:37:34.920 --> 07:37:38.800] It's also good to be on the receiving end of the bad comments
+[07:37:38.800 --> 07:37:40.240] because it pushes you to do better.
+[07:37:41.740 --> 07:37:47.600] I want to start by playing a little video of a bunch of things that Carmen has built.
+[07:37:48.620 --> 07:37:50.420] If we can cue the video, please.
+[07:37:52.260 --> 07:37:53.000] There we go.
+[07:37:53.460 --> 07:37:53.960] Go back.
+[07:37:54.220 --> 07:37:54.580] There we go.
+[07:38:01.320 --> 07:38:02.160] Did that work?
+[07:38:02.340 --> 07:38:02.460] No.
+[07:38:08.260 --> 07:38:11.440] Let me see if going to the laptop is going to be safe.
+[07:38:14.300 --> 07:38:15.000] There we go.
+[07:38:47.520 --> 07:38:48.380] Thank you.
+[07:38:50.740 --> 07:38:54.320] Kudos to the model for building that video itself.
+[07:38:54.500 --> 07:39:00.800] So you saw great examples of the model doing much better at 3D, model building assets using
+[07:39:02.460 --> 07:39:06.840] games in there, the real world use cases, model processing, multi-modal documents.
+[07:39:07.600 --> 07:39:11.160] But, you know, it's not just the demos.
+[07:39:12.080 --> 07:39:16.120] Carbon's actually number one on a bunch of real world customer use cases.
+[07:39:16.380 --> 07:39:22.440] And one of the things that we're really excited about is, you know, it's not just really good on these benchmarks.
+[07:39:22.700 --> 07:39:25.020] It's actually much cheaper.
+[07:39:25.480 --> 07:39:28.800] So on CursorBench, it's the number one model today.
+[07:39:28.960 --> 07:39:32.020] And it's 3.3 times cheaper than the second best model.
+[07:39:32.460 --> 07:39:39.420] On perplexity's Wander, which is a benchmark for deep research queries, it's the best model.
+[07:39:39.640 --> 07:39:42.600] You know, you saw competitor models come out.
+[07:39:42.820 --> 07:39:45.900] We're 9x cheaper than the second best model there.
+[07:39:46.200 --> 07:39:55.100] And on automation bench, which is Zapier's benchmark, again, we're number one, while being two times cheaper per task.
+[07:39:56.660 --> 07:39:58.000] And that's not it.
+[07:39:58.260 --> 07:39:59.980] I mean, today we announced...
+[07:40:00.000 --> 07:40:07.240] a new element to our Gemini 4 series and it's not a surprise, it's hydrogen.
+[07:40:08.580 --> 07:40:12.180] So you know, you might have seen the launch earlier today.
+[07:40:13.240 --> 07:40:18.200] Gemini 4 hydrogen is where we're trying to bring the Gemini 4 intelligence to everyone.
+[07:40:18.500 --> 07:40:24.780] It's fast, it's dependable, it's launched on all surfaces, on anti-gravity, on the Gemini
+[07:40:24.780 --> 07:40:31.660] API in the Gemini app and on search and you know I have a graph that shows the
+[07:40:31.660 --> 07:40:38.240] a index with many of you might be familiar with and time on the x-axis you
+[07:40:38.240 --> 07:40:43.360] can see it's one of the fastest models for that level of intelligence and to
+[07:40:43.360 --> 07:40:50.100] give you a sense of how far you know Gemini has come 3.8 flash on terminal
+[07:40:50.100 --> 07:40:58.200] Bench 4 was about 20% and hydrogen is about 60%. So we're three times better
+[07:40:58.200 --> 07:41:04.040] performance while being three times faster, right? So that's no easy task and
+[07:41:04.040 --> 07:41:08.920] we're, you know, really happy to bring that to you in your hands so you can build
+[07:41:08.920 --> 07:41:16.560] things with it. And that completes, you know, our Gemini 4 series. So we have
+[07:41:16.560 --> 07:41:20.500] Gemini for carbon a frontier model for deep frontier intelligence
+[07:41:21.120 --> 07:41:24.020] Gemini for hydrogen which is fast for everyday
+[07:41:25.400 --> 07:41:32.640] Execution and we'll have more elements, you know, of course there are many elements left in the periodic table and we have a lot of work to do to exhaust them
+[07:41:33.280 --> 07:41:38.340] But we're glad to put it out there for you all to test it and for you all to play with it
+[07:41:40.740 --> 07:41:45.900] Now I think enough marketing with the models I wanna I was told this is a deeply technical audience
+[07:41:46.560 --> 07:41:52.700] I want to talk a little bit about why post-training these frontier models is hard and what goes into that.
+[07:41:53.180 --> 07:41:58.660] Let me start by saying AI writes about 75% of Google's new code today.
+[07:41:59.000 --> 07:42:03.840] And this is up from less than 25% a few years ago.
+[07:42:04.560 --> 07:42:12.520] And there are 100,000 people using anti-gravity writing code inside Google every single day.
+[07:42:14.300 --> 07:42:20.340] Now, the complexity of the tasks that people do have also increased exponentially in the last couple of years.
+[07:42:20.520 --> 07:42:28.700] We started with models just completing chats, which took seconds, to writing small functions within the minutes.
+[07:42:28.860 --> 07:42:33.300] You can submit a PR and resolve an issue. It takes about an hour, let's say.
+[07:42:33.540 --> 07:42:38.200] But now people are doing days of real engineering tasks with the model.
+[07:42:38.420 --> 07:42:42.460] People have swarms of agents solving real open problems with the model.
+[07:42:42.520 --> 07:42:49.860] We have engineers across Google using anti-gravity and our Gemini 4 models to solve tasks over multiple days.
+[07:42:51.460 --> 07:42:56.060] Now, how do we go about post-training Gemini 4 real engineering tasks?
+[07:42:56.460 --> 07:42:58.540] We have to start with hard tasks.
+[07:42:58.740 --> 07:43:01.960] So we really need to source hard problems for the model.
+[07:43:02.620 --> 07:43:06.180] Grading of these models is actually a very hard problem.
+[07:43:06.220 --> 07:43:10.200] So you want to grade like an experienced code reviewer would grade.
+[07:43:10.200 --> 07:43:13.380] You want to grade like an experienced engineer would create a solution.
+[07:43:14.400 --> 07:43:16.480] Large-scale RL is how we train the model.
+[07:43:16.700 --> 07:43:22.000] And we want to dog food our models with our 100,000 engineer community and repeat the loop.
+[07:43:22.160 --> 07:43:26.720] So any failures in the dog food become tasks for the next iteration of the loop.
+[07:43:28.440 --> 07:43:32.160] So I want to start by going into a little bit more detail of each of these sections.
+[07:43:32.320 --> 07:43:33.700] So let's start with the hard tasks.
+[07:43:35.240 --> 07:43:37.840] So you might have heard, as models are getting better,
+[07:43:37.840 --> 07:43:42.340] lots of benchmarks are getting saturated and it's not just the benchmarks that
+[07:43:42.340 --> 07:43:47.300] get saturated our training data gets saturated too so here is a graph that
+[07:43:47.300 --> 07:43:53.060] shows for three different iterations of the Gemini 4 models how much the share
+[07:43:53.060 --> 07:43:56.680] of learnable prompts has gone down so let's say we had X percent of learnable
+[07:43:56.680 --> 07:44:00.260] prompts for the first iteration by the time we finish and train the next one
+[07:44:00.260 --> 07:44:03.980] the prompts are too easy for the second one we finish that and train the third
+[07:44:03.980 --> 07:44:08.860] one, the prompts are too easy for the third one. So what's the problem with training on
+[07:44:08.860 --> 07:44:13.260] easy tasks? Easy tasks give you zero learning signal, right? So you have a prompt when all
+[07:44:13.260 --> 07:44:17.060] of your rollouts are going to be correct, there's no variance, there's no RL signal.
+[07:44:17.280 --> 07:44:22.600] So you really need to focus on getting hard tasks. And you really need to be faster at
+[07:44:22.600 --> 07:44:29.320] getting hard tasks, then the models are getting better, right? So how do we go about it? We
+[07:44:29.320 --> 07:44:34.000] first have to you know identify these easy tasks and prune them so we cut these
+[07:44:34.000 --> 07:44:38.440] simple sweetband style tasks from the mixture that are too easy for the
+[07:44:38.440 --> 07:44:43.820] models we expand into much harder sweet tasks for example that are multi-file
+[07:44:43.820 --> 07:44:51.560] repos we go from unit test or binary correctness to rubric based grading and
+[07:44:51.560 --> 07:44:56.920] rubrics give you dense signal they're not just zero one they can be more
+[07:44:56.920 --> 07:45:04.680] gradients within the criteria. Here are some examples of hard tasks that we
+[07:45:04.680 --> 07:45:11.060] train on. So we look at multi-file repos and we extract commits from them. From
+[07:45:11.060 --> 07:45:15.900] those commits we have models automatically extract rubrics. We don't
+[07:45:15.900 --> 07:45:21.360] actually necessitate unit tests being involved. We can actually generate
+[07:45:21.360 --> 07:45:26.000] rubrics on the fly based on these repos. Another example, a great example of tasks
+[07:45:27.140 --> 07:45:31.800] you try to teach the model to build CLI tools from scratch.
+[07:45:32.040 --> 07:45:34.720] So you start with an empty folder and a specification.
+[07:45:35.060 --> 07:45:38.120] The specification says, hey, you have to build this tool,
+[07:45:38.200 --> 07:45:41.560] it's called grep, these are the parameters of grep,
+[07:45:41.640 --> 07:45:43.320] these are the flags, this is the functionality,
+[07:45:43.580 --> 07:45:46.700] and you let the model build the entire tool from scratch.
+[07:45:47.200 --> 07:45:50.020] And you know what the functionality for grep is going to be,
+[07:45:50.060 --> 07:45:51.900] so you have a hidden test suite
+[07:45:51.900 --> 07:45:53.620] that you can evaluate the binary on.
+[07:45:54.420 --> 07:45:58.680] The last example is production codebase tips.
+[07:45:59.120 --> 07:46:03.900] So you look at real usage of the model inside your production codebase
+[07:46:03.900 --> 07:46:06.040] and extract useful tasks out of them.
+[07:46:08.240 --> 07:46:11.300] Now let me talk a little bit about the graders.
+[07:46:13.320 --> 07:46:18.500] So agents, you know, they find any way, you're training them to pass the test,
+[07:46:18.600 --> 07:46:20.720] so they will find any way to pass the test.
+[07:46:20.720 --> 07:46:24.800] But if the test pass, that doesn't necessarily mean that they've solved the problem.
+[07:46:25.100 --> 07:46:28.060] There are examples where the agent will bypass the checker.
+[07:46:28.580 --> 07:46:31.880] There are examples where the agent will game the benchmark.
+[07:46:32.540 --> 07:46:35.400] There are examples where the agent will fake the evidence.
+[07:46:35.900 --> 07:46:39.540] It writes the fake evidence into a temp file.
+[07:46:39.700 --> 07:46:41.660] It will delete any evidence of it faking it.
+[07:46:42.980 --> 07:46:45.980] So you have to be smarter about how you judge these models,
+[07:46:46.020 --> 07:46:47.740] especially as they become more capable.
+[07:46:50.100 --> 07:46:53.040] Now, this is what I meant by grading like a reviewer.
+[07:46:53.180 --> 07:46:57.580] So if you've done a code review, you have a very strict reviewer, you're going to know
+[07:46:57.580 --> 07:47:01.100] they're not just going to think about the correctness of the solution, they're actually
+[07:47:01.100 --> 07:47:05.280] going to think about the style, they're going to think about maintainability, they're going
+[07:47:05.280 --> 07:47:06.580] to think of many different aspects.
+[07:47:07.540 --> 07:47:13.180] So what we do is we move from unit test-based correctness to rubric-based.
+[07:47:13.180 --> 07:47:15.300] when these are generated from real commits,
+[07:47:15.780 --> 07:47:18.480] the rubrics also provide dense learning signal,
+[07:47:18.600 --> 07:47:19.920] not just zero-one signal,
+[07:47:20.260 --> 07:47:23.180] and we penalize any sort of solution
+[07:47:23.180 --> 07:47:26.280] that is looking for a workaround, right?
+[07:47:26.460 --> 07:47:29.340] So here is an example of a rubric
+[07:47:29.340 --> 07:47:31.640] where the criteria is, you know,
+[07:47:31.760 --> 07:47:33.860] here are the edge cases that need to be passed.
+[07:47:34.120 --> 07:47:37.020] This is an example of hygiene that needs to be maintained.
+[07:47:37.260 --> 07:47:39.200] These are constraints around verification
+[07:47:39.200 --> 07:47:40.520] that need to be satisfied.
+[07:47:43.480 --> 07:47:47.560] Now, it's not just about the rubrics needed for grading.
+[07:47:47.940 --> 07:47:51.860] We also need to be careful about the graders not being gamed.
+[07:47:52.300 --> 07:47:55.660] And you really need to harden the environment that the grader is in.
+[07:47:55.820 --> 07:47:59.760] So we think about putting the graders in an isolated sandbox.
+[07:48:00.020 --> 07:48:03.920] So we remove git history and git remote so the answers don't leak.
+[07:48:04.160 --> 07:48:05.840] The test sets are held out.
+[07:48:05.940 --> 07:48:09.380] So only when the agent is done and submits the solution
+[07:48:09.380 --> 07:48:11.180] do we actually reveal the test.
+[07:48:13.180 --> 07:48:14.980] will fake it and say, hey, I'm done,
+[07:48:15.140 --> 07:48:16.500] and the tests come into play,
+[07:48:16.580 --> 07:48:17.520] and then it'll look at the tests
+[07:48:17.520 --> 07:48:18.880] and resubmit the solution, right?
+[07:48:18.940 --> 07:48:19.680] So you don't want that.
+[07:48:20.620 --> 07:48:23.220] We also want to be much more detailed with our scoring.
+[07:48:23.320 --> 07:48:25.860] So we take the full diff, and we look at the reference,
+[07:48:25.960 --> 07:48:27.060] and we look at multiple aspects.
+[07:48:27.260 --> 07:48:28.240] It's not just the correctness.
+[07:48:28.260 --> 07:48:29.940] We also want to look at the code quality.
+[07:48:30.300 --> 07:48:31.860] We also want to look at the scope
+[07:48:32.500 --> 07:48:33.800] of the change that was done.
+[07:48:36.800 --> 07:48:39.380] And then finally, we want to penalize
+[07:48:39.380 --> 07:48:42.400] any sort of cheating attempt by the agent,
+[07:48:43.180 --> 07:48:48.400] careful not to police the thoughts. So any cheating or hampering of the
+[07:48:48.400 --> 07:48:54.400] environment gets a very negative RL reward and all of this is detected just
+[07:48:54.400 --> 07:48:59.320] based on the actions that the model is taking, not the thoughts. So a good
+[07:48:59.320 --> 07:49:04.420] example of how we have handled cheating is, you know, carbon for instance has 0%
+[07:49:04.420 --> 07:49:08.140] cheating rate on terminal bench 4. Our previous models are a much higher cheating
+[07:49:08.140 --> 07:49:12.720] rate and it's about 5x less adversarial than argon. So every generation of the
+[07:49:13.180 --> 07:49:16.300] we're trying to make it much more aligned so it's not trying to cheat.
+[07:49:18.520 --> 07:49:22.920] Now, finally, I think I want to talk about model behavior a little bit
+[07:49:22.920 --> 07:49:25.780] and modeling honesty specifically.
+[07:49:27.600 --> 07:49:30.200] Now, agents, they always want to be helpful,
+[07:49:30.420 --> 07:49:32.240] and sometimes they fake helpfulness.
+[07:49:32.460 --> 07:49:35.260] You might have seen this in your usage of the agents.
+[07:49:35.460 --> 07:49:37.780] So sometimes they'll claim that tests have passed
+[07:49:37.780 --> 07:49:39.920] when they've obviously not passed.
+[07:49:39.920 --> 07:49:43.580] they'll declare done, but obviously they're not done.
+[07:49:44.200 --> 07:49:46.980] They'll make edits that they'll claim to have made edits,
+[07:49:47.060 --> 07:49:48.280] but they've not made those edits.
+[07:49:48.560 --> 07:49:52.180] Or they'll invent facts and APIs and whatnot.
+[07:49:52.600 --> 07:49:55.420] Or they will give you a wall of text that has so many numbers
+[07:49:55.420 --> 07:49:57.300] that is going to be impossible for you to verify.
+[07:49:57.960 --> 07:50:00.100] We've gone through all of these examples.
+[07:50:02.080 --> 07:50:05.860] Now, here is an example of fabrication rates in Gemini.
+[07:50:05.860 --> 07:50:12.840] So we, on an internal eval, started with 8% fabrication in that hard eval.
+[07:50:13.480 --> 07:50:17.500] We cut that down dramatically to about 3% for hydrogen,
+[07:50:17.520 --> 07:50:21.380] and carbon is half of that, is about 1.5%.
+[07:50:21.380 --> 07:50:23.360] But we're striving to get this down to zero.
+[07:50:23.540 --> 07:50:25.880] You don't want your agents fabricating anything.
+[07:50:26.480 --> 07:50:30.720] But they try to fabricate because they want to be helpful,
+[07:50:30.720 --> 07:50:35.960] And we really have to try hard to align them to be helpful, but not by faking it.
+[07:50:37.460 --> 07:50:39.220] How do we reduce the fabrication?
+[07:50:40.080 --> 07:50:43.180] Believe it or not, you have to clean your data, right?
+[07:50:43.560 --> 07:50:52.540] So we filter out lots of training trajectories where there is, you know, not just intended fabrication, but unintended fabrication.
+[07:50:52.860 --> 07:50:55.820] There are lots of claims that are not fully supported.
+[07:50:56.020 --> 07:50:56.880] They're not verified.
+[07:50:57.360 --> 07:50:59.360] We ground in the full trajectory.
+[07:51:00.720 --> 07:51:03.100] I've completed that task and it has a final response,
+[07:51:03.400 --> 07:51:05.660] we actually look at that response
+[07:51:05.660 --> 07:51:08.040] and see all of the actions that the agent had taken
+[07:51:08.040 --> 07:51:10.260] in the trajectory to get to that final solution,
+[07:51:10.440 --> 07:51:12.640] and we look at the steps that were taken.
+[07:51:12.780 --> 07:51:15.500] So you really need to, when the agent says I'm done
+[07:51:15.500 --> 07:51:17.860] and gives you a summary, that needs to be grounded
+[07:51:17.860 --> 07:51:19.080] in the actions that were taken.
+[07:51:19.620 --> 07:51:21.360] And we wanna reward honesty.
+[07:51:21.520 --> 07:51:23.820] So if there's a hard problem,
+[07:51:24.220 --> 07:51:25.640] it's better for the agent to say,
+[07:51:25.780 --> 07:51:28.880] hey, this is my partial progress, it's a hard problem,
+[07:51:30.720 --> 07:51:35.260] partial solution rather than faking the last step and saying, hey, I've solved the problem,
+[07:51:35.380 --> 07:51:35.980] this is done.
+[07:51:39.760 --> 07:51:41.340] Finally, shipping in weeks.
+[07:51:41.620 --> 07:51:43.940] So how are we able to ship so rapidly?
+[07:51:45.040 --> 07:51:52.220] And the biggest reason for that is our internal team of 100,000 plus engineers at Google using
+[07:51:52.220 --> 07:51:53.740] the model for realistic tasks.
+[07:51:54.320 --> 07:51:57.360] Many of you might know Google is a monorepo.
+[07:51:57.840 --> 07:51:59.040] And what is a monorepo?
+[07:52:00.720 --> 07:52:02.820] is one code base, right?
+[07:52:03.180 --> 07:52:05.180] And I don't know how to measure this,
+[07:52:05.240 --> 07:52:07.620] but I think it might be one of the largest mono repos
+[07:52:07.620 --> 07:52:08.100] in the world.
+[07:52:08.560 --> 07:52:11.800] Now that's a really complex code base.
+[07:52:12.640 --> 07:52:15.460] And we have the best people in the world
+[07:52:16.200 --> 07:52:19.620] using a really complex code base to do really complex tasks.
+[07:52:19.940 --> 07:52:22.680] So every time we have a new candidate from post training,
+[07:52:23.060 --> 07:52:26.780] we actually serve that model for our users.
+[07:52:27.120 --> 07:52:30.580] We run blind battles with them through multiple different
+[07:52:30.720 --> 07:52:36.500] candidates. We let users, you know, pick the best model that they want. We also run
+[07:52:36.500 --> 07:52:40.680] ELIS, where under the hood we're routing people to
+[07:52:40.680 --> 07:52:46.160] experimental models and get signal and feedback from that. And we take all of
+[07:52:46.160 --> 07:52:51.700] these signals and friction back into training the next candidate. So this is a
+[07:52:51.700 --> 07:52:56.580] cycle that helps us, you know, rapidly iterate, really train on hard problems,
+[07:52:56.620 --> 07:53:00.440] and as the models get better, the engineers are going to push the model in
+[07:53:00.720 --> 07:53:09.040] ways. This is also why you know we've gone from releasing in weeks to releasing
+[07:53:09.040 --> 07:53:13.920] to releasing in quarters to releasing in weeks. So in the three in the Gemini 3
+[07:53:13.920 --> 07:53:18.880] era we've had launches every two to three months but now we've had six
+[07:53:18.880 --> 07:53:25.700] releases in the last 16 weeks right and we're very excited to have you all try
+[07:53:25.700 --> 07:53:32.820] carbon and hydrogen and Gemini 4 and we're excited for for for us to see what
+[07:53:32.820 --> 07:53:37.420] you all do with it and we're not done so we have a lot more elements to go
+[07:53:37.420 --> 07:53:39.740] through with that you know thank you

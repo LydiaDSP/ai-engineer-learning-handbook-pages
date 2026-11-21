@@ -1,0 +1,229 @@
+当 Devin 接手实现，工程师怎样接住整个交付过程？
+Walden Yan
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[02:33:30.080 --> 02:33:30.660] All right.
+[02:33:31.160 --> 02:33:34.760] Hello everyone, it's a pleasure to be here today.
+[02:33:35.280 --> 02:33:39.640] Quick introduction, I'm Walden, I'm one of the co-founders and chief product officer at Cognition.
+[02:33:39.900 --> 02:33:42.500] We build an AI product called Devon.
+[02:33:43.160 --> 02:33:48.520] I want to spend most of my time here today though, kind of abstracting a bit away from that
+[02:33:48.520 --> 02:33:54.220] and focusing on what are we doing internally as an engineering team to move way faster.
+[02:33:54.760 --> 02:34:00.560] And so the backdrop I would put for all this is this is what our merged PR throughput looks like at Cognition.
+[02:34:01.160 --> 02:34:06.180] The start of this is around 12 months ago, so you're looking at about a snapshot of a
+[02:34:06.180 --> 02:34:06.440] year.
+[02:34:06.640 --> 02:34:12.560] And over this last year, this blue chart here, this 40x, is a 40x in the number of merged
+[02:34:12.560 --> 02:34:14.900] PRs we are producing on our engineering team.
+[02:34:15.780 --> 02:34:20.260] Now you might also notice there's a small black line along the bottom there.
+[02:34:20.360 --> 02:34:20.860] It's easy to miss.
+[02:34:20.980 --> 02:34:25.220] But that 2.7x, that is our engineering headcount growth in the same period.
+[02:34:25.380 --> 02:34:30.500] So we have been hiring engineers, but each of our engineers is now more than 10x more
+[02:34:31.160 --> 02:34:32.320] than they were before.
+[02:34:32.640 --> 02:34:36.780] And I would dare to say that these PRs are just as high quality, if not higher quality,
+[02:34:37.040 --> 02:34:38.300] than they were a year ago.
+[02:34:38.840 --> 02:34:44.260] And so really the crux of what I want to talk about today is what did we do to unlock this
+[02:34:45.100 --> 02:34:46.260] 40X engineering throughput?
+[02:34:48.120 --> 02:34:53.040] And there's a lot of things we did from both the code base to the way we structure engineering
+[02:34:53.040 --> 02:34:57.420] teams that I think are very practical steps you can take if you want to reproduce the
+[02:34:57.420 --> 02:34:57.920] same results.
+[02:35:02.440 --> 02:35:03.500] Let's see a raise of hands.
+[02:35:04.340 --> 02:35:04.780] Cool.
+[02:35:05.180 --> 02:35:08.560] So I'll start with the basics and then I'll work my way up to the more advanced stuff.
+[02:35:09.240 --> 02:35:14.120] The basic idea of a software factory is, yeah, by default, everything should be self-driving.
+[02:35:15.180 --> 02:35:21.180] We have PRs that go from initial bug report to final merge and monitoring and maintenance
+[02:35:21.180 --> 02:35:22.660] without a single human involved.
+[02:35:22.960 --> 02:35:26.280] Oftentimes human judgment is needed, though, and that's where we have escalations.
+[02:35:26.420 --> 02:35:31.380] But by default, our entire software development process is just run by Devon from end to end.
+[02:35:32.580 --> 02:35:37.560] One of the things this means is that the role of the software engineer has to change quite a bit.
+[02:35:38.560 --> 02:35:42.280] Around March of this year, we had this conversation with the engineering team,
+[02:35:42.380 --> 02:35:47.580] and we said, look, if you are right now just picking off tickets off a linear board
+[02:35:47.580 --> 02:35:49.800] and then sending that to an agent and implementing it,
+[02:35:50.000 --> 02:35:52.800] you're not going to really be set up for success in the age of AI,
+[02:35:52.980 --> 02:35:56.860] because anything that is described and can be implemented will be able to send to Devin.
+[02:35:57.560 --> 02:36:01.700] So really, everyone has to change the way that they're developing.
+[02:36:02.420 --> 02:36:07.140] And the way we've enforced this is we've taken our larger teams and we've broken them up into smaller pods.
+[02:36:07.600 --> 02:36:13.580] And the smaller pods not only are given swarms of agents to do work for them, they are given more vertical responsibility.
+[02:36:14.580 --> 02:36:22.240] So instead, you might have only two or three engineers on a team at a time, but they're responsible for everything beyond the engineering as well.
+[02:36:22.380 --> 02:36:24.720] They're responsible for listening to customer bug reports.
+[02:36:25.060 --> 02:36:27.740] They're responsible for doing QA testing.
+[02:36:28.000 --> 02:36:30.460] They're responsible for doing the PMing and product management.
+[02:36:32.420 --> 02:36:34.520] their entire own linear board of things to do,
+[02:36:34.700 --> 02:36:37.220] and they send that to an agent to implement for them.
+[02:36:37.420 --> 02:36:39.380] So it's really a fundamental change in the way
+[02:36:39.380 --> 02:36:40.640] that our engineers do work.
+[02:36:40.860 --> 02:36:43.000] This has been one of the things that we've
+[02:36:43.000 --> 02:36:44.580] implemented over the last year, and we've
+[02:36:44.580 --> 02:36:46.320] been helping a lot of large organizations implement
+[02:36:46.320 --> 02:36:47.720] for themselves as well.
+[02:36:50.180 --> 02:36:51.580] Another thing I'd really like to highlight
+[02:36:51.580 --> 02:36:53.140] is we work from Slack everywhere.
+[02:36:53.380 --> 02:36:56.100] So this is an example of what a customer bug report might look
+[02:36:56.100 --> 02:36:56.340] like.
+[02:36:56.480 --> 02:36:57.800] They send me a video on Slack.
+[02:36:59.140 --> 02:37:01.740] And we just forward bug reports straight
+[02:37:02.860 --> 02:37:09.120] channel. And we tag Devin and say, hey, please fix this. Devin immediately comes up, shows
+[02:37:09.120 --> 02:37:17.240] up at PR, but then also sends back a video with the fix and proof. And this makes our
+[02:37:17.240 --> 02:37:20.900] lives so much easier because I literally don't have to leave Slack for most of my work. We've
+[02:37:20.900 --> 02:37:26.320] abstracted away all the development to be based on evidence, videos, and I can just
+[02:37:26.320 --> 02:37:30.460] send the proof that the fix is ready right back to the customer without having to open
+[02:37:34.240 --> 02:37:39.120] So this is kind of the end goal you want to reach, which is a point where you can do your
+[02:37:39.120 --> 02:37:43.580] entire development lifecycle without opening up an IDE or without opening up a single coding
+[02:37:43.580 --> 02:37:43.880] agent.
+[02:37:46.720 --> 02:37:51.900] But to get to this point, there's a lot of infrastructure we had to change underneath.
+[02:37:52.080 --> 02:37:55.980] And so this is the hard part that really every engineering team has to do if they want to
+[02:37:55.980 --> 02:37:56.440] get to that point.
+[02:37:56.520 --> 02:37:57.820] It's not just you purchase a coding agent.
+[02:37:57.860 --> 02:37:59.460] You've got to go change the way you build.
+[02:37:59.460 --> 02:38:03.680] So before, when we tested our applications, we would be testing them against cloud deployments.
+[02:38:04.100 --> 02:38:07.600] We would have a staging environment, connect to a staging database, connect to live servers,
+[02:38:07.840 --> 02:38:11.440] and then we would have our engineers manually go click through and verify that the flows
+[02:38:11.440 --> 02:38:12.140] work end to end.
+[02:38:12.520 --> 02:38:18.180] We did a big migration to move every service to be able to run locally with Docker Compose.
+[02:38:18.420 --> 02:38:22.440] We made it so every third-party service we have mocked versions to be able to run locally.
+[02:38:22.900 --> 02:38:28.460] And these can all run inside a single virtual machine that every Devon has access to.
+[02:38:29.460 --> 02:38:33.460] coding agent in our company now does not need to touch any live services at all to test
+[02:38:33.460 --> 02:38:40.660] their changes. In fact, these VMs, we rebuild them every hour at the company. Every hour
+[02:38:40.660 --> 02:38:44.480] we pull the latest version of the code, we rebuild the entire code base from scratch
+[02:38:44.480 --> 02:38:49.280] and be able to run very quickly and easily from scratch. And if these builds ever fail
+[02:38:49.800 --> 02:38:54.680] because your code base is rapidly changing, we also have Devon be the first response there.
+[02:38:54.680 --> 02:38:57.760] And they're always immediately fixing these VM snapshots.
+[02:38:57.980 --> 02:39:00.000] So every time we spin up an agent from Slack,
+[02:39:00.220 --> 02:39:02.700] it goes to a fresh machine on a fresh version of the code
+[02:39:02.700 --> 02:39:03.800] base with the latest updates.
+[02:39:04.880 --> 02:39:07.980] And by the way, these agents, you
+[02:39:07.980 --> 02:39:09.940] need to teach them how to test your code base as well.
+[02:39:10.320 --> 02:39:13.000] But the benefit of using cloud coding agents
+[02:39:13.000 --> 02:39:15.440] is that they can self-maintain their training loops.
+[02:39:15.680 --> 02:39:17.540] So that last section there on testing,
+[02:39:18.320 --> 02:39:21.640] Devon will write its own skills for how to test our code base.
+[02:39:22.040 --> 02:39:23.440] The code base will change over time.
+[02:39:24.680 --> 02:39:28.000] But Devon can keep on updating these skills so that it tests it over and over again.
+[02:39:28.620 --> 02:39:32.500] So the end result of this is literally people do not need to open their laptops anymore
+[02:39:32.500 --> 02:39:33.720] to test any code changes.
+[02:39:34.100 --> 02:39:38.500] In fact, several engineers at Cognition have already moved to using iPads for their development
+[02:39:38.500 --> 02:39:39.020] process.
+[02:39:40.220 --> 02:39:41.780] By the way, iPads are also more secure.
+[02:39:42.040 --> 02:39:43.540] You know, you see a lot of these hacks recently.
+[02:39:43.660 --> 02:39:46.760] A lot of it is because of DevOps and people leaking keys.
+[02:39:47.000 --> 02:39:48.520] Who knows what's on your developer machine?
+[02:39:48.640 --> 02:39:49.860] You might have secrets all over the place.
+[02:39:50.200 --> 02:39:53.460] When everything is in the cloud in these controlled VMs, you're actually in a much more secure
+[02:39:56.320 --> 02:39:58.260] I've showed some basic versions of things you can test.
+[02:39:58.360 --> 02:39:59.680] We've also tested advanced multiplayer.
+[02:40:00.000 --> 02:40:01.000] setups, which is really cool.
+[02:40:01.720 --> 02:40:04.400] Oftentimes, when we were developing Devin's ability
+[02:40:04.400 --> 02:40:07.540] to join voice in Zoom calls, we actually had Devin,
+[02:40:07.580 --> 02:40:09.720] when it tests, create multiple accounts,
+[02:40:09.960 --> 02:40:13.000] have them join the same Zoom call, all from within their one
+[02:40:13.000 --> 02:40:16.400] VM, and send voice memos back and forth
+[02:40:16.400 --> 02:40:18.300] to make sure that the functionality is working.
+[02:40:18.480 --> 02:40:19.860] So you can do quite advanced setups
+[02:40:19.860 --> 02:40:21.700] if you really push the limits of your code base.
+[02:40:23.540 --> 02:40:25.720] And actually, on top of all of this,
+[02:40:25.900 --> 02:40:27.940] you obviously want recursive self-improvement.
+[02:40:27.940 --> 02:40:30.780] I think people think about this from the model sense quite a lot.
+[02:40:31.320 --> 02:40:36.000] But actually, if you think about it, every single line of code that's being written,
+[02:40:36.340 --> 02:40:40.840] every single PR that's being generated, every decision, if you have a cloud agent set up,
+[02:40:40.920 --> 02:40:43.000] that's all tracked across your entire code base.
+[02:40:43.200 --> 02:40:46.920] So there's no reason why you shouldn't also be able to run agents on top of that, do the
+[02:40:46.920 --> 02:40:50.760] data analysis and figure out where are we wasting time, where are we wasting tokens,
+[02:40:51.180 --> 02:40:55.880] what things can be turned into scripts, what tests can we be adding to improve this process.
+[02:40:55.880 --> 02:41:01.600] And so we have a channel where Devon every day posts ideas about, hey, if we change our
+[02:41:01.600 --> 02:41:04.720] node setup, we can shave a minute off of our CI.
+[02:41:05.000 --> 02:41:10.380] If we change this lint script, we can catch 20% more of these bugs before they ever hit
+[02:41:10.380 --> 02:41:11.160] AI code review.
+[02:41:11.720 --> 02:41:15.780] And this has actually been a huge unlock where you can just set up these systems and the
+[02:41:15.780 --> 02:41:18.460] agents will go and optimize your software factory for you.
+[02:41:19.040 --> 02:41:20.260] This has been really exciting.
+[02:41:21.620 --> 02:41:26.260] One of the things that I don't hear people talking about a lot, but I think is really
+[02:41:26.260 --> 02:41:30.820] where things are going next is moving from the world where you're giving tasks to your
+[02:41:30.820 --> 02:41:32.920] agents to giving jobs to your agents.
+[02:41:33.960 --> 02:41:35.360] This is a bit of a paradigm shift.
+[02:41:35.520 --> 02:41:37.620] You really have to start treating these things like coworkers.
+[02:41:38.100 --> 02:41:40.540] So what does giving a job to an agent look like?
+[02:41:41.660 --> 02:41:43.860] Imagine I care about back-end performance.
+[02:41:45.000 --> 02:41:47.820] Really this is what the development flow of the future should look like.
+[02:41:47.820 --> 02:41:51.880] You should send to your agent, hey, I want to improve P99 latency of my application.
+[02:41:52.960 --> 02:41:57.120] Instead of you telling it what to do to do that, it should say, okay, P99 latency.
+[02:41:57.400 --> 02:42:00.680] Let me add the telemetry to figure out where our P99 latency is today.
+[02:42:01.260 --> 02:42:04.340] Let me set up alerts so I can figure out where we need to be in the future.
+[02:42:04.760 --> 02:42:09.420] Let me go break down every single task we need to do to be able to move this latency.
+[02:42:09.840 --> 02:42:11.440] Let me create data dog alerts.
+[02:42:11.540 --> 02:42:13.140] Let me create weekly reports in Slack.
+[02:42:13.300 --> 02:42:17.660] And let me send you updates on your phone every day on here's where our P99 latency is
+[02:42:17.820 --> 02:42:18.640] here's how much it's improved.
+[02:42:19.860 --> 02:42:22.360] This is fundamentally the type of systems
+[02:42:22.360 --> 02:42:23.800] that we encourage all of our engineers
+[02:42:23.800 --> 02:42:24.900] to be building at Cognition.
+[02:42:25.160 --> 02:42:27.700] We don't even want you to be prompting your agents
+[02:42:27.700 --> 02:42:28.120] most of the time.
+[02:42:28.200 --> 02:42:29.980] We want you to just be giving your agent goals
+[02:42:29.980 --> 02:42:33.000] that they can work toward over long durations of time.
+[02:42:33.500 --> 02:42:36.600] And anything in your company that you think isn't measurable,
+[02:42:36.940 --> 02:42:37.840] find a way to measure it.
+[02:42:38.720 --> 02:42:40.640] Do you care about your application performance?
+[02:42:41.020 --> 02:42:44.140] Go measure the latency of clicks on your application.
+[02:42:44.380 --> 02:42:46.440] If your application has a lot of weird layout shifts,
+[02:42:47.820 --> 02:42:51.580] boxes and try to figure out how you can minimize layout shifts across your application. There's
+[02:42:51.580 --> 02:42:57.700] obviously P9 latency, but there's also things like onboarding retention. How much of what
+[02:42:57.700 --> 02:43:02.040] you guys do as engineers is things you can boil down to a single number or metric? And
+[02:43:02.040 --> 02:43:05.560] I encourage you that if you can do that, you should just set up an agent to go optimize
+[02:43:05.560 --> 02:43:11.920] that number 24-7. So, a great example of this is inference latency. At Cognition, we're
+[02:43:11.920 --> 02:43:16.640] lucky to be the first receivers of NVIDIA's new class of Verorubin GPUs.
+[02:43:18.300 --> 02:43:20.820] Kernels were not built for these GPUs when we received them.
+[02:43:21.080 --> 02:43:24.940] So we had to, from scratch, figure out how do we build our own inference stack on top
+[02:43:24.940 --> 02:43:26.720] of this new hardware that's coming out.
+[02:43:27.820 --> 02:43:31.420] And agents have allowed us to do this in a way that is much more efficient than before.
+[02:43:32.420 --> 02:43:37.580] So we just tell it, hey, we care about the throughput, our TPM of these GPUs.
+[02:43:37.680 --> 02:43:39.940] Go figure out how to push that to its limits.
+[02:43:41.920 --> 02:43:48.480] of what is about, I guess here, like a week, the agent was able to go, we allocated it
+[02:43:48.480 --> 02:43:52.660] a permanent set of GPUs to work on, it was able to go find different strategies, test
+[02:43:52.660 --> 02:43:57.300] them. The strategies that it found worked best, it was sent to a human engineer for
+[02:43:57.300 --> 02:44:02.800] final approval. But basically, there's eight or nine different things that were roughly
+[02:44:02.800 --> 02:44:08.000] discovered via just giving these agents these high-level goals, and we were able to push
+[02:44:08.000 --> 02:44:14.580] the throughput on these new and very Reuben GPUs from what was worse than the new GB300s
+[02:44:14.580 --> 02:44:18.260] to what is now significantly better than the previous class of GB300 GPUs.
+[02:44:19.040 --> 02:44:22.620] And again, this is all done by just giving an end goal to your agents.
+[02:44:26.500 --> 02:44:33.020] Another example that I like to share with folks, we are a fairly small engineering team.
+[02:44:33.020 --> 02:44:37.500] team, it means we do not have, oftentimes, a bandwidth to fully staff things that we
+[02:44:37.500 --> 02:44:41.900] might want to do, like an Android application. But the other day, one of our engineers on
+[02:44:41.900 --> 02:44:47.180] our team, Sam Yoke, he had this brilliant idea. He said, okay, look, we have a team
+[02:44:47.180 --> 02:44:52.340] of people working on building a great iOS application. Can't we just use that as a blueprint
+[02:44:52.340 --> 02:44:58.740] for our Android application and tell Devin, hey, go maintain parity from our iOS application
+[02:44:58.740 --> 02:45:00.400] to our Android application end-to-end.
+[02:45:01.380 --> 02:45:03.340] And that is exactly what he did.
+[02:45:03.720 --> 02:45:07.300] But it wasn't just, hey, one devin session to go do all this.
+[02:45:07.480 --> 02:45:10.720] He said, set up permanent hooks against our code base
+[02:45:10.720 --> 02:45:12.320] to monitor the iOS application.
+[02:45:12.780 --> 02:45:15.300] You know, go listen to the Slack channels
+[02:45:15.300 --> 02:45:17.720] for user feedback about our applications.
+[02:45:18.220 --> 02:45:20.660] And then go recursively improve our application.
+[02:45:20.960 --> 02:45:23.560] Go do live QA testing of every detail
+[02:45:23.560 --> 02:45:24.780] and making sure it all works.
+[02:45:25.680 --> 02:45:28.140] Syncing these things live has been really cool.
+[02:45:28.740 --> 02:45:31.920] And I think the final results here are actually quite sick.
+[02:45:38.720 --> 02:45:43.360] So we really just gave our agent this one high-level prompt, which is, hey, go manage
+[02:45:43.360 --> 02:45:44.580] the entire Android application.
+[02:45:44.940 --> 02:45:49.080] And over the course of 44 days, we have a working application, which we'll be putting
+[02:45:49.080 --> 02:45:49.480] out soon.
+[02:45:50.480 --> 02:45:55.820] But as a time lapse, most days, there's not a single human message going to this agent
+[02:45:55.820 --> 02:45:56.360] working on it.
+[02:45:57.400 --> 02:46:01.900] And on those days, you know, it's merging upward of like 40, 50 PRs a day.
+[02:46:03.400 --> 02:46:09.580] All of this is being live QA tested against the iOS application, pixel for pixel, testing
+[02:46:09.580 --> 02:46:13.700] what are, you know, escalating only the most important decisions to a human at the end
+[02:46:13.700 --> 02:46:14.040] of the day.
+[02:46:16.300 --> 02:46:19.180] And most of the time, our engineers don't even need to open Devon.
+[02:46:19.240 --> 02:46:21.860] They're just from Slack looking at the recordings that it sends back to them.
+[02:46:27.880 --> 02:46:30.800] So, in the end, the human is barely doing anything in this loop.
+[02:46:30.940 --> 02:46:36.180] This is how many messages a human actually had to send to our agent in this entire process.
+[02:46:38.060 --> 02:46:38.500] Yeah.
+[02:46:38.720 --> 02:46:40.860] And it's not a slop application.
+[02:46:41.320 --> 02:46:45.420] This is actually something that we will be going live with very soon.
+[02:46:49.560 --> 02:46:50.140] So, cool.
+[02:46:52.040 --> 02:46:57.340] I think the end message from all of this is if you set up the loops for your agents correctly,
+[02:46:57.680 --> 02:46:59.800] you can do some pretty incredible stuff.
+[02:47:00.280 --> 02:47:04.860] So I think really most teams are limited by the amount of ambition they have, so it's
+[02:47:04.860 --> 02:47:05.720] time to be ambitious.
+[02:47:06.020 --> 02:47:06.380] Thank you.

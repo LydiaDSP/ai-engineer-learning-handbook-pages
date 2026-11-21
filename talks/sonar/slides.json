@@ -1,0 +1,35 @@
+[
+  {
+    "id": "four-loops",
+    "after": "p13",
+    "title": "把验证加入软件交付的多个环节",
+    "time": "03:14:42",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=11682s",
+    "en": "assets/four-loops-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把验证加入软件交付的多个环节</h3><dl><div><dt>合并前</dt><dd>PR 检查把审查和运行结果送回改动阶段。</dd></div><div><dt>部署后</dt><dd>用生产信号验证发布后的实际行为。</dd></div></dl></div>",
+    "note": "这是循环总览展开中的一帧。维护和知识回流由讲者在后续详细说明。",
+    "sourceSeconds": 11682
+  },
+  {
+    "id": "merge-gate",
+    "after": "p23",
+    "title": "把审查证据交给合并门禁",
+    "time": "03:18:14",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=11894s",
+    "en": "assets/merge-gate-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把审查证据交给合并门禁</h3><dl><div><dt>审查发现</dt><dd>保留问题及其处理状态。</dd></div><div><dt>质量门禁</dt><dd>记录静态分析的通过或失败状态和对应指标。</dd></div></dl></div>",
+    "note": "画面展示门禁证据的前两层，讲者还讨论了功能验证和风险分级。",
+    "sourceSeconds": 11894
+  },
+  {
+    "id": "knowledge-loop",
+    "after": "p34",
+    "title": "把已有经验送回下一轮工作",
+    "time": "03:22:15",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=12135s",
+    "en": "assets/knowledge-loop-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把已有经验送回下一轮工作</h3><dl><div><dt>收集与整理</dt><dd>汇总架构决定、产品意图、团队标准和容易踩的坑。</dd></div><div><dt>供团队使用</dt><dd>把整理后的经验交给编程和审查流程，再从新一轮工作继续学习。</dd></div></dl></div>",
+    "note": "图中依次标出收集、整理、提供和学习。",
+    "sourceSeconds": 12135
+  }
+]

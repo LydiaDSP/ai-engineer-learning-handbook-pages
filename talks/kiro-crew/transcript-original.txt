@@ -1,0 +1,337 @@
+Agent 越来越快，团队的交付流程卡在哪里
+Doug Clauson
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[03:23:23.680 --> 03:23:24.820] Well, good afternoon, folks.
+[03:23:25.160 --> 03:23:25.860] Wow, that's loud.
+[03:23:25.960 --> 03:23:26.580] You guys hear me okay?
+[03:23:26.820 --> 03:23:27.660] I take it yes.
+[03:23:28.420 --> 03:23:30.620] I'm going to start with a question here today.
+[03:23:30.960 --> 03:23:34.740] How many people feel like they're getting everything that they could possibly get from
+[03:23:34.740 --> 03:23:35.580] their agents today?
+[03:23:36.160 --> 03:23:40.600] And that the promise of AI for your team has been delivered and you're satisfied with where
+[03:23:40.600 --> 03:23:40.960] you are?
+[03:23:41.240 --> 03:23:41.900] Show of hands.
+[03:23:43.260 --> 03:23:44.860] This is about what I usually see.
+[03:23:45.040 --> 03:23:46.300] Like there's very few people.
+[03:23:48.840 --> 03:23:51.500] And for us at Amazon, it's actually the very same.
+[03:23:51.740 --> 03:23:55.720] Like when we first started this process, what happened is we were seeing between 10 and 20
+[03:23:57.660 --> 03:24:00.320] chart over here, you know, 1.1X to 1.2X.
+[03:24:00.560 --> 03:24:05.300] And what we noticed was what was happening is teams were bolting AI onto a process that
+[03:24:05.300 --> 03:24:06.140] they already had.
+[03:24:06.300 --> 03:24:09.580] So they're taking their normal process that they were doing, they're trying to attach
+[03:24:09.580 --> 03:24:13.240] some AI here, attach some AI there, and expecting that they're going to get this massive result
+[03:24:13.240 --> 03:24:13.700] out of it.
+[03:24:14.680 --> 03:24:18.580] In addition, what we saw was teams were only shrinking the code generation phase.
+[03:24:18.920 --> 03:24:22.560] And as you all know, you guys are all experts in this, the code generation phase has gotten
+[03:24:22.560 --> 03:24:25.060] better and better and better as time has gone on.
+[03:24:25.060 --> 03:24:27.900] but there's a lot more to software development than just code generation.
+[03:24:29.380 --> 03:24:31.200] We did a study in June.
+[03:24:31.640 --> 03:24:35.080] I published a blog post on it as well.
+[03:24:35.540 --> 03:24:40.040] And in the study, we looked at teams who changed how they worked in our Amazon Stores division,
+[03:24:40.040 --> 03:24:43.740] and we looked at what kind of returns were they getting on their AI investment.
+[03:24:43.980 --> 03:24:47.020] Many of these teams were going slower before they were able to go faster,
+[03:24:47.080 --> 03:24:52.820] but the median team was seeing a 4.5x return in terms of productivity improvement,
+[03:24:52.820 --> 03:24:56.120] and specifically what this was, was normalized development velocity
+[03:24:56.120 --> 03:24:58.620] against that own team's historical baseline.
+[03:24:59.220 --> 03:25:02.620] And we had some teams in the study who exceeded 10x, right?
+[03:25:02.720 --> 03:25:04.560] So we're talking significantly more productive.
+[03:25:05.080 --> 03:25:07.880] And what they did was just they changed the way they were working.
+[03:25:08.420 --> 03:25:12.560] But I see this still so often, and just by your show of hands, the same thing, right,
+[03:25:12.600 --> 03:25:16.200] where people don't feel like that promise of AI has quite been delivered yet.
+[03:25:17.840 --> 03:25:20.640] Now, my name's Doug Clausen. I'm a product manager on the Kiro team.
+[03:25:20.640 --> 03:25:23.900] team, and I've been on this AI DevTool journey really since the beginning.
+[03:25:24.760 --> 03:25:28.100] And I still see, like I said, teams who aren't quite getting what they expect.
+[03:25:29.740 --> 03:25:34.040] Now as a PM on Kiro, I get asked literally the same two questions all the time.
+[03:25:34.200 --> 03:25:36.140] Like this is a story of my life and meetings.
+[03:25:36.460 --> 03:25:37.760] What are you shipping next?
+[03:25:38.200 --> 03:25:40.240] And they want to know, like what are the new features?
+[03:25:40.640 --> 03:25:43.260] What new use cases might be enabled by those new features?
+[03:25:43.520 --> 03:25:45.100] And I can walk through that and that's great.
+[03:25:45.680 --> 03:25:49.280] The other question, and oftentimes the more interesting one, because everybody builds
+[03:25:50.880 --> 03:25:52.000] are we doing this right?
+[03:25:52.700 --> 03:25:55.060] People feel like they've hit some sort of local maximum
+[03:25:55.060 --> 03:25:57.140] and they're scared that somebody else has figured out
+[03:25:57.140 --> 03:25:59.040] how to use the AI better than they have
+[03:25:59.040 --> 03:26:00.360] and they're just going to get surpassed.
+[03:26:01.140 --> 03:26:03.540] We're actually going to spend today on the second question here,
+[03:26:03.680 --> 03:26:04.580] not the first question.
+[03:26:05.740 --> 03:26:07.740] I'm going to walk you through how one of our teams,
+[03:26:07.960 --> 03:26:11.300] our Kuro Crew team, is shipping now thousands of PRs per week,
+[03:26:11.680 --> 03:26:13.460] the big lessons we learned on the way
+[03:26:13.460 --> 03:26:14.940] and sort of the process we went through
+[03:26:14.940 --> 03:26:16.140] to get to where we are today.
+[03:26:16.860 --> 03:26:19.000] And then at the end of this, I'm going to leave you with a workshop
+[03:26:20.640 --> 03:26:22.780] for a factory in Kiro Crew, you can go and do that as well.
+[03:26:25.580 --> 03:26:28.400] Excuse me. Now, first off, just some bit of context on Kiro.
+[03:26:28.620 --> 03:26:33.960] So, Kiro is an agentic development system that lets you plan, build, and ship software with AI agents.
+[03:26:34.500 --> 03:26:40.240] It works wherever you work. So, up here I'm showing you we have an IDE client, a CLI, a web, and a mobile client.
+[03:26:40.380 --> 03:26:42.920] And then I just talked just briefly, we have Kiro Crew as well.
+[03:26:43.940 --> 03:26:49.640] We support a variety of models. So, we have both the Anthropic models and the OpenAI models in Kiro,
+[03:26:50.640 --> 03:26:53.920] as well as some open weight models. I'll talk a little bit later how we use that and how
+[03:26:53.920 --> 03:26:59.240] that's been beneficial to us. And just like the rest of AWS, we really push the barrier
+[03:26:59.240 --> 03:27:03.480] on cost performance. So when we start saving money and we make the models cheaper to run
+[03:27:03.880 --> 03:27:07.700] and the agents cheaper to run, we end up passing those savings on to you. So we're really happy
+[03:27:07.700 --> 03:27:11.240] with where Kiro has gotten on that Pareto front of sort of cost performance and cost
+[03:27:11.240 --> 03:27:15.600] effectiveness. Excuse me. Now, like I said, we're going to spend the day talking about
+[03:27:15.600 --> 03:27:20.920] Kiro Crew. And Kiro Crew was built to run many Kiro agents at the same time. It's all
+[03:27:20.920 --> 03:27:26.740] open source. It actually started internally as an internal Amazon product where some engineers
+[03:27:26.740 --> 03:27:31.200] grabbed our CLI and they're like, hey, we want to extend this. It was during the whole OpenClaw
+[03:27:31.200 --> 03:27:35.460] craze, if anybody has their Mac minis at home, they've been running those. It happened during
+[03:27:35.460 --> 03:27:39.060] that craze where people wanted to figure out how they could get these agents to be more like
+[03:27:39.060 --> 03:27:44.500] personal assistants. And so this MeshClaw product internally was developed, got around 40,000 new
+[03:27:45.860 --> 03:27:47.780] Amazon developers on it in the first two months.
+[03:27:48.260 --> 03:27:51.520] And so us at the Kiro team were like, hey, we should, since it was built on Kiro, we
+[03:27:51.520 --> 03:27:53.120] should take that and extend it and release it.
+[03:27:53.180 --> 03:27:54.120] And so we've done that now.
+[03:27:54.700 --> 03:27:55.940] And Kiro Crew is released.
+[03:27:56.300 --> 03:27:57.140] It's open source.
+[03:27:58.760 --> 03:28:03.100] And if I talk about what have we seen with the Kiro Crew team and our team in terms of
+[03:28:03.100 --> 03:28:07.780] building and developing this, we shipped on August 4th externally.
+[03:28:08.160 --> 03:28:10.840] And again, it's open source, so you can go look at all the source and look at all the
+[03:28:10.840 --> 03:28:11.680] PRs that came through.
+[03:28:12.260 --> 03:28:16.340] We go by one philosophy, that if we don't use it and love it, then we don't ship it.
+[03:28:17.160 --> 03:28:22.200] Since we launched, we've merged about 16,500 PRs with a very small team.
+[03:28:22.900 --> 03:28:25.720] Just last week, there was over 3,000 in a single week alone.
+[03:28:26.280 --> 03:28:31.220] Take contributions from external entities, both internal to Amazon and external to Amazon,
+[03:28:31.380 --> 03:28:33.960] people who just want to contribute and take a good idea with open source.
+[03:28:35.560 --> 03:28:39.860] And if you look at the chart here, we sort of leveled out at around, you know, if you
+[03:28:41.680 --> 03:28:47.880] out at around high 100, 600 to 800, sort of the first few months after we shipped.
+[03:28:48.320 --> 03:28:52.500] And then you'll see in like 928, right, all of a sudden we break 1,000 again and then
+[03:28:52.500 --> 03:28:57.480] we're sort of hovering around, I'll average it out in my head and say 1.2K-ish, right?
+[03:28:57.980 --> 03:29:00.120] And then you can see we made another step function improvement.
+[03:29:00.420 --> 03:29:04.660] And while I'm showing you PRs on this chart, what we really care about among the team is
+[03:29:04.660 --> 03:29:09.400] not necessarily the PRs, but we care about how many sessions can an individual developer
+[03:29:10.060 --> 03:29:11.240] operate at the same time.
+[03:29:12.360 --> 03:29:15.440] And I want to be clear that this is not a one-size-fits-all thing,
+[03:29:15.460 --> 03:29:18.020] so as I walk through this, just keep that in mind,
+[03:29:18.120 --> 03:29:19.640] that what works for us may not work for you,
+[03:29:19.720 --> 03:29:21.800] and so you should challenge what are you doing
+[03:29:21.800 --> 03:29:23.400] that you could learn from this.
+[03:29:25.000 --> 03:29:28.320] Last thing on this one, about one in ten of these is features.
+[03:29:28.920 --> 03:29:31.860] So I always get asked, like, man, 3,300 features,
+[03:29:31.900 --> 03:29:33.140] that's a lot of features in a week.
+[03:29:33.180 --> 03:29:34.380] Well, no, it's not all features, right?
+[03:29:34.680 --> 03:29:36.400] This is what shipping with speed looks like.
+[03:29:36.840 --> 03:29:41.620] A lot of, so I get asked, okay, so about one in ten of these is a feature, so about 10%.
+[03:29:42.060 --> 03:29:45.180] And so if 10% are a feature, what are the other 90%?
+[03:29:45.560 --> 03:29:47.620] Well, for us, it's tests.
+[03:29:47.860 --> 03:29:49.180] Tests is a big part of what we do.
+[03:29:50.580 --> 03:29:54.440] It's, I'll say, paper cut fixes for things we've already shipped that we're just sort
+[03:29:54.440 --> 03:29:57.580] of learning about how it's getting used and we're massaging it a little bit.
+[03:29:58.040 --> 03:30:01.920] It's bug fixes as well, and that's really what shipping at a high speed with velocity
+[03:30:01.920 --> 03:30:02.520] looks like, right?
+[03:30:03.040 --> 03:30:06.300] It's not all new features, but if you just think about 10% of our features,
+[03:30:06.480 --> 03:30:09.160] there's still hundreds of features, new features being shipped over this timeline.
+[03:30:11.900 --> 03:30:16.040] If I think about sort of how did we evolve with our development cycle?
+[03:30:16.320 --> 03:30:19.740] We started, if I go back to when our CLI product initially launched,
+[03:30:20.000 --> 03:30:21.540] it was one session, one person.
+[03:30:21.880 --> 03:30:25.380] So I'm sure many of us experienced this when these new agents came out and
+[03:30:25.380 --> 03:30:28.880] I was typing and it would then work and then it would stop working and
+[03:30:28.880 --> 03:30:29.860] then I would type again, right?
+[03:30:29.900 --> 03:30:30.880] We'd just go back and forth.
+[03:30:33.520 --> 03:30:37.100] session, right? I said we're trying to optimize sessions per person. Then we move to parallel
+[03:30:37.100 --> 03:30:41.080] sessions where instead of just running one session, I'm looking at, you know, maybe I'm
+[03:30:41.080 --> 03:30:44.640] running two or three, but I'm running them in the same manner, right? And the problem
+[03:30:44.640 --> 03:30:49.740] with both of these is that if you make yourself the feedback loop, you are now the bottleneck,
+[03:30:49.800 --> 03:30:53.840] right? These agents got faster long before you're going to be able to keep up. And so
+[03:30:53.840 --> 03:30:56.900] these first two sessions, they're just going to kill in one chart here where it's, you
+[03:30:56.900 --> 03:31:01.600] know, we got to two or three sessions per person, but we sort of topped out. Now, stage
+[03:31:03.520 --> 03:31:08.280] and with a memory, a new session now all of a sudden knows your conventions, right, so
+[03:31:08.280 --> 03:31:12.260] implicit memories. And then schedules make it so you don't have to kick all of the work
+[03:31:12.260 --> 03:31:17.540] off on your own. Things can happen on a schedule. The thing we learned here was that schedules
+[03:31:17.540 --> 03:31:21.620] only help if your machine is on. So in the previous phases, most of our engineers were
+[03:31:21.620 --> 03:31:26.000] running locally, right, as I'm sure many of you do still today. But moving to remote ends
+[03:31:26.000 --> 03:31:29.500] up making it so you no longer have to worry about is it going to run because I have an
+[03:31:29.500 --> 03:31:34.060] always on machine, something we're very good at at AWS, so obviously we are running remote.
+[03:31:35.460 --> 03:31:39.140] But what happened then is this allowed us to sort of, I'll say, build up to between
+[03:31:39.140 --> 03:31:43.280] 10 and 20 sessions, right? And then we sort of plateaued again. We were unable to sort
+[03:31:43.280 --> 03:31:48.140] of break that barrier with just memory and schedules. Because much of what we were doing
+[03:31:48.540 --> 03:31:51.120] was still being the glue between the sessions, right?
+[03:31:52.820 --> 03:31:57.380] And then if we, our next phase was a pipeline, but not a CI, CD pipeline like you might be
+[03:31:57.380 --> 03:31:59.220] thinking, but instead more like an assembly line.
+[03:32:00.060 --> 03:32:04.160] I actually have, my previous life I worked in aerospace, so a lot of assembly lines,
+[03:32:04.260 --> 03:32:06.980] and the hard thing with assembly lines is non-standard work, right?
+[03:32:07.260 --> 03:32:10.520] So if everything is exactly the same as it flows through the system, an assembly line
+[03:32:10.520 --> 03:32:11.020] works great.
+[03:32:11.320 --> 03:32:15.580] As soon as you get non-standard work, all of a sudden it becomes difficult, and I'm sure
+[03:32:15.580 --> 03:32:19.120] all of you know this, but software doesn't follow the exact same path every time.
+[03:32:19.880 --> 03:32:24.280] And so what we found our own teams doing then was this, sorry, this got us to maybe like
+[03:32:24.280 --> 03:32:27.220] 30, 20, 30, 40 sessions-ish.
+[03:32:27.600 --> 03:32:31.680] But what happened was is our team was then trying to unblock the assembly line or the
+[03:32:31.680 --> 03:32:32.300] pipeline, right?
+[03:32:32.740 --> 03:32:36.340] So as things came up, if we thought something was a small issue and then it turned into
+[03:32:36.340 --> 03:32:38.500] a big issue, sometimes the assembly line would be stuck.
+[03:32:38.880 --> 03:32:40.780] Somebody would have to come in and unblock that thing.
+[03:32:40.880 --> 03:32:41.680] Maybe you restart it.
+[03:32:41.740 --> 03:32:42.560] Maybe you replan it.
+[03:32:43.380 --> 03:32:47.920] And so this is only going to carry us so far because, again, we are in the midst of the
+[03:32:47.920 --> 03:32:48.220] agent.
+[03:32:48.340 --> 03:32:50.700] We're blocking the agent more than the agent wants to work.
+[03:32:53.440 --> 03:32:54.620] And so what did we do for that?
+[03:32:54.900 --> 03:32:56.740] Well, we launched a thing called Ultra Mode.
+[03:32:57.780 --> 03:33:01.420] Ultra Mode is still, just to be clear, if you go try it and look for it,
+[03:33:01.500 --> 03:33:04.520] it's still in the developer preview, so it's behind a feature flag.
+[03:33:04.620 --> 03:33:06.360] But because it's open source, the code is all there.
+[03:33:06.480 --> 03:33:08.360] If you want to go try it, you can try it out.
+[03:33:09.040 --> 03:33:11.400] As I said up front, if we don't love it, we don't ship it.
+[03:33:11.560 --> 03:33:14.460] So we're still sort of finishing, putting the finishing touches on this one.
+[03:33:15.040 --> 03:33:18.280] But I wanted to talk about it anyway, because it takes you from being,
+[03:33:18.280 --> 03:33:20.980] What we did was, if you look at this middle part here,
+[03:33:21.660 --> 03:33:24.400] where we are the person driving the effort,
+[03:33:24.680 --> 03:33:26.060] these are the things that we might have been doing.
+[03:33:26.320 --> 03:33:28.500] So watching for problems was one of the biggest ones,
+[03:33:28.640 --> 03:33:30.060] and then trying to fix the assembly line
+[03:33:30.060 --> 03:33:31.480] when the problem came up.
+[03:33:31.960 --> 03:33:33.280] Maybe you're judging a result,
+[03:33:33.380 --> 03:33:34.940] or you're deciding what to do next.
+[03:33:35.880 --> 03:33:38.180] What Ultra Mode does is it does that job for you, right?
+[03:33:38.280 --> 03:33:40.120] So you put an agent on top of your agents
+[03:33:40.120 --> 03:33:42.520] that then is responsible for doing that,
+[03:33:42.640 --> 03:33:44.880] defining the goal based on whatever you're trying to accomplish,
+[03:33:45.200 --> 03:33:47.180] starting things, watching for problems,
+[03:33:48.700 --> 03:33:51.820] And this is getting us today to 50 plus sessions.
+[03:33:52.140 --> 03:33:56.420] And so if you think about where we started with a single session and a single person,
+[03:33:56.660 --> 03:34:00.800] now if a single developer is doing 50 plus sessions, that's how you get that sort of,
+[03:34:00.840 --> 03:34:03.380] the volume in the PR chart I showed you earlier.
+[03:34:04.020 --> 03:34:06.440] And we can already see the next wall that's coming.
+[03:34:07.800 --> 03:34:09.880] The orchestrators working with other orchestrators,
+[03:34:10.080 --> 03:34:12.440] and then the governance around what you want that to be,
+[03:34:12.520 --> 03:34:14.240] and the guardrails become even more important, right?
+[03:34:16.220 --> 03:34:17.880] So again, that's how we got the volume.
+[03:34:18.280 --> 03:34:22.280] So the five phases we went through, Ultra Mode has been a game changer for us, as was
+[03:34:22.280 --> 03:34:22.980] the assembly line.
+[03:34:23.680 --> 03:34:26.800] And I invite you to try those ideas if you think they might work for you.
+[03:34:27.840 --> 03:34:31.540] The next thing I wanted to talk about, though, was what did we learn from this?
+[03:34:31.740 --> 03:34:34.460] What are the biggest things that prevented us from shipping quickly?
+[03:34:35.780 --> 03:34:37.940] The first one is test everything.
+[03:34:38.140 --> 03:34:40.140] And now this is not a new lesson, right?
+[03:34:40.220 --> 03:34:41.640] Everybody in software knows this.
+[03:34:41.780 --> 03:34:42.620] We should be doing this.
+[03:34:42.620 --> 03:34:47.860] But I still see people too often discount the value this is providing.
+[03:34:48.240 --> 03:34:51.560] And this is going to build in with the next one behind this around reviews.
+[03:34:52.080 --> 03:34:55.660] Like, if you think about where do you get confidence to ship something, I think many
+[03:34:55.660 --> 03:34:59.300] people still feel like, hey, I get confidence because I looked at all the code and I know
+[03:34:59.300 --> 03:35:00.520] exactly what that code does.
+[03:35:01.360 --> 03:35:05.640] Again, if you do that, like, maybe that's a good thing, but where we have gotten our
+[03:35:05.640 --> 03:35:09.580] confidence and Amazon's always been very test-driven is from the tests.
+[03:35:09.580 --> 03:35:12.200] because you might not be able to look at something every time,
+[03:35:12.420 --> 03:35:15.880] but you can certainly test something every time in the exact same way
+[03:35:15.880 --> 03:35:18.200] and test the result, right, and come out with the result.
+[03:35:20.080 --> 03:35:23.320] And so for us, again, quality really becomes a testing problem,
+[03:35:23.320 --> 03:35:25.420] and we're spending a significant portion of our time,
+[03:35:25.520 --> 03:35:27.280] around 20% just on testing today.
+[03:35:29.040 --> 03:35:31.520] The other big thing we learned, and this is a bigger one
+[03:35:31.520 --> 03:35:34.220] and also a contentious topic, is reviews.
+[03:35:35.080 --> 03:35:38.720] So quick show of hands, how many people have done a review with an agent
+[03:35:39.580 --> 03:35:42.800] thinking that there's going to be like one or two comments, and then you come back and
+[03:35:42.800 --> 03:35:46.900] you're like, oh, my God, like, this is terrible code, right?
+[03:35:46.980 --> 03:35:48.100] There's comments everywhere.
+[03:35:48.460 --> 03:35:49.580] We had the same problem.
+[03:35:49.760 --> 03:35:53.260] So we originally wrote a review agent that would review everything, and our goal was
+[03:35:53.260 --> 03:35:54.680] to fix every single comment.
+[03:35:55.080 --> 03:36:00.040] Well, as you guys, I heard the laughter, so as you expect, you submit changes, so you
+[03:36:00.040 --> 03:36:05.500] submit a PR, you get the feedback on that PR, you come back, you submit it again, after
+[03:36:05.500 --> 03:36:08.560] you fix it, you come back, and now it's three new things that weren't even tested, weren't
+[03:36:09.700 --> 03:36:11.500] four things on the things you already fixed.
+[03:36:11.740 --> 03:36:14.400] You submit it again, and this cycle just continues to repeat.
+[03:36:14.860 --> 03:36:18.460] So what we've done with reviews is now we categorize the reviews
+[03:36:18.460 --> 03:36:21.400] or triage them into blocking and non-blocking issues.
+[03:36:21.620 --> 03:36:24.480] So, for example, something that breaks the build.
+[03:36:24.940 --> 03:36:26.700] If there's something, obviously, that breaks the build,
+[03:36:26.820 --> 03:36:28.500] that's a blocking thing, and we need to go fix that
+[03:36:28.500 --> 03:36:29.580] before we merge this PR.
+[03:36:30.180 --> 03:36:32.420] Changing a variable name, not a big deal.
+[03:36:32.620 --> 03:36:34.960] We'll take care of that later, so we let those things slide through.
+[03:36:36.040 --> 03:36:37.640] The other thing that we've done with reviews
+[03:36:39.620 --> 03:36:43.180] feedback for an agent. And as you can see by the process here that I'll walk you through in a second,
+[03:36:43.320 --> 03:36:47.860] this is not that fast. And so we have a fast gate that really double checks things really quickly
+[03:36:47.860 --> 03:36:50.860] to make sure that things are in the right folders before we move on to our reviews.
+[03:36:51.880 --> 03:36:56.260] We have six reviewers actually that run. Two code reviewers, both in different models,
+[03:36:56.560 --> 03:37:01.160] with different model families. And the intent there is to really find, to not make sure you
+[03:37:01.160 --> 03:37:04.180] don't have a model gap, right, so that the model wasn't trained on something that we don't catch.
+[03:37:04.440 --> 03:37:08.520] This is where we use the Anthropic and OpenAI models or an open weight model
+[03:37:10.360 --> 03:37:15.060] levers. We run a design review that asks, does this thing have the right shape, meaning
+[03:37:15.480 --> 03:37:20.280] is what I'm building, like if I'm adding another cache in this PR, can the cache I already
+[03:37:20.280 --> 03:37:25.260] have take care of this issue or not? We have a first principles review that says, is this
+[03:37:25.260 --> 03:37:30.180] change addressing the real problem? We have a UX review as well, that if you're making
+[03:37:30.180 --> 03:37:33.660] a, let's say you're creating a new error message, we have an agent decide whether or not that
+[03:37:33.660 --> 03:37:37.520] error message, the human will know what to do with that error message based on what we've
+[03:37:37.520 --> 03:37:42.140] we've published. And then we're consistently tightening our security posture. Now, each
+[03:37:42.140 --> 03:37:45.480] one of these reviewers gets one vote. It's either yes or no. It's red or it's green.
+[03:37:45.740 --> 03:37:49.720] If everything's green, it goes on to merge. If not, we go to a prepare PR skill that's
+[03:37:49.720 --> 03:37:53.460] in the repo, so you can check the skill out if you want. And that prepare PR skill then
+[03:37:53.460 --> 03:37:59.780] tries to resolve the issues as we go. The third lesson, and sorry, on the reviews,
+[03:37:59.860 --> 03:38:03.960] one more thing. Like I said, we've stopped reviewing code a long time ago. We have moved
+[03:38:03.960 --> 03:38:06.300] on and what we're responsible for is not the code itself.
+[03:38:06.660 --> 03:38:07.880] See, this actually goes back, it does.
+[03:38:08.220 --> 03:38:10.220] What we're responsible for is the review record.
+[03:38:10.380 --> 03:38:12.360] Did it follow the process as we expected?
+[03:38:12.680 --> 03:38:14.040] And did we get the results we wanted?
+[03:38:14.100 --> 03:38:15.700] If not, we fixed the review process.
+[03:38:17.520 --> 03:38:18.340] Two other things.
+[03:38:18.600 --> 03:38:21.560] So one, the overengineering problem.
+[03:38:21.800 --> 03:38:26.160] So we have a specific role to teach our agents to subtract, not just add.
+[03:38:26.300 --> 03:38:29.760] And so we try to remove code from the process as we go to prevent that overengineering.
+[03:38:30.260 --> 03:38:32.580] We use that same philosophy on our roadmap as well.
+[03:38:33.960 --> 03:38:37.960] becoming very cheap or has become very cheap, right? It's very easy for us now with code
+[03:38:37.960 --> 03:38:41.500] to say, like, yes, I'll do that and I'll do all of these things, whereas we used to have
+[03:38:41.500 --> 03:38:45.920] to be very particular about what we were going to build. The problem with saying yes all
+[03:38:45.920 --> 03:38:50.320] the time is that you might lose your product shape, and we're already seeing this in KuroKribit,
+[03:38:50.360 --> 03:38:54.540] that it's moving so fast and so quickly that you don't want your users to get caught in
+[03:38:54.540 --> 03:38:58.200] the noise. And so, again, use the same principle on the roadmap is what we do.
+[03:38:59.560 --> 03:39:04.620] And then last thing on lessons is you're not done once you merge a PR, right? There's still other
+[03:39:04.620 --> 03:39:09.440] phases. And so for us, merging is not the last check that we do. Instead, we run a release gate
+[03:39:09.440 --> 03:39:14.940] where the agent will download the repo, installs it, runs it, and then checks the core flows to
+[03:39:14.940 --> 03:39:18.380] make sure that the overall system is still in good shape before we would do a release.
+[03:39:18.920 --> 03:39:23.480] And then we do security all the time as well. So we have every hour, every day, and always on,
+[03:39:23.480 --> 03:39:25.320] every hour against our security guidance,
+[03:39:25.600 --> 03:39:27.600] every day against an app-sec review,
+[03:39:27.820 --> 03:39:29.500] and then an always-on pen test agent.
+[03:39:30.160 --> 03:39:32.300] So again, merging is not the end of the process.
+[03:39:32.480 --> 03:39:33.800] You have to crunch everything down.
+[03:39:35.440 --> 03:39:36.900] So I'm going to come back to where I started.
+[03:39:37.380 --> 03:39:39.380] Are you getting everything from your agent?
+[03:39:39.740 --> 03:39:41.640] And many of us don't feel like we are yet.
+[03:39:41.940 --> 03:39:43.400] And what I'm going to offer here today,
+[03:39:43.680 --> 03:39:44.960] or what I've tried to offer is,
+[03:39:45.180 --> 03:39:49.040] the agent was fast enough to work on this a long time ago,
+[03:39:49.080 --> 03:39:50.760] and it's only getting better and better and better.
+[03:39:50.760 --> 03:39:58.300] And so what we have been doing is challenging how we work and figuring out, like, where are we preventing the agent from working as quickly as possible?
+[03:39:58.840 --> 03:39:59.980] And I've given you numerous...
+[03:40:00.000 --> 03:40:04.840] examples today. Again, I'll just call it a couple of them here. So it started with our attention span,
+[03:40:05.020 --> 03:40:09.240] right? When I was the feedback loop, I could no longer ship because I was the feedback loop. When
+[03:40:09.240 --> 03:40:13.620] I wasn't there, the agent stopped working. The laptop lid closing. All of a sudden, you lose
+[03:40:13.620 --> 03:40:18.620] your connection. Moving to remote can solve that, right? The fixed pipeline with a fixed shape that
+[03:40:18.620 --> 03:40:23.800] can't respond when things go slightly off path. Again, how do you fix that? We fixed it with an
+[03:40:23.800 --> 03:40:28.980] orchestrator, ultra mode. The endless reviews that I think I've gone into probably more depth than
+[03:40:30.040 --> 03:40:33.100] the endless review cycle and then the loop that only adds, right?
+[03:40:33.180 --> 03:40:35.600] The loop that only adds things to it and doesn't try to subtract.
+[03:40:38.040 --> 03:40:42.140] And so I'll leave you with, I also wanna be clear that this is going to be a
+[03:40:43.640 --> 03:40:44.660] continual adjustment, right?
+[03:40:44.740 --> 03:40:46.600] This is not, this may be what works for us today.
+[03:40:46.720 --> 03:40:49.000] I promise you another month, we're gonna find something else that works.
+[03:40:49.140 --> 03:40:51.060] We're gonna continue to evolve significantly.
+[03:40:51.380 --> 03:40:52.660] But like I said in the beginning,
+[03:40:52.900 --> 03:40:56.620] the pace that we're finally able to deliver at, I feel like for us is that
+[03:40:56.620 --> 03:40:58.680] finally we're meeting that promise of AI.
+[03:41:00.000 --> 03:41:01.740] I still see the disparity among other teams.
+[03:41:03.580 --> 03:41:05.620] And so, like I said, I'm going to leave you with this.
+[03:41:05.740 --> 03:41:07.780] If you're interested in trying Kiro Crew
+[03:41:07.780 --> 03:41:09.360] and building your own software factory,
+[03:41:09.820 --> 03:41:11.340] scan this QR code, it's a workshop.
+[03:41:12.220 --> 03:41:14.480] We have a pretty generous free trial on Kiro,
+[03:41:14.640 --> 03:41:16.160] so you can go sign up for a free trial,
+[03:41:16.380 --> 03:41:19.660] go install Kiro Crew, and you'll be off and running.
+[03:41:21.140 --> 03:41:22.860] And if you don't, if you want to try, like I said,
+[03:41:22.940 --> 03:41:24.020] if you want to try Kiro Crew, you can do that.
+[03:41:24.200 --> 03:41:26.220] The same free trial works across all of the products.
+[03:41:26.380 --> 03:41:28.860] So the IDE, the CLI, the web client, the mobile client,
+[03:41:30.000 --> 03:41:30.640] at that free trial.
+[03:41:31.200 --> 03:41:33.900] And with that, I'm excited to see what you all build.
+[03:41:34.080 --> 03:41:34.800] I appreciate the time.
+[03:41:34.900 --> 03:41:35.140] Thank you.
+[03:41:35.260 --> 03:41:36.060] Enjoy the rest of the conference.

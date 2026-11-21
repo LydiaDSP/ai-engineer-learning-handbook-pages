@@ -1,0 +1,376 @@
+把创意桌面软件做成用户能改的工具
+Brandon Thomas
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[01:20:53.540 --> 01:20:57.880] hey everybody thanks for attending my talk I had to put this together late
+[01:20:57.880 --> 01:21:03.580] Last night I've been in a whirlwind after this project went viral of unblocking thousands
+[01:21:03.580 --> 01:21:04.940] of open source developers.
+[01:21:05.500 --> 01:21:07.660] We've had VCs approaching us.
+[01:21:07.800 --> 01:21:09.380] I've been in constant meetings.
+[01:21:09.640 --> 01:21:14.380] This has been a sleepless month of activity since this happened.
+[01:21:14.560 --> 01:21:19.740] So if you're not familiar, I kind of cloned Adobe Photoshop and a bunch of other apps
+[01:21:19.740 --> 01:21:21.760] and that went super viral.
+[01:21:22.100 --> 01:21:26.500] My phone, my inbox, everything has just been absolutely lit up.
+[01:21:27.880 --> 01:21:30.840] I apologize for the structure of the talk.
+[01:21:31.040 --> 01:21:32.860] This was thrown together as quickly as I can,
+[01:21:32.960 --> 01:21:35.520] but I've got a lot of really exciting stuff to talk about.
+[01:21:35.720 --> 01:21:39.820] And I think it talks about the future of not only
+[01:21:39.820 --> 01:21:42.100] the industry, but just technology as a whole.
+[01:21:42.380 --> 01:21:45.500] So we're going to open source the entire world.
+[01:21:45.680 --> 01:21:46.680] Like, why not?
+[01:21:47.340 --> 01:21:50.120] It's something that I've always wanted to do as a developer.
+[01:21:50.160 --> 01:21:52.840] That's something that a lot of us in the open source community
+[01:21:52.840 --> 01:21:53.760] are interested in.
+[01:21:53.760 --> 01:22:01.800] Open source powers a lot of the technology that we're familiar with, but it's never been at the forefront.
+[01:22:02.160 --> 01:22:04.180] Linux has always been a second class citizen.
+[01:22:04.620 --> 01:22:09.520] We've been pulled into a whole bunch of platforms where we don't really have ownership.
+[01:22:09.920 --> 01:22:15.260] And AI kind of gives us a chance to take the web back, if you will.
+[01:22:15.640 --> 01:22:19.540] So I might have to do this manually.
+[01:22:20.740 --> 01:22:26.340] Cool. So a little bit about myself. I've been an engineer for about 15 years. I spent eight
+[01:22:26.340 --> 01:22:33.780] years at Square doing heavy-hitting infra, so online payments, the authentication stack,
+[01:22:33.960 --> 01:22:37.800] basically anything that could take down the company my team was kind of in charge of, and
+[01:22:37.800 --> 01:22:41.200] it was eight years of carrying the pager, a lot of really heavy-hitting infrastructure
+[01:22:41.200 --> 01:22:45.920] work. And then I've spent seven years doing startups, and that's a whole different world.
+[01:22:45.920 --> 01:22:50.260] It's a lot of risk, a lot of learning like what the market needs, a lot of
+[01:22:50.780 --> 01:22:56.740] correcting your own assumptions, and I've also been, I'm based in Atlanta. It's a big film state.
+[01:22:57.020 --> 01:22:59.720] I've been very big in the arts, so out of college,
+[01:22:59.960 --> 01:23:06.160] made lots of films, built laser projectors that play video games on the side of skyscrapers, that kind of thing, and those are the sort of
+[01:23:07.160 --> 01:23:11.180] customers that our startups are the startups that I built have catered to, creatives,
+[01:23:11.180 --> 01:23:13.180] artists, filmmakers, and so forth.
+[01:23:14.440 --> 01:23:16.820] I want to transport everybody back in time,
+[01:23:17.000 --> 01:23:19.800] back to the very beginnings of the web and the internet,
+[01:23:19.900 --> 01:23:23.400] the 90s, the early 2000s.
+[01:23:23.520 --> 01:23:26.160] So for us millennials, we're going to feel old,
+[01:23:26.160 --> 01:23:29.380] and for everybody that's younger,
+[01:23:29.680 --> 01:23:32.560] just let me kind of set the stage for what the internet was like.
+[01:23:33.460 --> 01:23:36.680] We had a bunch of chat applications that were completely open.
+[01:23:36.940 --> 01:23:38.500] So IRC is like Discord,
+[01:23:38.620 --> 01:23:40.880] but you can spin up your own servers that you actually own,
+[01:23:41.180 --> 01:23:45.040] You can use whatever programs to automate them and interrogate them without rules.
+[01:23:45.320 --> 01:23:49.260] All of the commercial messaging apps were basically,
+[01:23:49.300 --> 01:23:52.260] they didn't care if you used third-party tools to connect to them.
+[01:23:52.700 --> 01:23:55.120] Every website had data exports.
+[01:23:55.240 --> 01:23:56.040] They had APIs.
+[01:23:56.040 --> 01:24:00.980] You could literally build really cool mashups with Reddit and Flickr and Twitter.
+[01:24:01.200 --> 01:24:05.200] And these were like trending on Slashdot before Hacker News was a thing.
+[01:24:05.200 --> 01:24:07.840] And then, you know, in the more modern times,
+[01:24:08.020 --> 01:24:12.280] these kind of trickled down to a much slower pace
+[01:24:12.280 --> 01:24:14.100] because the APIs got removed.
+[01:24:14.680 --> 01:24:16.340] There was a bunch of file sharing.
+[01:24:16.740 --> 01:24:18.960] So not just file sharing.
+[01:24:18.980 --> 01:24:21.860] You could actually buy MP3s and feel a sense of ownership
+[01:24:21.860 --> 01:24:24.040] in everything that you were doing on the web.
+[01:24:24.040 --> 01:24:25.940] And now it's more licensing.
+[01:24:27.480 --> 01:24:29.700] There was so much open creativity
+[01:24:29.700 --> 01:24:31.920] because largely the people on the Internet were technical.
+[01:24:32.280 --> 01:24:33.360] They were early adopters.
+[01:24:35.200 --> 01:24:41.560] all kinds of animations, there were diffuse communities with PHP, PHP BB and Envision,
+[01:24:41.880 --> 01:24:48.120] and just a ton of creativity that was happening at the time. Wikipedia got started sort of
+[01:24:48.120 --> 01:24:53.900] in this ethos, and we don't really see this kind of stuff anymore in the current era and
+[01:24:53.900 --> 01:24:59.440] incarnation of tech. Websites were highly customizable, like MySpace at the time, you
+[01:24:59.440 --> 01:25:03.940] could actually change the HTML and CSS and make it look however you want. So this was
+[01:25:05.520 --> 01:25:08.880] different alien time compared to what we have today.
+[01:25:11.400 --> 01:25:15.600] When Web 2.0 happened, broadband, smartphones, it brought everybody into the fold.
+[01:25:15.740 --> 01:25:18.520] So the technical people got sort of pushed to the sidelines.
+[01:25:18.700 --> 01:25:19.900] And it's not a bad thing.
+[01:25:20.000 --> 01:25:23.060] Like, we needed our parents and our grandparents to be able to use these products.
+[01:25:23.460 --> 01:25:25.920] But we sort of, we rounded the edges on things.
+[01:25:25.960 --> 01:25:27.580] We took away all the technical pieces.
+[01:25:27.700 --> 01:25:33.620] We made everything easy for people to adapt because they couldn't contribute from a technical footing.
+[01:25:35.200 --> 01:25:36.780] They didn't know what APIs were.
+[01:25:36.980 --> 01:25:40.660] And so the platforms and the protocols
+[01:25:40.660 --> 01:25:41.940] got replaced by platforms.
+[01:25:42.260 --> 01:25:46.140] And they sort of grabbed as many users as they could.
+[01:25:46.300 --> 01:25:48.620] And sort of the diffuse experimental early web
+[01:25:48.620 --> 01:25:49.540] started to disappear.
+[01:25:49.960 --> 01:25:52.360] The APIs got taken away from us.
+[01:25:53.120 --> 01:25:56.120] And then we started seeing distribution being gatekept
+[01:25:56.120 --> 01:25:57.920] by the big providers.
+[01:25:58.040 --> 01:26:02.240] We never once had a phone ecosystem where we could freely
+[01:26:02.240 --> 01:26:10.420] distribute to like we could on the desktop. Things started to cost more and more as startups
+[01:26:10.420 --> 01:26:15.940] began to win market share. They realized that they had pricing power and suddenly your Netflix
+[01:26:15.940 --> 01:26:21.520] actually became cable once you started subscribing to all the streaming services. And then they
+[01:26:21.520 --> 01:26:26.420] started to get very extractive for companies that maybe hit the limits of their growth.
+[01:26:26.420 --> 01:26:29.720] they started coming up with crazy, crazy gotchas.
+[01:26:29.940 --> 01:26:32.320] So the one that got me is Adobe has this,
+[01:26:32.780 --> 01:26:35.000] you can subscribe to a monthly plan,
+[01:26:35.200 --> 01:26:37.300] and they don't tell you this.
+[01:26:37.320 --> 01:26:38.640] It's in like the very small print.
+[01:26:38.840 --> 01:26:40.660] If you cancel your monthly plan
+[01:26:40.660 --> 01:26:42.720] before the 12 months or 18 months,
+[01:26:42.900 --> 01:26:46.440] they actually charge you up to like $200 to unsubscribe,
+[01:26:46.440 --> 01:26:47.720] which is really inconvenient
+[01:26:47.720 --> 01:26:50.040] if you're going to a film festival like once a year,
+[01:26:50.280 --> 01:26:51.500] making a short film,
+[01:26:51.580 --> 01:26:54.100] and then suddenly you've got an extra $200 bill
+[01:26:54.100 --> 01:26:56.260] for an application that you were just using over a weekend.
+[01:26:56.420 --> 01:26:58.180] And that's hit so many people.
+[01:26:58.220 --> 01:27:02.640] And it's really frustrating that the web that was once really,
+[01:27:02.720 --> 01:27:05.000] really promising and open and free
+[01:27:05.860 --> 01:27:11.820] has turned into this extractive, owned, rented,
+[01:27:12.280 --> 01:27:13.220] rent-seeking world.
+[01:27:14.980 --> 01:27:19.020] So it used to be a very special place in the 90s and the 2000s.
+[01:27:19.400 --> 01:27:22.720] And more and more has been extracted.
+[01:27:23.800 --> 01:27:27.200] This is a term that's commonly used in shitification.
+[01:27:27.200 --> 01:27:30.340] I think that aptly describes everything that happened.
+[01:27:32.400 --> 01:27:36.420] Our company started with the ethos of let's build everything open source.
+[01:27:36.600 --> 01:27:41.480] Like the applications that we built in the AI space were 100% open,
+[01:27:41.620 --> 01:27:44.520] not only the desktop apps, but the actual infrastructure as well.
+[01:27:44.740 --> 01:27:49.560] So Artcraft originally started as sort of like a professionally minded Higgs field.
+[01:27:49.560 --> 01:27:57.680] So all of the the filmmakers that I know and that I've grown up with we were making a product for them to use rather than a UGC centered approach
+[01:27:57.680 --> 01:28:00.160] like like Higgs field or or
+[01:28:00.160 --> 01:28:07.280] Open art or so forth have and that enabled us to give them a desktop tool that lived on their machine
+[01:28:07.280 --> 01:28:10.700] Where all the files that they were generating lived right next to their editor?
+[01:28:11.400 --> 01:28:13.120] And one of the things that we observed
+[01:28:13.980 --> 01:28:18.180] And my advisors thought I was absolutely crazy that artists, you know, they don't know what open source is
+[01:28:19.560 --> 01:28:20.360] don't talk about it.
+[01:28:20.820 --> 01:28:22.620] GIMP isn't really used by artists.
+[01:28:22.960 --> 01:28:26.620] We actually observed artists vibe coding their own workflows
+[01:28:26.620 --> 01:28:28.280] on top of the software that we gave them.
+[01:28:28.320 --> 01:28:30.940] And that is something that was brand new to all of us.
+[01:28:31.580 --> 01:28:33.860] There were micro drama studios that
+[01:28:33.860 --> 01:28:37.180] were doing order fulfillment for some of the top micro drama
+[01:28:37.180 --> 01:28:37.580] startups.
+[01:28:38.120 --> 01:28:41.700] They would do 30 to 50 grand of fulfillment every single month.
+[01:28:41.700 --> 01:28:42.700] And they had big teams.
+[01:28:43.080 --> 01:28:45.300] And no product out there fits their needs.
+[01:28:45.420 --> 01:28:47.280] Nobody's going to go and workshop and build that
+[01:28:47.280 --> 01:28:50.680] specifically for the type of delivery that they need,
+[01:28:50.920 --> 01:28:53.880] yet they in-house have people that know Cloud Code
+[01:28:53.880 --> 01:28:56.480] and they can take the APIs and they can generate
+[01:28:56.480 --> 01:28:57.560] an interface that's like that.
+[01:28:57.660 --> 01:29:00.580] So we started experimenting with completely open source,
+[01:29:00.740 --> 01:29:04.280] giving it to our customers, and they really responded to that.
+[01:29:04.520 --> 01:29:07.660] And then we thought, what if we could turn back time
+[01:29:07.660 --> 01:29:08.360] on everything?
+[01:29:08.560 --> 01:29:11.180] Like all of these things that they're consuming and building
+[01:29:11.180 --> 01:29:15.900] would be much more friendly and give them way more capacity
+[01:29:17.280 --> 01:29:19.680] if all of the infrastructure was open source,
+[01:29:19.740 --> 01:29:22.940] if all of the application shapes that they wanted to leverage
+[01:29:22.940 --> 01:29:23.900] were open source.
+[01:29:24.180 --> 01:29:26.200] Like they use Premiere, they use Adobe.
+[01:29:26.400 --> 01:29:28.620] Like what could we do to give them something
+[01:29:28.620 --> 01:29:31.380] that they could actually take away all of the surface area
+[01:29:31.380 --> 01:29:33.760] that they don't use and constrain the apps
+[01:29:33.760 --> 01:29:35.400] to their specific workflow?
+[01:29:35.720 --> 01:29:38.960] What would it look like if they could do that five or 10
+[01:29:38.960 --> 01:29:41.560] times for each different artist on their team that's
+[01:29:41.560 --> 01:29:43.680] doing a particular part of that workflow?
+[01:29:43.680 --> 01:29:56.300] And so we wanted to kind of undo what had happened during Web 2.0 when everything became owned and consolidated and gatekept and just give people back their applications.
+[01:29:56.600 --> 01:30:00.400] And AI really is the means for us to do that.
+[01:30:00.400 --> 01:30:04.740] So we took a stab at the Adobe Creative Suite.
+[01:30:05.240 --> 01:30:07.100] We looked at Photoshop first.
+[01:30:07.100 --> 01:30:12.060] We basically prompted, you know, this is the basic shape of a photo editing app.
+[01:30:13.680 --> 01:30:17.580] on all of the tutorials about what Photoshop is, that's in your training data.
+[01:30:18.380 --> 01:30:24.240] We laid out a large, large prompt to say let's build out the application,
+[01:30:24.500 --> 01:30:29.420] let's separate the UI UX from that, let's make everything MCP and CLI compatible,
+[01:30:29.900 --> 01:30:33.320] let's build out plans for every single tool, how all of those work,
+[01:30:33.480 --> 01:30:36.060] let's talk about the data structures, the file format importers.
+[01:30:36.240 --> 01:30:41.400] We basically built these large prompts and within 24 hours we were looking at a
+[01:30:41.400 --> 01:30:46.780] pretty good approximation of what Photoshop was and it kind of blew our
+[01:30:46.780 --> 01:30:52.100] minds away. It was functional, it was very familiar to us, it started ten times
+[01:30:52.100 --> 01:30:56.340] faster than the original Photoshop. Now we didn't like actually cover the entire
+[01:30:56.340 --> 01:30:59.840] surface area of Photoshop, there's a lot of work, we're still not at 100% parity
+[01:30:59.840 --> 01:31:04.340] but we're measuring ourselves against what needs to be done and we're
+[01:31:04.340 --> 01:31:09.060] getting closer and closer. We were at 50%, we've just passed 60% and in the
+[01:31:09.060 --> 01:31:38.980] fullness of time, like Pareto principle, we could reach 99.99% parity. I'm going to take a little bit of a sort of a diatribe. Our team has talked about whether we take this further now or whether we just go for parity. And right now, we're just, we want to have, we want to fulfill the muscle memory of all the artists that use Adobe. So we are going for Adobe, like their sort of interface and look and feel directly. And the fullness of time, we will build net new apps that have new interfaces that are more agentic. But we wanted to do that also
+[01:31:39.060 --> 01:31:40.420] is sort of like a proving function,
+[01:31:40.540 --> 01:31:42.780] that we have actually accomplished something real,
+[01:31:42.940 --> 01:31:43.960] completely agentically.
+[01:31:44.620 --> 01:31:45.660] So we did Photoshop.
+[01:31:46.020 --> 01:31:50.420] We did basically all of their apps.
+[01:31:50.440 --> 01:31:51.480] We did InDesign.
+[01:31:51.480 --> 01:31:52.500] We did Premiere.
+[01:31:54.180 --> 01:31:58.060] And this, I did not expect this to go viral.
+[01:31:58.160 --> 01:31:59.920] I was withholding posting it on Hacker News.
+[01:31:59.960 --> 01:32:00.820] It got out on Reddit.
+[01:32:00.980 --> 01:32:04.380] And then two days later, the New York Times
+[01:32:04.380 --> 01:32:05.420] was asking me for an interview.
+[01:32:05.500 --> 01:32:07.260] And our Discord went from 3,000 people
+[01:32:09.060 --> 01:32:11.900] our Discord, then Jev, Suno, Higgs field.
+[01:32:12.980 --> 01:32:15.440] I'm still struggling to bear with what has happened.
+[01:32:15.540 --> 01:32:17.240] This was a, it struck a nerve with people.
+[01:32:17.820 --> 01:32:20.700] They've felt sort of maligned by Adobe and other tech companies.
+[01:32:20.760 --> 01:32:24.620] And what we've built has really resonated with them.
+[01:32:24.720 --> 01:32:27.680] And it's sort of built up sort of this mission to build more.
+[01:32:28.560 --> 01:32:31.720] So all of the anti-AI artists who have been pushing back
+[01:32:31.720 --> 01:32:34.740] against AI all of this time have, you know, they've
+[01:32:34.740 --> 01:32:35.400] sort of turned around.
+[01:32:35.600 --> 01:32:37.880] They're like, we actually love what you're doing.
+[01:32:39.060 --> 01:32:43.260] these apps, they've started giving us like feature requests and bug reports and we're
+[01:32:43.260 --> 01:32:47.640] engaging them. And I think we're going to be able to teach them this is what an MCP is,
+[01:32:47.760 --> 01:32:51.720] this is how you agentically create things. And maybe we'll start pulling away some of
+[01:32:51.720 --> 01:32:55.480] these bloated interfaces and giving them things that are faster, more fluid and let them do
+[01:32:55.480 --> 01:33:00.640] their work faster. So we didn't stop with those apps. We've done all kinds of stuff.
+[01:33:00.640 --> 01:33:09.080] We've done CAD, we've done Flash, we've done a bunch of digital audio workstations.
+[01:33:09.280 --> 01:33:12.200] It's not just us, it's the community doing these things as well.
+[01:33:12.380 --> 01:33:15.300] And there's really no limit in terms of what can be done.
+[01:33:15.800 --> 01:33:19.820] So we've done the entire Microsoft, well, the core apps within the Microsoft Office Suite.
+[01:33:20.040 --> 01:33:21.480] There's been Google Docs.
+[01:33:21.560 --> 01:33:27.260] We have companies and universities and all sorts of people approaching us wanting to use these things.
+[01:33:27.260 --> 01:33:31.420] and we're basically trying to fulfill all of these different asks.
+[01:33:31.920 --> 01:33:34.860] They're being used on Linux where they've never been used before.
+[01:33:35.820 --> 01:33:37.500] PDF Craft is probably the best app.
+[01:33:37.560 --> 01:33:38.540] You should all go download it right now.
+[01:33:38.660 --> 01:33:40.300] You'll never have to use Acrobat again.
+[01:33:40.320 --> 01:33:43.600] This is like really fast, really smooth.
+[01:33:47.600 --> 01:33:49.140] It works on Linux.
+[01:33:49.160 --> 01:33:50.380] It works on NetBSD.
+[01:33:50.600 --> 01:33:51.320] It's brilliant.
+[01:33:51.520 --> 01:33:52.520] Like this one's ready to go.
+[01:33:52.640 --> 01:33:53.660] So go ahead and get this one.
+[01:33:55.000 --> 01:33:56.060] We did Figma.
+[01:33:57.260 --> 01:34:02.220] component for this too and you can basically have your team collaborate on
+[01:34:02.220 --> 01:34:06.880] documents. It's got like the raft, Paxos, like multi-user setup. So we're starting
+[01:34:06.880 --> 01:34:10.480] to go into infrastructure too and the entire infrastructure and data model,
+[01:34:10.560 --> 01:34:15.840] all of it is open source. We're not keeping any of it proprietary. There's a
+[01:34:15.840 --> 01:34:19.140] community that's working on SolidCraft that's led by engineers. They've
+[01:34:19.140 --> 01:34:25.360] actually got an open engineering kernel that manages all of this and it's
+[01:34:27.260 --> 01:34:30.540] actually do 3D printing projects really quickly with SolidCraft.
+[01:34:32.440 --> 01:34:34.580] We've had so, so much happen.
+[01:34:34.720 --> 01:34:37.600] We've got over 300,000 GitHub stars.
+[01:34:38.020 --> 01:34:41.600] 4,000 different people have been contributing to this project.
+[01:34:41.620 --> 01:34:42.460] And it's picking up.
+[01:34:43.200 --> 01:34:45.840] It's actually become sort of a movement, if you will.
+[01:34:46.000 --> 01:34:50.060] And we're trying to adapt to how much influx of people
+[01:34:50.060 --> 01:34:50.880] trying to contribute to this.
+[01:34:50.940 --> 01:34:52.240] I'm going to pick up the pace, because I've
+[01:34:52.240 --> 01:34:53.320] been kind of lagging on this.
+[01:34:53.320 --> 01:34:57.280] But we're getting about 1.7 million downloads a day,
+[01:34:57.320 --> 01:34:58.380] and this is accelerating.
+[01:34:58.720 --> 01:35:00.880] We've got a launcher app that puts us on the desktop,
+[01:35:00.900 --> 01:35:03.440] and you can basically manage everything here.
+[01:35:03.540 --> 01:35:05.240] It works on all operating systems.
+[01:35:06.260 --> 01:35:08.440] A quarter of our users are on Linux,
+[01:35:08.520 --> 01:35:09.900] which is really fascinating.
+[01:35:10.200 --> 01:35:12.880] Like, Linux has been historically really, really underserved,
+[01:35:12.880 --> 01:35:17.140] and now they have super high-quality professional apps
+[01:35:17.140 --> 01:35:21.720] for creative and office work, which is really nice.
+[01:35:23.600 --> 01:35:26.980] We love and respect all of the work that's been done there
+[01:35:26.980 --> 01:35:29.540] in the past, but people are really excited to use the apps
+[01:35:29.540 --> 01:35:31.160] that they didn't have access to.
+[01:35:33.040 --> 01:35:36.000] All of these things are MCP and CLI first class.
+[01:35:36.100 --> 01:35:38.980] You can totally command these, and you can watch them build
+[01:35:38.980 --> 01:35:41.180] and assemble creative projects right in front of you.
+[01:35:42.060 --> 01:35:43.840] They've been localized into languages
+[01:35:43.840 --> 01:35:47.780] that were never officially supported by Adobe or Microsoft.
+[01:35:47.960 --> 01:35:51.240] We were told that Arabic was not supported in Ndesign.
+[01:35:51.240 --> 01:35:54.720] We've also supported these apps past their support lifecycle.
+[01:35:55.200 --> 01:35:58.440] Like Adobe Animate was being end of life,
+[01:35:58.580 --> 01:36:00.140] or it was being put on life support.
+[01:36:00.280 --> 01:36:01.200] We've picked that up.
+[01:36:01.300 --> 01:36:03.440] We've had basically animation studios come to us saying,
+[01:36:03.620 --> 01:36:05.700] we use this for our jobs.
+[01:36:05.820 --> 01:36:06.880] This is important.
+[01:36:07.100 --> 01:36:08.580] Please support this.
+[01:36:08.760 --> 01:36:11.400] So a lot of really fascinating things
+[01:36:11.400 --> 01:36:13.340] are happening where we're getting this into more places
+[01:36:13.340 --> 01:36:14.120] than they've ever been before.
+[01:36:14.320 --> 01:36:15.580] It's definitely not me.
+[01:36:15.860 --> 01:36:18.160] I started this, and now we've got a community
+[01:36:18.160 --> 01:36:20.420] of 4,000 developers.
+[01:36:21.240 --> 01:36:22.140] on a life of its own.
+[01:36:22.280 --> 01:36:24.540] They are doing everything from CI, CD.
+[01:36:24.860 --> 01:36:25.600] It's incredible.
+[01:36:25.820 --> 01:36:27.180] This is way bigger than just me.
+[01:36:27.720 --> 01:36:29.280] I really got to pick up the pace here.
+[01:36:29.360 --> 01:36:30.520] I've made way too much content.
+[01:36:30.780 --> 01:36:34.840] So there are over 300 apps being developed by the community.
+[01:36:35.300 --> 01:36:38.000] We've developed an app where non-technical people can
+[01:36:38.000 --> 01:36:40.260] start contributing and use the basis of the apps
+[01:36:40.260 --> 01:36:42.060] that we've created, like the UI, UX libraries.
+[01:36:42.200 --> 01:36:45.640] We're decomposing this into all of the components and primitives
+[01:36:45.640 --> 01:36:46.640] so that you can reuse them.
+[01:36:46.680 --> 01:36:50.760] So you'll have nice 3D libraries, nice 2D libraries.
+[01:36:51.640 --> 01:36:53.100] I'll get into the technical stuff.
+[01:36:53.540 --> 01:36:57.940] So Rust was probably essential in this product's success.
+[01:36:58.120 --> 01:36:59.620] We'd seen people do it at Electron before,
+[01:36:59.740 --> 01:37:02.160] but for high-quality creative apps,
+[01:37:02.180 --> 01:37:03.580] you really need something that's native.
+[01:37:04.580 --> 01:37:07.140] There's just a lot of really, really good quality things
+[01:37:07.140 --> 01:37:07.720] about Rust.
+[01:37:08.380 --> 01:37:11.160] Google had papers about the low defect rate.
+[01:37:11.180 --> 01:37:12.180] It starts really fast.
+[01:37:12.500 --> 01:37:14.240] It's the best language for this.
+[01:37:18.960 --> 01:37:23.160] It supports all different platforms and operating systems.
+[01:37:23.260 --> 01:37:24.520] We've got this on NetBSD.
+[01:37:24.600 --> 01:37:25.560] We've got this on tablets.
+[01:37:25.820 --> 01:37:28.960] It natively deploys to the web via Wasm.
+[01:37:28.980 --> 01:37:31.380] So it can get anywhere and everywhere.
+[01:37:32.680 --> 01:37:35.500] Do you need to know Rust to start using Rust today
+[01:37:35.500 --> 01:37:36.360] as an engineer?
+[01:37:37.000 --> 01:37:37.800] Definitely not.
+[01:37:38.200 --> 01:37:40.300] I've been using Rust since pre-1.0 times,
+[01:37:40.360 --> 01:37:42.960] but everybody on the team, it's a mix of people
+[01:37:44.660 --> 01:37:46.320] your agents will drive it just fine.
+[01:37:46.420 --> 01:37:47.280] You're not going to have any trouble.
+[01:37:47.400 --> 01:37:48.500] It is a fantastic language.
+[01:37:48.660 --> 01:37:50.900] The one big thing you're going to run into is compile times.
+[01:37:52.540 --> 01:37:53.440] Is it GUI yet?
+[01:37:53.500 --> 01:37:56.240] There's this famous series of websites in the Rust world.
+[01:37:57.000 --> 01:37:58.540] Does it support modern features?
+[01:37:58.760 --> 01:38:02.080] Yes, you can build rich GUI apps in Rust, UI UX.
+[01:38:02.660 --> 01:38:04.700] We've run into a lot of gotchas, like permissions,
+[01:38:04.940 --> 01:38:05.960] GitHub, scaling CI.
+[01:38:06.080 --> 01:38:07.000] A lot of people have talked about that.
+[01:38:07.080 --> 01:38:08.140] I'm going to just speed through this
+[01:38:08.140 --> 01:38:09.160] because I'm kind of running out of time.
+[01:38:09.880 --> 01:38:11.660] CI is falling over.
+[01:38:12.620 --> 01:38:14.000] We've been spinning up our own.
+[01:38:14.240 --> 01:38:16.540] found a good place to get RAM on co-located servers.
+[01:38:16.700 --> 01:38:17.200] We're moving to that.
+[01:38:17.800 --> 01:38:18.680] This is a good one.
+[01:38:18.880 --> 01:38:21.320] So agentic develop versus human review.
+[01:38:21.500 --> 01:38:24.020] If you're doing back end work or things that require schema
+[01:38:24.020 --> 01:38:26.700] migrations, API design, let your humans do that.
+[01:38:26.720 --> 01:38:29.940] But for desktop apps and games and anything that's basically
+[01:38:29.940 --> 01:38:32.300] immutable, throw your agents at it and give them
+[01:38:32.300 --> 01:38:33.040] full confidence.
+[01:38:33.080 --> 01:38:34.780] You don't need to be human in the loop fully.
+[01:38:35.560 --> 01:38:38.080] Upstream, directing where things go, just let it run.
+[01:38:38.220 --> 01:38:38.880] Tell it to build things.
+[01:38:39.040 --> 01:38:40.780] Somebody in our community is building,
+[01:38:40.780 --> 01:38:45.040] They've got 40 machines rebuilding Unreal Engine in Rust.
+[01:38:45.320 --> 01:38:47.860] So you don't even have to mind these things.
+[01:38:49.360 --> 01:38:52.460] Autocraft is a completely autonomous software factory
+[01:38:52.460 --> 01:38:53.420] that we're going to open source.
+[01:38:53.680 --> 01:38:54.660] It ingests issues.
+[01:38:54.800 --> 01:38:55.600] It triages them.
+[01:38:55.740 --> 01:38:56.720] It does agentic development.
+[01:38:56.960 --> 01:38:58.980] It post trains any valves on all of the decisions.
+[01:38:59.220 --> 01:39:00.520] This will be open source soon.
+[01:39:01.440 --> 01:39:03.420] Basically, we've got an entire app factory
+[01:39:03.420 --> 01:39:04.840] that's designed in code.
+[01:39:04.840 --> 01:39:05.900] You can express this.
+[01:39:06.020 --> 01:39:07.080] We'll open source this soon.
+[01:39:07.120 --> 01:39:08.580] I'm just going to have to hurry because I'm over time.
+[01:39:09.560 --> 01:39:10.480] Ingest issues.
+[01:39:12.420 --> 01:39:15.480] This is open source code rabbit, open source all the things.
+[01:39:15.680 --> 01:39:16.560] We're doing a lot here.
+[01:39:16.740 --> 01:39:19.960] And I thought I would save more time for the technical,
+[01:39:20.060 --> 01:39:20.840] but this is really good.
+[01:39:20.840 --> 01:39:22.440] And please, please look out for this.
+[01:39:22.940 --> 01:39:25.100] It will support all of your agentic development.
+[01:39:25.100 --> 01:39:27.960] It supports all of the sort of crafting and curating
+[01:39:27.960 --> 01:39:29.920] how you approach a project.
+[01:39:29.920 --> 01:39:31.560] It keeps your engineers on task.
+[01:39:32.040 --> 01:39:33.520] Again, fully open source.
+[01:39:33.780 --> 01:39:36.140] All of the decisions made by it are training data
+[01:39:36.140 --> 01:39:38.260] that we're going to use for evals and post training
+[01:39:38.260 --> 01:39:39.180] on the decision trees.
+[01:39:40.780 --> 01:39:42.020] Let's take back the entire internet.
+[01:39:42.180 --> 01:39:43.320] Let's rebuild everything.
+[01:39:43.520 --> 01:39:45.620] All software, all platforms.
+[01:39:52.320 --> 01:39:55.600] We can turn all of these things into proper protocols.
+[01:39:56.220 --> 01:39:58.220] We can open source the entire world.
+[01:39:58.400 --> 01:39:59.920] Let's own our apps, our .
+[01:40:00.000 --> 01:40:02.020] our protocols, our models, all of it.
+[01:40:04.100 --> 01:40:06.760] We are hiring, so if anybody's interested and wants
+[01:40:06.760 --> 01:40:09.580] to work on 100% open source, none of our code is closed source.
+[01:40:09.700 --> 01:40:10.800] All of it is in the open.
+[01:40:12.080 --> 01:40:13.900] You get time to work on your own projects,
+[01:40:13.920 --> 01:40:16.760] just reach out to me at hello at storyteller.ai.
+[01:40:16.940 --> 01:40:18.340] And thank you so much, everybody.

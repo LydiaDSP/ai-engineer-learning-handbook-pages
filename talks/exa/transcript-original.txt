@@ -1,0 +1,165 @@
+Agent 搜到东西以后，怎样知道它找对了？
+Jeffrey Pinner
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[02:59:07.880 --> 02:59:09.280] All right, hello, everyone.
+[02:59:09.780 --> 02:59:10.960] My name is Jeff Pinner.
+[02:59:11.100 --> 02:59:12.060] I'm the CTO of Exa.
+[02:59:12.280 --> 02:59:13.600] Thank you guys for having us here.
+[02:59:13.800 --> 02:59:16.300] And we're going to talk a little bit today
+[02:59:16.300 --> 02:59:19.360] about things your agent doesn't know.
+[02:59:22.580 --> 02:59:25.740] So Web Search has been around now for about 30 years,
+[02:59:26.520 --> 02:59:28.720] long enough where at this point we're kind of used to it
+[02:59:28.720 --> 02:59:30.280] and we don't really question the status quo
+[02:59:30.280 --> 02:59:32.820] or how it could be different with agents.
+[02:59:34.460 --> 02:59:36.480] Over the last 18 months or so,
+[02:59:36.660 --> 02:59:39.680] Search has picked up agents as sort of a new customer.
+[02:59:39.880 --> 02:59:41.180] They're searching on our behalf.
+[02:59:41.820 --> 02:59:44.420] And so at Exo, we specifically build Web Search
+[02:59:47.220 --> 02:59:54.900] We've gone from about 12.5 million requests a month two years ago to a little over 1.3
+[02:59:54.900 --> 02:59:57.820] billion this past October, so about 100X over two years.
+[02:59:58.000 --> 02:59:59.760] And it's not unique to EXA.
+[03:00:00.000 --> 03:00:06.020] If you talk, OpenAI just announced that ChatGPT handles about a fifth of Google search volumes
+[03:00:06.660 --> 03:00:10.680] and agents in general make up just around half the volume of web traffic now.
+[03:00:11.640 --> 03:00:15.720] And so I think the natural question is, why do agents need search at all?
+[03:00:15.860 --> 03:00:21.000] So let's start with trying to answer this before we talk about how we do search for
+[03:00:21.000 --> 03:00:21.320] agents.
+[03:00:24.020 --> 03:00:31.000] So frontier models can do a lot of tasks from parametric knowledge. But unfortunately,
+[03:00:31.220 --> 03:00:38.400] for real-world tasks, that simply isn't enough. Generally, frontier models, no matter how capable
+[03:00:38.400 --> 03:00:45.880] they are, are always out of date. Model launches take two to five months from training cutoff
+[03:00:45.880 --> 03:00:50.240] to launch. Then there's generally a few months after that before the next frontier model is
+[03:00:51.320 --> 03:00:55.020] So taking that together, you're about four to eight months out of date with whatever
+[03:00:55.020 --> 03:00:56.560] the latest knowledge base is.
+[03:00:56.800 --> 03:01:03.640] And in the meantime, the world doesn't stop changing just because a model has moved from
+[03:01:03.640 --> 03:01:04.500] training to inference.
+[03:01:06.440 --> 03:01:11.920] Libraries launch, APIs change, prices change, new regulations appear, court rulings happen,
+[03:01:13.420 --> 03:01:14.460] the world continues to go.
+[03:01:16.720 --> 03:01:22.440] And even if that weren't true, training data itself is actually just a small amount of
+[03:01:22.440 --> 03:01:28.320] knowledge that the model is trained on. The biggest models out there are trained on around
+[03:01:28.320 --> 03:01:35.120] 50 trillion tokens. The web itself is around 3,100 trillion. And that includes the deep
+[03:01:35.120 --> 03:01:39.920] web behind things like login and apps. If you focus it down to just the web that is indexed,
+[03:01:39.920 --> 03:01:41.520] the thing that search engines can see,
+[03:01:41.780 --> 03:01:44.420] that's still about 510 trillion tokens,
+[03:01:44.640 --> 03:01:48.660] which means even if the world didn't continue to evolve
+[03:01:48.660 --> 03:01:50.020] after the model cutoff happened,
+[03:01:50.300 --> 03:01:53.960] you would still only be indexing a very small amount
+[03:01:53.960 --> 03:01:55.200] of the knowledge that's out there
+[03:01:55.200 --> 03:01:57.240] that models have to go and find.
+[03:02:00.660 --> 03:02:03.980] And for the type of tasks we want models to do,
+[03:02:04.100 --> 03:02:08.340] we want agents to do, there is valuable work that happens
+[03:02:09.920 --> 03:02:14.620] knowledge, whether it's across coding, legal work, due diligence work.
+[03:02:15.180 --> 03:02:20.840] Generally, all of these tasks require correct, complete knowledge across multiple sources.
+[03:02:21.600 --> 03:02:25.000] And so this is what we're trying to, the gap we're trying to close.
+[03:02:27.620 --> 03:02:30.920] Now the first thing to do when we're trying to close any gap is to try to measure it.
+[03:02:31.200 --> 03:02:37.360] And so the first thing we do is create a benchmark called Atlas, which tries to test how well
+[03:02:37.360 --> 03:02:39.900] harnesses can leverage real-world knowledge.
+[03:02:42.760 --> 03:02:49.180] So we created the Atlas benchmark to try to test agents in these tasks.
+[03:02:50.360 --> 03:02:54.280] First, we require agents to find entities that match a condition.
+[03:02:56.760 --> 03:03:00.800] Then we require agents to enrich the knowledge with as much information as they can find.
+[03:03:03.460 --> 03:03:07.240] And finally, we score them against the golden answer key.
+[03:03:09.640 --> 03:03:15.340] And we only count rows as correct that correctly identify all aspects of what we're looking
+[03:03:15.340 --> 03:03:15.660] for.
+[03:03:15.920 --> 03:03:21.020] And so to succeed at Atlas, you need to be consistently right and not just have a decent
+[03:03:21.020 --> 03:03:22.700] hit rate for individual searches.
+[03:03:26.600 --> 03:03:31.440] So we're going to use this as a benchmark for how we measure agent performance when
+[03:03:31.440 --> 03:03:32.560] it comes to knowledge retrieval.
+[03:03:33.420 --> 03:03:38.440] And the first thing that we find is that model memory falls off with recency.
+[03:03:40.300 --> 03:03:47.900] When we test agents on Atlas, we see that model success rates fall off sharply as soon
+[03:03:47.900 --> 03:03:51.480] as they enter, as soon as they encounter data that's not covered in the training set.
+[03:03:52.700 --> 03:03:54.740] The fact is, the less the models know.
+[03:03:55.380 --> 03:03:58.620] And models require, or I should say,
+[03:03:58.680 --> 03:04:01.060] agents require data to try to achieve these tasks.
+[03:04:01.260 --> 03:04:02.940] And so the first thing that we can see
+[03:04:02.940 --> 03:04:06.060] is that memory alone, parametric memory isn't sufficient.
+[03:04:07.840 --> 03:04:10.140] So when we run agents with just parametric memory
+[03:04:10.140 --> 03:04:13.260] without web search, they score around 9% on Atlas.
+[03:04:13.580 --> 03:04:16.660] And so we'll use this to try to understand quantitatively
+[03:04:16.660 --> 03:04:18.220] how web search improves performance.
+[03:04:22.040 --> 03:04:25.260] So the next natural question is, why don't they just Google it?
+[03:04:28.360 --> 03:04:31.420] And the first reason is agents don't search like people.
+[03:04:32.700 --> 03:04:37.200] Generally, people type about three words into Google, and that's up from about two words
+[03:04:37.200 --> 03:04:38.100] six years ago.
+[03:04:39.240 --> 03:04:43.120] Agents on the other hand, search with more or less full sentences.
+[03:04:43.120 --> 03:04:49.040] The mean search on Exa is about 12 words, 10% of queries on Exa are 17 words or higher,
+[03:04:49.320 --> 03:04:54.740] and these words add constraints, versioning information, dates, places, all different
+[03:04:54.740 --> 03:04:59.280] types of conditions on the search that keyword ranking wasn't really designed to handle.
+[03:04:59.580 --> 03:05:01.540] And so we'll take a look at an example of that.
+[03:05:03.340 --> 03:05:05.520] So this is an actual query from Exa.
+[03:05:05.660 --> 03:05:09.100] It's a request for companies, it's a full sentence, it adds a bunch of constraints,
+[03:05:09.100 --> 03:05:12.940] experience. When you feed this into a keyword retrieval
+[03:05:12.940 --> 03:05:16.620] algorithm, what you really get is a handful of results that don't
+[03:05:16.620 --> 03:05:19.680] really answer what the query asked for. The search didn't
+[03:05:19.680 --> 03:05:23.860] understand the query. The result, the third one is specifically
+[03:05:23.860 --> 03:05:26.520] in the U.S., and the result asked for data outside the U.S.
+[03:05:29.940 --> 03:05:31.960] And so we're going to come back to this in a few minutes.
+[03:05:33.420 --> 03:05:35.880] Because the second thing I want to focus on is the fact that for
+[03:05:35.880 --> 03:05:38.860] a lot of knowledge on the web, search just doesn't have access
+[03:05:39.100 --> 03:05:44.080] it. Most of the valuable information isn't on the open web. Reported news, people data,
+[03:05:44.240 --> 03:05:49.120] financial data, research, they're all paywalled off. And so search engines that crawl the open
+[03:05:49.120 --> 03:05:57.820] internet don't ever see these pages. And then lastly, even when knowledge is on the open web
+[03:05:57.820 --> 03:06:01.560] and your agents can access it, there's a third problem, which is efficiency.
+[03:06:02.880 --> 03:06:16.100] You know, if an agent makes 10 searches, reads five pages from that search, gets about 16K of raw HTML from each page, that's about 860,000 tokens just in processing results.
+[03:06:16.420 --> 03:06:21.520] And if you remember from the first slide, we serve about 1.3 billion requests a month.
+[03:06:21.740 --> 03:06:25.640] So that's a lot of tokens that are just churning to extract information.
+[03:06:28.620 --> 03:06:33.180] And then finally, when you add keyword search and we look at what happens to our Atlas benchmark,
+[03:06:33.580 --> 03:06:38.280] the score definitely improves. It's added recent knowledge. But we've gone up to about
+[03:06:38.280 --> 03:06:43.700] 28% because most of the rows still come back with incomplete data or just wrong values.
+[03:06:45.640 --> 03:06:49.720] And so the challenge when we look at search is how do we actually provide the knowledge
+[03:06:49.720 --> 03:06:52.220] to agents that they actually require.
+[03:06:56.420 --> 03:06:58.880] So the first thing, I told you we'd come back to this query,
+[03:06:59.380 --> 03:07:01.680] is at least at Exa, the first thing we do
+[03:07:01.680 --> 03:07:04.220] to try to tackle this task
+[03:07:04.220 --> 03:07:06.280] is to extract meaning out of information
+[03:07:06.280 --> 03:07:09.000] as opposed to just syntactical matches or keyword matches.
+[03:07:09.480 --> 03:07:11.580] And so we look through pages,
+[03:07:11.820 --> 03:07:13.500] we understand the intent of queries,
+[03:07:14.480 --> 03:07:16.600] and here we give you results
+[03:07:16.600 --> 03:07:18.540] that specifically answer the intent
+[03:07:19.720 --> 03:07:26.940] conditionals attached. And so in order to do this, we do what you would for a modern
+[03:07:26.940 --> 03:07:31.900] web crawler. We crawl the Internet, we do a semantic extraction, we embed it in the vector
+[03:07:31.900 --> 03:07:37.400] space, we index it, when your query comes in, we embed the query in the same vector space,
+[03:07:37.580 --> 03:07:45.800] and we find the nearest matches. And this lets us move from syntactical understanding
+[03:07:45.800 --> 03:07:49.000] and keyword matching to a semantic understanding of the query in the web.
+[03:07:49.560 --> 03:07:53.360] And we do this at a volume of up to a million pages a second
+[03:07:54.340 --> 03:07:57.780] with a latency of about three minutes from crawl to index.
+[03:08:01.480 --> 03:08:04.860] problem, we need to extend it just beyond the open web.
+[03:08:07.000 --> 03:08:14.760] And so here we have to extend what's on the public web with both proprietary data that's
+[03:08:14.760 --> 03:08:20.680] partnered and knowledge graph data that we extract and represent.
+[03:08:21.120 --> 03:08:25.500] And this way the agent can retrieve questions and answers that it needs to its questions
+[03:08:25.500 --> 03:08:27.260] without having to know where to look for them,
+[03:08:27.640 --> 03:08:29.280] doing this behind a single API.
+[03:08:33.740 --> 03:08:35.340] And for the last challenge,
+[03:08:39.320 --> 03:08:42.900] in order to support the volume of queries that agents make,
+[03:08:43.120 --> 03:08:45.280] we can't simply point them to web pages.
+[03:08:45.440 --> 03:08:47.360] We have to extract the answers from the page
+[03:08:47.360 --> 03:08:49.260] and create a token-dense representation
+[03:08:49.260 --> 03:08:50.800] for agents to process.
+[03:08:51.000 --> 03:08:52.180] It's not sufficient to say,
+[03:08:52.280 --> 03:08:54.800] the answer to this query lives on this web page.
+[03:08:56.220 --> 03:09:00.160] You could take, for example, this question of who won the Nobel Prize for lithium ion
+[03:09:00.160 --> 03:09:00.620] batteries.
+[03:09:01.220 --> 03:09:04.720] If you just point to the Wikipedia page, you'll get thousands of characters.
+[03:09:05.660 --> 03:09:09.660] The actual excerpt that matters for citation and grounding is about 500.
+[03:09:10.360 --> 03:09:15.760] There's about 16x more tokens when you have to process data directly from Google than
+[03:09:15.760 --> 03:09:17.140] when you can extract that data.
+[03:09:17.440 --> 03:09:19.860] And those extractions have to be semantically rich.
+[03:09:19.860 --> 03:09:23.680] you have to pick a segment of the text that answers the question,
+[03:09:23.760 --> 03:09:24.880] and so the query matters.
+[03:09:27.040 --> 03:09:28.600] And so what does this actually get us?
+[03:09:30.080 --> 03:09:33.720] When we measure with Atlas, again, to ground ourselves,
+[03:09:34.680 --> 03:09:38.740] we've seen that we've improved from about 9% on our closed book test
+[03:09:38.740 --> 03:09:41.580] to about 56% when we do a semantic extraction
+[03:09:41.580 --> 03:09:43.820] over the Internet and extended knowledge.
+[03:09:45.220 --> 03:09:47.980] So not only do we get about 5x higher of a score,
+[03:09:50.200 --> 03:09:54.860] But we also reduce the cost by about 28% due to the token efficiency of the extraction.
+[03:09:56.100 --> 03:10:02.440] And so we start to demonstrate quantitatively that improving access to knowledge actually
+[03:10:02.440 --> 03:10:04.240] improves performance of the underlying agent.
+[03:10:06.980 --> 03:10:13.700] And so, yeah, in general, I think the main takeaway that we've hopefully expressed is
+[03:10:13.700 --> 03:10:22.080] that while reasoning capabilities on our frontier models are relatively fixed, a lot of improvement
+[03:10:22.080 --> 03:10:26.540] can be done in agentic performance by extending the harness and giving it access to semantic
+[03:10:26.540 --> 03:10:27.460] meaning across the Internet.
+[03:10:28.360 --> 03:10:29.180] And that's it.
+[03:10:29.380 --> 03:10:29.700] Thank you.

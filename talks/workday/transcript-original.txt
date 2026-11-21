@@ -1,0 +1,195 @@
+Workday 怎样把文字补全变成行动补全？
+Scott Roberts
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[06:24:47.660 --> 06:24:53.680] Hey everyone, I promise I'm the last person on the hype train for JEV.
+[06:24:54.200 --> 06:25:00.840] I'm Scott, I'm from Workday and I'm going to go through how we're experimenting with
+[06:25:00.840 --> 06:25:06.540] Jev, to drive new innovations in HR and finance tasks.
+[06:25:07.560 --> 06:25:08.400] Exciting stuff.
+[06:25:08.900 --> 06:25:13.400] So at Workday, we have over 11,000 different organizations
+[06:25:13.400 --> 06:25:14.480] that use our tools.
+[06:25:15.100 --> 06:25:17.580] And a lot of the problems that we deal with
+[06:25:17.580 --> 06:25:19.960] break down into two different categories.
+[06:25:20.160 --> 06:25:22.980] So one is very quick actions they have to take.
+[06:25:23.100 --> 06:25:24.200] I want to see my pay.
+[06:25:24.300 --> 06:25:25.580] I want to ask for a day off.
+[06:25:25.760 --> 06:25:29.560] The other ones are, I have to dive into a ton of data,
+[06:25:30.840 --> 06:25:32.220] try to figure out what's going on.
+[06:25:32.880 --> 06:25:34.660] And like many of your companies as well,
+[06:25:34.740 --> 06:25:37.660] we're trying to put agentic workflows around this.
+[06:25:38.200 --> 06:25:42.380] And so if you look at just a very simple agentic loop,
+[06:25:42.840 --> 06:25:46.040] we have a user request, we try to decide what to do,
+[06:25:46.220 --> 06:25:48.900] we're running tools, we're judging did we do a good job,
+[06:25:49.420 --> 06:25:52.240] and then over and over again until we finally get a result.
+[06:25:53.640 --> 06:25:56.520] Now one of the problems here is that on each one of those
+[06:25:56.520 --> 06:25:58.280] we're doing LLM calls.
+[06:25:58.280 --> 06:26:00.520] and there's two major problems with that.
+[06:26:00.980 --> 06:26:03.020] So one is there's too much intelligence.
+[06:26:03.540 --> 06:26:06.940] So if we look at the system one versus system two thinking,
+[06:26:07.920 --> 06:26:10.120] we're doing a lot of slow, deliberate,
+[06:26:10.380 --> 06:26:14.100] very expensive thought processes at each one of those steps.
+[06:26:16.120 --> 06:26:19.260] Another problem is it's just the wrong tool for the job.
+[06:26:20.560 --> 06:26:24.420] So LLMs a lot of times are just a hammer looking for a nail.
+[06:26:25.540 --> 06:26:27.360] And we want to figure out like
+[06:26:28.720 --> 06:26:34.480] need because clearly LLMs are not doing it. So we want something that is fast,
+[06:26:36.640 --> 06:26:45.560] smart, easy to use, it's generalized, and it's very, very cheap. So when we look at
+[06:26:45.560 --> 06:26:49.720] like from a code perspective, you know, what are we really looking at from a
+[06:26:49.720 --> 06:26:54.440] GEV-like model? It's really just a conditional. If this happens, this should
+[06:26:54.440 --> 06:27:02.180] happen? Which one of these cases are the ones that I want to explore? And you know, you've seen it
+[06:27:02.180 --> 06:27:07.300] among many of these presentations already, but JEV has the primitives to allow us to do this.
+[06:27:07.820 --> 06:27:13.400] There's the probability. Is it, you know, this or that? And what's the probability? What are the
+[06:27:13.400 --> 06:27:19.080] different categories that this particular thing could fall into? And then you have the scoring
+[06:27:19.080 --> 06:27:27.480] mechanism which is basically probability and sorted. So this has been brought up as well.
+[06:27:27.680 --> 06:27:33.060] My first thought when I saw the JEV models was, well, we already have classifiers. I've
+[06:27:33.060 --> 06:27:38.520] been doing this for a long time. How is it actually different? And as many of the speakers
+[06:27:38.520 --> 06:27:45.300] have talked about already, with classifiers, I need to figure out what's my golden data set.
+[06:27:45.300 --> 06:27:48.200] I have to train it, new data comes out,
+[06:27:48.480 --> 06:27:49.940] I have to iterate over and over.
+[06:27:50.340 --> 06:27:53.200] With Jev, just out of the box, it just worked.
+[06:27:53.440 --> 06:27:56.100] We plugged in our question, we classified it,
+[06:27:56.340 --> 06:27:57.460] we didn't really have to do anything,
+[06:27:57.580 --> 06:27:59.120] it generalized to our question.
+[06:28:00.480 --> 06:28:03.340] And so we started using it for a lot of the use cases
+[06:28:03.340 --> 06:28:05.280] that you've seen from some of the presenters already.
+[06:28:05.660 --> 06:28:08.540] So we use it for routing, that's kind of the canonical example.
+[06:28:10.000 --> 06:28:13.040] Figuring out, did this step work as a judge?
+[06:28:13.900 --> 06:28:21.160] We looked at resumes, is this person qualified for ML work?
+[06:28:22.320 --> 06:28:25.940] And I want to do kind of an overly simplified example as well.
+[06:28:26.780 --> 06:28:29.500] So no one taught Jev what a fish is.
+[06:28:29.680 --> 06:28:31.440] And so this is actually a question we asked,
+[06:28:31.580 --> 06:28:32.700] like is a fish a pet?
+[06:28:32.860 --> 06:28:36.660] Well, 50-50, might be a pet sometimes, might not be.
+[06:28:37.420 --> 06:28:41.280] And so if I ran into this, then I have to figure out,
+[06:28:43.040 --> 06:28:47.840] do next? Maybe I can give it some more context. Oh, is a fish in a bowl a pet? You know, and after
+[06:28:47.840 --> 06:28:53.640] 20 milliseconds, I can ask this again. All right, that's great. Oh, is a fish on my plate a pet?
+[06:28:53.900 --> 06:29:00.180] Clearly not. So this is something that wasn't trained out of the box in seconds. It just worked.
+[06:29:01.740 --> 06:29:09.920] All right, so now on to some of the demos that we've done at Workday. So just a caveat on some
+[06:29:09.920 --> 06:29:15.400] of these. It's not real data, so we're not using any of your resumes or payroll data.
+[06:29:16.000 --> 06:29:20.660] These are also not in production now and may or may not be in the future. So that's something
+[06:29:20.660 --> 06:29:25.620] our legal asked me to say. So let's get into some of the demos.
+[06:29:26.660 --> 06:29:32.720] All right, so starting with autocomplete. So autocomplete starts to predict what you're
+[06:29:32.720 --> 06:29:37.840] trying to ask. It's just predicting the question. It's not helping you get to the answer. So
+[06:29:37.840 --> 06:29:43.140] So as you start to type more, it's going to guess, like, oh, I want to figure out if this
+[06:29:43.140 --> 06:29:44.680] person wants to take a day off work.
+[06:29:44.800 --> 06:29:48.800] Great, you've guessed the question, but you really haven't helped me get to the answer.
+[06:29:49.740 --> 06:29:55.720] So what we want to do is move from just predicting the word or the next block of code and actually
+[06:29:55.720 --> 06:29:57.200] help you finish the task.
+[06:29:57.860 --> 06:30:03.540] So this is best shown with a demo that we have, where we go from predicting what you
+[06:30:03.540 --> 06:30:06.720] want to say to predicting what you want to do.
+[06:30:07.880 --> 06:30:09.080] Hopefully the video plays.
+[06:30:09.180 --> 06:30:09.640] There we go.
+[06:30:10.120 --> 06:30:15.440] All right, so I need to take time off of next week.
+[06:30:15.640 --> 06:30:17.700] And as I start to ask this,
+[06:30:18.100 --> 06:30:20.320] Jev is actually figuring out under the hood,
+[06:30:20.640 --> 06:30:23.200] okay, what more context do I have?
+[06:30:23.360 --> 06:30:27.500] How can I adjust this UI based on the information
+[06:30:27.500 --> 06:30:28.600] that I'm getting?
+[06:30:28.840 --> 06:30:31.440] This is not something that we could have done with an LLM.
+[06:30:32.620 --> 06:30:36.080] We're doing this in a loop while someone's asking.
+[06:30:38.700 --> 06:30:41.240] You shouldn't have to go in and ask an agent,
+[06:30:41.360 --> 06:30:43.420] hey, can you go find out how much I was paid?
+[06:30:44.320 --> 06:30:46.940] What you can do is just in the search, say,
+[06:30:47.120 --> 06:30:48.660] what was my pay last period?
+[06:30:49.840 --> 06:30:53.840] Pops up an interface, allows you to unhide it,
+[06:30:54.400 --> 06:30:56.600] see what your pay was in the last period.
+[06:30:57.320 --> 06:30:59.700] Very simple, gets you to the action.
+[06:31:00.280 --> 06:31:01.180] Book a meeting.
+[06:31:02.540 --> 06:31:04.800] So I know that I want to book a meeting
+[06:31:04.800 --> 06:31:09.080] and I'm gonna wanna do it for next Friday.
+[06:31:09.660 --> 06:31:11.840] Let me do it at 2 p.m.
+[06:31:12.460 --> 06:31:13.940] Oh, I wanna do it with my boss.
+[06:31:14.100 --> 06:31:18.480] Make sure that I get my boss on this, Logan McNeil.
+[06:31:18.700 --> 06:31:20.540] There we go, meeting's booked.
+[06:31:21.600 --> 06:31:24.140] And then a final one that we have just for this example,
+[06:31:24.280 --> 06:31:28.220] but there's many more, is finding a person.
+[06:31:28.780 --> 06:31:31.560] So in this one, I may have some semantic knowledge,
+[06:31:31.560 --> 06:31:35.280] like find the person who owns this part of the organization,
+[06:31:35.300 --> 06:31:38.580] or just like who's Ashanti, I want to contact her,
+[06:31:38.980 --> 06:31:43.160] pop it up, click on email, good to go.
+[06:31:45.660 --> 06:31:47.420] All right, so what's happening under the hood?
+[06:31:48.420 --> 06:31:50.940] So because Jev is fast and cheap,
+[06:31:51.900 --> 06:31:53.540] just like a type ahead,
+[06:31:53.780 --> 06:31:57.380] we could start to render a UI on that same cadence.
+[06:31:57.620 --> 06:32:00.120] We can look at as the words are coming,
+[06:32:01.560 --> 06:32:04.180] of intent and start to render an interface.
+[06:32:05.160 --> 06:32:07.820] And we could do this at about 20 bucks
+[06:32:07.820 --> 06:32:08.760] for a million judgments.
+[06:32:09.880 --> 06:32:12.580] And the way that we're doing it is kind of twofold,
+[06:32:13.420 --> 06:32:14.860] or two parts, I should say.
+[06:32:15.360 --> 06:32:17.760] So first, Jev is picking the card,
+[06:32:18.040 --> 06:32:19.200] of saying, what's the intent?
+[06:32:19.460 --> 06:32:21.200] All right, there's a card that's gonna help you out,
+[06:32:21.400 --> 06:32:24.260] and then the team that's responsible in that domain
+[06:32:24.260 --> 06:32:26.260] then can decide what are the questions
+[06:32:26.260 --> 06:32:28.340] to progressively fill out that card.
+[06:32:28.540 --> 06:32:30.680] And so there's sort of this two-step process.
+[06:32:31.640 --> 06:32:41.800] The first step is getting people in the front door, getting the right card up, and then the second one is making sure that you fill in that card to help them accomplish the task that they're after.
+[06:32:42.480 --> 06:32:45.880] Now, we have an eval on here before we merge any card.
+[06:32:46.000 --> 06:32:48.600] We want to make sure that it doesn't collide with any other one.
+[06:32:49.020 --> 06:32:59.040] And at least in our initial experiments, we've done seven cards or a just chat because it should, if there's no card to actually solve it, it should allow you to just continue chatting.
+[06:32:59.720 --> 06:33:02.860] we were able to get 96% accuracy on that.
+[06:33:05.020 --> 06:33:06.800] Alright, so now onto the recruiter.
+[06:33:07.060 --> 06:33:08.560] So let's talk about the recruiter problem.
+[06:33:09.040 --> 06:33:12.040] Alright, so this is not like a fast task.
+[06:33:12.360 --> 06:33:14.800] It's something where a recruiter has a pile
+[06:33:14.800 --> 06:33:17.360] of hundreds of resumes and has to figure out
+[06:33:17.360 --> 06:33:19.580] who has the best resume to accomplish
+[06:33:20.400 --> 06:33:22.400] or fill the wreck that they're trying to fill.
+[06:33:23.300 --> 06:33:26.340] Now, I first want to look at how we would've done this before.
+[06:33:26.340 --> 06:33:34.000] We would have done an embedding, put the vectors in a vector DB, then had a retrieval layer,
+[06:33:34.240 --> 06:33:38.640] then have a re-ranker, and then figure out based on the re-ranker which ones that we
+[06:33:38.640 --> 06:33:45.320] want to put in front of the recruiter. One interesting callout is the Quinn re-ranker
+[06:33:45.320 --> 06:33:54.080] looks surprisingly similar to the Jev process as well. That's kind of an interesting corollary
+[06:33:54.080 --> 06:33:55.440] if you've used that one before.
+[06:33:56.300 --> 06:34:00.040] But with Jev, we basically take out all the embedding steps.
+[06:34:00.360 --> 06:34:02.240] I don't have to train anything up.
+[06:34:02.320 --> 06:34:03.520] I don't have to do embedding.
+[06:34:03.580 --> 06:34:05.460] I don't have to put things in a vector database.
+[06:34:06.960 --> 06:34:11.540] What I can do is just do a function on my database.
+[06:34:11.900 --> 06:34:15.320] So put all the resumes into a database,
+[06:34:16.460 --> 06:34:18.540] use natural language to query it,
+[06:34:18.920 --> 06:34:21.000] iterate over every single one of them,
+[06:34:21.700 --> 06:34:24.220] and then just figure out which ones match my criteria.
+[06:34:26.020 --> 06:34:29.940] So I'll go into an actual demo of this exact same one.
+[06:34:30.720 --> 06:34:32.560] So here we have a select statement.
+[06:34:32.600 --> 06:34:37.020] And so this is against a DuckDB where we have a function
+[06:34:37.620 --> 06:34:40.860] that is going to call Jev to figure out what's the probability
+[06:34:40.860 --> 06:34:42.500] that someone matches this criteria.
+[06:34:43.180 --> 06:34:45.960] We're going to get it a score and then we're going to order by that score.
+[06:34:46.160 --> 06:34:47.700] Now I'm going to do about 20.
+[06:34:47.860 --> 06:34:50.000] And as I said, these are all fakes
+[06:34:51.000 --> 06:34:58.900] in here, I promise. And then here we see these are very ML focused synthetic data as well. So it's
+[06:34:58.900 --> 06:35:03.540] not a surprise that we would have very high hit rates against someone who's worked in fraud,
+[06:35:03.700 --> 06:35:09.380] trust, and safety problems. But let's look at it. Let's change this question. Let's be a little bit
+[06:35:09.380 --> 06:35:16.040] more adversarial on this one. So a lot of these resumes have the word pipeline in them. So whether
+[06:35:16.040 --> 06:35:20.500] Whether it's a data pipeline or an AI pipeline, a pipe's going to come out.
+[06:35:20.600 --> 06:35:23.500] So let's just ask, is this person qualified to do plumbing?
+[06:35:23.620 --> 06:35:27.120] If you were going to just do a lexical search, it might pick up some of these.
+[06:35:27.420 --> 06:35:35.200] So we put it into Jev and asked, of all these ML resumes, let's trim the limit down to five
+[06:35:35.200 --> 06:35:35.820] here.
+[06:35:36.480 --> 06:35:37.580] Go ahead and run it.
+[06:35:38.700 --> 06:35:45.220] And we can see that very, very low probability on these.
+[06:35:46.040 --> 06:35:47.660] that we would almost definitely throw out.
+[06:35:47.900 --> 06:35:49.100] And you could see the speed.
+[06:35:49.260 --> 06:35:51.000] So we went over 117 records.
+[06:35:51.580 --> 06:35:54.620] We had 2.3 seconds of wall time
+[06:35:54.620 --> 06:35:56.660] and spent almost nothing on this query
+[06:35:56.660 --> 06:35:57.920] to just iterate over everything.
+[06:35:59.340 --> 06:36:01.800] So Jev really kind of changed the game for us
+[06:36:01.800 --> 06:36:04.000] because every place where we're thinking
+[06:36:04.000 --> 06:36:06.720] either this is too expensive or it's too slow,
+[06:36:06.960 --> 06:36:09.980] we thought of new places to inject Jev into our pipeline.
+[06:36:10.960 --> 06:36:12.420] And so just to summarize,
+[06:36:12.420 --> 06:36:16.020] the two areas that I went through are one,
+[06:36:16.240 --> 06:36:19.940] where can we decide very quickly and get to the intent
+[06:36:20.560 --> 06:36:21.860] and get the person on their way?
+[06:36:22.360 --> 06:36:25.720] And then the second one is to cut down on some of the
+[06:36:26.400 --> 06:36:27.420] really deep work.
+[06:36:27.600 --> 06:36:30.460] How do we filter those out for our customers?
+[06:36:30.980 --> 06:36:34.600] And so I hope that this gave you a little bit of insight
+[06:36:34.600 --> 06:36:37.600] into the things that you can take back to your own companies
+[06:36:37.600 --> 06:36:40.740] and imagine the things that you can do with Jev
+[06:36:43.100 --> 06:36:44.700] And that's my time. Thank you very much.

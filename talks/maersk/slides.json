@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p08",
+    "title": "规则和执行分开，再把例外交回人",
+    "time": "00:06:50",
+    "url": "https://www.youtube.com/watch?v=oeknLUsN_GE&t=410s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>订单决策表将超限订单交给负责人、限额内请求送确认，无法匹配的情况仍请人处理。准备输入与执行动作由开发者维护。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 410
+  },
+  {
+    "id": "frame-02",
+    "after": "p15",
+    "title": "用证据核对重构前后的分支",
+    "time": "00:14:00",
+    "url": "https://www.youtube.com/watch?v=oeknLUsN_GE&t=840s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>示例将每条分支的落点画在两侧。超限分支没有出现在新版本中，因此记录将此次变更标为阻止通过。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 840
+  },
+  {
+    "id": "frame-03",
+    "after": "p16",
+    "title": "根据真实使用证据逐步修剪",
+    "time": "00:16:10",
+    "url": "https://www.youtube.com/watch?v=oeknLUsN_GE&t=970s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>用实际轨迹识别仍可达到的路径，再处理长期不可达状态。图右提醒，旧测试有时会让废弃分支继续留在产品中。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 970
+  }
+]

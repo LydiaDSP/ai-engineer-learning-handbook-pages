@@ -1,0 +1,35 @@
+[
+  {
+    "id": "eval-harness",
+    "after": "p33",
+    "title": "把任务、运行轨迹和评分依据留下来",
+    "time": "04:09:27",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14967s",
+    "en": "assets/eval-harness-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>把任务、运行轨迹和评分依据留下来</h3><dl><div><dt>任务评测</dt><dd>每项任务有输入、通过条件和评分器，运行时记录工具调用、耗时及 token 等指标。</dd></div><div><dt>独立评分</dt><dd>评分器检查实际环境的最终状态，也可以查看执行轨迹。</dd></div></dl></div>",
+    "note": "图中分别展示运行框架和评测框架。",
+    "sourceSeconds": 14967
+  },
+  {
+    "id": "failure-loop",
+    "after": "p17",
+    "title": "Cline 用失败诊断改进运行框架",
+    "time": "04:04:21",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=14661s",
+    "en": "assets/failure-loop-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>Cline 用失败诊断改进运行框架</h3><dl><div><dt>改动</dt><dd>为重试设上限，检测没有进展的循环，并处理文件索引请求和后台进程。</dd></div><div><dt>结果</dt><dd>图示基线为 69/89（77.5%），固定改动后的整套配置有一次跑到 77/89（86.5%），最佳单次为 79/89（88.8%）。</dd></div></dl></div>",
+    "note": "图中注明中间台阶是示意，单项改动对全部 89 道题的贡献未单独测量。",
+    "sourceSeconds": 14661
+  },
+  {
+    "id": "two-loops",
+    "after": "p44",
+    "title": "执行任务和改进框架分两层完成",
+    "time": "04:13:18",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=15198s",
+    "en": "assets/two-loops-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>执行任务和改进框架分两层完成</h3><dl><div><dt>内层</dt><dd>Agent 在任务环境中调用工具，记录结果并接受评分。</dd></div><div><dt>外层</dt><dd>另一个 Agent 汇总证据、诊断失败并提出框架改动，经评测后再决定是否采纳。</dd></div></dl></div>",
+    "note": "图里的运行框架改动有版本记录，可复测。",
+    "sourceSeconds": 15198
+  }
+]

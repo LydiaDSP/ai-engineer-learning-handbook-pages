@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p06",
+    "title": "能力边界并不均匀",
+    "time": "08:44:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31465s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>图中从写函数一路列到制作整款游戏。讲者用不平整的边界提醒产品团队分别测试小任务和复合任务。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 31465
+  },
+  {
+    "id": "frame-02",
+    "after": "p13",
+    "title": "在开发环境里直接编辑游戏行为",
+    "time": "08:52:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=31955s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者展示代码与规则的编辑过程。人保留对角色行为和游戏手感的判断，Agent 负责实现所需构件。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 31955
+  },
+  {
+    "id": "frame-03",
+    "after": "p15",
+    "title": "更便宜的实现如何给创作留出空间",
+    "time": "08:55:05",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=32105s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>结尾提出软件创作可能迎来新一轮繁荣。这是讲者的展望，强调人仍需要决定什么值得做、哪些细节值得改。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 32105
+  }
+]

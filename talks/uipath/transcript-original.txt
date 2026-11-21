@@ -1,0 +1,282 @@
+UiPath 怎样在自动化流程里安排快速判断和深入调查？
+Chibi Vikram、Kevin Bernstein
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[05:52:15.500 --> 05:52:16.300] Hello, everyone.
+[05:52:17.760 --> 05:52:21.200] My name is Sidi, and I'm joined in the stage by Kevin.
+[05:52:22.240 --> 05:52:27.300] We're here to talk about how we believe that your automations are overthinking it.
+[05:52:28.060 --> 05:52:31.140] So, tell us a little bit about ourselves.
+[05:52:31.160 --> 05:52:32.780] We are from a company called UiPath.
+[05:52:33.100 --> 05:52:36.200] We have been doing automation for the last 20 years.
+[05:52:36.200 --> 05:52:42.620] We have been doing RPA before and we service more than 10,000 organizations around the
+[05:52:43.320 --> 05:52:51.120] world and we build an agentic process orchestration layer which basically brings agents, robots
+[05:52:51.120 --> 05:52:57.340] and people together to interact with each other and build extremely scalable automations
+[05:52:57.340 --> 05:52:58.760] that run for days and weeks.
+[05:52:59.580 --> 05:53:05.680] So we were inspired by this particular slide that you're seeing right now and you saw today
+[05:53:06.200 --> 05:53:07.240] today before us as well.
+[05:53:07.820 --> 05:53:12.320] When Diego presented it three months ago, the same slide,
+[05:53:13.640 --> 05:53:16.500] it resonated really well with us because this
+[05:53:16.500 --> 05:53:18.560] is how we see automation as well.
+[05:53:18.920 --> 05:53:23.480] So the traditional software is basically RPA.
+[05:53:23.700 --> 05:53:25.320] It's just robotic process automation.
+[05:53:25.320 --> 05:53:28.300] If else, just execute some task and then keeps going.
+[05:53:28.420 --> 05:53:29.780] The control flow is deterministic.
+[05:53:29.920 --> 05:53:30.780] Just keep going.
+[05:53:31.040 --> 05:53:34.540] And then when the LLMs came out, we all
+[05:53:36.200 --> 05:53:39.040] the just-in-time software where we have this one agent,
+[05:53:39.340 --> 05:53:41.740] we give it a bunch of tools, we give it a task,
+[05:53:41.880 --> 05:53:44.020] and ask it to finish, and then we were seeing
+[05:53:44.020 --> 05:53:47.500] good results, bad results, and then we added evaluations
+[05:53:47.500 --> 05:53:49.300] to slowly build the results up.
+[05:53:49.860 --> 05:53:53.620] And then finally we landed on agentic process orchestration,
+[05:53:53.820 --> 05:53:56.660] which kind of weaves in this cognitive decision
+[05:53:56.660 --> 05:53:59.840] through a logical decision layer.
+[05:54:00.100 --> 05:54:02.720] So you have deterministic calls
+[05:54:02.720 --> 05:54:09.060] and clear cognitive decision points where you would use an LLM to control the control
+[05:54:09.060 --> 05:54:12.160] flow rather than leaving it all in the hands of an agent.
+[05:54:12.600 --> 05:54:19.180] So at this time, we saw where JEW would fit in and when Diego was talking about JEW, we
+[05:54:19.180 --> 05:54:24.440] were really excited because we saw JEW fit in in a very particular niche area.
+[05:54:24.440 --> 05:54:33.500] So, here we see that Jav is a very powerful tool, as Diego was saying is a foundational
+[05:54:33.500 --> 05:54:39.080] tool that we would be able to integrate into all automation and it fit right in between
+[05:54:39.080 --> 05:54:41.800] a deterministic case and an agent case.
+[05:54:42.440 --> 05:54:48.780] So Jav is extremely fast and most of you guys would have tried it and we were surprised
+[05:54:48.780 --> 05:54:54.660] by how fast and how parallel we could make it work and how intelligent it was. So we
+[05:54:54.660 --> 05:54:59.040] were able to benchmark it around how good it was compared to an LLM and it was pretty
+[05:54:59.040 --> 05:55:04.520] good not as a full LLM but it was pretty good in terms of intelligence as well. So it falls
+[05:55:04.520 --> 05:55:10.460] in between and there are so many ways we could use Jav and I want to hand it off to Kevin
+[05:55:10.460 --> 05:55:14.640] and take you guys through a scenario where we use Jell
+[05:55:14.640 --> 05:55:16.540] in UiPath Maestro Flow.
+[05:55:17.120 --> 05:55:17.460] Yeah.
+[05:55:17.560 --> 05:55:18.340] Thanks, Jeevi.
+[05:55:18.980 --> 05:55:20.300] So hi, everybody.
+[05:55:20.800 --> 05:55:23.000] Today I want to actually walk us through a little bit
+[05:55:23.000 --> 05:55:25.760] about what UiPath is building with UiPath Maestro Flow
+[05:55:26.400 --> 05:55:29.580] and talk through a little bit of how we would go through
+[05:55:29.580 --> 05:55:32.980] and coordinate humans, robots, and agents all together
+[05:55:32.980 --> 05:55:33.900] inside of one canvas.
+[05:55:34.860 --> 05:55:35.820] What we're going to walk through today
+[05:55:35.820 --> 05:55:39.860] is essentially a flow that will demonstrate
+[05:55:40.460 --> 05:55:41.640] we kind of weave all these things together.
+[05:55:42.120 --> 05:55:44.060] And the way that we're approaching this
+[05:55:44.060 --> 05:55:46.480] is that we're gonna end up having system one agents
+[05:55:46.480 --> 05:55:48.720] which are gonna be able to make quick intelligence
+[05:55:48.720 --> 05:55:50.280] happen within our process.
+[05:55:50.600 --> 05:55:51.700] Think about things like,
+[05:55:51.800 --> 05:55:53.640] hey, is this transaction fraud or not?
+[05:55:55.680 --> 05:55:59.040] Additionally, we'll have system two agents running
+[05:55:59.040 --> 05:56:00.640] where we're gonna have more of a methodical,
+[05:56:00.640 --> 05:56:02.320] deeper investigation that's going on
+[05:56:02.320 --> 05:56:04.160] where agents are going off and calling tools.
+[05:56:04.400 --> 05:56:05.840] And we'll see kind of this pattern,
+[05:56:06.020 --> 05:56:07.100] these patterns start to emerge
+[05:56:07.100 --> 05:56:09.300] where we're able to hand off from one to the next.
+[05:56:10.460 --> 05:56:17.900] I'll jump into an actual demo where we're going to demonstrate a account fraud scenario. And so
+[05:56:17.900 --> 05:56:26.660] our demo starts here with effectively a transaction coming in for $48,000. And this wasn't something
+[05:56:26.660 --> 05:56:30.800] that we were expecting. And so as I'm reviewing my bank portal here, I'm going to go ahead and
+[05:56:30.800 --> 05:56:36.380] report this as a fraudulent transaction. And so now this would end up submitting it off into our
+[05:56:36.380 --> 05:56:38.900] or UiPathMeisterial flow, where this would act as essentially
+[05:56:38.900 --> 05:56:42.640] the trigger for this end-to-end workflow to go off
+[05:56:42.640 --> 05:56:43.420] and start processing.
+[05:56:43.820 --> 05:56:45.380] What we're looking at is a collection
+[05:56:45.380 --> 05:56:47.300] of various different nodes that are each
+[05:56:47.300 --> 05:56:50.980] going to kind of be orchestrated from the left side
+[05:56:50.980 --> 05:56:52.020] of the canvas over to the right.
+[05:56:52.340 --> 05:56:54.620] And we're going to use essentially
+[05:56:54.620 --> 05:56:56.680] a combination of system one and system two models
+[05:56:56.680 --> 05:56:58.860] to actually process this and do analysis
+[05:56:58.860 --> 05:57:00.060] if this is fraud or not.
+[05:57:00.540 --> 05:57:02.780] And so the first thing that actually takes place
+[05:57:02.780 --> 05:57:05.400] is we're going to go through and get account activity.
+[05:57:06.100 --> 05:57:10.780] We're going to send this off to Jev to basically pull 60 transactions
+[05:57:10.780 --> 05:57:13.660] from the most recent credit card purchases that were made
+[05:57:13.660 --> 05:57:17.020] and analyze each one of those individually, whether or not these are fraud.
+[05:57:17.300 --> 05:57:21.040] And this is happening in real time where Jev's able to process these transactions
+[05:57:21.040 --> 05:57:25.380] and ask that question of, hey, is this fraud or not, within fractions of a second.
+[05:57:25.820 --> 05:57:29.320] Now, we found that there's about four transactions that recently appeared
+[05:57:29.320 --> 05:57:30.880] that it thinks are fraud.
+[05:57:32.780 --> 05:57:35.280] we're able to kick off another part of our flow,
+[05:57:35.480 --> 05:57:37.460] which is doing more of a semantic analysis
+[05:57:37.460 --> 05:57:38.440] on the entire account.
+[05:57:38.720 --> 05:57:40.420] We're looking at that one transaction
+[05:57:40.420 --> 05:57:43.060] that came in for $48,000, which was flagged,
+[05:57:43.140 --> 05:57:45.480] and we're asking a question to Jev is,
+[05:57:45.620 --> 05:57:47.280] hey, is there enough information here for us
+[05:57:47.280 --> 05:57:49.400] to determine whether or not this is actually fraud?
+[05:57:49.780 --> 05:57:52.660] And just as we heard Diago talk about this earlier,
+[05:57:52.860 --> 05:57:54.920] where you have these new kind of paradigms
+[05:57:54.920 --> 05:57:58.180] and logic come up, we ended up finding from this
+[05:57:58.180 --> 05:58:00.520] that there's a scoring that took place,
+[05:58:00.520 --> 05:58:02.240] and we needed more information.
+[05:58:02.520 --> 05:58:03.480] We were asking the question,
+[05:58:03.540 --> 05:58:05.040] do we have enough information for fraud?
+[05:58:05.460 --> 05:58:07.140] And for that, what we're going to end up doing
+[05:58:07.140 --> 05:58:08.900] is kicking off a System 2 agent
+[05:58:08.900 --> 05:58:10.180] that's going to go spin up
+[05:58:10.180 --> 05:58:11.860] and run for much longer,
+[05:58:12.420 --> 05:58:13.600] calling a bank API
+[05:58:13.600 --> 05:58:17.120] and finding that there was a $48,000 transaction
+[05:58:17.120 --> 05:58:18.080] from a payee,
+[05:58:19.360 --> 05:58:21.340] basically creating a new account on his phone
+[05:58:21.340 --> 05:58:22.640] and it was earlier that day
+[05:58:22.640 --> 05:58:24.020] that that account got created.
+[05:58:24.180 --> 05:58:25.720] So high indicator of fraud.
+[05:58:26.260 --> 05:58:29.080] We circle back and ask that same question now to Jev
+[05:58:29.080 --> 05:58:30.400] and ask, hey, do we have enough evidence?
+[05:58:30.520 --> 05:58:33.880] now, Jev agrees and it finds 100% sufficient activity.
+[05:58:34.280 --> 05:58:38.480] And we would hand that off effectively to another grading model that combines all those
+[05:58:38.480 --> 05:58:43.100] transactions that we found with the system payload and then finds that there is fraud
+[05:58:43.100 --> 05:58:44.280] in this particular use case.
+[05:58:45.140 --> 05:58:48.060] A square root of one to five, we got 4.97.
+[05:58:49.280 --> 05:58:54.180] Now stepping out of this, typically what would happen from this point onwards is that we'd
+[05:58:54.180 --> 05:58:57.940] go off to a human to review, we'd have somebody kind of review both the system one and system
+[05:58:57.940 --> 05:59:01.320] and two logs, and then find that there was potential fraud
+[05:59:01.320 --> 05:59:02.100] and freeze the account.
+[05:59:02.480 --> 05:59:05.200] But effectively, what we're seeing from customers
+[05:59:05.200 --> 05:59:06.440] that are going through and implementing
+[05:59:06.440 --> 05:59:08.940] JEV inside of their workflows is that they're
+[05:59:08.940 --> 05:59:11.940] able to replace the typical LLM calls that are going on
+[05:59:11.940 --> 05:59:12.620] behind the scenes.
+[05:59:12.800 --> 05:59:19.340] And in process, we're increasing the speed about 50 times,
+[05:59:19.560 --> 05:59:22.640] while also being 7.1 times cheaper
+[05:59:23.280 --> 05:59:25.020] than calling a traditional LLM.
+[05:59:26.940 --> 05:59:31.300] Now, we've gone through and kind of shown how customers would use this within our technology,
+[05:59:31.300 --> 05:59:35.580] but we're also pointing the finger back inwards where we're trying to ask the question of
+[05:59:35.580 --> 05:59:40.720] how can UiPath use this within the products and services that we offer to be able to help
+[05:59:40.720 --> 05:59:44.980] customers out? And there's a number of different patterns that we're kind of exploring with Jev.
+[05:59:45.140 --> 05:59:50.800] And today we're going to talk about a re-ranking problem as well as what we're using inside of
+[05:59:50.800 --> 05:59:51.460] the email mining.
+[05:59:52.380 --> 05:59:54.980] And so to set the stage for kind of re-ranking,
+[05:59:55.700 --> 05:59:59.980] effectively what we're trying to do is run and add within our
+[06:00:00.000 --> 06:00:01.900] retrieval augmented generation within our agents,
+[06:00:02.180 --> 06:00:05.520] the ability for us to find more appropriate chunks
+[06:00:05.520 --> 06:00:06.880] to be able to provide to our agent.
+[06:00:07.100 --> 06:00:10.320] And we do that by basically finding relevant documents
+[06:00:10.320 --> 06:00:14.040] first and then using typically an LLM to do this.
+[06:00:14.120 --> 06:00:15.680] But we're experimenting with also using
+[06:00:15.680 --> 06:00:18.780] Jev to go through and find the various different chunks that
+[06:00:18.780 --> 06:00:20.800] make our most relevant to answering the question
+[06:00:21.580 --> 06:00:23.900] and then providing those as context to the LLM.
+[06:00:24.300 --> 06:00:27.060] And we've run a couple of experiments on this now.
+[06:00:27.180 --> 06:00:28.740] And I'd like to hand it back off to Chibi,
+[06:00:30.000 --> 06:00:32.240] a little bit more about what we were able to find.
+[06:00:33.120 --> 06:00:33.160] Yeah.
+[06:00:33.860 --> 06:00:36.440] So this is where things got really interesting for us.
+[06:00:36.520 --> 06:00:38.160] This is like the first week of Jov.
+[06:00:38.240 --> 06:00:40.000] We got our hands on Jov.
+[06:00:40.220 --> 06:00:45.320] And we have these extremely strong benchmarks and eval
+[06:00:45.320 --> 06:00:47.980] sets that we had for re-ranking that we have been running
+[06:00:47.980 --> 06:00:48.800] for some time.
+[06:00:49.080 --> 06:00:52.240] And we need those for when we change from one model
+[06:00:52.240 --> 06:00:52.700] to another.
+[06:00:53.240 --> 06:00:57.500] And we realized, OK, why not take these eval sets
+[06:00:57.500 --> 06:01:03.440] and build a hill-climbing harness and ask Astra to say,
+[06:01:03.600 --> 06:01:07.020] okay, this is my score I can get with an LLM.
+[06:01:07.280 --> 06:01:08.260] Here is Jeff.
+[06:01:08.540 --> 06:01:09.720] Here are the three APIs.
+[06:01:10.380 --> 06:01:15.100] Find a strategy which can achieve that score and let it run.
+[06:01:15.480 --> 06:01:19.400] And it ran for the entire night for 14 hours in a session,
+[06:01:19.560 --> 06:01:22.800] and it came up with so many different strategies
+[06:01:22.800 --> 06:01:24.380] where it worked, where it didn't work,
+[06:01:24.400 --> 06:01:27.360] and then we were slowly seeing the number go up.
+[06:01:27.500 --> 06:01:29.500] Every two hours, there will be one strategy
+[06:01:29.500 --> 06:01:30.960] that will perform slightly better.
+[06:01:31.540 --> 06:01:34.560] This was so surprising for us because what we thought
+[06:01:35.280 --> 06:01:38.040] was, JEL as an API, if you just call it,
+[06:01:38.260 --> 06:01:41.320] like when you just send all of the, go up, up.
+[06:01:41.920 --> 06:01:46.020] So when we call it, we were getting only 0.866,
+[06:01:46.300 --> 06:01:48.600] which was very, very low at that point
+[06:01:48.600 --> 06:01:49.740] when we were trying it out.
+[06:01:50.000 --> 06:01:52.040] When we were thinking, how do we increase it?
+[06:01:52.320 --> 06:01:55.780] And then it slowly got to the number of 0.889
+[06:01:57.500 --> 06:02:01.520] trying out new strategies, and that strategy is called tournament. And I want to showcase
+[06:02:01.520 --> 06:02:08.100] that strategy which these hill climbing models actually come up with and how we were able to see
+[06:02:08.100 --> 06:02:14.100] the intelligence squeaked out of Jav just by applying Jav in a different architecture and
+[06:02:14.100 --> 06:02:20.640] different call method. And I want to take you through tournament now. So what tournament did
+[06:02:20.640 --> 06:02:25.620] is that it actually reimagined re-ranking differently. Instead of looking at every
+[06:02:27.620 --> 06:02:29.940] how relevant is it for my question?
+[06:02:30.240 --> 06:02:35.700] It created cohorts of different groups of these chunks,
+[06:02:36.040 --> 06:02:37.600] and made them fight between each other
+[06:02:37.600 --> 06:02:39.640] to be the best, most relevant chunk
+[06:02:40.160 --> 06:02:42.760] by sending thousands and thousands of JavCars
+[06:02:42.760 --> 06:02:44.080] for each and every one of them.
+[06:02:44.320 --> 06:02:47.460] And it found leaders in those particular cohorts,
+[06:02:47.660 --> 06:02:50.020] and then the winners would be promoted to the next round.
+[06:02:50.400 --> 06:02:52.020] And then from those winners,
+[06:02:52.220 --> 06:02:55.000] we would again find top winners from those chunks,
+[06:02:55.000 --> 06:03:00.740] And then we'll slowly increase and find the topmost, the cream will rise to the top and
+[06:03:00.740 --> 06:03:04.120] you will find the most relevant chunks on the whole list.
+[06:03:04.440 --> 06:03:10.020] So this worked extremely well and we were testing it and we were surprised to see that
+[06:03:10.020 --> 06:03:18.880] even with thousands of JV calls and many millions of contexts being used, we were still under
+[06:03:18.880 --> 06:03:21.080] a second, we were able to make all of these calls.
+[06:03:21.080 --> 06:03:24.420] And this was a huge revelation for us.
+[06:03:24.580 --> 06:03:29.580] And we realized that JEL is a building block that we can adjust.
+[06:03:30.000 --> 06:03:34.900] And we have to find these new strategies where we would be able to apply this
+[06:03:34.900 --> 06:03:39.040] building block and it might look less intelligent on its own.
+[06:03:39.180 --> 06:03:41.540] But with these strategies and patterns,
+[06:03:41.840 --> 06:03:45.540] we can get more intelligent with even the current JEL model that we have.
+[06:03:46.000 --> 06:03:49.720] And that gave us like 15x speed and
+[06:03:51.920 --> 06:03:55.880] our live indexes and saw how it performed,
+[06:03:56.040 --> 06:03:58.440] and people were extremely surprised by this one.
+[06:03:59.060 --> 06:04:05.620] And next, we saw how JEO could be used for mining.
+[06:04:05.900 --> 06:04:08.060] So mining has a lot of stages.
+[06:04:08.280 --> 06:04:10.380] I'm going to talk only about the classification stage.
+[06:04:10.800 --> 06:04:14.660] And what happens is we have customers who have millions of
+[06:04:14.660 --> 06:04:17.740] emails in support email box.
+[06:04:18.140 --> 06:04:20.960] And what happens is they want to analyze and they want to dig
+[06:04:21.080 --> 06:04:22.320] to what happened in these emails
+[06:04:22.320 --> 06:04:23.800] so that they can take some actions.
+[06:04:24.060 --> 06:04:26.420] I'm sure every one of you guys have one of those email boxes.
+[06:04:27.220 --> 06:04:31.340] What happens is that it's so hard to find the right categories
+[06:04:31.340 --> 06:04:33.840] and bucketizations without reading all of these emails.
+[06:04:34.080 --> 06:04:37.700] So what we used to do is that we would go and create
+[06:04:38.400 --> 06:04:41.080] fine tuning to figure out a model that classifies them.
+[06:04:41.260 --> 06:04:44.300] It would take hours and maybe day to fine tune
+[06:04:44.300 --> 06:04:46.560] the particular model for the classification story.
+[06:04:46.820 --> 06:04:49.600] But what we found was, this is again through hill climbing,
+[06:04:51.080 --> 06:04:57.500] where we use an LLM to find an initial candidate list of categories.
+[06:04:57.880 --> 06:05:01.180] And then it would say that, okay, these are all the 15 categories
+[06:05:01.180 --> 06:05:03.180] that I think the emails will fit.
+[06:05:03.360 --> 06:05:05.760] Then what we would do is that we'll use JEL
+[06:05:05.760 --> 06:05:08.280] and then all the million emails through it
+[06:05:08.280 --> 06:05:11.140] and see where the buckets fill up.
+[06:05:11.500 --> 06:05:16.040] And with that, we can actually see which buckets are not filled properly,
+[06:05:16.300 --> 06:05:19.180] which gets overfitted, which buckets are never filled out,
+[06:05:21.080 --> 06:05:26.300] back and optimize those buckets again. And then once the buckets are rearranged, we'll
+[06:05:26.300 --> 06:05:32.160] do another classification of all the millions of emails one more time. Because Java is so
+[06:05:32.160 --> 06:05:37.420] cheap, we were able to do this multiple times. And eventually, we'll end up with a category
+[06:05:37.420 --> 06:05:42.040] list which is extremely fit towards the mailbox that you're dealing with. Because it's not
+[06:05:42.040 --> 06:05:46.820] the same across different mailboxes. The categories are completely different. But the powerful
+[06:05:46.820 --> 06:05:51.800] thing is, once you did all of this work with an LLM going through and finding these categories,
+[06:05:52.160 --> 06:05:58.540] you don't need the LLM anymore because you have the categories where you have distilled
+[06:05:58.540 --> 06:06:03.680] down all the intelligence into these categories. Now you can just build a Maestro flow which
+[06:06:03.680 --> 06:06:09.680] basically takes just the categories alone and uses GEL. So whenever a new email comes,
+[06:06:09.880 --> 06:06:16.000] it only needs GEL. It just looks at the email and fits the categories, and we basically
+[06:06:16.820 --> 06:06:18.520] a list of follow through.
+[06:06:18.780 --> 06:06:20.280] So if this matches this category,
+[06:06:20.640 --> 06:06:21.500] you are going to get an email.
+[06:06:21.600 --> 06:06:22.780] This team is going to get an email,
+[06:06:22.840 --> 06:06:25.240] or that team is going to get an email so easily.
+[06:06:25.340 --> 06:06:27.120] And we basically removed the LLM completely
+[06:06:27.120 --> 06:06:28.660] from the picture on this one.
+[06:06:29.720 --> 06:06:32.440] And we saw a humongous speed increase
+[06:06:32.440 --> 06:06:34.140] on just email processing.
+[06:06:34.140 --> 06:06:36.700] It was almost like at real time, an email comes,
+[06:06:36.780 --> 06:06:38.080] and suddenly somebody will get notified.
+[06:06:38.320 --> 06:06:42.620] So that was an amazing thing to see as well.
+[06:06:42.700 --> 06:06:45.280] So over the few months, we were so
+[06:06:46.820 --> 06:06:51.460] with Jev, and every day the Slack threads would light up everywhere in the company that
+[06:06:51.460 --> 06:06:57.020] I found this pattern, I found that pattern, and it was such an exciting time during these
+[06:06:57.020 --> 06:06:57.860] last three months.
+[06:06:58.180 --> 06:07:03.620] And I wanted to share that there are so much more patterns and strategies to be found.
+[06:07:03.880 --> 06:07:11.780] We are only scratching the surface of this, and I want us to try out and share the strategies
+[06:07:11.780 --> 06:07:14.040] that we all find and collaborate here.
+[06:07:14.040 --> 06:07:16.320] And if you're interested in trying out UiPath Flow,
+[06:07:16.780 --> 06:07:18.660] we have it available for free right now.
+[06:07:18.840 --> 06:07:20.380] Scan the QR code on the screen here,
+[06:07:20.440 --> 06:07:22.940] and it'll take you into a portal where you can basically
+[06:07:22.940 --> 06:07:25.400] point your coding agent at it and get complete access
+[06:07:25.400 --> 06:07:26.760] to build your first automations there.
+[06:07:27.040 --> 06:07:28.100] Thank you for your time, everyone.

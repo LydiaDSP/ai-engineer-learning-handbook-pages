@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p03",
+    "title": "命令输出经常需要二次筛选",
+    "time": "01:48:35",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=6515s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者样本约有两万次常用 CLI 调用，其中 26% 把输出接到过滤工具。右侧是两个单项命令的样本比例。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 6515
+  },
+  {
+    "id": "frame-02",
+    "after": "p08",
+    "title": "把管道表达的需求变成接口选项",
+    "time": "01:52:20",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=6740s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>示例把 grep、截尾和手工压缩替换为可直接表达上下文范围、条目数和简洁输出的选项。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 6740
+  },
+  {
+    "id": "frame-03",
+    "after": "p10",
+    "title": "接口改动后的使用记录",
+    "time": "01:54:20",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=6860s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>发布简洁搜索模式后，讲者报告该模式在相应样本中的使用率上升到 99%，读取结果继续接过滤管道的比例下降到 25%。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 6860
+  }
+]

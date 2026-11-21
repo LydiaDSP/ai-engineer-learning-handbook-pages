@@ -1,0 +1,35 @@
+[
+  {
+    "id": "agent-timeline",
+    "after": "p06",
+    "title": "用一条时间线看清 Agent 的等待时间",
+    "time": "00:13:33",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=813s",
+    "en": "assets/agent-timeline-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>用一条时间线看清 Agent 的等待时间</h3><dl><div><dt>红色</dt><dd>模型推理。</dd></div><div><dt>绿色与蓝色</dt><dd>分别表示工具调用和输入（Typing）。</dd></div><div><dt>灰色</dt><dd>Harness（运行框架）。</dd></div></dl></div>",
+    "note": "讲者用修改幻灯片的录屏展示这一轮的时间分布。",
+    "sourceSeconds": 813
+  },
+  {
+    "id": "token-frontier",
+    "after": "p22",
+    "title": "单个 token 的速度与限时总产量",
+    "time": "00:18:54",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1134s",
+    "en": "assets/token-frontier-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>单个 token 的速度与限时总产量</h3><dl><div><dt>横轴</dt><dd>平均每个 token 的耗时，越往右越快。</dd></div><div><dt>纵轴</dt><dd>游戏中 60 秒内按时完成的 token 数。</dd></div></dl></div>",
+    "note": "这是同事玩模拟游戏的记录。前沿曲线表示这些结果之间的取舍。",
+    "sourceSeconds": 1134
+  },
+  {
+    "id": "bottleneck-shift",
+    "after": "p32",
+    "title": "推理提速以后，工具调用占比上升",
+    "time": "00:22:05",
+    "url": "https://www.youtube.com/watch?v=ZZ19zhYnDKY&t=1325s",
+    "en": "assets/bottleneck-shift-en.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图 · 据原画面翻译与整理</span><h3>推理提速以后，工具调用占比上升</h3><dl><div><dt>原速度</dt><dd>图中一轮用时 105 秒，推理约占 82%，工具调用占 18%。</dd></div><div><dt>模拟提速</dt><dd>推理提速十倍后，整轮约 28 秒，工具调用占约 67%。</dd></div></dl></div>",
+    "note": "转写将原推理占比记为约 80%，配图按原片标注 82%。",
+    "sourceSeconds": 1325
+  }
+]

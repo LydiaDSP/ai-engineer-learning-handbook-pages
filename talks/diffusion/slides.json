@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p03",
+    "title": "先判断何时需要软件工厂",
+    "time": "06:37:00",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=23820s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者用停止符号引出工厂化的时机。探索期需要随时重设方向，已有产品的稳定交付则需要可重复的流程。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 23820
+  },
+  {
+    "id": "frame-02",
+    "after": "p07",
+    "title": "用放大器说明生产反馈",
+    "time": "06:40:25",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24025s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>放大器的输出通过反馈线回到输入。剪断反馈线，放大同时失去控制；讲者借此说明给已有系统加入交付速度之前要先建立反馈。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 24025
+  },
+  {
+    "id": "frame-03",
+    "after": "p13",
+    "title": "产能增加后，需求成为瓶颈",
+    "time": "06:46:55",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=24415s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>生产线图用过量供给说明单纯增加软件交付量无法确保价值，还需要不断验证需求、取舍优先级。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 24415
+  }
+]

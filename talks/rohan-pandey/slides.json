@@ -1,0 +1,35 @@
+[
+  {
+    "id": "frame-01",
+    "after": "p01",
+    "title": "从终端启动配置搜索",
+    "time": "02:14:15",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=8055s",
+    "en": "assets/frame-01.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>讲者在终端演示模型服务的参数搜索。脚本以可量化的延迟和吞吐指标对候选配置做比较。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 8055
+  },
+  {
+    "id": "frame-02",
+    "after": "p05",
+    "title": "在终端设定请求负载和试验次数",
+    "time": "02:16:37",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=8197s",
+    "en": "assets/frame-02.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>屏幕上方列出四种请求负载，下方是启动搜索的命令。该演示命令将试验次数设为 24 次。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 8197
+  },
+  {
+    "id": "frame-03",
+    "after": "p08",
+    "title": "结果报告与可复用配置",
+    "time": "02:17:55",
+    "url": "https://www.youtube.com/watch?v=y9JtCCZP2MQ&t=8275s",
+    "en": "assets/frame-03.png",
+    "reading": "<div class=\"slide-reading\"><span class=\"mini-label\">中文读图</span><p>这是此前的 GPT-OSS 120B 报告，50 次试验中第 47 轮最佳。相较第一组配置，满足延迟目标的加权 token 吞吐提升约 17.5%。</p></div>",
+    "note": "大会原视频画面",
+    "sourceSeconds": 8275
+  }
+]

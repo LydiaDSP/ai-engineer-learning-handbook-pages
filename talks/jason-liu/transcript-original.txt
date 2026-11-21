@@ -1,0 +1,288 @@
+学会判断什么值得做，以及什么算做好
+Jason Liu
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 2 天直播回放 · https://www.youtube.com/watch?v=y9JtCCZP2MQ
+时间以对应录像起点为准。以下为此前保存的自动转写中的本场片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义与编辑整理请见手册。
+
+[00:19:41.020 --> 00:19:44.040] Hey everyone, let me just get the clicker real quick.
+[00:19:48.480 --> 00:19:50.400] Sweet, let's see if these slides show up first.
+[00:19:52.060 --> 00:19:57.580] All right, hey everyone, I'm Jason from the developer experience team at OpenAI and I'm
+[00:19:57.580 --> 00:19:59.780] super excited to kick off this track on
+[00:20:00.000 --> 00:20:04.740] raising your ambitions. You know, I joined in March and the Codex app wasn't really a
+[00:20:04.740 --> 00:20:10.060] thing for a couple weeks. There was no Astra yet. And when these things launched, I kind
+[00:20:10.060 --> 00:20:13.420] of realized that I started becoming someone that worked on the developer experience team
+[00:20:13.420 --> 00:20:17.900] and I worked on the everything experience team now that AI can be a tool that allows
+[00:20:17.900 --> 00:20:22.100] everyone to make things. And so I want this talk to not only to be addressable to the
+[00:20:22.100 --> 00:20:26.880] people here in this room as developers, but for everyone online as well. You know, in
+[00:20:26.880 --> 00:20:29.900] this year, we've done a lot of different things, right? We wanted a better coding app. We built
+[00:20:30.000 --> 00:20:34.600] codex app, we've been contributing to things like biology, folks have wanted to make personal
+[00:20:34.600 --> 00:20:39.660] applications, so we launched sites, cybersecurity, voice, computer use, and in this past couple
+[00:20:39.660 --> 00:20:44.220] of months, we've done some really ambitious things like our contributions to math and
+[00:20:44.220 --> 00:20:48.440] physics and a lot of new physical engineering capabilities. It's kind of crazy to think
+[00:20:48.440 --> 00:20:52.440] that a couple years ago we were doing grade school math and now we'll be able to tackle
+[00:20:52.440 --> 00:20:57.800] Navier Stokes. So when I got asked to talk a little bit more about what ambition meant,
+[00:20:57.800 --> 00:21:04.220] I think the question I keep going back to is like, ambition isn't sort of how you do
+[00:21:04.220 --> 00:21:07.760] things, but like how you approach these things, right? What do you want to make? And how ambitious
+[00:21:07.760 --> 00:21:09.400] are you in thinking about the things that you make?
+[00:21:10.620 --> 00:21:14.180] I know this is a coding conference, after all, and many of the talks here will talk
+[00:21:14.180 --> 00:21:20.040] about things like how to run longer-running tasks or talk about dark factories and multi-agents.
+[00:21:20.560 --> 00:21:24.420] But I think from someone like me, it might not be as relatable to just say that I have
+[00:21:24.420 --> 00:21:29.580] have thousands of agents running in the background. I have unlimited tokens. And so really I want
+[00:21:29.580 --> 00:21:35.240] to give a talk that talks a little bit more about what I think is the role and responsibility
+[00:21:35.800 --> 00:21:41.620] for developers in the future. And so using more tokens isn't what I mean by being more
+[00:21:41.620 --> 00:21:47.580] ambitious. To me, in a world where execution is now free, I think ambition is summed up
+[00:21:47.580 --> 00:21:51.500] by these three principles. Do you actually believe that you've created this work and
+[00:21:51.500 --> 00:21:56.680] that you have ownership of this work? Can you describe what your tastes are and understand
+[00:21:56.680 --> 00:22:00.180] how you can tell the model to make things better? And can you describe what good looks
+[00:22:00.180 --> 00:22:06.080] like? And then lastly, are you actually curious enough to use AI to pursue other fields? Are
+[00:22:06.080 --> 00:22:09.080] you actually able to expand your horizon rather than thinking that you're going to be replaced
+[00:22:09.080 --> 00:22:15.080] or something like that? And this mostly comes from three different fears that people have
+[00:22:15.080 --> 00:22:19.860] when it comes to, like, using AI more. Are we just going to create more slop in the world?
+[00:22:21.500 --> 00:22:24.960] destroy my ability to think critically, and is AI going to replace us?
+[00:22:25.740 --> 00:22:29.420] And so I want to talk about these things one at a time and use that as a way of framing
+[00:22:29.420 --> 00:22:30.720] this conversation about ambition.
+[00:22:31.420 --> 00:22:35.240] And so the first thing is you really want to think about owning the work that you ship.
+[00:22:36.380 --> 00:22:38.420] So the first question is, are we going to ship more slop?
+[00:22:40.020 --> 00:22:43.440] And probably the answer is yes, but I try to think about this the same way that we thought
+[00:22:43.440 --> 00:22:45.340] about the camera when it first came out.
+[00:22:46.080 --> 00:22:51.340] As a raise of hands, how many people here feel like the technical work they do is a
+[00:22:51.500 --> 00:22:59.800] pursuit. Yeah. You know, me too. These days, I don't think of myself as a developer. I'm
+[00:22:59.800 --> 00:23:03.740] mostly thinking about myself as someone who's trying to will things into existence, right?
+[00:23:03.840 --> 00:23:08.420] And I have to, again, feel this ownership and describe what I like. In a past life,
+[00:23:08.740 --> 00:23:11.900] not many people know this, I used to be a machine learning engineer, I used to be a
+[00:23:11.900 --> 00:23:15.940] physicist, and I used to be an artist. And the story of the camera is something I keep
+[00:23:15.940 --> 00:23:20.080] thinking about as we introduce more ways of doing this kind of replication, right, as
+[00:23:22.120 --> 00:23:27.520] When the camera first came out, painters who were busy focusing on their ability to recreate
+[00:23:27.520 --> 00:23:29.000] images, yeah, they were a little stressed out.
+[00:23:29.920 --> 00:23:33.920] But at that time, people weren't even thinking about whether or not photography could change
+[00:23:33.920 --> 00:23:34.480] the art world.
+[00:23:34.660 --> 00:23:36.160] We weren't thinking about what a movie meant.
+[00:23:36.280 --> 00:23:38.020] You see a Charlie Chaplin film when it comes out.
+[00:23:38.480 --> 00:23:41.280] It's really easy to dismiss that as some silly thing.
+[00:23:42.460 --> 00:23:48.760] But at some point, you realize that not only is photography art, but it has changed the
+[00:23:48.760 --> 00:23:49.100] art world.
+[00:23:49.100 --> 00:23:52.840] world. And now we have film and all these other mediums and there's amazing things that
+[00:23:52.840 --> 00:23:57.680] you can explore. Walter Benjamin says this in a book, The Work of Art in the Age of Mechanical
+[00:23:57.680 --> 00:24:01.740] Reproduction, a book that came out right when the camera became popular. He says photography
+[00:24:01.740 --> 00:24:07.120] freed the hand of the most important functions and brought them to the eyes and to the voice.
+[00:24:08.180 --> 00:24:14.000] This is kind of the same with AI now, I just get to use voice mode on chat and say, do this
+[00:24:14.000 --> 00:24:17.960] and do that. In the same way that at some point, if you're a photographer or director,
+[00:24:19.100 --> 00:24:22.720] move that camera over there, I want a wider shot, I want to capture some kind of feeling,
+[00:24:23.180 --> 00:24:25.480] and maybe have a team around me to help me capture that vision.
+[00:24:27.980 --> 00:24:30.380] And now we live in a world where everyone has a camera.
+[00:24:30.560 --> 00:24:36.160] And sure, maybe I have a thousand photos in my camera roll that I never look at, maybe
+[00:24:36.160 --> 00:24:36.700] that is a slot.
+[00:24:37.480 --> 00:24:40.780] But it only matters whether or not I have captured a couple of really important moments
+[00:24:40.780 --> 00:24:41.320] in my life.
+[00:24:42.700 --> 00:24:45.220] And having ownership over those moments is the thing that's important.
+[00:24:45.220 --> 00:24:49.580] For example, 30 years ago, I didn't have childhood photos because we grew up in a place where
+[00:24:49.580 --> 00:24:50.340] we couldn't afford a camera.
+[00:24:51.260 --> 00:24:54.400] Now technology has allowed everyone the ability to have that kind of access.
+[00:24:54.560 --> 00:24:58.160] I sure would have liked to have a camera back then, even if it meant a little bit more slop.
+[00:25:00.420 --> 00:25:03.840] So if you go back to this idea of this painter, I think the question you have to ask yourself
+[00:25:03.840 --> 00:25:06.880] is do you identify yourself as the painter in this example or as the artist?
+[00:25:08.580 --> 00:25:13.000] Maybe it means painting photo realistically isn't the skill that's really valuable, but
+[00:25:13.000 --> 00:25:17.680] But if you think about yourself as the artist, whether it is the paint brush or the camera,
+[00:25:17.920 --> 00:25:22.660] whether it is code or clay or anything else, these are not just mediums that allow you
+[00:25:22.660 --> 00:25:23.980] to express yourself and to make things.
+[00:25:26.000 --> 00:25:29.000] I don't make a table and I say, like, DeWalt made this table.
+[00:25:29.660 --> 00:25:33.540] Just because a director has thousands of people on set, it's still the director's movie.
+[00:25:34.040 --> 00:25:37.440] And even in open source, we might have thousands of contributors or even agents now running
+[00:25:37.440 --> 00:25:42.100] the system, but it's the core maintainers that help hold the responsibility for the
+[00:25:44.280 --> 00:25:47.780] And I don't think the danger these days is whether or not AI is going to create more
+[00:25:47.780 --> 00:25:49.260] slop, right?
+[00:25:49.440 --> 00:25:51.980] But instead it's about self-erasure, right?
+[00:25:52.220 --> 00:25:56.220] Are you going to be a passive observer of the work that's being created which results
+[00:25:56.220 --> 00:25:59.240] in the slop or are you going to be someone who is an active participant in the act of
+[00:25:59.240 --> 00:25:59.580] creation?
+[00:26:00.260 --> 00:26:00.660] Right?
+[00:26:01.060 --> 00:26:04.180] I think many people have been sort of moving themselves away from this.
+[00:26:04.800 --> 00:26:08.780] And the only difference between a person who's making 1,000 PRs versus another is whether
+[00:26:08.780 --> 00:26:10.080] whether they actually care about the work,
+[00:26:10.240 --> 00:26:11.820] and whether they are an active participant.
+[00:26:13.360 --> 00:26:14.600] You know, and so as an engineer,
+[00:26:14.800 --> 00:26:16.020] what this means is you just have to, like,
+[00:26:16.540 --> 00:26:18.380] use your products more, notice when things break,
+[00:26:18.540 --> 00:26:20.400] and decide whether things need another pass.
+[00:26:21.200 --> 00:26:23.600] Like, a lot of the great examples you see online
+[00:26:23.600 --> 00:26:25.820] are not one-shot examples, right?
+[00:26:25.880 --> 00:26:27.380] These are things that you iterate over time
+[00:26:27.380 --> 00:26:29.520] because you feel proud to create this kind of work.
+[00:26:30.200 --> 00:26:33.060] You know, internally, we have a lot of amazing work
+[00:26:33.060 --> 00:26:35.280] with, like, our ownership over, like, the Codex app, right?
+[00:26:36.040 --> 00:26:38.100] Most people here have an incredible sense of ownership
+[00:26:38.780 --> 00:26:42.100] product, and so as things slip as we ship more, we want to bring them together.
+[00:26:42.820 --> 00:26:44.680] And again, this is mostly because of the fact that we care.
+[00:26:46.760 --> 00:26:52.920] So in terms of worrying about slop, I think that the medicine for slop is really the fact
+[00:26:52.920 --> 00:26:54.880] that you really need to believe that you own this work.
+[00:26:56.820 --> 00:27:02.500] I think the second thing to address is whether or not you feel like you can actually describe
+[00:27:02.500 --> 00:27:03.460] what good looks like.
+[00:27:03.640 --> 00:27:05.600] And for that, you need to go out and be inspired.
+[00:27:07.740 --> 00:27:11.640] So the second question people are asking now is, do you think AI is going to destroy our
+[00:27:11.640 --> 00:27:12.880] ability to think critically?
+[00:27:13.100 --> 00:27:15.880] If I own the work, how do I know if something's good enough?
+[00:27:17.100 --> 00:27:21.260] If I just hand you a camera in this analogy, does it mean it takes away all the effort
+[00:27:21.260 --> 00:27:21.860] of creation?
+[00:27:22.060 --> 00:27:23.340] I don't think the answer is yes.
+[00:27:24.460 --> 00:27:24.540] Right?
+[00:27:24.940 --> 00:27:28.140] Instead it's now about having language to describe what's going on.
+[00:27:28.320 --> 00:27:31.920] So when I first started art school, maybe I don't know how to develop film, I just use
+[00:27:31.920 --> 00:27:36.540] my iPhone, but I still need to understand the elements of design and what does beautiful
+[00:27:36.540 --> 00:27:42.280] look like. Space, value, shape, texture. I would spend a lot of time thinking, you know,
+[00:27:42.360 --> 00:27:45.980] I don't think I understand what negative space means. Let me go do a lot of sketches and
+[00:27:45.980 --> 00:27:50.360] explore a little bit. It's the same thing with development now. I can make multiple
+[00:27:50.360 --> 00:27:54.900] apps and I have to think about why I like something and why I don't. And most of my
+[00:27:54.900 --> 00:27:58.940] time in art school was just thinking, man, I can make things and I can look at them and
+[00:27:58.940 --> 00:28:00.780] I just say, I don't like how this looks.
+[00:28:01.260 --> 00:28:05.400] And what I was noticing was that my taste and my judgment exceeded my skill.
+[00:28:05.600 --> 00:28:07.120] I could not do the thing I liked.
+[00:28:07.600 --> 00:28:11.620] And I can't just look in the mirror and tell myself, make it pop a hundred times and know
+[00:28:11.620 --> 00:28:12.360] that it's going to be better.
+[00:28:12.540 --> 00:28:14.400] I have to go out and develop that language.
+[00:28:15.260 --> 00:28:19.100] People say taste is the moat, but I think I generally hate that line.
+[00:28:19.200 --> 00:28:21.420] Because it doesn't tell you what taste really means.
+[00:28:22.260 --> 00:28:26.300] To me, taste is the ability to describe what you like and predict what others will like.
+[00:28:26.300 --> 00:28:31.340] right? And building this model of the world and of other people, that's the new thinking.
+[00:28:33.800 --> 00:28:37.060] Winstein's, the limits of my language means the limits of my world. And I think that's
+[00:28:37.060 --> 00:28:42.980] very much the case on pursuing ambitious projects. You know, there's a funny example of just
+[00:28:42.980 --> 00:28:46.040] the use of language. I don't know if Steve was in the room, but he made a tweet a couple
+[00:28:46.040 --> 00:28:50.300] days ago that just says, find all the implicit state machines in my app. I had to go Google
+[00:28:50.300 --> 00:28:54.280] what that meant. Right? And all of a sudden, all of the comments are just how everyone's
+[00:28:54.280 --> 00:28:59.740] apps are 20% faster. These are simple ways of developing some language to understand
+[00:28:59.740 --> 00:29:05.400] what good looks like and how to make things better. If you think of model progress, in
+[00:29:05.400 --> 00:29:08.940] machine learning there's a really helpful concept called the generator-discriminator
+[00:29:08.940 --> 00:29:15.160] gap. You have two models, one grades the model and one actually creates the outputs. And
+[00:29:15.160 --> 00:29:19.040] what happens is if the grader is too good, then the model can't learn. And if the generator
+[00:29:19.040 --> 00:29:24.080] is too good, the discriminator can't help the model improve. We are now that discriminator.
+[00:29:24.740 --> 00:29:29.680] As model capabilities go up, at some point, maybe the model's output hits your own taste
+[00:29:29.680 --> 00:29:33.700] levels. Then it's really hard to actually improve. And then to make things that are
+[00:29:33.700 --> 00:29:38.720] better, you have to go out, develop that language and know what good looks like. And the failure
+[00:29:38.720 --> 00:29:46.360] mode is here, just not being able to discern whether or not a model can improve. And again,
+[00:29:46.360 --> 00:29:51.560] again. We have to go out and learn again. We have to think again. This is an example
+[00:29:51.560 --> 00:29:56.220] of a bunch of things I spent my past year learning in building software. As I built
+[00:29:56.220 --> 00:29:59.400] the applications, I realized, oh, man, these websites look really ugly. I need to learn
+[00:29:59.400 --> 00:30:04.280] about typography. Why is everything italic? I don't understand. I spent a lot of time
+[00:30:04.280 --> 00:30:08.100] learning about typography. Then it was about how the information was presented to avoid
+[00:30:08.100 --> 00:30:12.500] looking like slop. And then it was about motion design and how can I make things move in a
+[00:30:12.500 --> 00:30:16.600] beautiful way and I got to spend so much time learning about animation and then learning
+[00:30:16.600 --> 00:30:20.640] about interaction patterns and what makes an app feel beautiful. And this is really
+[00:30:20.640 --> 00:30:24.800] fun, right? And this is, again, spending more time learning in order to make great things.
+[00:30:26.180 --> 00:30:30.260] And most importantly, having the ability to describe things is what allows you to differentiate,
+[00:30:30.600 --> 00:30:35.160] right? If you think about these purple apps, the reason these existed was because the people
+[00:30:35.160 --> 00:30:39.280] making these applications didn't have the site. They couldn't actually describe what
+[00:30:39.280 --> 00:30:40.500] was wrong and they thought this was okay.
+[00:30:41.780 --> 00:30:44.720] And this limiting in language is sort of the problem that we face.
+[00:30:46.580 --> 00:30:49.520] And so the question now is, okay, how do we develop this new language?
+[00:30:49.740 --> 00:30:54.160] And honestly, the line that I've sort of been punished to now is just like, if you want
+[00:30:54.160 --> 00:30:55.320] good taste, you have to eat.
+[00:30:55.560 --> 00:30:57.280] You have to go out and explore things.
+[00:30:57.800 --> 00:30:59.600] People are vibe coding video games.
+[00:30:59.820 --> 00:31:04.240] Maybe the answer isn't just to tell the model to do better, but play some video games and
+[00:31:04.240 --> 00:31:08.340] understand what feels good, what animations feel good, what stories matter, what stories
+[00:31:09.360 --> 00:31:13.160] If you're building tools, try other people's tools and applications and understand what
+[00:31:13.160 --> 00:31:13.560] you like.
+[00:31:14.060 --> 00:31:15.060] Look at beautiful things.
+[00:31:15.500 --> 00:31:20.440] I've been doing a lot of 3D printing with AI, and everything looks like rectangles glued
+[00:31:20.440 --> 00:31:20.820] together.
+[00:31:21.020 --> 00:31:22.660] I kept saying, make it more beautiful.
+[00:31:23.060 --> 00:31:24.460] And that's a really frustrating experience.
+[00:31:25.280 --> 00:31:29.620] And I started looking at sports cars, industrial design, and going to stores and looking at
+[00:31:29.620 --> 00:31:33.520] things and going, let me describe and understand what good curves look like.
+[00:31:33.820 --> 00:31:35.660] And again, it's a really fun experience.
+[00:31:35.660 --> 00:31:39.240] experience. And now more of my designs are incredibly beautiful. For what I think is
+[00:31:39.240 --> 00:31:43.660] beautiful. I've been helping with marketing, and I realize that I tell the marketing team
+[00:31:43.660 --> 00:31:48.160] that they should use the Codex app more, but I'm not watching more ads. And as I'm watching
+[00:31:48.160 --> 00:31:51.420] more movies, I realize there's great stories to tell, and everything becomes better again.
+[00:31:51.960 --> 00:31:58.840] And this is kind of the really exciting part of using these tools. And thinking about why
+[00:31:58.840 --> 00:32:02.400] I like things and why things are amazing and why things feel good now is how I spend my
+[00:32:02.400 --> 00:32:02.640] time.
+[00:32:03.100 --> 00:32:07.720] So I'm not thinking less, I'm thinking more, and it's really enriching my world and making
+[00:32:07.720 --> 00:32:08.880] me see things differently.
+[00:32:09.660 --> 00:32:14.540] And if you're running a team, I think the one takeaway here is that if you really believe
+[00:32:14.540 --> 00:32:18.820] that AI is making you more productive, I think you owe it to yourself and the rest of the
+[00:32:18.820 --> 00:32:23.780] team to make space to go out and explore things and try new applications and just actually
+[00:32:23.780 --> 00:32:25.500] go out and experience the world.
+[00:32:26.600 --> 00:32:30.020] And if you are someone that makes really great work, inspiring others as well.
+[00:32:30.020 --> 00:32:35.520] right? And that's how you can come back with a point of view. So go out and be inspired,
+[00:32:35.920 --> 00:32:39.460] learn to be a better critic, and recognize that you're not actually thinking less, you're
+[00:32:39.460 --> 00:32:44.920] thinking more. And the last thing is actually just being curious, really, really curious
+[00:32:44.920 --> 00:32:49.520] to pursue new ideas. Like one question I want you guys to think about as you are thinking
+[00:32:49.520 --> 00:32:53.960] about your role as software engineers is like what were the things you gave up or put aside
+[00:32:53.960 --> 00:32:59.200] to pursue software? Right? Where else could use your judgment and your experience you've
+[00:33:00.020 --> 00:33:05.320] engineer. People worry about being replaced, but people are needed in way more places.
+[00:33:06.880 --> 00:33:12.540] If you think about when the invention of the pencil or sculpting became more easy, all
+[00:33:12.540 --> 00:33:18.640] these different industries in the creative world became very much multidisciplinary.
+[00:33:20.080 --> 00:33:23.540] It completely made sense that if you were a furniture designer, you could be an architect
+[00:33:23.540 --> 00:33:27.440] and make a movie and design kids toys and playgrounds.
+[00:33:28.340 --> 00:33:34.220] Michelangelo is a sculptor, painter, architect, poet. It made sense that you could do all
+[00:33:34.220 --> 00:33:37.720] of these things. This is a creative world. You invent the pencil, you can do amazing
+[00:33:37.720 --> 00:33:43.340] things. But with technology, it's become even more complicated to do so. I just can't get
+[00:33:43.340 --> 00:33:49.960] four PhDs. And if I could, maybe I'll just be 50. So being technical has become incredibly
+[00:33:49.960 --> 00:33:55.080] difficult. But when you do cross pollinate these different industries, amazing things
+[00:33:55.080 --> 00:34:01.740] happen. The physicist was, sorry, the founder of molecular biology was a physicist, a mathematician
+[00:34:01.740 --> 00:34:06.720] started leading the human genome project, and the mathematics around magnets was what
+[00:34:07.460 --> 00:34:12.100] is used to help understand neural networks. But this is now super hard to do, because
+[00:34:12.100 --> 00:34:17.060] you need so much information. Even in our own world, we have a bunch of AI helping us
+[00:34:17.060 --> 00:34:21.500] design chips and writing software. These are again, are just very multidisciplinary pursuits.
+[00:34:22.740 --> 00:34:33.520] If you look at what it means to be ambitious outside in the real world, there's a machine learning consultant using AI and molecular biology to help treat their dog's cancer.
+[00:34:34.000 --> 00:34:41.900] There was this public servant in Hokkaido who used chat and computer vision models to build robots to automate their farm.
+[00:34:42.560 --> 00:34:50.560] This cross-pollination and this will to create these things and learn and cross-pollinate across these different paths is what's really inspiring.
+[00:34:51.700 --> 00:34:58.100] I think earlier today I saw folks using AI to make more robots and discover exoplanets.
+[00:34:58.700 --> 00:35:02.640] It's that curiosity and that enablement of what AI allows you to do and lowering that
+[00:35:02.640 --> 00:35:06.420] barrier is what allows you to be ambitious in those fields.
+[00:35:07.180 --> 00:35:10.740] And so when it comes to thinking about whether or not you're going to be replaced, a lot
+[00:35:10.740 --> 00:35:15.600] of it really is the fact that you now have the skills that everyone needs in every field.
+[00:35:15.740 --> 00:35:20.140] It's not just about writing more apps, but actually thinking about what were the things
+[00:35:21.500 --> 00:35:25.140] pursue in college to pursue software engineering? How can I go back to those worlds? And how
+[00:35:25.140 --> 00:35:30.120] can AI make those things easier? You can, again, develop new language and understand
+[00:35:30.120 --> 00:35:35.640] what makes things amazing and go pursue those things. And the great joy of this, and the
+[00:35:35.640 --> 00:35:40.760] reason why these multidisciplinary artists are so successful is as they pursue new mediums,
+[00:35:41.320 --> 00:35:46.800] the act of being a kid again means that you have the naivety to ask for what might be
+[00:35:46.800 --> 00:35:51.980] impossible. The reason this cross pollination works is if you have the judgment you've built
+[00:35:51.980 --> 00:35:55.820] in software and you pursue another field, it means you can ask a question that people
+[00:35:55.820 --> 00:35:59.180] might not think is possible. And you have the courage to use AI to help you get there.
+[00:35:59.800 --> 00:36:04.300] And so there's great benefits in being able to feel new again in the field while having
+[00:36:04.300 --> 00:36:09.560] all this experience in AI as well. In my personal life, I've been learning the drums, I've been
+[00:36:09.560 --> 00:36:14.200] building custom drumming software, AI is helping me learn how to use Ableton, I'm connecting
+[00:36:14.200 --> 00:36:16.280] I'm taking my drum set to MIDI and learning there.
+[00:36:16.780 --> 00:36:20.960] I've been using computer use to teach me new software that I never really had time to
+[00:36:20.960 --> 00:36:21.240] learn.
+[00:36:21.960 --> 00:36:25.960] And I've been using AI to help me design physical engineering.
+[00:36:26.300 --> 00:36:28.760] So I'm 3D printing parts, building chips.
+[00:36:29.260 --> 00:36:32.020] And again, these are things I was always curious about but never had the time.
+[00:36:32.680 --> 00:36:37.120] And again, part of having AI is not only getting my time back, everything else is accelerated.
+[00:36:37.840 --> 00:36:42.440] So being ambitious is about exploring those pursuits, not just spending more tokens like
+[00:36:42.440 --> 00:36:43.180] building an app.
+[00:36:45.460 --> 00:36:47.480] And so this is also what I want you guys to think about, right?
+[00:36:48.000 --> 00:36:49.940] Again, what fields did you put aside?
+[00:36:50.160 --> 00:36:52.420] How can you pursue them now that you have more time with AI?
+[00:36:54.600 --> 00:36:56.840] And so when I'm talking about increasing ambition,
+[00:36:57.000 --> 00:36:58.860] I'm not just saying become a biologist, right?
+[00:36:59.200 --> 00:37:01.800] What I'm really saying is that part of your job now,
+[00:37:02.000 --> 00:37:04.980] to become more ambitious, is to be really inspired.
+[00:37:05.340 --> 00:37:06.900] Pursue these things, learn that language.
+[00:37:07.180 --> 00:37:09.380] And also for that next generation, to be inspiring.
+[00:37:10.860 --> 00:37:13.720] When people used to ask me how to learn how to code,
+[00:37:14.200 --> 00:37:17.860] It was never a case where I said, you know what, you should go read a textbook on Python.
+[00:37:18.060 --> 00:37:22.800] It was always build something. It was always go build a weather app, go build a note taking
+[00:37:22.800 --> 00:37:27.320] app. Have a real problem and solve it. And now the scope of these problems are much bigger.
+[00:37:27.640 --> 00:37:31.920] And so as software developers, I think our job now is to not only build amazing things
+[00:37:31.920 --> 00:37:36.300] and share them, but also inspire the next generation to have more hope, too. Right?
+[00:37:36.400 --> 00:37:40.060] Because maybe software is changing, but really, we're going to be able to contribute to so
+[00:37:40.060 --> 00:37:48.000] much more things. We see this everywhere. Codex app and sites were acts of love. Codex
+[00:37:48.000 --> 00:37:52.160] app, the sites product were built by people who cared about these things, talking to people
+[00:37:52.160 --> 00:37:56.640] online and working through these things. Now our PMs can do engineering, our engineering
+[00:37:56.640 --> 00:38:00.640] can do design, and this cross-pollination is inspiring others to do the same and take
+[00:38:00.640 --> 00:38:06.560] ownership of that work. And most of the things here that exist are here because people are
+[00:38:06.560 --> 00:38:09.180] tenacious and are trying and want things to be beautiful.
+[00:38:11.500 --> 00:38:14.420] And ultimately, our mission of OpenAI is to benefit all.
+[00:38:15.000 --> 00:38:19.120] And ultimately what that means isn't just having OpenAI have all these AI to control
+[00:38:19.120 --> 00:38:23.420] and use agents forms or whatever, but also making sure that everyone has this technology
+[00:38:23.420 --> 00:38:25.140] so they can contribute in their own ways.
+[00:38:27.280 --> 00:38:28.460] And so that's basically it.
+[00:38:29.380 --> 00:38:30.760] Think about the things that you own.
+[00:38:31.160 --> 00:38:34.940] Go out, get inspired, develop the language you need to describe what beautiful things
+[00:38:36.560 --> 00:38:41.780] you're actually curious enough and take the time to pursue these new interests. And then
+[00:38:41.780 --> 00:38:45.360] that's how you become more ambitious. So I'm really excited to see what you guys are building
+[00:38:45.360 --> 00:38:48.940] and come by to the booth to chat. Thank you.

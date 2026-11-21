@@ -1,0 +1,87 @@
+代码还没生成，先检查规格是否自相矛盾
+Rajath Mahendrappa Kotyal
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[01:50:45.700 --> 01:50:51.320] Hi, everyone. My name is Rajat Kottyal. I'm part of the automated reasoning group at AWS.
+[01:50:51.780 --> 01:50:57.720] And today I'm going to talk about a project I worked on recently called Key Row Certification
+[01:50:57.720 --> 01:51:03.780] Analyzer. And we use certain techniques, which involves formal methods and automated reasoning
+[01:51:03.780 --> 01:51:08.960] to prove specification that goes to your coding agent before it writes code.
+[01:51:16.380 --> 01:51:18.740] So let's take a certain bug, right?
+[01:51:20.320 --> 01:51:28.900] This is a specification snippet, and there are two rules, for example, and the rule two
+[01:51:28.900 --> 01:51:34.220] says when an order is submitted, and this is for a general e-commerce website, let's
+[01:51:34.220 --> 01:51:34.360] say.
+[01:51:34.900 --> 01:51:40.280] When an order is submitted and the inventory is unavailable, we place the order as a back
+[01:51:40.280 --> 01:51:42.780] order, which makes sense when you read it individually.
+[01:51:44.280 --> 01:51:50.340] rule in the same specification file which you hand to the coding agent which says no order shall be
+[01:51:50.340 --> 01:51:57.540] placed as a backorder and this is a rule we'll set so individually read these two lines make sense
+[01:51:57.540 --> 01:52:05.200] right but in when an llm reads this reads both the rules together both cannot hold true at the same
+[01:52:05.200 --> 01:52:17.440] time. So we need to make sure we resolve this ambiguity that the LLM is observing. And the
+[01:52:17.440 --> 01:52:26.880] scope and the reason we put an effort into this project is based on public research and recent
+[01:52:26.880 --> 01:52:33.740] research, we observed there's a 20 to 40 percent drop with unclear prompts on the accuracy the LLM
+[01:52:35.200 --> 01:52:36.460] in the code accuracy, right?
+[01:52:36.780 --> 01:52:39.920] And 60 to 90% of valid code is still wrong
+[01:52:39.920 --> 01:52:40.820] after it writes it.
+[01:52:41.280 --> 01:52:45.060] And also in that case, we observe two times the more
+[01:52:45.580 --> 01:52:48.280] more regressions when we deploy that code.
+[01:52:51.600 --> 01:52:54.460] So where do bugs like these hide, right?
+[01:52:54.580 --> 01:52:58.260] We wanna detect these bugs before they reach the code base.
+[01:52:58.460 --> 01:53:00.660] And the only way to do that, it's similar
+[01:53:00.660 --> 01:53:04.460] to how we write design docs, similar to how we draw diagrams
+[01:53:05.200 --> 01:53:08.240] to make sure the flow is set before we write any code.
+[01:53:08.380 --> 01:53:15.600] We want to verify that without a human or anyone reading these files as the first reviewer.
+[01:53:16.680 --> 01:53:24.520] In one sentence, let's say the ambiguity and wording wrong level of detail, but across sentences,
+[01:53:24.520 --> 01:53:30.880] we can observe conflicts and gaps in these specification or rules, right? Sentences need
+[01:53:30.880 --> 01:53:39.240] review, such need search between them and ambiguity searches. So we have a three-step process to do
+[01:53:39.240 --> 01:53:46.200] this where the LLM will first refine it. It'll try to clean up the wording on its own. And if it
+[01:53:46.200 --> 01:53:54.440] succeeds, then well and good. But if it cannot, we then formalize the English language into SMT
+[01:53:54.440 --> 01:54:02.720] formulas. So SMT lib is a certain type of function which we pass to a SAT solver, a satisfiability
+[01:54:02.720 --> 01:54:08.600] checker, where it's going to give out a boolean saying this expression that you've given me is
+[01:54:08.600 --> 01:54:16.480] valid, true, or false, invalid. And then once the solver gets back to us, if that expression is
+[01:54:16.480 --> 01:54:21.820] valid, then we don't do anything. But if it detects any ambiguity between two sentences or within a
+[01:54:21.820 --> 01:54:29.300] sentence where there's two meanings to a sentence, then we detect that and tell the LLM to recheck
+[01:54:29.300 --> 01:54:31.940] that sentence, and it's going to reiterate on that.
+[01:54:33.320 --> 01:54:39.900] For example, the rules we saw, we have seen when orders submitted and inventories are
+[01:54:39.900 --> 01:54:46.700] unavailable, we shall place the order as a backorder, and in SMT format, it kind of looks
+[01:54:46.700 --> 01:54:48.640] like this, like math formula, right?
+[01:54:54.200 --> 01:55:01.880] Once we go deeper, once we detect this, we also do a three-step process again, where
+[01:55:02.500 --> 01:55:05.080] we sample the translations again and again.
+[01:55:05.240 --> 01:55:11.240] We ask the LLM to translate seven times or 10 times, and to understand whether this LLM
+[01:55:11.240 --> 01:55:18.220] is behaving this way based on its inherent capabilities or is something affecting it
+[01:55:18.220 --> 01:55:19.020] to behave this way.
+[01:55:19.020 --> 01:55:25.920] And then based on logical equivalence of these seven or 10 different set of interpretations
+[01:55:25.920 --> 01:55:36.040] by the LLM, we cluster them on logical equivalence, which entries came under which assumptions
+[01:55:36.040 --> 01:55:38.280] that the LLM made for itself.
+[01:55:38.500 --> 01:55:44.880] And then we accept or ask the user to clear out the ambiguity or abstain from implementing
+[01:55:44.880 --> 01:55:45.860] that in the code base.
+[01:55:51.320 --> 01:55:56.920] This is an example of asking the human what you want to do with that.
+[01:55:57.400 --> 01:56:01.480] That's a rule that was perhaps contradicting.
+[01:56:02.580 --> 01:56:05.060] Remove the record is a very vague statement.
+[01:56:05.300 --> 01:56:10.560] The LLM can interpret anything it wants, but we shouldn't allow that to happen.
+[01:56:10.820 --> 01:56:12.900] And we either give two options.
+[01:56:12.900 --> 01:56:17.900] we keep it as if the record is deleted or we retain it and hide it from the users.
+[01:56:18.200 --> 01:56:19.600] Which one does the user prefer?
+[01:56:24.980 --> 01:56:30.360] A conflict is when the example we saw rule one is conflicting with rule three.
+[01:56:30.860 --> 01:56:38.880] And a gap is where no rule covers an idle order in this example, where the LLM detected an
+[01:56:38.880 --> 01:56:47.060] actual, sorry, process or pipeline detected, there's no entry for this rule where you are
+[01:56:47.060 --> 01:56:58.120] missing something. All in all, it cannot do a lot of things, end of the day. We want to make sure
+[01:56:58.120 --> 01:57:05.580] there is no oracle for specification correctness other than the user. User needs to make sure to
+[01:57:05.580 --> 01:57:09.700] to check every part of the snippet, part of the rule book
+[01:57:09.700 --> 01:57:11.120] before sending it to the LLM.
+[01:57:12.780 --> 01:57:16.080] And we, as a tool, only can help them.
+[01:57:17.100 --> 01:57:19.780] And the user is more important here
+[01:57:19.780 --> 01:57:22.180] because of implicit domain knowledge.
+[01:57:22.420 --> 01:57:24.140] The LLM doesn't know a lot of domain knowledge
+[01:57:24.140 --> 01:57:25.760] and there's no guarantee.
+[01:57:26.040 --> 01:57:30.840] I mean, LLM only user can give that guarantee, right?
+[01:57:30.940 --> 01:57:33.800] And there's thin evidence right now for formalization
+[01:57:35.580 --> 01:57:37.960] in agents we are emerging in this technology.
+[01:57:42.500 --> 01:57:49.500] What do we take back from this talk? Check the spec always before you pass it down to the agent.
+[01:57:50.580 --> 01:57:56.860] Cluster the translation. What we do is we cluster the translation by logical equivalence to
+[01:57:56.860 --> 01:58:03.580] determine the different LLM interpretations and where it's genuinely going wrong. The LLM
+[01:58:05.580 --> 01:58:12.980] human decide. We give the human options and if there's no answer to that, we use LLM
+[01:58:12.980 --> 01:58:21.580] judges or abstain from implementing that piece. Here are the references and this work has
+[01:58:21.580 --> 01:58:27.520] been majorly contributed by my team, Andrila Jotin, Stefan, Nadia, and Jeremy Delmos.
+[01:58:27.760 --> 01:58:34.560] You can check out their blog and the website link provided and delve deeper into that.

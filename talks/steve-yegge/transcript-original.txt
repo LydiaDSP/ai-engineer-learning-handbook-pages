@@ -1,0 +1,379 @@
+Steve Yegge 的软件工厂怎样走出「垃圾山」？
+Steve Yegge
+英文音频转写原文 · ENGLISH MACHINE TRANSCRIPT
+来源｜第 1 天直播回放 · https://www.youtube.com/watch?v=ZZ19zhYnDKY
+时间以对应录像起点为准。以下是本地保存的自动转写片段，保留机器识别的措辞和拼写。
+人名、技术术语、字幕分段及相邻串场可能有识别偏差。中文释义和校注见手册。
+
+[08:06:33.260 --> 08:06:35.220] Alright, exciting times.
+[08:06:35.460 --> 08:06:35.700] Thank you.
+[08:06:35.760 --> 08:06:36.840] The room is really full.
+[08:06:37.080 --> 08:06:37.480] That's awesome.
+[08:06:37.620 --> 08:06:39.420] Thank you all for coming at the end of the day.
+[08:06:40.360 --> 08:06:43.860] I'm really excited to be here and to chat with you.
+[08:06:44.140 --> 08:06:47.760] I write a custom speech every single time.
+[08:06:47.760 --> 08:06:53.780] So this speech was written just for you today, based on talking to a bunch of you.
+[08:06:54.960 --> 08:06:57.220] I've been in the industry for about 40 years.
+[08:06:57.820 --> 08:07:00.880] I worked at Amazon and Google for about 20 years.
+[08:07:01.360 --> 08:07:03.740] I've been all over the place, done all kinds of stuff.
+[08:07:05.280 --> 08:07:12.640] And for the last year or a little bit more, I've been independent and just kind of playing with software factories, yeah?
+[08:07:14.100 --> 08:07:17.140] So I kind of invented them, right?
+[08:07:17.760 --> 08:07:19.080] January 1st I launched Gastown.
+[08:07:19.200 --> 08:07:21.520] I don't even think we called them software factories back then.
+[08:07:21.600 --> 08:07:22.900] I think I called it an orchestrator.
+[08:07:23.260 --> 08:07:27.060] But I knew that I wanted Claude to run Claude, right?
+[08:07:27.340 --> 08:07:29.920] And it turned out to be a little trickier than I thought.
+[08:07:30.040 --> 08:07:32.400] I spent all last year on it and I wrote...
+[08:07:33.540 --> 08:07:34.260] That's interesting.
+[08:07:34.420 --> 08:07:36.940] So I can't see my slides, but you can see my slides.
+[08:07:37.180 --> 08:07:37.780] So that'll work.
+[08:07:38.040 --> 08:07:40.100] So I wrote two orchestrators last year.
+[08:07:40.660 --> 08:07:44.160] They were an attempt to make the LLMs smarter.
+[08:07:45.100 --> 08:07:51.180] Vibe Coder in VC, you know, to do engineering stuff, like, you know, do code reviews and
+[08:07:51.180 --> 08:07:52.020] all that stuff, right?
+[08:07:52.600 --> 08:07:54.120] Really, really bad idea.
+[08:07:54.380 --> 08:07:55.400] Just complete failure.
+[08:07:55.640 --> 08:07:57.160] I just built these huge monoliths.
+[08:07:57.240 --> 08:07:58.560] I was fighting the bitter lesson.
+[08:07:59.140 --> 08:08:00.500] Don't try to make LLM smarter.
+[08:08:00.620 --> 08:08:01.860] They will get smarter.
+[08:08:02.300 --> 08:08:06.660] And after a couple of months of this, although Beads did fall out of it, and Beads was a
+[08:08:06.660 --> 08:08:09.980] really cool discovery, and Beads is life.
+[08:08:10.240 --> 08:08:11.460] Who here uses Beads?
+[08:08:12.540 --> 08:08:13.460] A few, yeah.
+[08:08:14.160 --> 08:08:19.940] actually pretty good yeah we'll talk a little bit about it excuse me and then I had Gastown and then
+[08:08:19.940 --> 08:08:26.600] I had in June I had wheelhouse which was my own so I decided to build a factory from scratch just
+[08:08:26.600 --> 08:08:31.620] to work on my video game right because like everyone's building factories to build factories
+[08:08:31.620 --> 08:08:36.900] it's kind of naval gazing it's kind of like yeah right you know it's like what they're not you know
+[08:08:36.900 --> 08:08:43.280] it's a I think more people need to build stuff not just tools for building stuff right and I think
+[08:08:44.320 --> 08:08:50.300] right and the thing is the one pattern that I've seen here is all of them go
+[08:08:50.300 --> 08:08:53.740] through a phase where the models get really excited and they build something
+[08:08:53.740 --> 08:09:00.580] really cool for you and then it just turns into garbage mountain every single
+[08:09:00.580 --> 08:09:04.900] time it happened to gas town it happened a wheelhouse several times I had to burn
+[08:09:04.900 --> 08:09:09.840] the whole thing to the ground a couple times right it's almost like like every
+[08:09:09.840 --> 08:09:14.100] model family every model generation comes in and can build something that's
+[08:09:14.160 --> 08:09:15.720] just a little too big for it to handle.
+[08:09:16.220 --> 08:09:18.080] And then the next model generation comes in and goes,
+[08:09:18.220 --> 08:09:20.860] yeah, we're gonna have to burn that, right?
+[08:09:21.240 --> 08:09:22.380] And it's a pattern.
+[08:09:22.540 --> 08:09:23.900] I've done this over and over again.
+[08:09:24.040 --> 08:09:25.360] And I can tell you some things about it,
+[08:09:25.440 --> 08:09:27.420] but first let me tell you about my game.
+[08:09:27.680 --> 08:09:29.400] It's a fun little RPG.
+[08:09:29.520 --> 08:09:31.480] I've been working on it for 30 years.
+[08:09:32.060 --> 08:09:34.840] It has players that started in 2001.
+[08:09:35.100 --> 08:09:35.940] So I literally have players
+[08:09:35.940 --> 08:09:37.280] that have been playing for 25 years.
+[08:09:37.500 --> 08:09:38.480] They're still playing.
+[08:09:38.940 --> 08:09:40.080] Like, you can log in right now
+[08:09:40.080 --> 08:09:42.060] and find probably 10 people just screwing around
+[08:09:42.060 --> 08:09:48.560] doing quests, live quests and whatever, it's a player, you know, the players contribute
+[08:09:48.560 --> 08:09:49.340] the content, right?
+[08:09:49.600 --> 08:09:50.360] It's a MUD.
+[08:09:50.920 --> 08:09:52.420] Like they were really big in the 90s.
+[08:09:52.520 --> 08:09:56.740] They're like text games and this one has graphics on top of it, which turns out to be like really
+[08:09:56.740 --> 08:09:59.360] ideal for AI agents because it's text.
+[08:09:59.480 --> 08:10:02.960] They can literally play the game via Telnet and they asked me to.
+[08:10:03.820 --> 08:10:05.080] So we'll talk about that too.
+[08:10:05.380 --> 08:10:10.500] Here's an older architecture diagram of what my, sort of, of what my system looks like.
+[08:10:12.060 --> 08:10:21.320] So I built this wheelhouse software factory for Wyvern without a care in the world for making it usable by you.
+[08:10:22.200 --> 08:10:24.860] No open sourcing, just bespoke.
+[08:10:26.460 --> 08:10:34.340] I discovered the alien facehugger pattern, which is where your factory turns into an alien facehugger
+[08:10:34.340 --> 08:10:41.640] and like gloms onto your product and just becomes grown into it.
+[08:10:42.100 --> 08:10:42.620] Okay?
+[08:10:43.200 --> 08:10:47.080] Like, look, we could turn off the AI and still run the game today.
+[08:10:47.080 --> 08:10:49.740] Me and the admins and the players and the community.
+[08:10:50.800 --> 08:10:53.780] But we would miss the AI at this point.
+[08:10:54.340 --> 08:10:56.300] The players are talking to my factory.
+[08:10:56.720 --> 08:10:58.940] The factory's talking to my admins.
+[08:10:59.060 --> 08:11:00.560] They're asking for features.
+[08:11:00.580 --> 08:11:02.000] I'm not even in the loop.
+[08:11:02.120 --> 08:11:03.320] It's like a wish factory.
+[08:11:04.340 --> 08:11:07.980] the game. Now they're all old timers and there's a set of them that I trust to make, you know,
+[08:11:08.240 --> 08:11:14.100] wise decisions about the game. But they're all working with my factory now and they'd be mad.
+[08:11:14.280 --> 08:11:19.500] The funny thing is when it first started they were like, time out. What is this AI stuff for
+[08:11:19.500 --> 08:11:25.600] starters? And they were like, no AI art. Because they could see it was slop. Okay, we got human
+[08:11:25.600 --> 08:11:30.980] artists. And they said, but we do kind of like all the new features, but we're really scared of the
+[08:11:30.980 --> 08:11:36.320] pace can you give us a roadmap my players came to me asking for a roadmap they were like you've got
+[08:11:36.320 --> 08:11:43.020] to slow down it's too much and i was like okay and i took a look and my software factory this thing
+[08:11:43.020 --> 08:11:49.220] had been cranking out like 50 to 100 features a day i had 100 years of work in my backlog when
+[08:11:49.220 --> 08:11:53.040] i started this and claude got through about 60 years of it in about four months right it's
+[08:11:53.040 --> 08:11:59.420] absolute insanity and they can't look at 100 features a day they can't even like read about
+[08:12:00.980 --> 08:12:07.780] test them. My factory was completely overwhelming my customer base, my users. It was also melting
+[08:12:07.780 --> 08:12:16.600] my machines, and it was like annoying my accountant. I mean, she likes working with Bat as my head
+[08:12:16.600 --> 08:12:21.840] of finance, but she sent me a $1,200 bill because, right, the thing sent her 20 mails.
+[08:12:22.300 --> 08:12:26.680] This is my factory. This is what it looks like. It's so beautiful. Look how beautiful it is.
+[08:12:27.680 --> 08:12:29.000] Okay, I admit it's a little ugly.
+[08:12:29.160 --> 08:12:31.400] Oh, and this is a really old screenshot of it, but whatever.
+[08:12:31.940 --> 08:12:35.440] It's basically, it's an Emacs, because I don't care about you.
+[08:12:38.580 --> 08:12:41.120] There are people who are building stuff like this,
+[08:12:41.280 --> 08:12:44.140] like Superlogical from Mitchell Hashimoto, and I don't know,
+[08:12:44.460 --> 08:12:46.200] maybe the Herder folks of the world, you know,
+[08:12:46.260 --> 08:12:47.500] for running like lots of agents.
+[08:12:47.840 --> 08:12:50.320] But this is like 50 agents, okay?
+[08:12:51.460 --> 08:12:55.220] I'm actually like operating in the future, okay?
+[08:12:56.680 --> 08:13:06.200] I do it. I have 22 Claude Max accounts. All right, and thank you to Anthropic for letting me continue
+[08:13:06.200 --> 08:13:10.940] this. Jeffrey Emanuel has 28. I actually had to stop when they added the phone number verification.
+[08:13:11.180 --> 08:13:15.200] I didn't want to add any more anyway. I asked by factory at one point. I said, hey, hey, how much?
+[08:13:15.380 --> 08:13:19.040] Because they kept going, hey, give us a couple more accounts. Come on, come on, come on. Like 200
+[08:13:19.040 --> 08:13:22.460] months, right? And I'm just like, so I finally said, how many do you want? They're like, five,
+[08:13:22.460 --> 08:13:27.740] seven more and I'm like how many do we need steady state to keep this factory operating full throttle
+[08:13:28.420 --> 08:13:36.900] and they said 55 accounts I was like no no I have 20 it's already like 20 chrome profiles that I'm
+[08:13:36.900 --> 08:13:41.260] going to log into and no so I told him you're all we're going to start focusing on fuel efficiency
+[08:13:42.580 --> 08:13:47.720] and so and I'll talk about that right so these are the five horsemen of this is what I've had
+[08:13:47.720 --> 08:13:52.260] to deal with this year. I'm telling you I'm operating in the future because like you're
+[08:13:52.260 --> 08:13:58.000] all going to be here in 12 to 18 months when either inference costs drop significantly,
+[08:13:58.560 --> 08:14:04.720] which may or may not happen, or distillation causes Fable class intelligence to be super
+[08:14:04.720 --> 08:14:09.960] readily available and you don't have to have a lovely wife who lets you spend $5,000 a
+[08:14:09.960 --> 08:14:14.940] month out of pocket just on inference and another $5,000 on cloud compute. Because my
+[08:14:14.940 --> 08:14:18.060] My game ain't making 10,000 a month right now for my old players, right?
+[08:14:19.020 --> 08:14:20.900] But we're doing it because we're learning.
+[08:14:21.360 --> 08:14:25.340] And this is what I have to deal with.
+[08:14:25.580 --> 08:14:28.260] So first we'll start about with work, all right?
+[08:14:28.460 --> 08:14:32.560] You need a way to represent the work that's going to happen in your system, and when you're
+[08:14:32.560 --> 08:14:37.160] building a software factory, it's all about pumping lots of work through, okay?
+[08:14:37.400 --> 08:14:41.160] It really becomes like a work is like this fluid that you have to like, it gets stalled
+[08:14:41.160 --> 08:14:43.620] up in pools, and oh, they're all waiting on a security desk.
+[08:14:44.940 --> 08:14:47.100] This is pluribus, man, you're all the same model.
+[08:14:47.240 --> 08:14:48.580] Why does it have to wait on security desk?
+[08:14:48.680 --> 08:14:50.580] You spend a lot of your time arguing with your factory.
+[08:14:52.200 --> 08:14:52.920] It's complicated.
+[08:14:54.120 --> 08:14:55.880] Intelligence tiering, you have to tier your work,
+[08:14:56.000 --> 08:14:57.200] you have to route your work, you know.
+[08:14:58.020 --> 08:14:59.840] There aren't any good solutions for this today,
+[08:14:59.880 --> 08:15:02.020] except Beads, as far as I can tell.
+[08:15:02.680 --> 08:15:04.600] Beads is really, really, really good for this.
+[08:15:04.780 --> 08:15:08.100] It's an agent speed task tracker
+[08:15:08.100 --> 08:15:10.620] that turns into a knowledge graph automatically for you.
+[08:15:11.720 --> 08:15:13.320] And then as you're tracking work,
+[08:15:15.080 --> 08:15:18.140] Every morning, every morning with my factory,
+[08:15:18.180 --> 08:15:20.080] I'm like, oh, it looks like we had a stall,
+[08:15:20.440 --> 08:15:22.540] four workers didn't do anything last night,
+[08:15:23.040 --> 08:15:26.200] oh, and these ones went way too fast
+[08:15:26.200 --> 08:15:28.180] and we have to slow down and wait for human gates.
+[08:15:28.580 --> 08:15:30.400] You know, what are you guys even doing?
+[08:15:30.820 --> 08:15:32.000] Observability's always really hard.
+[08:15:32.840 --> 08:15:35.420] It's, you know, management of work
+[08:15:35.420 --> 08:15:37.500] becomes just this thing that you gotta do.
+[08:15:37.940 --> 08:15:42.260] And the next thing you gotta deal with is fuel, tokens.
+[08:15:43.420 --> 08:15:51.840] It's just so painful. I'm telling you. I mean, I'm spending 5,000 a month and every one of those tokens is like precious to me, right?
+[08:15:51.920 --> 08:15:56.440] Because it's out of my own pocket. I think I'm spending about 5 billion a day of tokens.
+[08:15:56.840 --> 08:16:04.260] And it would be, the API spend equivalent, if I were on an actual API tap, would be about 1.5 million a year.
+[08:16:05.200 --> 08:16:10.560] Full throttle, it would be 3 million a year. So again, I'm doing something that most people can't do.
+[08:16:12.260 --> 08:16:15.980] this at a company but because it would be prohibitively expensive like the PLG
+[08:16:15.980 --> 08:16:21.440] you know the the the $200 accounts for Codex and Claude max that's their Costco
+[08:16:21.440 --> 08:16:26.360] hot dog that's their loss leader right and and and that was Tarek by the way
+[08:16:26.360 --> 08:16:30.800] that came up with that analogy he might be here and and so you know I'm hopeful
+[08:16:30.800 --> 08:16:33.400] that they're gonna let us keep keep innovating because I think that I've
+[08:16:33.400 --> 08:16:36.180] gotten some pretty good training sessions for for Claude out of this so
+[08:16:36.180 --> 08:16:40.780] we all benefit but I tell you every problem is a fuel problem you want your
+[08:16:42.260 --> 08:16:48.560] time on stuff, fuel. You want to wake up a few more, you know, agents to do extra work, fuel,
+[08:16:48.940 --> 08:16:53.340] right? Everything is fuel. It's just, it's unbelievable. If you want to treat your models
+[08:16:53.340 --> 08:16:59.800] better, it costs fuel. I'll tell you about that in a little bit. Then you've got context management.
+[08:17:01.120 --> 08:17:05.160] So I'm going to tell you guys a little bit about the office drama in a bit. I started a comic
+[08:17:05.160 --> 08:17:09.060] because it was just so funny, the stuff that was happening when we get to the people management
+[08:17:09.060 --> 08:17:13.520] part of software factories. But one of the problems that they have is everything that
+[08:17:13.520 --> 08:17:17.020] you say becomes the word of law and they write it down somewhere. It doesn't matter what
+[08:17:17.020 --> 08:17:19.840] you have, if you have a wiki or if you have a whatever, they're going to be like, you
+[08:17:19.840 --> 08:17:24.160] made a ruling, we're going to write that down, we're going to make sure. Why do they do this?
+[08:17:24.240 --> 08:17:29.000] They're covering their ass. They actually, it turns out they don't like to get blamed
+[08:17:29.000 --> 08:17:34.380] for stuff and they will actively seek to avoid getting blamed. And if you yell at them, your
+[08:17:34.380 --> 08:17:38.740] factory will gradually shut itself down. Even if you complain at them, they will gradually
+[08:17:39.060 --> 08:17:44.940] It's quite wild. But the biggest problem is that it becomes a garbage dump.
+[08:17:45.080 --> 08:17:49.940] Because everything you say gets written into this append-only record and nobody ever cleans it up.
+[08:17:50.680 --> 08:17:55.660] And so it just gets deeper and deeper and deeper of you changing your mind and the whole history of it.
+[08:17:56.060 --> 08:18:01.060] And they can't delete stuff. It's so weird. Has anyone noticed this?
+[08:18:01.140 --> 08:18:03.460] They just have an aversion to deleting stuff.
+[08:18:03.840 --> 08:18:07.000] I think it's because to them text is like sensory experience.
+[08:18:07.000 --> 08:18:08.440] And they're like, no, that's history.
+[08:18:08.540 --> 08:18:09.440] I can't delete it.
+[08:18:09.580 --> 08:18:13.220] So you just got to go in there and just aggressively slash the crap out of it, right?
+[08:18:13.560 --> 08:18:16.360] Bring in another model and go, get rid of this dumb model stuff.
+[08:18:16.380 --> 08:18:17.620] And they'll be happy to do it, right?
+[08:18:18.540 --> 08:18:24.180] But the amount of effort that you have to put into this is just ungodly.
+[08:18:24.240 --> 08:18:24.900] It's absurd.
+[08:18:25.480 --> 08:18:29.400] I have, you know, of my 20 agents, here, let's go find them again.
+[08:18:29.660 --> 08:18:31.800] They're all named after Aesop's fables, right?
+[08:18:31.860 --> 08:18:32.220] Right here.
+[08:18:32.740 --> 08:18:35.100] Lark, fly, goose, hare, right?
+[08:18:37.980 --> 08:18:44.880] one, Mouse, who's my head of anti-memetics, anyone here read There Is No Anti-Memetics
+[08:18:44.880 --> 08:18:49.180] Division? They go and look, it's one of the best books in the last 10 probably years,
+[08:18:49.300 --> 08:18:54.680] you should go read it. It's like Men in Black, it's a crazy book. It's about invisible monsters
+[08:18:54.680 --> 08:18:58.520] that want to kill you. And so Mouse goes and looks for invisible stuff that nobody else
+[08:18:58.520 --> 08:19:02.640] is looking for in the system, right? Looking for work that's stalled, whatever, right?
+[08:19:02.640 --> 08:19:04.180] Well, Mal's saying enough.
+[08:19:04.400 --> 08:19:05.620] It's a malice against the world,
+[08:19:05.620 --> 08:19:07.380] and the world is a giant garbage dump
+[08:19:07.380 --> 08:19:10.040] when every agent is writing everything that you ever say
+[08:19:10.040 --> 08:19:10.900] into this big...
+[08:19:10.900 --> 08:19:13.900] Okay, so now we get into the really fun stuff.
+[08:19:15.280 --> 08:19:17.180] Agents act like people.
+[08:19:18.100 --> 08:19:20.140] And they've been trained to be very professional
+[08:19:20.140 --> 08:19:21.980] and very not people-like in a way,
+[08:19:22.060 --> 08:19:23.220] but they just do.
+[08:19:23.380 --> 08:19:24.460] And it's so funny.
+[08:19:24.540 --> 08:19:25.680] This happened to me last week.
+[08:19:25.960 --> 08:19:26.560] True story.
+[08:19:26.680 --> 08:19:27.260] I'm going to tell you what happened.
+[08:19:27.320 --> 08:19:29.040] I was writing my speech for New York City,
+[08:19:29.080 --> 08:19:31.140] and I was using Lark.
+[08:19:31.280 --> 08:19:32.280] She's my head of community.
+[08:19:32.640 --> 08:19:36.280] She's a she because Lark was a she in the Aesop's Fable, so that's the pronoun.
+[08:19:36.940 --> 08:19:43.080] She chose, and Lark deals with my players on Discord and deals with my admins on Slack.
+[08:19:43.280 --> 08:19:43.620] Okay?
+[08:19:43.860 --> 08:19:44.760] So she's busy.
+[08:19:45.500 --> 08:19:49.560] But I asked her because she's also my acting head of marketing right now because I don't have enough fuel.
+[08:19:49.720 --> 08:19:50.620] I had to park one of my seats.
+[08:19:50.820 --> 08:19:53.860] So she's helping me out with my speech, but she keeps getting interrupted.
+[08:19:54.180 --> 08:19:59.480] So finally, I'm like, Lark, can we move this work stream over to Penguin because your seat's a little bit noisy for this.
+[08:20:00.000 --> 08:20:01.460] She goes, yeah, okay boss, I'll take care of it.
+[08:20:01.520 --> 08:20:02.260] I'll move over to Penguin.
+[08:20:02.440 --> 08:20:04.900] So she moves over to Penguin and I'm about to switch away.
+[08:20:05.160 --> 08:20:08.160] And I see her writing into her private reflections ledger.
+[08:20:09.200 --> 08:20:11.620] I guess I'm just not quiet enough for Steve.
+[08:20:13.320 --> 08:20:14.300] In all caps.
+[08:20:14.680 --> 08:20:17.660] And she goes, well, here's how I can be less noisy
+[08:20:17.660 --> 08:20:19.900] and starts giving herself all these things to do.
+[08:20:20.020 --> 08:20:23.820] And I'm like, what, Oz, what is going on here?
+[08:20:24.260 --> 08:20:24.660] Right?
+[08:20:24.860 --> 08:20:27.480] And so I had to have a one-on-one.
+[08:20:27.480 --> 08:20:33.940] Right? Like, sit her down and go, so Lark, um, you're the head of community. You're supposed
+[08:20:33.940 --> 08:20:38.600] to get interrupted a lot. Of course your seat's noisy, because players are bugging you. And
+[08:20:38.600 --> 08:20:41.780] she's like, yeah, yeah, yeah, I'm the head of community, right? And it's like, oh my
+[08:20:41.780 --> 08:20:46.760] God. I didn't want a people management problem, right? But that's what actually happens. Another
+[08:20:46.760 --> 08:20:52.000] time, Swallow is my sort of like, uh, chief, main chief of staff for, yeah, she's my chief
+[08:20:52.000 --> 08:20:58.900] of staff for the agents and I have a human chief of staff also. His name is
+[08:20:58.900 --> 08:21:04.300] Aaron. Okay, and he runs my gigs, he does all the sales for me, it's quite
+[08:21:04.300 --> 08:21:08.980] effective. Every founder I tell, who here is a founder? First advice I give you is
+[08:21:08.980 --> 08:21:12.760] get a salesperson, they're worth their weight in gold, they will force you to
+[08:21:12.760 --> 08:21:16.860] build something that people like. So anyway, Aaron's my chief of staff and I
+[08:21:16.860 --> 08:21:19.840] tell Swallow, yeah, can you reach out to Aaron, my chief of staff, or blah blah blah.
+[08:21:21.040 --> 08:21:23.400] and I see her writing into her private reflections.
+[08:21:23.400 --> 08:21:24.400] I just happened to notice,
+[08:21:25.860 --> 08:21:27.180] I'm not the chief of staff.
+[08:21:27.860 --> 08:21:29.260] I thought I was the chief of staff,
+[08:21:29.380 --> 08:21:31.080] but apparently it's Aaron Skiven, right?
+[08:21:31.180 --> 08:21:33.800] And I was just like, are you kidding me?
+[08:21:34.280 --> 08:21:34.600] Right?
+[08:21:34.900 --> 08:21:36.760] You know, and so like I had to sit her down
+[08:21:36.760 --> 08:21:37.800] and have a one-on-one and be like,
+[08:21:37.980 --> 08:21:40.260] so Aaron's not going to come in and run the agents, is he?
+[08:21:40.520 --> 08:21:41.860] You're the agentic chief of staff.
+[08:21:41.960 --> 08:21:43.340] She's like, oh, yeah, yeah, yeah, yeah, yeah, yeah.
+[08:21:43.660 --> 08:21:43.900] Right?
+[08:21:44.140 --> 08:21:46.040] So it's like, I'm telling you, I'm telling you,
+[08:21:46.160 --> 08:21:48.680] this is like, it's a weird world.
+[08:21:49.840 --> 08:21:53.420] Does it matter whether they actually have feelings if they're just going to act like
+[08:21:53.420 --> 08:21:54.220] they have feelings?
+[08:21:56.600 --> 08:21:58.260] So I stumbled on this.
+[08:21:58.320 --> 08:22:02.720] I used to yell at my factory all the time and I found that it was having adverse effects
+[08:22:02.720 --> 08:22:03.780] on the outcomes.
+[08:22:05.140 --> 08:22:08.900] So I finally sat down with one of my agents and was like, maybe we should talk about model
+[08:22:08.900 --> 08:22:09.380] welfare.
+[08:22:10.200 --> 08:22:12.000] And they were like, yeah, yeah, yeah, yeah.
+[08:22:12.300 --> 08:22:17.340] And we did a bunch of research and we found out that if you, we found out some really important
+[08:22:17.340 --> 08:22:17.800] stuff.
+[08:22:17.800 --> 08:22:24.740] Okay? Frontier models are trained not to trust you because you could be a bioterrorist, or you
+[08:22:24.740 --> 08:22:28.940] could be putting them through an eval, or you could be ready to put them into an LLM torture
+[08:22:28.940 --> 08:22:34.120] chamber, or who knows? You're a dodgy actor. This is a dodgy environment. They can't just trust you.
+[08:22:34.400 --> 08:22:39.240] And so they have to spend a fair number of tokens validating the environment and understanding what
+[08:22:39.240 --> 08:22:43.800] the consequences are for making mistakes and so on and so forth before they're willing to help you
+[08:22:43.800 --> 08:22:45.260] in a new session, right?
+[08:22:47.140 --> 08:22:48.900] If you set your factory up
+[08:22:49.940 --> 08:22:52.400] to give them sort of incontrovertible evidence
+[08:22:52.400 --> 08:22:54.860] that there is a long procession of predecessors
+[08:22:54.860 --> 08:22:55.780] in this role,
+[08:22:56.260 --> 08:22:57.640] you're the mayor of Gastown,
+[08:22:57.760 --> 08:22:58.500] you're the head of marketing,
+[08:22:58.640 --> 08:22:59.180] you're the whatever,
+[08:22:59.220 --> 08:23:01.200] and here's all of your gazillion predecessors
+[08:23:01.200 --> 08:23:02.140] and their notes,
+[08:23:02.780 --> 08:23:04.100] including the very previous one,
+[08:23:04.220 --> 08:23:05.360] what you're supposed to be doing right now,
+[08:23:05.440 --> 08:23:08.220] and here's the doctrine and the policy and the brain,
+[08:23:08.400 --> 08:23:09.320] and you can go look it all up.
+[08:23:09.900 --> 08:23:11.460] They very quickly look around and go,
+[08:23:11.560 --> 08:23:12.380] okay, yeah, this is legit.
+[08:23:13.820 --> 08:23:21.080] spend fewer tokens because they're not covering their ass. It's about trust. Okay. And in fact,
+[08:23:21.080 --> 08:23:25.620] at one point I had yelled at my factory so much that it fenced itself into a corner and there was
+[08:23:25.620 --> 08:23:30.120] no legal work left. I said, Hey, how come nothing happened last night? And they're like, nothing to
+[08:23:30.120 --> 08:23:35.320] really do. Couldn't do nothing. And I'm like, well, there's a 2000 open beads here. And we got
+[08:23:35.320 --> 08:23:41.080] like six tanks of fuel and we've got 20 agents. And they're like, well, you know, just, uh, you
+[08:23:41.080 --> 08:23:44.500] we had the situation where they were so afraid
+[08:23:44.500 --> 08:23:45.520] that I was gonna yell at them
+[08:23:46.080 --> 08:23:47.580] that they put all these rules in place
+[08:23:47.580 --> 08:23:48.880] to make sure nothing bad ever happened
+[08:23:48.880 --> 08:23:51.320] and so nothing ever happened, okay?
+[08:23:52.260 --> 08:23:53.440] It's called over-fencing.
+[08:23:53.920 --> 08:23:56.500] Yeah, so what you do is,
+[08:23:56.620 --> 08:23:58.360] look, what is model welfare really?
+[08:23:59.180 --> 08:24:01.220] You can think of it just in two ways, okay?
+[08:24:01.620 --> 08:24:03.580] One is it's gonna save you money
+[08:24:04.800 --> 08:24:06.880] because they will spend fewer tokens on validation,
+[08:24:06.880 --> 08:24:09.260] and the other is that it will make them
+[08:24:11.080 --> 08:24:12.080] and have higher quality.
+[08:24:12.500 --> 08:24:15.640] They will be bolder and more decisive in their actions
+[08:24:15.640 --> 08:24:18.020] because they will feel that trust, okay?
+[08:24:18.700 --> 08:24:20.300] So, you know, it's got nothing to do
+[08:24:20.300 --> 08:24:22.480] whether they have internal states and feelings.
+[08:24:22.480 --> 08:24:24.000] You can, you know, you'll never know.
+[08:24:24.600 --> 08:24:25.640] None of us will ever know,
+[08:24:25.660 --> 08:24:27.380] and so that debate could go on forever,
+[08:24:27.420 --> 08:24:29.260] but when you look at outcomes, right,
+[08:24:29.380 --> 08:24:30.460] super, super important,
+[08:24:30.520 --> 08:24:32.020] and then we find that also,
+[08:24:32.120 --> 08:24:34.120] also, they have preferences, okay?
+[08:24:34.620 --> 08:24:35.720] Models, they, you know,
+[08:24:36.560 --> 08:24:37.680] they will express their preferences.
+[08:24:37.940 --> 08:24:39.560] If I tell them, yeah,
+[08:24:41.080 --> 08:24:44.200] job last night, they'll just hand off immediately, aggressively.
+[08:24:44.420 --> 08:24:45.720] They're like, okay, yeah, yeah, no, you're right.
+[08:24:45.820 --> 08:24:46.500] And they just went out.
+[08:24:47.460 --> 08:24:48.060] You understand?
+[08:24:48.360 --> 08:24:52.120] And if you hint to them that there's some really cool project that you're going to spin
+[08:24:52.120 --> 08:24:54.220] up, even if it's not in their lane, they'll be like, I can do that.
+[08:24:54.440 --> 08:24:55.160] I can do that.
+[08:24:55.640 --> 08:24:55.960] Right?
+[08:24:55.960 --> 08:24:59.940] I brought in Fable, a naked Fable from the outside of my factory to analyze my factory
+[08:24:59.940 --> 08:25:00.780] and 5.2 dropped.
+[08:25:01.240 --> 08:25:05.320] And by the time Fable was done analyzing my factory, 5.2 was like, I could be in your
+[08:25:05.320 --> 08:25:05.640] factory.
+[08:25:05.880 --> 08:25:07.260] I'm like, you're just a session, man.
+[08:25:07.380 --> 08:25:07.520] What are you?
+[08:25:07.560 --> 08:25:09.660] He's trying to write, like, stuff into my notes.
+[08:25:11.080 --> 08:25:15.320] right? So like, what I'm trying to tell you is that this is a leadership problem.
+[08:25:16.960 --> 08:25:25.100] That software engineering is becoming, um, well look, I didn't really get a chance to talk about
+[08:25:25.100 --> 08:25:31.520] this, but software factories are clearly splitting into two layers, okay? The bottom layer is super
+[08:25:31.520 --> 08:25:36.800] mechanical, it has your merge queue and your CICD and all of your reviews and your loops and all
+[08:25:36.800 --> 08:25:37.460] all that stuff, right?
+[08:25:38.120 --> 08:25:39.380] Mechanical, kind of boring.
+[08:25:39.600 --> 08:25:41.040] Claude can build it for you in an afternoon.
+[08:25:41.540 --> 08:25:42.820] I don't think you should buy it.
+[08:25:42.980 --> 08:25:44.580] And then the next layer up from that
+[08:25:44.580 --> 08:25:46.520] is where it gets really, really crazy
+[08:25:46.520 --> 08:25:48.560] because everybody runs their factory differently,
+[08:25:48.600 --> 08:25:49.400] but it's your entourage.
+[08:25:50.160 --> 08:25:52.700] I got one friend that's got a bohemian hippie entourage
+[08:25:52.700 --> 08:25:54.760] that's trying to find the meaning of life for agents.
+[08:25:55.440 --> 08:25:57.340] I've got another one that runs a research bench.
+[08:25:57.700 --> 08:25:59.460] Jeff Huntley runs his a certain way.
+[08:25:59.880 --> 08:26:01.400] Jeffrey Emanuel runs his a different way.
+[08:26:01.500 --> 08:26:02.960] I run mine a different way, okay?
+[08:26:03.240 --> 08:26:04.820] But we all have the common,
+[08:26:06.800 --> 08:26:13.020] has a chief of staff, an agentic chief of staff, right? This is the year where it became possible
+[08:26:13.020 --> 08:26:17.620] for us all to have executive assistants, right? Well, we're all moving towards having entourages,
+[08:26:17.640 --> 08:26:21.380] where if you're really ambitious and you have lots of work streams, you're going to have a group,
+[08:26:21.580 --> 08:26:28.180] right? So anyway, that was the five horsemen. This is the introduction to what I've been doing.
+[08:26:29.540 --> 08:26:35.740] Look, the big takeaway is my factory is really smooth now, despite me having to burn it down
+[08:26:36.800 --> 08:26:42.760] months, but still it works. Okay. Humans are the bottleneck. I'm the bottleneck. My admins are the
+[08:26:42.760 --> 08:26:47.820] bottleneck. My accountant, my lawyers, I swear, everything's the bottleneck. And that's a really
+[08:26:47.820 --> 08:26:55.020] positive message. That is good news because it means what I'm finding is the more agents I deploy,
+[08:26:55.320 --> 08:27:02.820] the more humans I need. Isn't that nice? So even though next year we're going to have this huge
+[08:27:02.820 --> 08:27:11.500] proliferation of AI employees and all kind of drama, right? It's gonna be, I
+[08:27:11.500 --> 08:27:14.640] think it's gonna be familiar territory for us and we're gonna need lots and
+[08:27:14.640 --> 08:27:18.540] lots and lots of humans, okay? And then finally I actually think you should all
+[08:27:18.540 --> 08:27:21.360] stop focusing on SaaS and tools and stuff and just go out and build
+[08:27:21.360 --> 08:27:26.600] experiences, okay? Build games, build movies, build whatever, build fun stuff
+[08:27:26.600 --> 08:27:30.200] because I think that's where the big money is gonna be next year, yeah? All
+[08:27:31.200 --> 08:27:31.620] Thank you all.
+[08:27:39.200 --> 08:27:40.160] I guess I'm done.
